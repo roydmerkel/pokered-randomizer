@@ -808,9 +808,9 @@ TradeCenter_Trade:
 	ld a, $a
 	ld [wMusicHeaderPointer], a
 	ld a, $2
-	ld [wc0f0], a
+	ld [wAudioSavedROMBank], a
 	ld a, MUSIC_SAFARI_ZONE
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call PlaySound
 	ld c, $64
 	call DelayFrames
@@ -900,9 +900,9 @@ Func_5a5f: ; 5a5f (1:5a5f)
 	ld a, $a
 	ld [wMusicHeaderPointer], a
 	ld a, 0 ; 0 ; BANK(Music_Celadon)
-	ld [wc0f0], a
+	ld [wAudioSavedROMBank], a
 	ld a, MUSIC_CELADON
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	jp PlaySound
 
 Func_5aaf: ; 5aaf (1:5aaf)

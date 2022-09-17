@@ -68,7 +68,7 @@ CeruleanCityScript0: ; 194c8 (6:54c8)
 	and a
 	jr z, .asm_19512 ; 0x19508 $8
 	ld a, $ff
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call PlaySound
 .asm_19512
 	ld c, 0 ; BANK(Music_MeetRival)
@@ -177,7 +177,7 @@ CeruleanCityScript2: ; 195b1 (6:55b1)
 	ld [$ff8c], a
 	call DisplayTextID
 	ld a, $ff
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call PlaySound
 	callba Music_RivalAlternateStart
 	ld a, $1

@@ -10,7 +10,7 @@ Func_7bde9: ; 7bde9 (1e:7de9)
 	ld [wDanger], a
 	ld [wc02a], a
 	dec a
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call PlaySound
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
@@ -68,7 +68,7 @@ Func_7bde9: ; 7bde9 (1e:7de9)
 .asm_7be81
 	ld [wcf1d], a
 	ld a, $ff
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call PlaySound
 	ld a, [wcf1d]
 	call PlayCry

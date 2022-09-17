@@ -352,9 +352,9 @@ GetCryData:: ; 13d9 (0:13d9)
 	ld a, [hli]
 	ld b, a ; cry id
 	ld a, [hli]
-	ld [wc0f1], a
+	ld [wFrequencyModifier], a
 	ld a, [hl]
-	ld [wc0f2], a
+	ld [wTempoModifier], a
 	call BankswitchBack
 
 	; Cry headers have 3 channels,
@@ -1047,12 +1047,12 @@ Func_28cb:: ; 28cb (0:28cb)
 	xor a
 	ld [wMusicHeaderPointer], a
 	ld a, $ff
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call PlaySound
-	ld a, [wc0f0]
-	ld [wc0ef], a
+	ld a, [wAudioSavedROMBank]
+	ld [wAudioROMBank], a
 	ld a, b
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	jp PlaySound
 
 ; this function is used to display sign messages, sprite dialog, etc.
@@ -2639,8 +2639,8 @@ PlayTrainerMusic:: ; 33e8 (0:33e8)
 	ld a, $ff
 	call PlaySound      ; stop music
 	ld a, 0 ; 0 ; BANK(Music_MeetEvilTrainer)
-	ld [wc0ef], a
-	ld [wc0f0], a
+	ld [wAudioROMBank], a
+	ld [wAudioSavedROMBank], a
 	ld a, [wEngagedTrainerClass]
 	ld b, a
 	ld hl, EvilTrainerList
@@ -2665,7 +2665,7 @@ PlayTrainerMusic:: ; 33e8 (0:33e8)
 .maleTrainer
 	ld a, MUSIC_MEET_MALE_TRAINER
 .PlaySound
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	jp PlayMusic
 
 INCLUDE "data/trainer_types.asm"

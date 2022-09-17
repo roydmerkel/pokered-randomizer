@@ -30,18 +30,18 @@ AnimateHealingMachine: ; 70433 (1c:4433)
 	call DelayFrames
 	dec b
 	jr nz, .asm_7046e
-	ld a, [wc0ef]
+	ld a, [wAudioROMBank]
 	cp $1f
-	ld [wc0f0], a
+	ld [wAudioSavedROMBank], a
 	jr nz, .asm_70495
 	ld a, $ff
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call PlaySound
 	ld a, 0 ; BANK(Music_PkmnHealed)
-	ld [wc0ef], a
+	ld [wAudioROMBank], a
 .asm_70495
 	ld a, MUSIC_PKMN_HEALED
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call PlayMusic
 	ld d, $28
 	call Func_704f3

@@ -376,7 +376,7 @@ BillsHouseInitiatedText: ; 1ebe2 (7:6be2)
 	db $06
 	db $08 ; asm
 	ld a, $ff
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call PlaySound
 	ld c, $10
 	call DelayFrames

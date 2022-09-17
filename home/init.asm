@@ -99,8 +99,8 @@ rLCDC_DEFAULT EQU %11100011
 	predef LoadSGB
 
 	ld a, 0 ; BANK(SFX_1f_67)
-	ld [wc0ef], a
-	ld [wc0f0], a
+	ld [wAudioROMBank], a
+	ld [wAudioSavedROMBank], a
 	ld a, $9c
 	ld [$ffbd], a
 	xor a
@@ -134,11 +134,11 @@ StopAllSounds::
     
     
 	ld a, 0 ; BANK(Music2_UpdateMusic)
-	ld [wc0ef], a
-	ld [wc0f0], a
+	ld [wAudioROMBank], a
+	ld [wAudioSavedROMBank], a
 	xor a
 	ld [wMusicHeaderPointer], a
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	ld [wcfca], a
 	dec a
 	jp PlaySound

@@ -24,7 +24,7 @@ PokemonTower2Script0: ; 6050f (18:450f)
 	call ArePlayerCoordsInArray
 	ret nc
 	ld a, $ff
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call PlaySound
 	ld c, 0 ; BANK(Music_MeetRival)
 	ld a, MUSIC_MEET_RIVAL
@@ -83,7 +83,7 @@ PokemonTower2Script1: ; 60563 (18:4563)
 	ld [$ff8c], a
 	call MoveSprite
 	ld a, $ff
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call PlaySound
 	callba Music_RivalAlternateStart
 	ld a, $2

@@ -392,7 +392,7 @@ SlotMachine_37588: ; 37588 (d:7588)
 	call PrintText
 .loop
 	xor a
-	ld [wc002], a
+	ld [wMuteAudioAndPauseMusic], a
 	ret
 .skip4
 	call SlotMachine_37833
@@ -633,7 +633,7 @@ SlotMachine_3775f: ; 3775f (d:775f)
 
 SlotMachine_3776b: ; 3776b (d:776b)
 	ld a, $1
-	ld [wc002], a
+	ld [wMuteAudioAndPauseMusic], a
 	call WaitForSoundToFinish
 	ld hl, wcd46
 	xor a

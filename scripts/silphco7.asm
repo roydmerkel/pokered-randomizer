@@ -130,7 +130,7 @@ SilphCo7Script0: ; 51c23 (14:5c23)
 	ld a, $4
 	ld [wd528], a
 	ld a, $ff
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call PlaySound
 	ld c, 0 ; BANK(Music_MeetRival)
 	ld a, MUSIC_MEET_RIVAL
@@ -220,7 +220,7 @@ SilphCo7Script4: ; 51cc8 (14:5cc8)
 	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	call DisplayTextID
 	ld a, $ff
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call PlaySound
 	callba Music_RivalAlternateStart
 	ld de, MovementData_51d1d

@@ -157,10 +157,10 @@ PewterMuseumGuyMovementScriptPointerTable: ; 1a510 (6:6510)
 
 Func_1a514: ; 1a514 (6:6514)
 	ld a, 0 ; BANK(Music_MuseumGuy)
-	ld [wc0ef], a
-	ld [wc0f0], a
+	ld [wAudioROMBank], a
+	ld [wAudioSavedROMBank], a
 	ld a, MUSIC_MUSEUM_GUY
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call PlayMusic
 	ld a, [wSpriteIndex]
 	swap a
@@ -213,10 +213,10 @@ PewterGymGuyMovementScriptPointerTable: ; 1a57d (6:657d)
 
 Func_1a581: ; 1a581 (6:6581)
 	ld a, 0 ; BANK(Music_MuseumGuy)
-	ld [wc0ef], a
-	ld [wc0f0], a
+	ld [wAudioROMBank], a
+	ld [wAudioSavedROMBank], a
 	ld a, MUSIC_MUSEUM_GUY
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call PlayMusic
 	ld a, [wSpriteIndex]
 	swap a

@@ -41,7 +41,7 @@ VermilionDock_1db9b: ; 1db9b (7:5b9b)
 	set 2, [hl]
 	ld a, $ff
 	ld [wJoyIgnore], a
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call PlaySound
 	ld c, 0 ; BANK(Music_Surfing)
 	ld a, MUSIC_SURFING

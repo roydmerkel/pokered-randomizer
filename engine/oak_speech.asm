@@ -145,12 +145,12 @@ Func_61bc: ; 61bc (1:61bc)
 	ld a,[H_LOADEDROMBANK]
 	push af
 	ld a,0 ;  0 ; BANK(Music_PalletTown)
-	ld [wc0ef],a
-	ld [wc0f0],a
+	ld [wAudioROMBank],a
+	ld [wAudioSavedROMBank],a
 	ld a,$A
 	ld [wMusicHeaderPointer],a
 	ld a,$FF
-	ld [wc0ee],a
+	ld [wNewSoundID],a
 	call PlaySound ; stop music
 	pop af
 	ld [H_LOADEDROMBANK],a

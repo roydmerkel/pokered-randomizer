@@ -237,14 +237,14 @@ ENDM
 ;3_channels	EQU $80
 ;4_channels	EQU $C0
 
-CH0		EQU 0
-CH1		EQU 1
-CH2		EQU 2
-CH3		EQU 3
-CH4		EQU 4
-CH5		EQU 5
-CH6		EQU 6
-CH7		EQU 7
+CHAN1		EQU 0
+CHAN2		EQU 1
+CHAN3		EQU 2
+CHAN4		EQU 3
+CHAN5		EQU 4
+CHAN6		EQU 5
+CHAN7		EQU 6
+CHAN8		EQU 7
 
 unknownsfx0x10: MACRO
 	db $dd ; soundinput

@@ -32,9 +32,9 @@ asm_2324:: ; 2324 (0:2324)
 	and a
 	ld a, 0 ; 0 ; BANK(Music_BikeRiding)
 	jr nz, .asm_233e
-	ld [wc0ef], a
+	ld [wAudioROMBank], a
 .asm_233e
-	ld [wc0f0], a
+	ld [wAudioSavedROMBank], a
 	jr .asm_234c
 .asm_2343
 	ld a, [wd35b]
@@ -50,7 +50,7 @@ asm_2324:: ; 2324 (0:2324)
 	ld [wMusicHeaderPointer], a
 	ld a, b
 	ld [wcfca], a
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	
 	ld [MusicFadeID], a
 	ld a, 8

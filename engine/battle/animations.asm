@@ -2320,18 +2320,18 @@ Func_7986f: ; 7986f (1e:586f)
 	;call GetCryData
 	;ld b,a
 	;pop hl
-	;ld a,[wc0f1]
+	;ld a,[wFrequencyModifier]
 	;add [hl]
-	;ld [wc0f1],a
+	;ld [wFrequencyModifier],a
 	;inc hl
-	;ld a,[wc0f2]
+	;ld a,[wTempoModifier]
 	;add [hl]
-	;ld [wc0f2],a
+	;ld [wTempoModifier],a
 .NotCryMove
 	ld a,[hli]
-	ld [wc0f1],a
+	ld [wFrequencyModifier],a
 	ld a,[hli]
-	ld [wc0f2],a
+	ld [wTempoModifier],a
 .done
     xor a ; just in case c got set somewhere
 	ld a,b
@@ -2921,9 +2921,9 @@ Func_79e6a: ; 79e6a (1e:5e6a)
 	ld b, $1
 	ld c, GSSFX_NOT_VERY_EFFECTIVE ;RBSFX_08_51
 .asm_79e8b
-	ld [wc0f1], a
+	ld [wFrequencyModifier], a
 	ld a, b
-	ld [wc0f2], a
+	ld [wTempoModifier], a
 	ld a, c
 	jp PlaySound 
 

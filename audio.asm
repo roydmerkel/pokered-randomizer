@@ -295,7 +295,7 @@ PlayBattleMusic:: ; 0x90c6
 	ld [MusicFadeID], a
 	ld [MusicFade], a
 	dec a
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	xor a
 	call PlayMusic ; stop music
 	call DelayFrame
@@ -331,7 +331,7 @@ SECTION "Alt Music Routines", ROMX
 Music_RivalAlternateStart:: ; 0x9b47
 	ld a, MUSIC_MEET_RIVAL
 	jp PlayMusic
-	;ld hl, wc006
+	;ld hl, wChannelCommandPointers
 	;ld de, Music_MeetRival_branch_b1a2
 	;call Music2_OverwriteChannelPointer
 	;ld de, Music_MeetRival_branch_b21d
@@ -343,14 +343,14 @@ Music_RivalAlternateTempo:: ; 0x9b65
 	ld c, BANK(Music_MeetRival)
 	ld a, MUSIC_MEET_RIVAL
 	jp PlayMusic
-	;ld hl, wc006
+	;ld hl, wChannelCommandPointers
 	;ld de, Music_MeetRival_branch_b119
 	;jp Music2_OverwriteChannelPointer
 
 ; applies both the alternate start and alternate tempo
 Music_RivalAlternateStartAndTempo:: ; 0x9b75
 	jp Music_RivalAlternateStart
-	;ld hl, wc006
+	;ld hl, wChannelCommandPointers
 	;ld de, Music_MeetRival_branch_b19b
 	;jp Music2_OverwriteChannelPointer
 
@@ -366,7 +366,7 @@ Music_Cities1AlternateTempo:: ; 0x9b81
 	ld c, BANK(Music_Cities1)
 	ld a, MUSIC_CITIES1
 	jp PlayMusic
-	;ld hl, wc006
+	;ld hl, wChannelCommandPointers
 	;ld de, Music_Cities1_branch_aa6f
 	;jp Music2_OverwriteChannelPointer
 
@@ -384,7 +384,7 @@ Func_7d13b:: ; 7d13b (1f:513b)
 .gotSfxPointer
 	push bc
 	ld a, $ff
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call PlaySoundWaitForCurrent
 	pop bc
 	ld b, $0

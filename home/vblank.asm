@@ -54,7 +54,7 @@ VBlank::
 
 
     call UpdateSound
-;	ld a, [wc0ef] ; music ROM bank
+;	ld a, [wAudioROMBank] ; music ROM bank
 ;	ld [H_LOADEDROMBANK], a
 ;	ld [MBC1RomBank], a
 ;

@@ -18,8 +18,8 @@ SetDefaultNamesBeforeTitlescreen: ; 42b7 (1:42b7)
 	ld [hli], a
 	ld [hl], a
 	ld a, 0 ; BANK(Music_TitleScreen)
-	ld [wc0ef], a
-	ld [wc0f0], a
+	ld [wAudioROMBank], a
+	ld [wAudioSavedROMBank], a
 
 LoadTitlescreenGraphics: ; 42dd (1:42dd)
 	call GBPalWhiteOut
@@ -201,7 +201,7 @@ ENDC
 	call Delay3
 	call WaitForSoundToFinish
 	ld a, MUSIC_TITLE_SCREEN
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call PlayMusic
 	xor a
 	ld [wcc5b], a

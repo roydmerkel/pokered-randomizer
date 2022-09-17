@@ -50,18 +50,18 @@ SSAnne7Text1: ; 618ad (18:58ad)
 SSAnne7RubText: ; 618ec (18:58ec)
 	TX_FAR _SSAnne7RubText
 	db $8
-	ld a, [wc0ef]
+	ld a, [wAudioROMBank]
 	cp $1f
-	ld [wc0f0], a
+	ld [wAudioSavedROMBank], a
 	jr nz, .asm_61908 ; 0x618f9 $d
 	ld a, $ff
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call PlaySound
 	ld a, 0 ; Bank(Func_9876)
-	ld [wc0ef], a
+	ld [wAudioROMBank], a
 .asm_61908
 	ld a, MUSIC_PKMN_HEALED
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call PlayMusic
 	call WaitForSongToFinish
 	call PlayDefaultMusic

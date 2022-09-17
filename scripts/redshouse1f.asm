@@ -29,11 +29,11 @@ MomHealPokemon: ; 4818a (12:418a)
 	call ReloadMapData
 	predef HealParty
 	ld a, MUSIC_PKMN_HEALED
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call PlayMusic ; play sound?
 	call WaitForSongToFinish
 	ld a, [wd35b]
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call PlayMusic
 	call GBFadeInFromWhite
 	ld hl, MomHealText2

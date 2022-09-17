@@ -888,8 +888,8 @@ FaintEnemyPokemon ; 0x3c567
 	dec a
 	jr z, .wild_win
 	xor a
-	ld [wc0f1], a
-	ld [wc0f2], a
+	ld [wFrequencyModifier], a
+	ld [wTempoModifier], a
 	ld a, RBSFX_08_48 ; SFX_FALL?
 	call PlaySoundWaitForCurrent
 .sfxwait
@@ -1077,7 +1077,7 @@ TrainerDefeatedText: ; 3c6e9 (f:46e9)
 PlayBattleVictoryMusic: ; 3c6ee (f:46ee)
 	push af
 	ld a, $ff
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call PlaySoundWaitForCurrent
 	ld c, 0 ; BANK(Music_DefeatedTrainer)
 	pop af
@@ -7028,8 +7028,8 @@ _LoadTrainerPic: ; 3f04b (f:704b)
 
 Func_3f069: ; 3f069 (f:7069)
 	xor a
-	ld [wc0f1], a
-	ld [wc0f2], a
+	ld [wFrequencyModifier], a
+	ld [wTempoModifier], a
 	jp PlaySound
 
 Func_3f073: ; 3f073 (f:7073)

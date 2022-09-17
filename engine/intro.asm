@@ -319,10 +319,10 @@ PlayShootingStar: ; 4188a (10:588a)
 	call DelayFrames
 .asm_418d0
 	ld a, 0 ; BANK(Music_IntroBattle)
-	ld [wc0ef], a
-	ld [wc0f0], a
+	ld [wAudioROMBank], a
+	ld [wAudioSavedROMBank], a
 	ld a, MUSIC_INTRO_BATTLE
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call PlayMusic
 	call Func_417f8
 	call ClearSprites
