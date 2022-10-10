@@ -246,6 +246,10 @@ CHAN6		EQU 5
 CHAN7		EQU 6
 CHAN8		EQU 7
 
+NUM_MUSIC_CHANS EQU CHAN5
+NUM_CHANNELS EQU CHAN8 + 1
+NUM_NOISE_CHANS EQU NUM_CHANNELS - NUM_MUSIC_CHANS
+
 unknownsfx0x10: MACRO
 	db $dd ; soundinput
 	db \1
@@ -460,3 +464,17 @@ lda: MACRO
     ld a, \2
     ld \1, a
 ENDM
+
+REG_DUTY_SOUND_LEN		EQU	1
+REG_VOLUME_ENVELOPE		EQU	2
+REG_FREQUENCY_LO		EQU	3
+
+BIT_PERFECT_PITCH		EQU	0 ; controlled by toggle_perfect_pitch command
+BIT_SOUND_CALL			EQU	1 ; if in sound call
+BIT_NOISE_OR_SFX		EQU	2 ; if channel is the music noise channel or an SFX channel
+BIT_VIBRATO_DIRECTION		EQU	3 ; if the pitch is above or below normal (cycles)
+BIT_PITCH_SLIDE_ON		EQU	4 ; if pitch slide is active
+BIT_PITCH_SLIDE_DECREASING	EQU	5 ; if the pitch slide frequency is decreasing (instead of increasing)
+BIT_ROTATE_DUTY_CYCLE		EQU	6 ; if rotating duty cycle
+
+BIT_EXECUTE_MUSIC		EQU	0 ; if in execute music

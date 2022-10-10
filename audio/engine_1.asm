@@ -3,7 +3,7 @@
 Music2_UpdateMusic:: ; 0x9103
 	ld c, CHAN1
 .loop
-	ld b, $0
+	ld b, 0
 	ld hl, wChannelSoundIDs
 	add hl, bc
 	ld a, [hl]
@@ -20,10 +20,10 @@ Music2_UpdateMusic:: ; 0x9103
 	set 7, a
 	ld [wMuteAudioAndPauseMusic], a
 	xor a
-	ld [$ff25], a
-	ld [$ff1a], a
+	ldh [rNR51], a
+	ldh [rNR30], a
 	ld a, $80
-	ld [$ff1a], a
+	ldh [rNR30], a
 	jr .nextChannel
 .asm_912e
 	call Music2_ApplyMusicAffects
@@ -47,7 +47,7 @@ Music2_ApplyMusicAffects: ; 0x9138
 	ld hl, wChannelNoteDelayCounters ; delay until next note
 	add hl, bc
 	ld a, [hl]
-	cp $1 ; if the delay is 1, play next note
+	cp 1 ; if the delay is 1, play next note
 	jp z, Music2_PlayNextNote
 	dec a ; otherwise, decrease the delay timer
 	ld [hl], a
@@ -63,23 +63,23 @@ Music2_ApplyMusicAffects: ; 0x9138
 .startChecks
 	ld hl, wChannelFlags1
 	add hl, bc
-	bit 6, [hl] ; dutycycle
+	bit BIT_ROTATE_DUTY_CYCLE, [hl] ; dutycycle
 	jr z, .checkForExecuteMusic
 	call Music2_ApplyDutyCycle
 .checkForExecuteMusic
-	ld b, $0
+	ld b, 0
 	ld hl, wChannelFlags2
 	add hl, bc
-	bit 0, [hl]
+	bit BIT_EXECUTE_MUSIC, [hl]
 	jr nz, .checkForPitchBend
 	ld hl, wChannelFlags1
 	add hl, bc
-	bit 2, [hl]
+	bit BIT_NOISE_OR_SFX, [hl]
 	jr nz, .disablePitchBendVibrato
 .checkForPitchBend
 	ld hl, wChannelFlags1
 	add hl, bc
-	bit 4, [hl] ; pitchbend
+	bit BIT_PITCH_SLIDE_ON, [hl] ; pitchbend
 	jr z, .checkVibratoDelay
 	jp Music2_ApplyPitchBend
 .checkVibratoDelay
@@ -118,20 +118,20 @@ Music2_ApplyMusicAffects: ; 0x9138
 	ld e, [hl] ; get note pitch
 	ld hl, wChannelFlags1
 	add hl, bc
-	bit 3, [hl] ; this is the only code that sets/resets bit three so
+	bit BIT_VIBRATO_DIRECTION, [hl] ; this is the only code that sets/resets bit three so
 	jr z, .unset ; it continuously alternates which path it takes
-	res 3, [hl]
+	res BIT_VIBRATO_DIRECTION, [hl]
 	ld a, d
 	and $f
 	ld d, a
 	ld a, e
 	sub d
 	jr nc, .noCarry
-	ld a, $0
+	ld a, 0
 .noCarry
 	jr .done
 .unset
-	set 3, [hl]
+	set BIT_VIBRATO_DIRECTION, [hl]
 	ld a, d
 	and $f0
 	swap a
@@ -140,7 +140,7 @@ Music2_ApplyMusicAffects: ; 0x9138
 	ld a, $ff
 .done
 	ld d, a
-	ld b, $3
+	ld b, REG_FREQUENCY_LO
 	call Func_9838
 	ld [hl], d
 	ret
@@ -157,8 +157,8 @@ Music2_PlayNextNote ; 0x91d0
 	ld [hl], a
 	ld hl, wChannelFlags1
 	add hl, bc
-	res 4, [hl]
-	res 5, [hl]
+	res BIT_PITCH_SLIDE_ON, [hl]
+	res BIT_PITCH_SLIDE_DECREASING, [hl]
 	call Music2_endchannel
 	ret
 
@@ -167,26 +167,26 @@ Music2_endchannel: ; 0x91e6
 	ld d, a
 	cp $ff ; is this command an endchannel?
 	jp nz, Music2_callchannel ; no
-	ld b, $0 ; yes
+	ld b, 0 ; yes
 	ld hl, wChannelFlags1
 	add hl, bc
-	bit 1, [hl]
+	bit BIT_SOUND_CALL, [hl]
 	jr nz, .returnFromCall
 	ld a, c
 	cp CHAN4
 	jr nc, .noiseOrSfxChannel
 	jr .asm_923f
 .noiseOrSfxChannel
-	res 2, [hl]
+	res BIT_NOISE_OR_SFX, [hl]
 	ld hl, wChannelFlags2
 	add hl, bc
-	res 0, [hl]
+	res BIT_EXECUTE_MUSIC, [hl]
 	cp CHAN7
 	jr nz, .notSfxChannel3
 	ld a, $0
-	ld [$ff1a], a
+	ldh [rNR30], a
 	ld a, $80
-	ld [$ff1a], a
+	ldh [rNR30], a
 .notSfxChannel3
 	jr nz, .asm_9222
 	ld a, [wDisableChannelOutputWhenSfxEnds]
@@ -220,17 +220,17 @@ Music2_endchannel: ; 0x91e6
 .asm_923f
 	ld hl, Unknown_9b1f
 	add hl, bc
-	ld a, [$ff25]
+	ldh a, [rNR51]
 	and [hl]
-	ld [$ff25], a
+	ldh [rNR51], a
 .asm_9248
 	ld a, [wc02a]
-	cp $14
+	cp CRY_SFX_START
 	jr nc, .asm_9251
 	jr .asm_926e
 .asm_9251
 	ld a, [wc02a]
-	cp $86
+	cp CRY_SFX_END
 	jr z, .asm_926e
 	jr c, .asm_925c
 	jr .asm_926e
@@ -242,7 +242,7 @@ Music2_endchannel: ; 0x91e6
 	ret c
 .asm_9265
 	ld a, [wSavedVolume]
-	ld [$ff24], a
+	ldh [rNR50], a
 	xor a
 	ld [wSavedVolume], a
 .asm_926e
@@ -285,7 +285,7 @@ Music2_callchannel: ; 0x9274
 	ld b, $0
 	ld hl, wChannelFlags1
 	add hl, bc
-	set 1, [hl] ; set the call flag
+	set BIT_SOUND_CALL, [hl] ; set the call flag
 	jp Music2_endchannel
 
 Music2_loopchannel: ; 0x92a9
@@ -295,7 +295,7 @@ Music2_loopchannel: ; 0x92a9
 	ld e, a
 	and a
 	jr z, .infiniteLoop
-	ld b, $0
+	ld b, 0
 	ld hl, wChannelLoopCounters
 	add hl, bc
 	ld a, [hl]
@@ -363,7 +363,7 @@ Music2_notetype: ; 0x92e4
 	; if channel 3, store high nibble as volume
 	; else, store volume (high nibble) and fade (low nibble)
 .notChannel3
-	ld b, $0
+	ld b, 0
 	ld hl, wChannelVolumes
 	add hl, bc
 	ld [hl], d
@@ -374,7 +374,7 @@ Music2_toggleperfectpitch: ; 0x9323
 	ld a, d
 	cp $e8 ; is this command a toggleperfectpitch?
 	jr nz, Music2_vibrato ; no
-	ld b, $0 ; yes
+	ld b, 0 ; yes
 	ld hl, wChannelFlags1
 	add hl, bc
 	ld a, [hl]
@@ -386,7 +386,7 @@ Music2_vibrato: ; 0x9335
 	cp $ea ; is this command a vibrato?
 	jr nz, Music2_pitchbend ; no
 	call Music2_GetNextMusicByte ; yes
-	ld b, $0
+	ld b, 0
 	ld hl, wChannelVibratoDelayCounters
 	add hl, bc
 	ld [hl], a ; store delay
@@ -397,7 +397,7 @@ Music2_vibrato: ; 0x9335
 	ld d, a
 	and $f0
 	swap a
-	ld b, $0
+	ld b, 0
 	ld hl, wChannelVibratoExtents
 	add hl, bc
 	srl a
@@ -420,7 +420,7 @@ Music2_pitchbend: ; 0x936d
 	cp $eb ; is this command a pitchbend?
 	jr nz, Music2_duty ; no
 	call Music2_GetNextMusicByte ; yes
-	ld b, $0
+	ld b, 0
 	ld hl, wChannelPitchSlideLengthModifiers
 	add hl, bc
 	ld [hl], a ; store first param
@@ -432,17 +432,17 @@ Music2_pitchbend: ; 0x936d
 	ld a, d
 	and $f
 	call Func_9858
-	ld b, $0
+	ld b, 0
 	ld hl, wChannelPitchSlideTargetFrequencyHighBytes
 	add hl, bc
 	ld [hl], d ; store unknown part of second param
 	ld hl, wChannelPitchSlideTargetFrequencyLowBytes
 	add hl, bc
 	ld [hl], e ; store unknown part of second param
-	ld b, $0
+	ld b, 0
 	ld hl, wChannelFlags1
 	add hl, bc
-	set 4, [hl] ; set pitchbend flag
+	set BIT_PITCH_SLIDE_ON, [hl] ; set pitchbend flag
 	call Music2_GetNextMusicByte
 	ld d, a
 	jp Music2_notelength
@@ -454,7 +454,7 @@ Music2_duty: ; 0x93a5
 	rrca
 	rrca
 	and $c0
-	ld b, $0
+	ld b, 0
 	ld hl, wChannelDutyCycles
 	add hl, bc
 	ld [hl], a ; store duty
@@ -518,7 +518,7 @@ Music2_dutycycle: ; 0x9426
 	cp $fc ; is this command a dutycycle?
 	jr nz, Music2_volume ; no
 	call Music2_GetNextMusicByte ; yes
-	ld b, $0
+	ld b, 0
 	ld hl, wChannelDutyCyclePatterns
 	add hl, bc
 	ld [hl], a ; store full cycle
@@ -528,14 +528,14 @@ Music2_dutycycle: ; 0x9426
 	ld [hl], a ; store first duty
 	ld hl, wChannelFlags1
 	add hl, bc
-	set 6, [hl] ; set dutycycle flag
+	set BIT_ROTATE_DUTY_CYCLE, [hl] ; set dutycycle flag
 	jp Music2_endchannel
 
 Music2_volume: ; 0x9444
 	cp $f0 ; is this command a volume?
 	jr nz, Music2_executemusic ; no
 	call Music2_GetNextMusicByte ; yes
-	ld [$ff24], a ; store volume
+	ldh [rNR50], a ; store volume
 	jp Music2_endchannel
 
 Music2_executemusic: ; 0x9450
@@ -544,7 +544,7 @@ Music2_executemusic: ; 0x9450
 	ld b, $0 ; yes
 	ld hl, wChannelFlags2
 	add hl, bc
-	set 0, [hl]
+	set BIT_EXECUTE_MUSIC, [hl]
 	jp Music2_endchannel
 
 Music2_octave: ; 0x945f
@@ -552,7 +552,7 @@ Music2_octave: ; 0x945f
 	cp $e0 ; is this command an octave?
 	jr nz, Music2_unknownsfx0x20 ; no
 	ld hl, wChannelOctaves ; yes
-	ld b, $0
+	ld b, 0
 	add hl, bc
 	ld a, d
 	and $f
@@ -565,32 +565,32 @@ Music2_unknownsfx0x20: ; 0x9472
 	ld a, c
 	cp CHAN4 ; is this a noise or sfx channel?
 	jr c, Music2_unknownsfx0x10 ; no
-	ld b, $0
+	ld b, 0
 	ld hl, wChannelFlags2
 	add hl, bc
-	bit 0, [hl]
+	bit BIT_EXECUTE_MUSIC, [hl]
 	jr nz, Music2_unknownsfx0x10 ; no
 	call Music2_notelength ; yes
 	ld d, a
-	ld b, $0
+	ld b, 0
 	ld hl, wChannelDutyCycles
 	add hl, bc
 	ld a, [hl]
 	or d
 	ld d, a
-	ld b, $1
+	ld b, REG_DUTY_SOUND_LEN
 	call Func_9838
 	ld [hl], d
 	call Music2_GetNextMusicByte
 	ld d, a
-	ld b, $2
+	ld b, REG_VOLUME_ENVELOPE
 	call Func_9838
 	ld [hl], d
 	call Music2_GetNextMusicByte
 	ld e, a
 	ld a, c
 	cp CHAN8
-	ld a, $0
+	ld a, 0
 	jr z, .sfxNoiseChannel ; only two params for noise channel
 	push de
 	call Music2_GetNextMusicByte
@@ -614,10 +614,10 @@ Music2_unknownsfx0x10:
 	ld b, $0
 	ld hl, wChannelFlags2
 	add hl, bc
-	bit 0, [hl]
+	bit BIT_EXECUTE_MUSIC, [hl]
 	jr nz, Music2_note ; no
 	call Music2_GetNextMusicByte ; yes
-	ld [$ff10], a
+	ldh [rNR10], a
 	jp Music2_endchannel
 
 Music2_note:
@@ -661,7 +661,7 @@ Music2_notelength: ; 0x950a
 	push af
 	and $f
 	inc a
-	ld b, $0
+	ld b, 0
 	ld e, a  ; store note length (in 16ths)
 	ld d, b
 	ld hl, wChannelNoteSpeeds
@@ -689,7 +689,7 @@ Music2_notelength: ; 0x950a
 	ld e, a
 .skip
 	ld a, l
-	ld b, $0
+	ld b, 0
 	ld hl, wChannelNoteDelayCountersFractionalPart
 	add hl, bc
 	ld l, [hl]
@@ -705,11 +705,11 @@ Music2_notelength: ; 0x950a
 	ld [hl], a
 	ld hl, wChannelFlags2
 	add hl, bc
-	bit 0, [hl]
+	bit BIT_EXECUTE_MUSIC, [hl]
 	jr nz, Music2_notepitch
 	ld hl, wChannelFlags1
 	add hl, bc
-	bit 2, [hl]
+	bit BIT_NOISE_OR_SFX, [hl]
 	jr z, Music2_notepitch
 	pop hl
 	ret
@@ -735,15 +735,15 @@ Music2_notepitch: ; 0x9568
 	cp CHAN7
 	jr nz, .notSfxChannel3
 .musicChannel3
-	ld b, $0
+	ld b, 0
 	ld hl, Unknown_9b1f
 	add hl, bc
-	ld a, [$ff25]
+	ldh a, [rNR51]
 	and [hl]
-	ld [$ff25], a
+	ldh [rNR51], a
 	jr .done
 .notSfxChannel3
-	ld b, $2
+	ld b, REG_VOLUME_ENVELOPE
 	call Func_9838
 	ld a, $8
 	ld [hli], a
@@ -754,15 +754,15 @@ Music2_notepitch: ; 0x9568
 	ret
 .notRest
 	swap a
-	ld b, $0
+	ld b, 0
 	ld hl, wChannelOctaves
 	add hl, bc
 	ld b, [hl]
 	call Func_9858
-	ld b, $0
+	ld b, 0
 	ld hl, wChannelFlags1
 	add hl, bc
-	bit 4, [hl]
+	bit BIT_PITCH_SLIDE_ON, [hl]
 	jr z, .asm_95b8
 	call Func_978f
 .asm_95b8
@@ -771,7 +771,7 @@ Music2_notepitch: ; 0x9568
 	cp CHAN5
 	jr nc, .skip ; if sfx channel
 	ld hl, wc02a
-	ld d, $0
+	ld d, 0
 	ld e, a
 	add hl, de
 	ld a, [hl]
@@ -782,11 +782,11 @@ Music2_notepitch: ; 0x9568
 	pop de
 	ret
 .skip
-	ld b, $0
+	ld b, 0
 	ld hl, wChannelVolumes
 	add hl, bc
 	ld d, [hl]
-	ld b, $2
+	ld b, REG_VOLUME_ENVELOPE
 	call Func_9838
 	ld [hl], d
 	call Func_9629
@@ -795,7 +795,7 @@ Music2_notepitch: ; 0x9568
 	ld b, $0
 	ld hl, wChannelFlags1
 	add hl, bc
-	bit 0, [hl]   ; has toggleperfectpitch been used?
+	bit BIT_PERFECT_PITCH, [hl]   ; has toggleperfectpitch been used?
 	jr z, .skip2
 	inc e         ; if yes, increment the pitch by 1
 	jr nc, .skip2
@@ -808,10 +808,10 @@ Music2_notepitch: ; 0x9568
 	ret
 
 Func_95f8: ; 0x95f8
-	ld b, $0
+	ld b, 0
 	ld hl, Unknown_9b27
 	add hl, bc
-	ld a, [$ff25]
+	ldh a, [rNR51]
 	or [hl]
 	ld d, a
 	ld a, c
@@ -830,7 +830,7 @@ Func_95f8: ; 0x95f8
 	add hl, bc
 	and [hl]
 	ld d, a
-	ld a, [$ff25]
+	ldh a, [rNR51]
 	ld hl, Unknown_9b1f
 	add hl, bc
 	and [hl]
@@ -838,11 +838,11 @@ Func_95f8: ; 0x95f8
 	ld d, a
 .skip
 	ld a, d
-	ld [$ff25], a
+	ldh [rNR51], a
 	ret
 
 Func_9629: ; 0x9629
-	ld b, $0
+	ld b, 0
 	ld hl, wChannelNoteDelayCounters
 	add hl, bc
 	ld d, [hl]
@@ -860,7 +860,7 @@ Func_9629: ; 0x9629
 	or d
 	ld d, a
 .channel3
-	ld b, $1
+	ld b, REG_DUTY_SOUND_LEN
 	call Func_9838
 	ld [hl], d
 	ret
@@ -881,17 +881,17 @@ Func_964b: ; 0x964b
 .musicChannel3
 	ld a, [de]
 	add a
-	ld d, $0
+	ld d, 0
 	ld e, a
 	ld hl, Music2_WavePointers
 	add hl, de
 	ld e, [hl]
 	inc hl
 	ld d, [hl]
-	ld hl, $ff30
+	ld hl, rWave_0
 	ld b, $f
 	ld a, $0
-	ld [$ff1a], a
+	ldh [rNR30], a
 .loop
 	ld a, [de]
 	inc de
@@ -901,14 +901,14 @@ Func_964b: ; 0x964b
 	and a
 	jr nz, .loop
 	ld a, $80
-	ld [$ff1a], a
+	ldh [rNR30], a
 	pop de
 .notSfxChannel3
 	ld a, d
 	or $80
 	and $c7
 	ld d, a
-	ld b, $3
+	ld b, REG_FREQUENCY_LO
 	call Func_9838
 	ld [hl], e
 	inc hl
@@ -919,7 +919,7 @@ Func_964b: ; 0x964b
 Func_9693: ; 0x9693
 	call Func_96e5
 	jr nc, .asm_96ab
-	ld d, $0
+	ld d, 0
 	ld a, [wTempoModifier]
 	add $80
 	jr nc, .asm_96a2
@@ -958,16 +958,16 @@ Func_96c7: ; 0x96c7
 	jr nc, .asm_96e2
 	ld hl, wChannelCommandPointers
 	ld e, c
-	ld d, $0
+	ld d, 0
 	sla e
 	rl d
 	add hl, de
 	ld a, [hl]
-	sub $1
+	sub 1
 	ld [hl], a
 	inc hl
 	ld a, [hl]
-	sbc $0
+	sbc 0
 	ld [hl], a
 	scf
 	ret
@@ -978,11 +978,11 @@ Func_96c7: ; 0x96c7
 
 Func_96e5: ; 0x96e5
 	ld a, [wc02a]
-	cp $14
+	cp CRY_SFX_START
 	jr nc, .asm_96ee
 	jr .asm_96f4
 .asm_96ee
-	cp $86
+	cp CRY_SFX_END
 	jr z, .asm_96f4
 	jr c, .asm_96f7
 .asm_96f4
@@ -996,7 +996,7 @@ Func_96e5: ; 0x96e5
 Music2_ApplyPitchBend: ; 0x96f9
 	ld hl, wChannelFlags1
 	add hl, bc
-	bit 5, [hl]
+	bit BIT_PITCH_SLIDE_DECREASING, [hl]
 	jp nz, .asm_9740
 	ld hl, wChannelPitchSlideCurrentFrequencyLowBytes
 	add hl, bc
@@ -1020,10 +1020,10 @@ Music2_ApplyPitchBend: ; 0x96f9
 	pop hl
 	add [hl]
 	ld [hl], a
-	ld a, $0
+	ld a, 0
 	adc e
 	ld e, a
-	ld a, $0
+	ld a, 0
 	adc d
 	ld d, a
 	ld hl, wChannelPitchSlideTargetFrequencyHighBytes
@@ -1082,7 +1082,7 @@ Music2_ApplyPitchBend: ; 0x96f9
 	ld hl, wChannelPitchSlideCurrentFrequencyHighBytes
 	add hl, bc
 	ld [hl], d
-	ld b, $3
+	ld b, REG_FREQUENCY_LO
 	call Func_9838
 	ld a, e
 	ld [hli], a
@@ -1091,8 +1091,8 @@ Music2_ApplyPitchBend: ; 0x96f9
 .asm_9786
 	ld hl, wChannelFlags1
 	add hl, bc
-	res 4, [hl]
-	res 5, [hl]
+	res BIT_PITCH_SLIDE_ON, [hl]
+	res BIT_PITCH_SLIDE_DECREASING, [hl]
 	ret
 
 Func_978f: ; 0x978f
@@ -1109,7 +1109,7 @@ Func_978f: ; 0x978f
 	add hl, bc
 	sub [hl]
 	jr nc, .asm_97a7
-	ld a, $1
+	ld a, 1
 .asm_97a7
 	ld [hl], a
 	ld hl, wChannelPitchSlideTargetFrequencyLowBytes
@@ -1124,10 +1124,10 @@ Func_978f: ; 0x978f
 	sub [hl]
 	jr c, .asm_97c3
 	ld d, a
-	ld b, $0
+	ld b, 0
 	ld hl, wChannelFlags1
 	add hl, bc
-	set 5, [hl]
+	set BIT_PITCH_SLIDE_DECREASING, [hl]
 	jr .asm_97e6
 .asm_97c3
 	ld hl, wChannelPitchSlideCurrentFrequencyHighBytes
@@ -1149,10 +1149,10 @@ Func_978f: ; 0x978f
 	ld a, [hl]
 	sub d
 	ld d, a
-	ld b, $0
+	ld b, 0
 	ld hl, wChannelFlags1
 	add hl, bc
-	res 5, [hl]
+	res BIT_PITCH_SLIDE_DECREASING, [hl]
 .asm_97e6
 	ld hl, wChannelPitchSlideLengthModifiers
 	add hl, bc
@@ -1172,7 +1172,7 @@ Func_978f: ; 0x978f
 	ld a, e
 	add [hl]
 	ld d, b
-	ld b, $0
+	ld b, 0
 	ld hl, wChannelPitchSlideFrequencySteps
 	add hl, bc
 	ld [hl], d
@@ -1185,7 +1185,7 @@ Func_978f: ; 0x978f
 	ret
 
 Music2_ApplyDutyCycle: ; 0x980d
-	ld b, $0
+	ld b, 0
 	ld hl, wChannelDutyCyclePatterns
 	add hl, bc
 	ld a, [hl]
@@ -1194,7 +1194,7 @@ Music2_ApplyDutyCycle: ; 0x980d
 	ld [hl], a
 	and $c0
 	ld d, a
-	ld b, $1
+	ld b, REG_DUTY_SOUND_LEN
 	call Func_9838
 	ld a, [hl]
 	and $3f
@@ -1203,7 +1203,7 @@ Music2_ApplyDutyCycle: ; 0x980d
 	ret
 
 Music2_GetNextMusicByte: ; 0x9825
-	ld d, $0
+	ld d, 0
 	ld a, c
 	add a
 	ld e, a
@@ -1235,7 +1235,7 @@ Func_9838: ; 0x9838
 	ret
 
 Func_9847: ; 0x9847
-	ld h, $0
+	ld h, 0
 .loop
 	srl a
 	jr nc, .noCarry
@@ -1250,7 +1250,7 @@ Func_9847: ; 0x9847
 	ret
 
 Func_9858: ; 0x9858
-	ld h, $0
+	ld h, 0
 	ld l, a
 	add hl, hl
 	ld d, h
@@ -1262,23 +1262,23 @@ Func_9858: ; 0x9858
 	ld d, [hl]
 	ld a, b
 .loop
-	cp $7
+	cp 7
 	jr z, .done
 	sra d
 	rr e
 	inc a
 	jr .loop
 .done
-	ld a, $8
+	ld a, 8
 	add d
 	ld d, a
 	ret
 
 Func_9876:: ; 0x9876
 	ld [wSoundID], a
-	cp $ff
+	cp SFX_STOP_ALL_MUSIC
 	jp z, Func_9a34
-	cp $b9
+	cp MAX_SFX_ID_1
 	jp z, Func_994e
 	jp c, Func_994e
 	cp $fe
@@ -1291,12 +1291,12 @@ Func_9876:: ; 0x9876
 	ld [wc0e9], a
 	ld [wMusicWaveInstrument], a
 	ld [wSfxWaveInstrument], a
-	ld d, $8
+	ld d, NUM_CHANNELS
 	ld hl, wChannelReturnAddresses
 	call FillMusicRAM2
 	ld hl, wChannelCommandPointers
 	call FillMusicRAM2
-	ld d, $4
+	ld d, NUM_MUSIC_CHANS
 	ld hl, wChannelSoundIDs
 	call FillMusicRAM2
 	ld hl, wChannelFlags1
@@ -1344,23 +1344,23 @@ Func_9876:: ; 0x9876
 	ld a, $ff
 	ld [wStereoPanning], a
 	xor a
-	ld [$ff24], a
+	ldh [rNR50], a
 	ld a, $8
-	ld [$ff10], a
-	ld a, $0
-	ld [$ff25], a
+	ldh [rNR10], a
+	ld a, 0
+	ldh [rNR51], a
 	xor a
-	ld [$ff1a], a
+	ldh [rNR30], a
 	ld a, $80
-	ld [$ff1a], a
+	ldh [rNR30], a
 	ld a, $77
-	ld [$ff24], a
+	ldh [rNR50], a
 	jp Func_9a8f
 
 Func_994e: ; 0x994e
 	ld l, a
 	ld e, a
-	ld h, $0
+	ld h, 0
 	ld d, h
 	add hl, hl
 	add hl, de
@@ -1381,7 +1381,7 @@ Func_994e: ; 0x994e
 	add a
 	add c
 	ld c, a
-	ld b, $0
+	ld b, 0
 	ld a, [wSfxHeaderPointer]
 	ld h, a
 	ld a, [wc0ed]
@@ -1391,22 +1391,22 @@ Func_994e: ; 0x994e
 	ld a, [hl]
 	and $f
 	ld e, a
-	ld d, $0
+	ld d, 0
 	ld hl, wChannelSoundIDs
 	add hl, de
 	ld a, [hl]
 	and a
 	jr z, .asm_99a3
 	ld a, e
-	cp $7
+	cp CHAN8
 	jr nz, .asm_999a
 	ld a, [wSoundID]
-	cp $14
+	cp NOISE_INSTRUMENTS_END
 	jr nc, .asm_9993
 	ret
 .asm_9993
 	ld a, [hl]
-	cp $14
+	cp NOISE_INSTRUMENTS_END
 	jr z, .asm_99a3
 	jr c, .asm_99a3
 .asm_999a
@@ -1497,10 +1497,10 @@ Func_994e: ; 0x994e
 	add hl, de
 	ld [hl], a
 	ld a, e
-	cp $4
+	cp CHAN5
 	jr nz, .asm_9a2b
 	ld a, $8
-	ld [$ff10], a
+	ldh [rNR10], a
 .asm_9a2b
 	ld a, c
 	and a
@@ -1510,22 +1510,22 @@ Func_994e: ; 0x994e
 
 Func_9a34: ; 0x9a34
 	ld a, $80
-	ld [$ff26], a
-	ld [$ff1a], a
+	ldh [rNR52], a
+	ldh [rNR30], a
 	xor a
-	ld [$ff25], a
-	ld [$ff1c], a
+	ldh [rNR51], a
+	ldh [rNR32], a
 	ld a, $8
-	ld [$ff10], a
-	ld [$ff12], a
-	ld [$ff17], a
-	ld [$ff21], a
+	ldh [rNR10], a
+	ldh [rNR12], a
+	ldh [rNR22], a
+	ldh [rNR42], a
 	ld a, $40
-	ld [$ff14], a
-	ld [$ff19], a
-	ld [$ff23], a
+	ldh [rNR14], a
+	ldh [rNR24], a
+	ldh [rNR44], a
 	ld a, $77
-	ld [$ff24], a
+	ldh [rNR50], a
 	xor a
 	ld [wUnusedC000], a
 	ld [wDisableChannelOutputWhenSfxEnds], a
@@ -1560,7 +1560,7 @@ Func_9a8f: ; 0x9a8f
 	ld a, [wSoundID]
 	ld l, a
 	ld e, a
-	ld h, $0
+	ld h, 0
 	ld d, h
 	add hl, hl
 	add hl, de
@@ -1580,7 +1580,7 @@ Func_9a8f: ; 0x9a8f
 	ld b, c
 	inc b
 	inc de
-	ld c, $0
+	ld c, 0
 .asm_9ab1
 	cp c
 	jr z, .asm_9ab9
@@ -1592,18 +1592,18 @@ Func_9a8f: ; 0x9a8f
 	push hl
 	push bc
 	push af
-	ld b, $0
+	ld b, 0
 	ld c, a
 	ld hl, wChannelSoundIDs
 	add hl, bc
 	ld a, [wSoundID]
 	ld [hl], a
 	pop af
-	cp $3
+	cp CHAN4
 	jr c, .asm_9ad2
 	ld hl, wChannelFlags1
 	add hl, bc
-	set 2, [hl]
+	set BIT_NOISE_OR_SFX, [hl]
 .asm_9ad2
 	pop bc
 	pop hl
@@ -1621,12 +1621,12 @@ Func_9a8f: ; 0x9a8f
 	inc de
 	jr nz, .asm_9ab1
 	ld a, [wSoundID]
-	cp $14
+	cp CRY_SFX_START
 	jr nc, .asm_9aeb
 	jr .asm_9b15
 .asm_9aeb
 	ld a, [wSoundID]
-	cp $86
+	cp CRY_SFX_END
 	jr z, .asm_9b15
 	jr c, .asm_9af6
 	jr .asm_9b15
@@ -1644,10 +1644,10 @@ Func_9a8f: ; 0x9a8f
 	ld a, [wSavedVolume]
 	and a
 	jr nz, .asm_9b15
-	ld a, [$ff24]
+	ldh a, [rNR50]
 	ld [wSavedVolume], a
 	ld a, $77
-	ld [$ff24], a
+	ldh [rNR50], a
 .asm_9b15
 	ret
 

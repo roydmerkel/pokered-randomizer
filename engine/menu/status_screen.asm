@@ -15,7 +15,7 @@ StatusScreen: ; 12953 (4:6953)
 	ld hl, wd72c
 	set 1, [hl]
 	ld a, $33
-	ld [$ff24], a ; Reduce the volume
+	ldh [rNR50], a ; Reduce the volume
 	call GBPalWhiteOutWithDelay3
 	call ClearScreen
 	call UpdateSprites ; move sprites (?)
@@ -364,7 +364,7 @@ StatusScreen2: ; 12b57 (4:6b57)
 	ld hl, wd72c
 	res 1, [hl]
 	ld a, $77
-	ld [$ff24], a
+	ldh [rNR50], a
 	call GBPalWhiteOut
 	jp ClearScreen
 .asm_12c86 ; This does some magic with lvl/exp?

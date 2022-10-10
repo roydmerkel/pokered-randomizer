@@ -1014,7 +1014,7 @@ Func_28cb:: ; 28cb (0:28cb)
 	bit 1, a
 	ret nz
 	ld a, $77
-	ld [$ff24], a
+	ldh [rNR50], a
 	ret
 .asm_28dc
 	ld a, [wcfc9]
@@ -1026,7 +1026,7 @@ Func_28cb:: ; 28cb (0:28cb)
 .asm_28e7
 	ld a, [wcfc8]
 	ld [wcfc9], a
-	ld a, [$ff24]
+	ldh a, [rNR50]
 	and a
 	jr z, .asm_2903
 	ld b, a
@@ -1039,7 +1039,7 @@ Func_28cb:: ; 28cb (0:28cb)
 	dec a
 	swap a
 	or c
-	ld [$ff24], a
+	ldh [rNR50], a
 	ret
 .asm_2903
 	ld a, [wMusicHeaderPointer]
