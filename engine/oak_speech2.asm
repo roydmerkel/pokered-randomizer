@@ -69,7 +69,7 @@ Func_69ec: ; 69ec (1:69ec)
 	ld hl, wTileMap
 	ld bc, $c0b
 	call ClearScreenArea
-	ld c, $a
+	ld c, 10
 	call DelayFrames
 	pop de
 	ld hl, wcd6d
@@ -89,24 +89,24 @@ asm_6a19: ; 6a19 (1:6a19)
 	push hl
 	push de
 	push bc
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	ld a, d
-	ld [H_DOWNARROWBLINKCNT1], a ; $ff8b
+	ldh [H_DOWNARROWBLINKCNT1], a ; $ff8b
 	ld a, e
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	ld c, a
-	ld a, [$ff8d]
+	ldh a, [$ff8d]
 	and a
 	jr nz, .asm_6a2d
-	ld d, $0
+	ld d, 0
 	add hl, de
 .asm_6a2d
 	ld d, h
 	ld e, l
 .asm_6a2f
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
-	ld a, [$ff8d]
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh a, [$ff8d]
 	and a
 	jr nz, .asm_6a3c
 	ld a, [hli]
@@ -120,21 +120,21 @@ asm_6a19: ; 6a19 (1:6a19)
 .asm_6a3f
 	dec c
 	jr nz, .asm_6a2f
-	ld a, [$ff8d]
+	ldh a, [$ff8d]
 	and a
 	jr z, .asm_6a4a
 	xor a
 	dec hl
 	ld [hl], a
 .asm_6a4a
-	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ld a, 1
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	call Delay3
-	ld a, [H_DOWNARROWBLINKCNT2] ; $ff8c
+	ldh a, [H_DOWNARROWBLINKCNT2] ; $ff8c
 	ld c, a
 	ld h, d
 	ld l, e
-	ld a, [$ff8d]
+	ldh a, [$ff8d]
 	and a
 	jr nz, .asm_6a5e
 	inc hl
@@ -144,9 +144,9 @@ asm_6a19: ; 6a19 (1:6a19)
 .asm_6a5f
 	ld d, h
 	ld e, l
-	ld a, [H_DOWNARROWBLINKCNT1] ; $ff8b
+	ldh a, [H_DOWNARROWBLINKCNT1] ; $ff8b
 	dec a
-	ld [H_DOWNARROWBLINKCNT1], a ; $ff8b
+	ldh [H_DOWNARROWBLINKCNT1], a ; $ff8b
 	jr nz, .asm_6a2f
 	pop bc
 	pop de
@@ -231,7 +231,7 @@ ENDC
 
 Func_6ad6: ; 6ad6 (1:6ad6)
 	ld b, a
-	ld c, $0
+	ld c, 0
 .asm_6ad9
 	ld d, h
 	ld e, l

@@ -39,7 +39,7 @@ VermilionDockScript: ; 1db52 (7:5b52)
 
 VermilionDock_1db9b: ; 1db9b (7:5b9b)
 	set 2, [hl]
-	ld a, $ff
+	ld a, SFX_STOP_ALL_MUSIC
 	ld [wJoyIgnore], a
 	ld [wNewSoundID], a
 	call PlaySound
@@ -49,7 +49,7 @@ VermilionDock_1db9b: ; 1db9b (7:5b9b)
 	callba LoadSmokeTileFourTimes
 	xor a
 	ld [wSpriteStateData1 + 2], a
-	ld c, $78
+	ld c, 120
 	call DelayFrames
 	ld b, $9c
 	call CopyScreenTileBufferToVRAM
@@ -57,14 +57,14 @@ VermilionDock_1db9b: ; 1db9b (7:5b9b)
 	ld bc, $0078
 	ld a, $14
 	call FillMemory
-	ld a, $1
-	ld [$ffba], a
+	ld a, 1
+	ldh [$ffba], a
 	call Delay3
 	xor a
-	ld [$ffba], a
+	ldh [$ffba], a
 	ld [wWhichTrade], a
-	ld [$ff49], a
-	ld a, $58
+	ldh [$ff49], a
+	ld a, 88
 	ld [wTrainerEngageDistance], a
 	ld hl, wMapViewVRAMPointer
 	ld c, [hl]
@@ -79,7 +79,7 @@ VermilionDock_1db9b: ; 1db9b (7:5b9b)
 	ld d, $0
 	ld e, $8
 .asm_1dbfa
-	ld hl, $0002
+	ld hl, $2
 	add hl, bc
 	ld a, l
 	ld [wMapViewVRAMPointer], a
@@ -105,11 +105,11 @@ VermilionDock_1db9b: ; 1db9b (7:5b9b)
 	dec e
 	jr nz, .asm_1dbfa ; 0x1dc22 $d6
 	xor a
-	ld [$ff4a], a
-	ld [hWY], a
+	ldh [$ff4a], a
+	ldh [hWY], a
 	call VermilionDock_1dc94
 	ld a, $90
-	ld [hWY], a
+	ldh [hWY], a
 	ld a, $1
 	ld [wUpdateSpritesEnabled], a
 	pop hl
@@ -129,7 +129,7 @@ VermilionDock_1dc42: ; 1dc42 (7:5c42)
 	ld a, [wWhichTrade]
 	swap a
 	ld c, a
-	ld de, $0004
+	ld de, 4
 .asm_1dc50
 	inc [hl]
 	inc [hl]
@@ -142,10 +142,10 @@ VermilionDock_1dc42: ; 1dc42 (7:5c42)
 
 VermilionDock_1dc59: ; 1dc59 (7:5c59)
 	ld a, [wTrainerEngageDistance]
-	sub $10
+	sub 16
 	ld [wTrainerEngageDistance], a
 	ld c, a
-	ld b, $64
+	ld b, 100
 	ld a, [wWhichTrade]
 	inc a
 	ld [wWhichTrade], a
@@ -167,13 +167,13 @@ VermilionDock_1dc7c: ; 1dc7c (7:5c7c)
 	ld h, $0
 	ld l, $80
 .asm_1dc86
-	ld a, [$ff44]
+	ldh a, [$ff44]
 	cp l
 	jr nz, .asm_1dc86 ; 0x1dc89 $fb
 	ld a, h
-	ld [$ff43], a
+	ldh [$ff43], a
 .asm_1dc8e
-	ld a, [$ff44]
+	ldh a, [$ff44]
 	cp h
 	jr z, .asm_1dc8e ; 0x1dc91 $fb
 	ret
@@ -195,7 +195,7 @@ VermilionDock_1dc94: ; 1dc94 (7:5c94)
 	ld [hl], a
 	ld a, RBSFX_02_54
 	call PlaySound
-	ld c, $78
+	ld c, 120
 	call DelayFrames
 	ret
 

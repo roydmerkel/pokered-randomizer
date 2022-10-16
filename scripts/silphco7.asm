@@ -53,7 +53,7 @@ SilphCo7Text_51bc8: ; 51bc8 (14:5bc8)
 	ld a, [hl]
 	ld c, a
 	xor a
-	ld [$ffe0], a
+	ldh [$ffe0], a
 	pop hl
 .asm_51bd4
 	ld a, [hli]
@@ -78,12 +78,12 @@ SilphCo7Text_51bc8: ; 51bc8 (14:5bc8)
 	ret
 .asm_51bf0
 	xor a
-	ld [$ffe0], a
+	ldh [$ffe0], a
 	ret
 
 SilphCo7Text_51bf4: ; 51bf4 (14:5bf4)
 	ld hl, wd830
-	ld a, [$ffe0]
+	ldh a, [$ffe0]
 	and a
 	ret z
 	cp $1
@@ -124,22 +124,22 @@ SilphCo7Script0: ; 51c23 (14:5c23)
 	call ArePlayerCoordsInArray
 	jp nc, CheckFightingMapTrainers
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld a, $f0
 	ld [wJoyIgnore], a
 	ld a, $4
 	ld [wd528], a
-	ld a, $ff
+	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a
 	call PlaySound
 	ld c, 0 ; BANK(Music_MeetRival)
 	ld a, MUSIC_MEET_RIVAL
 	call PlayMusic
 	ld a, $9
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	call DisplayTextID
 	ld a, $9
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	call SetSpriteMovementBytesToFF
 	ld de, MovementData_51c7d
 	ld a, [wWhichTrade] ; wWhichTrade
@@ -149,7 +149,7 @@ SilphCo7Script0: ; 51c23 (14:5c23)
 	inc de
 .asm_51c6c
 	ld a, $9
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	call MoveSprite
 	ld a, $3
 	jp SilphCo7Text_51c10
@@ -169,7 +169,7 @@ SilphCo7Script3: ; 51c82 (14:5c82)
 	xor a
 	ld [wJoyIgnore], a
 	ld a, $d
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	call DisplayTextID
 	call Delay3
 	ld hl, wd72d
@@ -212,14 +212,14 @@ SilphCo7Script4: ; 51cc8 (14:5cc8)
 	ld a, $4
 	ld [wd528], a
 	ld a, $9
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	ld a, $4
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $f
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	call DisplayTextID
-	ld a, $ff
+	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a
 	call PlaySound
 	callba Music_RivalAlternateStart
@@ -230,7 +230,7 @@ SilphCo7Script4: ; 51cc8 (14:5cc8)
 	ld de, MovementData_51d1a
 .asm_51d0e
 	ld a, $9
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	call MoveSprite
 	ld a, $5
 	jp SilphCo7Text_51c10

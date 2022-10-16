@@ -54,7 +54,7 @@ SSAnne7RubText: ; 618ec (18:58ec)
 	cp $1f
 	ld [wAudioSavedROMBank], a
 	jr nz, .asm_61908 ; 0x618f9 $d
-	ld a, $ff
+	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a
 	call PlaySound
 	ld a, 0 ; Bank(Func_9876)

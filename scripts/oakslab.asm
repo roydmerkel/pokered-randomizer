@@ -50,7 +50,7 @@ OaksLabScript0: ; 1cb4e (7:4b4e)
 
 OaksLabScript1: ; 1cb6e (7:4b6e)
 	ld a, $8
-	ld [H_SPRITEINDEX], a
+	ldh [H_SPRITEINDEX], a
 	ld de, OakEntryMovement
 	call MoveSprite
 
@@ -85,14 +85,14 @@ OaksLabScript3: ; 1cba2 (7:4ba2)
 	ld [wSimulatedJoypadStatesIndex], a
 	call StartSimulatingJoypadStates
 	ld a, $1
-	ld [H_SPRITEINDEX], a
+	ldh [H_SPRITEINDEX], a
 	xor a
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $5
-	ld [H_SPRITEINDEX], a
+	ldh [H_SPRITEINDEX], a
 	xor a
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
 
 	ld a, $4
@@ -111,9 +111,9 @@ OaksLabScript4: ; 1cbd2 (7:4bd2)
 	ld hl, wd74b
 	set 0, [hl]
 	ld a, $1
-	ld [H_SPRITEINDEX], a
+	ldh [H_SPRITEINDEX], a
 	ld a, $4
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
 	call UpdateSprites
 	ld hl, W_FLAGS_D733
@@ -128,19 +128,19 @@ OaksLabScript5: ; 1cbfd (7:4bfd)
 	ld a, $fc
 	ld [wJoyIgnore], a
 	ld a, $11
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	call Delay3
 	ld a, $12
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	call Delay3
 	ld a, $13
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	call Delay3
 	ld a, $14
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	ld hl, wd74b
 	set 1, [hl]
@@ -153,21 +153,21 @@ OaksLabScript5: ; 1cbfd (7:4bfd)
 
 OaksLabScript6: ; 1cc36 (7:4c36)
 	ld a, [W_YCOORD]
-	cp $6
+	cp 6
 	ret nz
 	ld a, $5
-	ld [H_SPRITEINDEX], a
+	ldh [H_SPRITEINDEX], a
 	xor a
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $1
-	ld [H_SPRITEINDEX], a
+	ldh [H_SPRITEINDEX], a
 	xor a
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
 	call UpdateSprites
 	ld a, $c
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	ld a, $1
 	ld [wSimulatedJoypadStatesIndex], a
@@ -201,7 +201,7 @@ OaksLabScript8: ; 1cc80 (7:4c80)
 .Charmander
 	ld de, .MiddleBallMovement1
 	ld a, [W_YCOORD]
-	cp $4 ; is the player standing below the table?
+	cp 4 ; is the player standing below the table?
 	jr z, .asm_1ccf3 ; 0x1cc95 $5c
 	ld de, .MiddleBallMovement2
 	jr .asm_1ccf3 ; 0x1cc9a $57
@@ -214,7 +214,7 @@ OaksLabScript8: ; 1cc80 (7:4c80)
 .Squirtle
 	ld de, .RightBallMovement1
 	ld a, [W_YCOORD]
-	cp $4 ; is the player standing below the table?
+	cp 4 ; is the player standing below the table?
 	jr z, .asm_1ccf3 ; 0x1ccb0 $41
 	ld de, .RightBallMovement2
 	jr .asm_1ccf3 ; 0x1ccb5 $3c
@@ -227,13 +227,13 @@ OaksLabScript8: ; 1cc80 (7:4c80)
 .Bulbasaur
 	ld de, .LeftBallMovement1
 	ld a, [W_XCOORD]
-	cp $9 ; is the player standing to the right of the table?
+	cp 9 ; is the player standing to the right of the table?
 	jr nz, .asm_1ccf3 ; 0x1cccd $24
 	push hl
 	ld a, $1
-	ld [H_SPRITEINDEX], a
+	ldh [H_SPRITEINDEX], a
 	ld a, $4
-	ld [$ff8b], a
+	ldh [$ff8b], a
 	call GetPointerWithinSpriteStateData1
 	push hl
 	ld [hl], $4c
@@ -242,9 +242,9 @@ OaksLabScript8: ; 1cc80 (7:4c80)
 	ld [hl], $0
 	pop hl
 	inc h
-	ld [hl], $8
+	ld [hl], 8
 	inc hl
-	ld [hl], $9
+	ld [hl], 9
 	ld de, .LeftBallMovement2 ; the rival is not currently onscreen, so account for that
 	pop hl
 	jr .asm_1ccf3 ; 0x1cced $4
@@ -256,7 +256,7 @@ OaksLabScript8: ; 1cc80 (7:4c80)
 
 .asm_1ccf3
 	ld a, $1
-	ld [H_SPRITEINDEX], a
+	ldh [H_SPRITEINDEX], a
 	call MoveSprite
 
 	ld a, $9
@@ -270,12 +270,12 @@ OaksLabScript9: ; 1cd00 (7:4d00)
 	ld a, $fc
 	ld [wJoyIgnore], a
 	ld a, $1
-	ld [H_SPRITEINDEX], a
+	ldh [H_SPRITEINDEX], a
 	ld a, $4
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $d
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	ld a, [wTrainerEngageDistance]
 	cp $2
@@ -299,12 +299,12 @@ OaksLabScript9: ; 1cd00 (7:4d00)
 	ld [wd11e], a
 	call GetMonName
 	ld a, $1
-	ld [H_SPRITEINDEX], a
+	ldh [H_SPRITEINDEX], a
 	ld a, $4
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $e
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	ld hl, wd74b
 	set 2, [hl]
@@ -317,12 +317,12 @@ OaksLabScript9: ; 1cd00 (7:4d00)
 
 OaksLabScript10: ; 1cd6d (7:4d6d)
 	ld a, [W_YCOORD]
-	cp $6
+	cp 6
 	ret nz
 	ld a, $1
-	ld [H_SPRITEINDEX], a
+	ldh [H_SPRITEINDEX], a
 	xor a
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $8
 	ld [wd528], a
@@ -330,21 +330,21 @@ OaksLabScript10: ; 1cd6d (7:4d6d)
 	ld a, MUSIC_MEET_RIVAL
 	call PlayMusic ; play music
 	ld a, $f
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	ld a, $1
-	ld [$ff9b], a
+	ldh [$ff9b], a
 	ld a, $1
 	swap a
-	ld [$ff95], a
+	ldh [$ff95], a
 	predef CalcPositionOfPlayerRelativeToNPC
-	ld a, [$ff95]
+	ldh a, [$ff95]
 	dec a
-	ld [$ff95], a
+	ldh [$ff95], a
 	predef FindPathToPlayer
 	ld de, wNPCMovementDirections2
 	ld a, $1
-	ld [H_SPRITEINDEX], a
+	ldh [H_SPRITEINDEX], a
 	call MoveSprite
 
 	ld a, $b
@@ -373,7 +373,7 @@ OaksLabScript11: ; 1cdb9 (7:4db9)
 	ld a, $3
 .done
 	ld [W_TRAINERNO], a
-	ld a, 1
+	ld a, $1
 	ld [wIsTrainerBattle], a
 	
 	ld a, $1
@@ -405,9 +405,9 @@ OaksLabScript12: ; 1ce03 (7:4e03)
 	ld [wSpriteIndex], a
 	call SetSpritePosition1
 	ld a, $1
-	ld [H_SPRITEINDEX], a
+	ldh [H_SPRITEINDEX], a
 	xor a
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
 	predef HealParty
 	ld hl, wd74b
@@ -418,18 +418,18 @@ OaksLabScript12: ; 1ce03 (7:4e03)
 	ret
 
 OaksLabScript13: ; 1ce32 (7:4e32)
-	ld c, $14
+	ld c, 20
 	call DelayFrames
 	ld a, $10
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	callba Music_RivalAlternateStart
 	ld a, $1
-	ld [H_SPRITEINDEX], a
+	ldh [H_SPRITEINDEX], a
 	ld de, .RivalExitMovement
 	call MoveSprite
 	ld a, [W_XCOORD]
-	cp $4
+	cp 4
 	; move left or right depending on where the player is standing
 	jr nz, .asm_1ce5b ; 0x1ce55 $4
 	ld a, $c0
@@ -464,7 +464,7 @@ OaksLabScript14: ; 1ce6d (7:4e6d)
 	cp $5
 	jr nz, .asm_1cea8 ; 0x1ce91 $15
 	ld a, [W_XCOORD]
-	cp $4
+	cp 4
 	jr nz, .asm_1cea1 ; 0x1ce98 $7
 	ld a, $c
 	ld [wSpriteStateData1 + 9], a
@@ -483,14 +483,14 @@ OaksLabScript14: ; 1ce6d (7:4e6d)
 
 OaksLabScript15: ; 1ceb0 (7:4eb0)
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	call EnableAutoTextBoxDrawing
-	ld a, $ff
+	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a
 	call PlaySound
 	callba Music_RivalAlternateStart
 	ld a, $15
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	call OaksLabScript_1d02b
 	ld a, HS_OAKS_LAB_RIVAL
@@ -498,14 +498,14 @@ OaksLabScript15: ; 1ceb0 (7:4eb0)
 	predef ShowObject
 	ld a, [wNPCMovementDirections2Index]
 	ld [wd157], a
-	ld b, $0
+	ld b, 0
 	ld c, a
 	ld hl, wNPCMovementDirections2
 	ld a, $40
 	call FillMemory
 	ld [hl], $ff
 	ld a, $1
-	ld [H_SPRITEINDEX], a
+	ldh [H_SPRITEINDEX], a
 	ld de, wNPCMovementDirections2
 	call MoveSprite
 
@@ -515,14 +515,14 @@ OaksLabScript15: ; 1ceb0 (7:4eb0)
 
 OaksLabScript_1cefd ; 1cefd (7:4efd)
 	ld a, $1
-	ld [H_SPRITEINDEX], a
+	ldh [H_SPRITEINDEX], a
 	ld a, $4
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $8
-	ld [H_SPRITEINDEX], a
+	ldh [H_SPRITEINDEX], a
 	xor a
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	jp SetSpriteFacingDirectionAndDelay
 
 OaksLabScript16: ; 1cf12 (7:4f12)
@@ -535,21 +535,21 @@ OaksLabScript16: ; 1cf12 (7:4f12)
 	ld [wJoyIgnore], a
 	call OaksLabScript_1cefd
 	ld a, $16
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	call DelayFrame
 	call OaksLabScript_1cefd
 	ld a, $17
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	call DelayFrame
 	call OaksLabScript_1cefd
 	ld a, $18
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	call DelayFrame
 	ld a, $19
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	call Delay3
 	ld a, HS_POKEDEX_1
@@ -560,16 +560,16 @@ OaksLabScript16: ; 1cf12 (7:4f12)
 	predef HideObject
 	call OaksLabScript_1cefd
 	ld a, $1a
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	ld a, $1
-	ld [H_SPRITEINDEX], a
+	ldh [H_SPRITEINDEX], a
 	ld a, $c
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
 	call Delay3
 	ld a, $1b
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	ld hl, wd74b
 	set 5, [hl]
@@ -582,18 +582,18 @@ OaksLabScript16: ; 1cf12 (7:4f12)
 	ld [wcc4d], a
 	predef ShowObject
 	ld a, [wd157]
-	ld b, $0
+	ld b, 0
 	ld c, a
 	ld hl, wNPCMovementDirections2
 	xor a
 	call FillMemory
 	ld [hl], $ff
-	ld a, $ff
+	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a
 	call PlaySound
 	callba Music_RivalAlternateStart
 	ld a, $1
-	ld [H_SPRITEINDEX], a
+	ldh [H_SPRITEINDEX], a
 	ld de, wNPCMovementDirections2
 	call MoveSprite
 
@@ -630,7 +630,7 @@ OaksLabScript18: ; 1d009 (7:5009)
 
 OaksLabScript_1d00a: ; 1d00a (7:500a)
 	ld hl, wBagItems
-	ld bc, $0000
+	ld bc, 0
 .asm_1d010
 	ld a, [hli]
 	cp $ff
@@ -646,46 +646,46 @@ OaksLabScript_1d00a: ; 1d00a (7:500a)
 	ld hl, wNumBagItems
 	ld a, c
 	ld [wWhichPokemon], a
-	ld a, $1
+	ld a, 1
 	ld [wcf96], a
 	jp RemoveItemFromInventory
 
 OaksLabScript_1d02b: ; 1d02b (7:502b)
 	ld a, $7c
-	ld [$ffeb], a
-	ld a, $8
-	ld [$ffee], a
+	ldh [$ffeb], a
+	ld a, 8
+	ldh [$ffee], a
 	ld a, [W_YCOORD]
-	cp $3
+	cp 3
 	jr nz, .asm_1d045 ; 0x1d038 $b
 	ld a, $4
 	ld [wNPCMovementDirections2Index], a
 	ld a, $30
-	ld b, $b
+	ld b, 11
 	jr .asm_1d068 ; 0x1d043 $23
 .asm_1d045
-	cp $1
+	cp 1
 	jr nz, .asm_1d054 ; 0x1d047 $b
 	ld a, $2
 	ld [wNPCMovementDirections2Index], a
 	ld a, $30
-	ld b, $9
+	ld b, 9
 	jr .asm_1d068 ; 0x1d052 $14
 .asm_1d054
 	ld a, $3
 	ld [wNPCMovementDirections2Index], a
-	ld b, $a
+	ld b, 10
 	ld a, [W_XCOORD]
-	cp $4
+	cp 4
 	jr nz, .asm_1d066 ; 0x1d060 $4
 	ld a, $40
 	jr .asm_1d068 ; 0x1d064 $2
 .asm_1d066
 	ld a, $20
 .asm_1d068
-	ld [$ffec], a
+	ldh [$ffec], a
 	ld a, b
-	ld [$ffed], a
+	ldh [$ffed], a
 	ld a, $1
 	ld [wSpriteIndex], a
 	call SetSpritePosition1
@@ -824,16 +824,16 @@ OaksLabText39: ; 1d152 (7:5152)
 
 OaksLabScript_1d157: ; 1d157 (7:5157)
 	ld a, $5
-	ld [H_SPRITEINDEX], a
+	ldh [H_SPRITEINDEX], a
 	ld a, $9
-	ld [$ff8b], a
+	ldh [$ff8b], a
 	call GetPointerWithinSpriteStateData1
 	ld [hl], $0
 	; manually fixed some disassembler issues around here
 	ld a, $1
-	ld [H_SPRITEINDEX], a
+	ldh [H_SPRITEINDEX], a
 	ld a, $9
-	ld [$ff8b], a
+	ldh [$ff8b], a
 	call GetPointerWithinSpriteStateData1
 	ld [hl], $c
 	ld hl, wd730
@@ -842,7 +842,7 @@ OaksLabScript_1d157: ; 1d157 (7:5157)
 	ld hl, wd730
 	res 6, [hl]
 	call ReloadMapData
-	ld c, $a
+	ld c, 10
 	call DelayFrames
 	ld a, [wSpriteIndex]
 	cp $2
@@ -907,7 +907,7 @@ asm_1d1e5: ; 1d1e5 (7:51e5)
 	call PrintText
 	xor a
 	ld [wcc49], a
-	ld a, $5
+	ld a, 5
 	ld [W_CURENEMYLVL], a
 	ld a, [wcf91]
 	ld [wd11e], a
@@ -931,9 +931,9 @@ OaksLabReceivedMonText: ; 1d227 (7:5227)
 
 OaksLabScript_1d22d: ; 1d22d (7:522d)
 	ld a, $5
-	ld [H_SPRITEINDEX], a
+	ldh [H_SPRITEINDEX], a
 	ld a, $9
-	ld [$ff8b], a
+	ldh [$ff8b], a
 	call GetPointerWithinSpriteStateData1
 	ld [hl], $0
 	ld hl, OaksLabLastMonText
@@ -956,7 +956,7 @@ OaksLabText5: ; 1d248 (7:5248)
 	ld b, $13
 	call CountSetBits
 	ld a, [wd11e]
-	cp $2
+	cp 2
 	jr c, .asm_b28b0 ; 0x1d25d
 	ld a, [wd74b]
 	bit 5, a

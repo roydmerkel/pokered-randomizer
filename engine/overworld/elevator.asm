@@ -1,16 +1,16 @@
 ShakeElevator: ; 7bf15 (1e:7f15)
-	ld de, $ffe0
+	ld de, -$20
 	call Func_7bf64
 	ld de, $240
 	call Func_7bf64
 	call Delay3
-	ld a, $ff
+	ld a, SFX_STOP_ALL_MUSIC
 	call PlaySound
 	ld a, [$ffaf]
 	ld d, a
 	ld e, $1
 	; number of times to play collision sfx
-	ld b, $64
+	ld b, 100
 .asm_7bf30
 	ld a, e
 	xor $fe
@@ -22,13 +22,13 @@ ShakeElevator: ; 7bf15 (1e:7f15)
 	ld a, RBSFX_02_5b
 	call PlaySound
 	pop bc
-	ld c, $2
+	ld c, 2
 	call DelayFrames
 	dec b
 	jr nz, .asm_7bf30
 	ld a, d
 	ld [$ffaf], a
-	ld a, $ff
+	ld a, SFX_STOP_ALL_MUSIC
 	call PlaySound
 	ld c, 0;BANK(SFX_02_5f)
 	ld a, RBSFX_02_5f

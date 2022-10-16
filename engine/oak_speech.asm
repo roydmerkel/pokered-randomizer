@@ -37,7 +37,7 @@ OakSpeechPokemon:
     db NIDORINO
 
 OakSpeech: ; 6115 (1:6115)
-	ld a,$FF
+	ld a, SFX_STOP_ALL_MUSIC
 	call PlaySound ; stop music
 	ld a, 0 ; 0 ; BANK(Music_Routes2) ; bank of song
 	ld c,a
@@ -57,7 +57,7 @@ OakSpeech: ; 6115 (1:6115)
 	ld [wDestinationMap],a
 	call SpecialWarpIn
 	xor a
-	ld [hTilesetType],a
+	ldh [hTilesetType],a
 	ld a,[wd732]
 	bit 1,a ; XXX when is bit 1 set?
 	jp nz,Func_61bc ; easter egg: skip the intro
@@ -120,12 +120,12 @@ Func_61bc: ; 61bc (1:61bc)
 	ld hl,OakSpeechText3
 	call PrintText
 .next
-	ld a,[H_LOADEDROMBANK]
+	ldh a,[H_LOADEDROMBANK]
 	push af
 	ld a,RBSFX_02_48
 	call PlaySound
 	pop af
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	ld c,4
 	call DelayFrames
@@ -142,20 +142,20 @@ Func_61bc: ; 61bc (1:61bc)
 	ld bc,(BANK(ShrinkPic2) << 8) | $00
 	call IntroPredef3B
 	call ResetPlayerSpriteData
-	ld a,[H_LOADEDROMBANK]
+	ldh a,[H_LOADEDROMBANK]
 	push af
 	ld a,0 ;  0 ; BANK(Music_PalletTown)
 	ld [wAudioROMBank],a
 	ld [wAudioSavedROMBank],a
-	ld a,$A
+	ld a, 10
 	ld [wMusicHeaderPointer],a
-	ld a,$FF
+	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID],a
 	call PlaySound ; stop music
 	pop af
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
-	ld c,$14
+	ld c, 20
 	call DelayFrames
 	hlCoord 6, 5
 	ld b,7
@@ -164,7 +164,7 @@ Func_61bc: ; 61bc (1:61bc)
 	call LoadTextBoxTilePatterns
 	ld a,1
 	ld [wUpdateSpritesEnabled],a
-	ld c,$32
+	ld c,50
 	call DelayFrames
 	call GBFadeOutToWhite
 	jp ClearScreen
@@ -191,7 +191,7 @@ FadeInIntroPic: ; 6271 (1:6271)
 	ld b,6
 .next
 	ld a,[hli]
-	ld [rBGP],a
+	ldh [rBGP],a
 	ld c,10
 	call DelayFrames
 	dec b
@@ -208,18 +208,18 @@ IntroFadePalettes: ; 6282 (1:6282)
 
 MovePicLeft: ; 6288 (1:6288)
 	ld a,119
-	ld [$FF4B],a
+	ldh [$FF4B],a
 	call DelayFrame
 
 	ld a,$E4
-	ld [rBGP],a
+	ldh [rBGP],a
 .next
 	call DelayFrame
-	ld a,[$FF4B]
+	ldh a,[$FF4B]
 	sub 8
 	cp $FF
 	ret z
-	ld [$FF4B],a
+	ldh [$FF4B],a
 	jr .next
 
 Predef3B: ; 62a1 (1:62a1)
@@ -243,5 +243,5 @@ IntroPredef3B: ; 62a4 (1:62a4)
 	hlCoord 6, 4
 .next
 	xor a
-	ld [$FFE1],a
+	ldh [$FFE1],a
 	predef_jump Func_3f0c6

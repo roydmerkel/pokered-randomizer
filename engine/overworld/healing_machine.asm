@@ -11,10 +11,10 @@ AnimateHealingMachine: ; 70433 (1c:4433)
 	push af
 	ld [hl], $ff
 	push hl
-	ld a, [rOBP1] ; $ff49
+	ldh a, [rOBP1] ; $ff49
 	push af
 	ld a, $e0
-	ld [rOBP1], a ; $ff49
+	ldh [rOBP1], a ; $ff49
 	ld hl, wOAMBuffer + $84
 	ld de, PokeCenterOAMData ; $44d7
 	call Func_70503
@@ -26,7 +26,7 @@ AnimateHealingMachine: ; 70433 (1c:4433)
 	call Func_70503
 	ld a, RBSFX_02_4a
 	call PlaySound
-	ld c, $1e
+	ld c, 30
 	call DelayFrames
 	dec b
 	jr nz, .asm_7046e
@@ -34,7 +34,7 @@ AnimateHealingMachine: ; 70433 (1c:4433)
 	cp $1f
 	ld [wAudioSavedROMBank], a
 	jr nz, .asm_70495
-	ld a, $ff
+	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a
 	call PlaySound
 	ld a, 0 ; BANK(Music_PkmnHealed)
@@ -51,10 +51,10 @@ AnimateHealingMachine: ; 70433 (1c:4433)
 	and a
 	jr nz, .loop
 	
-	ld c, $20
+	ld c, 32
 	call DelayFrames
 	pop af
-	ld [rOBP1], a ; $ff49
+	ldh [rOBP1], a ; $ff49
 	pop hl
 	pop af
 	ld [hl], a
@@ -75,12 +75,12 @@ PokeCenterOAMData: ; 704d7 (1c:44d7)
 	db $35,$38,$7D,$30
 
 Func_704f3: ; 704f3 (1c:44f3)
-	ld b, $8
+	ld b, 8
 .asm_704f5
-	ld a, [rOBP1] ; $ff49
+	ldh a, [rOBP1] ; $ff49
 	xor d
-	ld [rOBP1], a ; $ff49
-	ld c, $a
+	ldh [rOBP1], a ; $ff49
+	ld c, 10
 	call DelayFrames
 	dec b
 	jr nz, .asm_704f5

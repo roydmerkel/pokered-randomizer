@@ -27,10 +27,10 @@ PalletTownScript0: ; 18e81 (6:4e81)
 	cp 1 ; is player near north exit?
 	ret nz
 	xor a
-	ld [hJoyHeld],a
+	ldh [hJoyHeld],a
 	ld a,4
 	ld [wd528],a
-	ld a,$FF
+	ld a,SFX_STOP_ALL_MUSIC
 	call PlaySound ; stop music
 	ld a, 0;0 ; BANK(Music_MeetProfOak)
 	ld c,a ; song bank
@@ -50,7 +50,7 @@ PalletTownScript1: ; 18eb2 (6:4eb2)
 	xor a
 	ld [wcf0d],a
 	ld a,1
-	ld [$FF8C],a
+	ldh [$FF8C],a
 	call DisplayTextID
 	ld a,$FF
 	ld [wJoyIgnore],a
@@ -65,25 +65,25 @@ PalletTownScript1: ; 18eb2 (6:4eb2)
 
 PalletTownScript2: ; 18ed2 (6:4ed2)
 	ld a,1
-	ld [$FF8C],a
+	ldh [$FF8C],a
 	ld a,4
-	ld [$FF8D],a
+	ldh [$FF8D],a
 	call SetSpriteFacingDirectionAndDelay
 	call Delay3
 	ld a,1
 	ld [W_YCOORD],a
 	ld a,1
-	ld [$FF9B],a
+	ldh [$FF9B],a
 	ld a,1
 	swap a
-	ld [$FF95],a
+	ldh [$FF95],a
 	predef CalcPositionOfPlayerRelativeToNPC
 	ld hl,$FF95
 	dec [hl]
 	predef FindPathToPlayer ; load Oak’s movement into wNPCMovementDirections2
 	ld de,wNPCMovementDirections2
 	ld a,1 ; oak
-	ld [$FF8C],a
+	ldh [$FF8C],a
 	call MoveSprite
 	ld a,$FF
 	ld [wJoyIgnore],a
@@ -104,7 +104,7 @@ PalletTownScript3: ; 18f12 (6:4f12)
 	ld a,$FC
 	ld [wJoyIgnore],a
 	ld a,1
-	ld [$FF8C],a
+	ldh [$FF8C],a
 	call DisplayTextID
 	ld a,$FF
 	ld [wJoyIgnore],a
@@ -114,7 +114,7 @@ PalletTownScript3: ; 18f12 (6:4f12)
 	ld [wNPCMovementScriptFunctionNum],a
 	ld a,1
 	ld [wNPCMovementScriptPointerTableNum],a
-	ld a,[H_LOADEDROMBANK]
+	ldh a,[H_LOADEDROMBANK]
 	ld [wNPCMovementScriptBank],a
 
 	; trigger the next script

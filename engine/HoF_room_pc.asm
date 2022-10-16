@@ -1,7 +1,7 @@
 HallOfFamePC: ; 7405c (1d:405c)
 	callba AnimateHallOfFame
 	call ClearScreen
-	ld c, $64
+	ld c, 100
 	call DelayFrames
 	call DisableLCD
 	ld hl, vFont
@@ -21,12 +21,12 @@ HallOfFamePC: ; 7405c (1d:405c)
 	ld a, $c0
 	ld [rBGP], a ; $ff47
 	call EnableLCD
-	ld a, $ff
+	ld a, SFX_STOP_ALL_MUSIC
 	call PlaySoundWaitForCurrent
 	ld c, 0 ; BANK(Music_Credits)
 	ld a, MUSIC_CREDITS
 	call PlayMusic
-	ld c, $80
+	ld c, 128
 	call DelayFrames
 	xor a
 	ld [wWhichTrade], a ; wWhichTrade
@@ -35,11 +35,11 @@ HallOfFamePC: ; 7405c (1d:405c)
 
 Func_740ba: ; 740ba (1d:40ba)
 	ld hl, DataTable_74160 ; $4160
-	ld b, $4
+	ld b, 4
 .asm_740bf
 	ld a, [hli]
-	ld [rBGP], a ; $ff47
-	ld c, $5
+	ldh [rBGP], a ; $ff47
+	ld c, 5
 	call DelayFrames
 	dec b
 	jr nz, .asm_740bf
@@ -47,7 +47,7 @@ Func_740ba: ; 740ba (1d:40ba)
 
 DisplayCreditsMon: ; 740cb (1d:40cb)
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED],a
+	ldh [H_AUTOBGTRANSFERENABLED],a
 	call SaveScreenTilesToBuffer1
 	call FillMiddleOfScreenWithWhite
 
@@ -67,7 +67,7 @@ DisplayCreditsMon: ; 740cb (1d:40cb)
 	ld hl,vBGMap0 + $c
 	call Func_74164
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED],a
+	ldh [H_AUTOBGTRANSFERENABLED],a
 	call LoadScreenTilesFromBuffer1
 	ld hl,vBGMap0
 	call Func_74164
@@ -112,13 +112,13 @@ Func_74140: ; 74140 (1d:4140)
 	ret
 
 Func_74152: ; 74152 (1d:4152)
-	ld a, [$ff44]
+	ldh a, [$ff44]
 	cp l
 	jr nz, Func_74152
 	ld a, h
-	ld [rSCX], a ; $ff43
+	ldh [rSCX], a ; $ff43
 .asm_7415a
-	ld a, [$ff44]
+	ldh a, [$ff44]
 	cp h
 	jr z, .asm_7415a
 	ret
@@ -128,15 +128,15 @@ DataTable_74160: ; 74160 (1d:4160)
 
 Func_74164: ; 74164 (1d:4164)
 	ld a, l
-	ld [H_AUTOBGTRANSFERDEST], a ; $ffbc
+	ldh [H_AUTOBGTRANSFERDEST], a ; $ffbc
 	ld a, h
-	ld [$ffbd], a
-	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [$ffbd], a
+	ld a, 1
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	jp Delay3
 
 Func_74171: ; 74171 (1d:4171)
-	ld [hl], $0
+	ld [hl], 0
 	inc hl
 	inc hl
 	dec bc
@@ -186,7 +186,7 @@ Credits: ; 7418e (1d:418e)
 	ld hl, CreditsTextPointers ; $42c3
 	add a
 	ld c, a
-	ld b, $0
+	ld b, 0
 	add hl, bc
 	ld e, [hl]
 	inc hl
@@ -205,20 +205,20 @@ Credits: ; 7418e (1d:418e)
 	jr .asm_7419b
 .asm_741d5
 	call Func_740ba
-	ld c, $5a
+	ld c, 90
 	jr .asm_741de
 .asm_741dc
-	ld c, $6e
+	ld c, 110
 .asm_741de
 	call DelayFrames
 	call DisplayCreditsMon
 	jr .asm_74192
 .asm_741e6
 	call Func_740ba
-	ld c, $78
+	ld c, 120
 	jr .asm_741ef
 .asm_741ed
-	ld c, $8c
+	ld c, 140
 .asm_741ef
 	call DelayFrames
 	jr .asm_74192
@@ -229,7 +229,7 @@ Credits: ; 7418e (1d:418e)
 	pop de
 	jr .asm_7419b
 .showTheEnd
-	ld c, $10
+	ld c, 16
 	call DelayFrames
 	call FillMiddleOfScreenWithWhite
 	pop de

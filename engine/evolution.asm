@@ -13,16 +13,16 @@ Func_7bde9: ; 7bde9 (1e:7de9)
 	ld [wNewSoundID], a
 	call PlaySound
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	ld a, RBSFX_02_3c
 	call PlaySound
 	call Delay3
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
-	ld [hTilesetType], a
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hTilesetType], a
 	ld a, [wHPBarMaxHP]
 	ld [wcf1d], a
-	ld c, $0
+	ld c, 0
 	call Func_7beb4
 	ld a, [wHPBarMaxHP + 1]
 	ld [wcf91], a
@@ -37,16 +37,16 @@ Func_7bde9: ; 7bde9 (1e:7de9)
 	ld [wd0b5], a
 	call Func_7beb9
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	ld a, [wHPBarMaxHP]
 	call PlayCry
 	call WaitForSoundToFinish
 	ld c, 0 ; BANK(Music_SafariZone)
 	ld a, MUSIC_SAFARI_ZONE
 	call PlayMusic
-	ld c, $50
+	ld c, 80
 	call DelayFrames
-	ld c, $1
+	ld c, 1
 	call Func_7beb4
 	ld bc, $110
 .asm_7be63
@@ -67,12 +67,12 @@ Func_7bde9: ; 7bde9 (1e:7de9)
 	ld a, [wHPBarMaxHP + 1]
 .asm_7be81
 	ld [wcf1d], a
-	ld a, $ff
+	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a
 	call PlaySound
 	ld a, [wcf1d]
 	call PlayCry
-	ld c, $0
+	ld c, 0
 	call Func_7beb4
 	pop af
 	ld [wd0b5], a
@@ -88,7 +88,7 @@ Func_7bde9: ; 7bde9 (1e:7de9)
 	ret
 .asm_7bea9
 	pop bc
-	ld a, $1
+	ld a, 1
 	ld [wHPBarOldHP + 1], a
 	ld a, [wHPBarMaxHP]
 	jr .asm_7be81
@@ -115,7 +115,7 @@ asm_7bec2: ; 7bec2 (1e:7ec2)
 Func_7bed6: ; 7bed6 (1e:7ed6)
 	push bc
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	hlCoord 7, 2
 	ld bc, $707
 	ld de, $d
@@ -131,8 +131,8 @@ Func_7bed6: ; 7bed6 (1e:7ed6)
 	add hl, de
 	dec b
 	jr nz, .asm_7bee3
-	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ld a, 1
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	call Delay3
 	pop bc
 	ret
@@ -140,7 +140,7 @@ asm_7befa: ; 7befa (1e:7efa)
 	call DelayFrame
 	push bc
 	call JoypadLowSensitivity
-	ld a, [hJoy5]
+	ldh a, [hJoy5]
 	pop bc
 	and $2
 	jr nz, .asm_7bf0d

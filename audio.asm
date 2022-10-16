@@ -372,7 +372,7 @@ Music_Cities1AlternateTempo:: ; 0x9b81
 
 SECTION "Pokedex Rating SFX Routines", ROMX
 Func_7d13b:: ; 7d13b (1f:513b)
-	ld a, [$ffdc]
+	ldh a, [$ffdc]
 	ld c, $0
 	ld hl, OwnedMonValues
 .getSfxPointer
@@ -383,7 +383,7 @@ Func_7d13b:: ; 7d13b (1f:513b)
 	jr .getSfxPointer
 .gotSfxPointer
 	push bc
-	ld a, $ff
+	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a
 	call PlaySoundWaitForCurrent
 	pop bc

@@ -75,19 +75,19 @@ asm_1e9b0: ; 1e9b0 (7:69b0)
 	call WaitForSoundToFinish
 	
 	ld a, $d3
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	call DisplayTextID
 	xor a
 	ld [wd528], a
 	ld a, $9c
-	ld [H_DOWNARROWBLINKCNT1], a ; $ff8b
+	ldh [H_DOWNARROWBLINKCNT1], a ; $ff8b
 	ld a, $3
 	ld [wDestinationWarpID], a
 	ld a, $5
 	ld [W_SAFARIZONEENTRANCECURSCRIPT], a
 	ld hl, wd790
 	set 6, [hl]
-	ld a, $1
+	ld a, 1
 	ld [wSafariZoneGameOver], a
 	ret
 
@@ -336,22 +336,22 @@ BillsHousePC: ; 1eb6e (7:6b6e)
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld a, $2e
 	call PrintPredefTextID
-	ld c, $20
+	ld c, 32
 	call DelayFrames
 	ld a, RBSFX_02_3c
 	call PlaySound
 	call WaitForSoundToFinish
-	ld c, $50
+	ld c, 80
 	call DelayFrames
 	ld a, RBSFX_02_48
 	call PlaySound
 	call WaitForSoundToFinish
-	ld c, $30
+	ld c, 48
 	call DelayFrames
 	ld a, RBSFX_02_3c
 	call PlaySound
 	call WaitForSoundToFinish
-	ld c, $20
+	ld c, 32
 	call DelayFrames
 	ld a, RBSFX_02_3a
 	call PlaySound
@@ -375,15 +375,15 @@ BillsHouseInitiatedText: ; 1ebe2 (7:6be2)
 	TX_FAR _BillsHouseInitiatedText
 	db $06
 	db $08 ; asm
-	ld a, $ff
+	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a
 	call PlaySound
-	ld c, $10
+	ld c, 16
 	call DelayFrames
 	ld a, RBSFX_02_49
 	call PlaySound
 	call WaitForSoundToFinish
-	ld c, $3c
+	ld c, 60
 	call DelayFrames
 	jp TextScriptEnd
 
@@ -398,18 +398,18 @@ BillsHousePokemonList: ; 1ec05 (7:6c05)
 	ld [wLastMenuItem], a
 	ld a, $3
 	ld [wMenuWatchedKeys], a
-	ld a, $4
+	ld a, 4
 	ld [wMaxMenuItem], a
-	ld a, $2
+	ld a, 2
 	ld [wTopMenuItemY], a
-	ld a, $1
+	ld a, 1
 	ld [wTopMenuItemX], a
 .asm_1ec2d
 	ld hl, wd730
 	set 6, [hl]
 	ld hl, wTileMap
-	ld b, $a
-	ld c, $9
+	ld b, 10
+	ld c, 9
 	call TextBoxBorder
 	ld hl, wTileMap + $2a
 	ld de, BillsMonListText

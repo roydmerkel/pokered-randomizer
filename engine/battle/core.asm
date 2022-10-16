@@ -137,25 +137,25 @@ SlidePlayerAndEnemySilhouettesOnScreen: ; 3c04c (f:404c)
 	jr nz, .copyRowLoop
 	call EnableLCD
 	ld a, $90
-	ld [hWY], a
-	ld [rWY], a
+	ldh [hWY], a
+	ldh [rWY], a
 	xor a
-	ld [hTilesetType], a
-	ld [hSCY], a
+	ldh [hTilesetType], a
+	ldh [hSCY], a
 	dec a
 	ld [wUpdateSpritesEnabled], a
 	call Delay3
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	ld b, $70
 	ld c, $90
 	ld a, c
-	ld [hSCX], a
+	ldh [hSCX], a
 	call DelayFrame
 	ld a, %11100100 ; inverted palette for silhouette effect
-	ld [rBGP], a
-	ld [rOBP0], a
-	ld [rOBP1], a
+	ldh [rBGP], a
+	ldh [rOBP0], a
+	ldh [rOBP1], a
 .slideSilhouettesLoop ; slide silhouettes of the player's pic and the enemy's pic onto the screen
 	ld h, b
 	ld l, $40
@@ -167,21 +167,21 @@ SlidePlayerAndEnemySilhouettesOnScreen: ; 3c04c (f:404c)
 	call SetScrollXForSlidingPlayerBodyLeft ; end background scrolling on line $60
 	call SlidePlayerHeadLeft
 	ld a, c
-	ld [hSCX], a
+	ldh [hSCX], a
 	dec c
 	dec c
 	jr nz, .slideSilhouettesLoop
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	ld a, $31
-	ld [$ffe1], a
+	ldh [$ffe1], a
 	hlCoord 1, 5
 	predef Func_3f0c6
 	xor a
-	ld [hWY], a
-	ld [rWY], a
+	ldh [hWY], a
+	ldh [rWY], a
 	inc a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	call Delay3
 	ld b, $1
 	call GoPAL_SET
@@ -209,13 +209,13 @@ SlidePlayerHeadLeft: ; 3c0ff (f:40ff)
 	ret
 
 SetScrollXForSlidingPlayerBodyLeft: ; 3c110 (f:4110)
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp l
 	jr nz, SetScrollXForSlidingPlayerBodyLeft
 	ld a, h
-	ld [rSCX], a
+	ldh [rSCX], a
 .loop
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp h
 	jr z, .loop
 	ret
@@ -357,7 +357,7 @@ EnemyRan: ; 3c202 (f:4202)
 	ld a, RBSFX_08_44
 	call PlaySoundWaitForCurrent
 	xor a
-	ld [H_WHOSETURN], a
+	ldh [H_WHOSETURN], a
 	
 	ld b, BANK(SetHadEncounterInHere)
 	ld hl, SetHadEncounterInHere
@@ -519,7 +519,7 @@ MainInBattleLoop: ; 3c233 (f:4233)
 	jr nc, .playerMovesFirst ; if player is faster
 	jr .enemyMovesFirst ; if enemy is faster
 .speedEqual
-	ld a, [$ffaa]
+	ldh a, [$ffaa]
 	cp $2
 	jr z, .invertOutcome
 	call BattleRandom
@@ -533,7 +533,7 @@ MainInBattleLoop: ; 3c233 (f:4233)
 	jr .playerMovesFirst
 .enemyMovesFirst
 	ld a, $1
-	ld [H_WHOSETURN], a
+	ldh [H_WHOSETURN], a
 	callab TrainerAI
 	jr c, .AIActionUsedEnemyFirst
 	call ExecuteEnemyMove
@@ -571,7 +571,7 @@ MainInBattleLoop: ; 3c233 (f:4233)
 	jp z, HandlePlayerMonFainted
 	call DrawHUDsAndHPBars
 	ld a, $1
-	ld [H_WHOSETURN], a
+	ldh [H_WHOSETURN], a
 	callab TrainerAI
 	jr c, .AIActionUsedPlayerFirst
 	call ExecuteEnemyMove
@@ -591,7 +591,7 @@ MainInBattleLoop: ; 3c233 (f:4233)
 HandlePoisonBurnLeechSeed: ; 3c3bd (f:43bd)
 	ld hl, wBattleMonHP
 	ld de, wBattleMonStatus
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .playersTurn
 	ld hl, wEnemyMonHP
@@ -616,7 +616,7 @@ HandlePoisonBurnLeechSeed: ; 3c3bd (f:43bd)
 	call HandlePoisonBurnLeechSeed_DecreaseOwnHP
 .notBurnedOrPoisoned
 	ld de, W_PLAYERBATTSTATUS2
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .playersTurn2
 	ld de, W_ENEMYBATTSTATUS2
@@ -625,16 +625,16 @@ HandlePoisonBurnLeechSeed: ; 3c3bd (f:43bd)
 	add a
 	jr nc, .notLeechSeeded
 	push hl
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	push af
 	xor $1
-	ld [H_WHOSETURN], a
+	ldh [H_WHOSETURN], a
 	xor a
 	ld [wcc5b], a
 	ld a,ABSORB
 	call PlayMoveAnimation ; play leech seed animation (from opposing mon)
 	pop af
-	ld [H_WHOSETURN], a
+	ldh [H_WHOSETURN], a
 	pop hl
 	call HandlePoisonBurnLeechSeed_DecreaseOwnHP
 	call HandlePoisonBurnLeechSeed_IncreaseEnemyHP
@@ -647,7 +647,7 @@ HandlePoisonBurnLeechSeed: ; 3c3bd (f:43bd)
 	or [hl]
 	ret nz          ; test if fainted
 	call DrawHUDsAndHPBars
-	ld c, $14
+	ld c, 20
 	call DelayFrames
 	xor a
 	ret
@@ -692,7 +692,7 @@ HandlePoisonBurnLeechSeed_DecreaseOwnHP: ; 3c43d (f:443d)
 .nonZeroDamage
 	ld hl, W_PLAYERBATTSTATUS3
 	ld de, W_PLAYERTOXICCOUNTER
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .playersTurn
 	ld hl, W_ENEMYBATTSTATUS3
@@ -703,7 +703,7 @@ HandlePoisonBurnLeechSeed_DecreaseOwnHP: ; 3c43d (f:443d)
 	ld a, [de]    ; increment toxic counter
 	inc a
 	ld [de], a
-	ld hl, $0000
+	ld hl, 0
 .toxicTicksLoop
 	add hl, bc
 	dec a
@@ -738,7 +738,7 @@ HandlePoisonBurnLeechSeed_DecreaseOwnHP: ; 3c43d (f:443d)
 HandlePoisonBurnLeechSeed_IncreaseEnemyHP: ; 3c4a3 (f:44a3)
 	push hl
 	ld hl, wEnemyMonMaxHP
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .playersTurn
 	ld hl, wBattleMonMaxHP
@@ -775,19 +775,19 @@ HandlePoisonBurnLeechSeed_IncreaseEnemyHP: ; 3c4a3 (f:44a3)
 	ld [hl], a
 	ld [wHPBarNewHP], a
 .noOverfullHeal
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	xor $1
-	ld [H_WHOSETURN], a
+	ldh [H_WHOSETURN], a
 	call UpdateCurMonHPBar
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	xor $1
-	ld [H_WHOSETURN], a
+	ldh [H_WHOSETURN], a
 	pop hl
 	ret
 
 UpdateCurMonHPBar: ; 3c4f6 (f:44f6)
 	hlCoord 10, 9    ; tile pointer to player HP bar
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	ld a, $1
 	jr z, .playersTurn
@@ -1050,7 +1050,7 @@ TrainerBattleVictory: ; 3c696 (f:4696)
 	cp $4
 	ret z
 	call ScrollTrainerPicAfterBattle
-	ld c, $28
+	ld c, 40
 	call DelayFrames
 	call PrintEndBattleText
 	ld hl, MoneyForWinningText
@@ -1076,7 +1076,7 @@ TrainerDefeatedText: ; 3c6e9 (f:46e9)
 
 PlayBattleVictoryMusic: ; 3c6ee (f:46ee)
 	push af
-	ld a, $ff
+	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a
 	call PlaySoundWaitForCurrent
 	ld c, 0 ; BANK(Music_DefeatedTrainer)
@@ -1085,7 +1085,7 @@ PlayBattleVictoryMusic: ; 3c6ee (f:46ee)
 	jp Delay3
 
 HandlePlayerMonFainted: ; 3c700 (f:4700)
-	ld a, $1
+	ld a, 1
 	ld [wccf0], a
 	call RemoveFaintedPlayerMon
 	call AnyPartyAlive     ; test if any more mons are alive
@@ -1274,7 +1274,7 @@ HandlePlayerBlackOut: ; 3c837 (f:4837)
 	ld bc, $815
 	call ClearScreenArea
 	call ScrollTrainerPicAfterBattle
-	ld c, $28
+	ld c, 40
 	call DelayFrames
 	ld hl, Sony1WinText
 	call PrintText
@@ -1395,7 +1395,7 @@ SevenSpacesText: ; 3c8d7 (f:48d7)
 ; if a is 8, the slide is to the right, else it is to the left
 ; bug: when this is called, [H_AUTOBGTRANSFERENABLED] is non-zero, so there is screen tearing
 SlideTrainerPicOffScreen: ; 3c8df (f:48df)
-	ld [$FF8B], a
+	ldh [$FF8B], a
 	ld c, a
 .slideStepLoop ; each iteration, the trainer pic is slid one tile left/right
 	push bc
@@ -1403,10 +1403,10 @@ SlideTrainerPicOffScreen: ; 3c8df (f:48df)
 	ld b, 7 ; number of rows
 .rowLoop
 	push hl
-	ld a, [$FF8B]
+	ldh a, [$FF8B]
 	ld c, a
 .columnLoop
-	ld a, [$FF8B]
+	ldh a, [$FF8B]
 	cp 8
 	jr z, .slideRight
 .slideLeft ; slide player sprite off screen
@@ -1589,7 +1589,7 @@ EnemySendOutFirstMon: ; 3c92a (f:492a)
 	ld de,vFrontPic
 	call LoadMonFrontSprite
 	ld a,$CF
-	ld [$FFE1],a
+	ldh [$FFE1],a
 	hlCoord 15, 6
 	predef Func_3f073
 	ld a,[wEnemyMonSpecies2]
@@ -1676,14 +1676,14 @@ TryRunningFromBattle: ; 3cab9 (f:4ab9)
 	inc a
 	ld [wNumRunAttempts], a
 	ld a, [hli]
-	ld [H_MULTIPLICAND + 1], a
+	ldh [H_MULTIPLICAND + 1], a
 	ld a, [hl]
-	ld [H_MULTIPLICAND + 2], a
+	ldh [H_MULTIPLICAND + 2], a
 	ld a, [de]
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	inc de
 	ld a, [de]
-	ld [$ff8e], a
+	ldh [$ff8e], a
 	call LoadScreenTilesFromBuffer1
 	ld de, H_MULTIPLICAND + 1
 	ld hl, $ff8d
@@ -1691,17 +1691,17 @@ TryRunningFromBattle: ; 3cab9 (f:4ab9)
 	call StringCmp
 	jr nc, .canEscape ; jump if player speed greater than enemy speed
 	xor a
-	ld [H_MULTIPLICAND], a 
+	ldh [H_MULTIPLICAND], a 
 	ld a, 32
-	ld [H_MULTIPLIER], a
+	ldh [H_MULTIPLIER], a
 	call Multiply ; multiply player speed by 32
-	ld a, [H_PRODUCT + 2]
-	ld [H_DIVIDEND], a
-	ld a, [H_PRODUCT + 3]
-	ld [H_DIVIDEND + 1], a
-	ld a, [$ff8d]
+	ldh a, [H_PRODUCT + 2]
+	ldh [H_DIVIDEND], a
+	ldh a, [H_PRODUCT + 3]
+	ldh [H_DIVIDEND + 1], a
+	ldh a, [$ff8d]
 	ld b, a
-	ld a, [$ff8e]
+	ldh a, [$ff8e]
 ; divide enemy speed by 4
 	srl b
 	rr a
@@ -1709,10 +1709,10 @@ TryRunningFromBattle: ; 3cab9 (f:4ab9)
 	rr a
 	and a
 	jr z, .canEscape ; jump if enemy speed divided by 4, mod 256 is 0
-	ld [H_DIVISOR], a ; ((enemy speed / 4) % 256)
+	ldh [H_DIVISOR], a ; ((enemy speed / 4) % 256)
 	ld b, $2
 	call Divide ; divide (player speed * 32) by ((enemy speed / 4) % 256)
-	ld a, [H_QUOTIENT + 2]
+	ldh a, [H_QUOTIENT + 2]
 	and a ; is the quotient greater than 256?
 	jr nz, .canEscape ; if so, the player can escape
 	ld a, [wNumRunAttempts]
@@ -1722,15 +1722,15 @@ TryRunningFromBattle: ; 3cab9 (f:4ab9)
 	dec c
 	jr z, .compareWithRandomValue
 	ld b, 30
-	ld a, [H_QUOTIENT + 3]
+	ldh a, [H_QUOTIENT + 3]
 	add b
-	ld [H_QUOTIENT + 3], a
+	ldh [H_QUOTIENT + 3], a
 	jr c, .canEscape
 	jr .loop
 .compareWithRandomValue
 	call BattleRandom
 	ld b, a
-	ld a, [H_QUOTIENT + 3]
+	ldh a, [H_QUOTIENT + 3]
 	cp b
 	jr nc, .canEscape ; if the random value was less than or equal to the quotient plus 30 times the number of attempts, the player can escape
 ; can't escape
@@ -1742,7 +1742,7 @@ TryRunningFromBattle: ; 3cab9 (f:4ab9)
 	ld hl, NoRunningText
 .printCantEscapeOrNoRunningText
 	call PrintText
-	ld a, $1
+	ld a, 1
 	ld [wd11f], a
 	call SaveScreenTilesToBuffer1
 	and a ; reset carry
@@ -1900,7 +1900,7 @@ SendOutMon: ; 3cc91 (f:4c91)
 	call DrawPlayerHUDAndHPBar
 	predef LoadMonBackPic
 	xor a
-	ld [$ffe1], a
+	ldh [$ffe1], a
 	ld hl, wcc2d
 	ld [hli], a
 	ld [hl], a
@@ -1924,7 +1924,7 @@ SendOutMon: ; 3cc91 (f:4c91)
 	ld hl, W_ENEMYBATTSTATUS1
 	res 5, [hl]
 	ld a, $1
-	ld [H_WHOSETURN], a
+	ldh [H_WHOSETURN], a
 	ld a, POOF_ANIM
 	call PlayMoveAnimation
 	hlCoord 4, 11
@@ -1943,17 +1943,17 @@ AnimateRetreatingPlayerMon: ; 3ccfa (f:4cfa)
 	ld bc, $505
 	xor a
 	ld [wcd6c], a
-	ld [H_DOWNARROWBLINKCNT1], a
+	ldh [H_DOWNARROWBLINKCNT1], a
 	predef Func_79aba
 	ld c, $4
 	call DelayFrames
 	call .clearScreenArea
 	hlCoord 4, 9
 	ld bc, $303
-	ld a, $1
+	ld a, 1
 	ld [wcd6c], a
 	xor a
-	ld [H_DOWNARROWBLINKCNT1], a
+	ldh [H_DOWNARROWBLINKCNT1], a
 	predef Func_79aba
 	call Delay3
 	call .clearScreenArea
@@ -1982,7 +1982,7 @@ DrawHUDsAndHPBars: ; 3cd5a (f:4d5a)
 
 DrawPlayerHUDAndHPBar: ; 3cd60 (f:4d60)
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	hlCoord 9, 7
 	ld bc, $50b
 	call ClearScreenArea
@@ -2015,7 +2015,7 @@ DrawPlayerHUDAndHPBar: ; 3cd60 (f:4d60)
 	hlCoord 10, 9
 	predef DrawHP 
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	ld hl, wcf1d
 	call GetBattleHealthBarColor
 	ld hl, wBattleMonHP
@@ -2043,7 +2043,7 @@ DrawPlayerHUDAndHPBar: ; 3cd60 (f:4d60)
 
 DrawEnemyHUDAndHPBar: ; 3cdec (f:4dec)
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	ld hl, wTileMap
 	ld bc, $40c
 	call ClearScreenArea
@@ -2065,9 +2065,9 @@ DrawEnemyHUDAndHPBar: ; 3cdec (f:4dec)
 .skipPrintLevel
 	ld hl, wEnemyMonHP
 	ld a, [hli]
-	ld [H_MULTIPLICAND + 1], a
+	ldh [H_MULTIPLICAND + 1], a
 	ld a, [hld]
-	ld [H_MULTIPLICAND + 2], a
+	ldh [H_MULTIPLICAND + 2], a
 	or [hl] ; is current HP zero?
 	jr nz, .hpNonzero
 ; current HP is 0
@@ -2078,45 +2078,45 @@ DrawEnemyHUDAndHPBar: ; 3cdec (f:4dec)
 	jp .drawHPBar
 .hpNonzero
 	xor a
-	ld [H_MULTIPLICAND], a
+	ldh [H_MULTIPLICAND], a
 	ld a, 48
-	ld [H_MULTIPLIER], a
+	ldh [H_MULTIPLIER], a
 	call Multiply ; multiply current HP by 48
 	ld hl, wEnemyMonMaxHP
 	ld a, [hli]
 	ld b, a
 	ld a, [hl]
-	ld [H_DIVISOR], a
+	ldh [H_DIVISOR], a
 	ld a, b
 	and a ; is max HP > 255?
 	jr z, .doDivide
 ; if max HP > 255, scale both (current HP * 48) and max HP by dividing by 4 so that max HP fits in one byte
 ; (it needs to be one byte so it can be used as the divisor for the Divide function)
-	ld a, [H_DIVISOR]
+	ldh a, [H_DIVISOR]
 	srl b
 	rr a
 	srl b
 	rr a
-	ld [H_DIVISOR], a
-	ld a, [H_PRODUCT + 2]
+	ldh [H_DIVISOR], a
+	ldh a, [H_PRODUCT + 2]
 	ld b, a
 	srl b
-	ld a, [H_PRODUCT + 3]
+	ldh a, [H_PRODUCT + 3]
 	rr a
 	srl b
 	rr a
-	ld [H_PRODUCT + 3], a
+	ldh [H_PRODUCT + 3], a
 	ld a, b
-	ld [H_PRODUCT + 2], a
+	ldh [H_PRODUCT + 2], a
 .doDivide
-	ld a, [H_PRODUCT + 2]
-	ld [H_DIVIDEND], a
-	ld a, [H_PRODUCT + 3]
-	ld [H_DIVIDEND + 1], a
+	ldh a, [H_PRODUCT + 2]
+	ldh [H_DIVIDEND], a
+	ldh a, [H_PRODUCT + 3]
+	ldh [H_DIVIDEND + 1], a
 	ld a, $2
 	ld b, a
 	call Divide ; divide (current HP * 48) by max HP
-	ld a, [H_QUOTIENT + 3]
+	ldh a, [H_QUOTIENT + 3]
 ; set variables for DrawHPBar
 	ld e, a
 	ld a, $6
@@ -2128,7 +2128,7 @@ DrawEnemyHUDAndHPBar: ; 3cdec (f:4dec)
 	hlCoord 2, 2
 	call DrawHPBar
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	ld hl, wcf1e
 
 GetBattleHealthBarColor: ; 3ce90 (f:4e90)
@@ -2200,12 +2200,12 @@ DisplayBattleMenu: ; 3ceb3 (f:4eb3)
 	; the following simulates the keystrokes by drawing menus on screen
 	hlCoord 9, 14
 	ld [hl], "▶"
-	ld c, $50
+	ld c, 80
 	call DelayFrames
 	ld [hl], $7f
 	hlCoord 9, 16
 	ld [hl], "▶"
-	ld c, $32
+	ld c, 50
 	call DelayFrames
 	ld [hl], $ec
 	ld a, $2 ; select the "ITEM" menu
@@ -2579,7 +2579,7 @@ PartyMenuOrRockOrRun:
 
 SwitchPlayerMon: ; 3d1ba (f:51ba)
 	callab RetreatMon
-	ld c, $32
+	ld c, 50
 	call DelayFrames
 	call AnimateRetreatingPlayerMon
 	ld a, [wWhichPokemon]
@@ -2611,7 +2611,7 @@ BattleMenu_RunWasSelected: ; 3d1fa (f:51fa)
 	ld hl, wBattleMonSpeed
 	ld de, wEnemyMonSpeed
 	call TryRunningFromBattle
-	ld a, $0
+	ld a, 0
 	ld [wd11f], a
 	ret c
 	ld a, [wcd6a]
@@ -2636,13 +2636,13 @@ MoveSelectionMenu: ; 3d219 (f:5219)
 
 .writemoves
 	ld de, wd0e1
-	ld a, [$fff6]
+	ldh a, [$fff6]
 	set 2, a
-	ld [$fff6], a
+	ldh [$fff6], a
 	call PlaceString
-	ld a, [$fff6]
+	ldh a, [$fff6]
 	res 2, a
-	ld [$fff6], a
+	ldh [$fff6], a
 	ret
 
 .regularmenu
@@ -2651,8 +2651,8 @@ MoveSelectionMenu: ; 3d219 (f:5219)
 	ld hl, wBattleMonMoves
 	call .loadmoves
 	hlCoord 4, 12
-	ld b, $4
-	ld c, $e
+	ld b, 4
+	ld c, 14
 	di
 	call TextBoxBorder
 	hlCoord 4, 12
@@ -2669,8 +2669,8 @@ MoveSelectionMenu: ; 3d219 (f:5219)
 	ld hl, wEnemyMonMoves
 	call .loadmoves
 	hlCoord 0, 7
-	ld b, $4
-	ld c, $e
+	ld b, 4
+	ld c, 14
 	call TextBoxBorder
 	hlCoord 2, 8
 	call .writemoves
@@ -2684,8 +2684,8 @@ MoveSelectionMenu: ; 3d219 (f:5219)
 	call AddNTimes
 	call .loadmoves
 	hlCoord 4, 7
-	ld b, $4
-	ld c, $e
+	ld b, 4
+	ld c, 14
 	call TextBoxBorder
 	hlCoord 6, 8
 	call .writemoves
@@ -2902,7 +2902,7 @@ Func_3d3f5: ; 3d3f5 (f:53f5)
 .asm_3d423
 	ld hl, NoMovesLeftText
 	call PrintText
-	ld c, $3c
+	ld c, 60
 	call DelayFrames
 	xor a
 	ret
@@ -2989,10 +2989,10 @@ SwapMovesInMenu: ; 3d435 (f:5435)
 
 Func_3d4b6: ; 3d4b6 (f:54b6)
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	hlCoord 0, 8
-	ld b, $3
-	ld c, $9
+	ld b, 3
+	ld c, 9
 	call TextBoxBorder
 	ld a, [W_PLAYERDISABLEDMOVE]
 	and a
@@ -3011,7 +3011,7 @@ Func_3d4b6: ; 3d4b6 (f:54b6)
 	ld hl, wCurrentMenuItem
 	dec [hl]
 	xor a
-	ld [H_WHOSETURN], a
+	ldh [H_WHOSETURN], a
 	ld hl, wBattleMonMoves
 	ld a, [wCurrentMenuItem]
 	ld c, a
@@ -3053,7 +3053,7 @@ Func_3d4b6: ; 3d4b6 (f:54b6)
 	predef Func_27d98
 .asm_3d54e
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	jp Delay3
 
 DisabledText: ; 3d555 (f:5555)
@@ -3079,12 +3079,12 @@ SelectEnemyMove: ; 3d564 (f:5564)
 	jp z, .asm_3d601
 	cp $d
 	jr z, .unableToMove
-	cp $4
+	cp 4
 	ret nc
 	ld [wEnemyMoveListIndex], a
 	ld c, a
 	ld hl, wEnemyMonMoves
-	ld b, $0
+	ld b, 0
 	add hl, bc
 	ld a, [hl]
 	jr .done
@@ -3128,7 +3128,7 @@ SelectEnemyMove: ; 3d564 (f:5564)
 .chooseRandomMove
 	push hl
 	call BattleRandom
-	ld b, $1
+	ld b, 1
 	cp $3f ; select move 1 in [0,3e] (63/256 chance)
 	jr c, .moveChosen
 	inc hl
@@ -3195,13 +3195,13 @@ LinkBattleExchangeData: ; 3d605 (f:5605)
 	ld a, [wcc3e]
 	inc a
 	jr z, .asm_3d63b
-	ld b, $a
+	ld b, 10
 .asm_3d649
 	call DelayFrame
 	call Func_22c3
 	dec b
 	jr nz, .asm_3d649
-	ld b, $a
+	ld b, 10
 .asm_3d654
 	call DelayFrame
 	call Func_22ed
@@ -3211,7 +3211,7 @@ LinkBattleExchangeData: ; 3d605 (f:5605)
 
 ExecutePlayerMove: ; 3d65e (f:565e)
 	xor a
-	ld [H_WHOSETURN], a
+	ldh [H_WHOSETURN], a
 	ld a, [wPlayerSelectedMove]
 	inc a
 	jp z, Func_3d80a
@@ -3316,7 +3316,7 @@ asm_3d71e
 	call nz,Bankswitch
 	jr asm_3d766
 asm_3d74b
-	ld c,$1E
+	ld c,30
 	call DelayFrames
 	ld a,[W_PLAYERMOVEEFFECT]
 	cp a,FLY_EFFECT
@@ -3413,7 +3413,7 @@ PrintGhostText: ; 3d811 (f:5811)
 ; print the ghost battle messages
 	call IsGhostBattle
 	ret nz
-	ld a,[H_WHOSETURN]
+	ldh a,[H_WHOSETURN]
 	and a
 	jr nz,.Ghost
 	ld a,[wBattleMonStatus] ; player’s turn
@@ -3530,7 +3530,7 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 	jr z,.ConfusedCheck
 	dec a
 	ld [hl],a
-	and a,$F
+	and a,$f
 	jr nz,.ConfusedCheck
 	ld [hl],a
 	ld [wccee],a
@@ -3778,7 +3778,7 @@ CantMoveText: ; 3da83 (f:5a83)
 PrintMoveIsDisabledText: ; 3da88 (f:5a88)
 	ld hl, wPlayerSelectedMove
 	ld de, W_PLAYERBATTSTATUS1
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .asm_3da97
 	inc hl
@@ -3816,7 +3816,7 @@ PrintHurtItselfText: ; 3daad (f:5aad)
 	xor a
 	ld [hli], a
 	ld [wCriticalHitOrOHKO], a
-	ld a, $28
+	ld a, 40
 	ld [hli], a
 	xor a
 	ld [hl], a
@@ -3833,11 +3833,11 @@ PrintHurtItselfText: ; 3daad (f:5aad)
 	xor a
 	ld [wcc5b], a
 	inc a
-	ld [H_WHOSETURN], a
+	ldh [H_WHOSETURN], a
 	call PlayMoveAnimation
 	call DrawPlayerHUDAndHPBar
 	xor a
-	ld [H_WHOSETURN], a
+	ldh [H_WHOSETURN], a
 	jp ApplyDamageToPlayerPokemon
 
 PrintMonName1Text: ; 3daf5 (f:5af5)
@@ -3847,7 +3847,7 @@ PrintMonName1Text: ; 3daf5 (f:5af5)
 MonName1Text: ; 3dafb (f:5afb)
 	TX_FAR _MonName1Text
 	db $08 ; asm
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	ld a, [W_PLAYERMOVENUM]
 	ld hl, wccf1
@@ -3975,7 +3975,7 @@ UnknownMovesList_3dba3: ; 3dba3 (f:5ba3)
 
 PrintMoveFailureText: ; 3dbe2 (f:5be2)
 	ld de, W_PLAYERMOVEEFFECT
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .playersTurn
 	ld de, W_ENEMYMOVEEFFECT
@@ -4021,7 +4021,7 @@ PrintMoveFailureText: ; 3dbe2 (f:5be2)
 	call PrintText
 	ld b, $4
 	predef Func_48125
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr nz, .asm_3dc3f
 	jp ApplyDamageToPlayerPokemon
@@ -4066,7 +4066,7 @@ PrintCriticalOHKOText: ; 3dc5c (f:5c5c)
 	xor a
 	ld [wCriticalHitOrOHKO], a
 .done
-	ld c, $14
+	ld c, 20
 	jp DelayFrames
 
 CriticalOHKOTextPointers: ; 3dc7a (f:5c7a)
@@ -4315,9 +4315,9 @@ GetDamageVarsForPlayerAttack: ; 3ddcf (f:5dcf)
 ; in the case of a critical hit, reset the player's attack and the enemy's defense to their base values
 	ld c, 3 ; defense stat
 	call GetEnemyMonStat
-	ld a, [$ff97]
+	ldh a, [$ff97]
 	ld b, a
-	ld a, [$ff98]
+	ldh a, [$ff98]
 	ld c, a
 	push bc
 	ld hl, wPartyMon1Attack
@@ -4345,9 +4345,9 @@ GetDamageVarsForPlayerAttack: ; 3ddcf (f:5dcf)
 ; in the case of a critical hit, reset the player's and enemy's specials to their base values
 	ld c, 5 ; special stat
 	call GetEnemyMonStat
-	ld a, [$ff97]
+	ldh a, [$ff97]
 	ld b, a
-	ld a, [$ff98]
+	ldh a, [$ff98]
 	ld c, a
 	push bc
 	ld hl, wPartyMon1Special
@@ -4518,9 +4518,9 @@ GetEnemyMonStat: ; 3df1c (f:5f1c)
 	ld bc, wEnemyMon2 - wEnemyMon1
 	call AddNTimes
 	ld a, [hli]
-	ld [$ff97], a
+	ldh [$ff97], a
 	ld a, [hl]
-	ld [$ff98], a
+	ldh [$ff98], a
 	pop bc
 	pop de
 	ret
@@ -4551,7 +4551,7 @@ CalculateDamage: ; 3df65 (f:5f65)
 ;	d: base power
 ;	e: level
 
-	ld a, [$fff3] ; whose turn?
+	ldh a, [$fff3] ; whose turn?
 	and a
 	ld a, [W_PLAYERMOVEEFFECT]
 	jr z, .effect
@@ -4634,41 +4634,41 @@ CalculateDamage: ; 3df65 (f:5f65)
 
 	ld hl, W_DAMAGE
 	ld b, [hl]
-	ld a, [H_QUOTIENT + 3]
+	ldh a, [H_QUOTIENT + 3]
 	add b
-	ld [H_QUOTIENT + 3], a
+	ldh [H_QUOTIENT + 3], a
 	jr nc, .asm_3dfd0
 
-	ld a, [H_QUOTIENT + 2]
+	ldh a, [H_QUOTIENT + 2]
 	inc a
-	ld [H_QUOTIENT + 2], a
+	ldh [H_QUOTIENT + 2], a
 	and a
 	jr z, .asm_3e004
 
 .asm_3dfd0
-	ld a, [H_QUOTIENT]
+	ldh a, [H_QUOTIENT]
 	ld b, a
-	ld a, [H_QUOTIENT + 1]
+	ldh a, [H_QUOTIENT + 1]
 	or a
 	jr nz, .asm_3e004
 
-	ld a, [H_QUOTIENT + 2]
+	ldh a, [H_QUOTIENT + 2]
 	cp 998 / $100
 	jr c, .asm_3dfe8
 	cp 998 / $100 + 1
 	jr nc, .asm_3e004
-	ld a, [H_QUOTIENT + 3]
+	ldh a, [H_QUOTIENT + 3]
 	cp 998 % $100
 	jr nc, .asm_3e004
 
 .asm_3dfe8
 	inc hl
-	ld a, [H_QUOTIENT + 3]
+	ldh a, [H_QUOTIENT + 3]
 	ld b, [hl]
 	add b
 	ld [hld], a
 
-	ld a, [H_QUOTIENT + 2]
+	ldh a, [H_QUOTIENT + 2]
 	ld b, [hl]
 	adc b
 	ld [hl], a
@@ -4724,7 +4724,7 @@ UnusedHighCriticalMoves: ; 3e01e (f:601e)
 CriticalHitTest: ; 3e023 (f:6023)
 	xor a
 	ld [wCriticalHitOrOHKO], a
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	ld a, [wEnemyMonSpecies]
 	jr nz, .asm_3e032
@@ -4735,7 +4735,7 @@ CriticalHitTest: ; 3e023 (f:6023)
 	ld a, [W_MONHBASESPEED]
 	ld b, a
 	srl b                        ; (effective (base speed/2))
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	ld hl, W_PLAYERMOVEPOWER
 	ld de, W_PLAYERBATTSTATUS2
@@ -4800,7 +4800,7 @@ HighCriticalMoves: ; 3e08e (f:608e)
 
 ; function to determine if Counter hits and if so, how much damage it does
 HandleCounterMove: ; 3e093 (f:6093)
-	ld a,[H_WHOSETURN] ; whose turn
+	ldh a,[H_WHOSETURN] ; whose turn
 	and a
 ; player's turn
 	ld hl,wEnemySelectedMove
@@ -5099,7 +5099,7 @@ AttackSubstitute: ; 3e25e (f:625e)
 ; values for player turn
 	ld de,wEnemySubstituteHP
 	ld bc,W_ENEMYBATTSTATUS2
-	ld a,[H_WHOSETURN]
+	ldh a,[H_WHOSETURN]
 	and a
 	jr z,.applyDamageToSubstitute
 ; values for enemy turn
@@ -5122,14 +5122,14 @@ AttackSubstitute: ; 3e25e (f:625e)
 	ld hl,SubstituteBrokeText
 	call PrintText
 ; flip whose turn it is for the next function call
-	ld a,[H_WHOSETURN]
+	ldh a,[H_WHOSETURN]
 	xor a,$01
-	ld [H_WHOSETURN],a
+	ldh [H_WHOSETURN],a
 	callab Func_79747 ; animate the substitute breaking
 ; flip the turn back to the way it was
-	ld a,[H_WHOSETURN]
+	ldh a,[H_WHOSETURN]
 	xor a,$01
-	ld [H_WHOSETURN],a
+	ldh [H_WHOSETURN],a
 	ld hl,W_PLAYERMOVEEFFECT ; value for player's turn
 	and a
 	jr z,.nullifyEffect
@@ -5153,7 +5153,7 @@ HandleBuildingRage: ; 3e2b6 (f:62b6)
 	ld hl,W_ENEMYBATTSTATUS2
 	ld de,wEnemyMonStatMods
 	ld bc,W_ENEMYMOVENUM
-	ld a,[H_WHOSETURN]
+	ldh a,[H_WHOSETURN]
 	and a
 	jr z,.next
 ; values for the enemy turn
@@ -5166,9 +5166,9 @@ HandleBuildingRage: ; 3e2b6 (f:62b6)
 	ld a,[de]
 	cp a,$0d ; maximum stat modifier value
 	ret z ; return if attack modifier is already maxed
-	ld a,[H_WHOSETURN]
+	ldh a,[H_WHOSETURN]
 	xor a,$01 ; flip turn for the stat modifier raising function
-	ld [H_WHOSETURN],a
+	ldh [H_WHOSETURN],a
 ; change the target pokemon's move to $00 and the effect to the one
 ; that causes the attack modifier to go up one stage
 	ld h,b
@@ -5185,9 +5185,9 @@ HandleBuildingRage: ; 3e2b6 (f:62b6)
 	ldd [hl],a ; null move effect
 	ld a,RAGE
 	ld [hl],a ; restore the target pokemon's move number to Rage
-	ld a,[H_WHOSETURN]
+	ldh a,[H_WHOSETURN]
 	xor a,$01 ; flip turn back to the way it was
-	ld [H_WHOSETURN],a
+	ldh [H_WHOSETURN],a
 	ret
 
 BuildingRageText: ; 3e2f8 (f:62f8)
@@ -5251,7 +5251,7 @@ MetronomePickMove: ; 3e348 (f:6348)
 ; values for player turn
 	ld de,W_PLAYERMOVENUM
 	ld hl,wPlayerSelectedMove
-	ld a,[H_WHOSETURN]
+	ldh a,[H_WHOSETURN]
 	and a
 	jr z,.pickMoveLoop
 ; values for enemy turn
@@ -5290,7 +5290,7 @@ MetronomePickMove: ; 3e348 (f:6348)
 ; it's used to prevent moves that run another move within the same turn
 ; (like Mirror Move and Metronome) from losing 2 PP
 IncrementMovePP: ; 3e373 (f:6373)
-	ld a,[H_WHOSETURN]
+	ldh a,[H_WHOSETURN]
 	and a
 ; values for player turn
 	ld hl,wBattleMonPP
@@ -5309,7 +5309,7 @@ IncrementMovePP: ; 3e373 (f:6373)
 	ld h,d
 	ld l,e
 	add hl,bc
-	ld a,[H_WHOSETURN]
+	ldh a,[H_WHOSETURN]
 	and a
 	ld a,[wPlayerMonNumber] ; value for player turn
 	jr z,.next2
@@ -5333,7 +5333,7 @@ AdjustDamageForMoveType: ; 3e3a5 (f:63a5)
 	ld e,[hl] ; e = type 2 of defender
 	ld a,[W_PLAYERMOVETYPE]
 	ld [wd11e],a
-	ld a,[H_WHOSETURN]
+	ldh a,[H_WHOSETURN]
 	and a
 	jr z,.next
 ; values for enemy turn
@@ -5397,25 +5397,25 @@ AdjustDamageForMoveType: ; 3e3a5 (f:63a5)
 	and a,$80
 	ld b,a
 	ld a,[hl] ; a = damage multiplier
-	ld [H_MULTIPLIER],a
+	ldh [H_MULTIPLIER],a
 	add b
 	ld [wd05b],a
 	xor a
-	ld [H_MULTIPLICAND],a
+	ldh [H_MULTIPLICAND],a
 	ld hl,W_DAMAGE
 	ld a,[hli]
-	ld [H_MULTIPLICAND + 1],a
+	ldh [H_MULTIPLICAND + 1],a
 	ld a,[hld]
-	ld [H_MULTIPLICAND + 2],a
+	ldh [H_MULTIPLICAND + 2],a
 	call Multiply
 	ld a,10
-	ld [H_DIVISOR],a
+	ldh [H_DIVISOR],a
 	ld b,$04
 	call Divide
-	ld a,[H_QUOTIENT + 2]
+	ldh a,[H_QUOTIENT + 2]
 	ld [hli],a
 	ld b,a
-	ld a,[H_QUOTIENT + 3]
+	ldh a,[H_QUOTIENT + 3]
 	ld [hl],a
 	or b ; is damage 0?
 	jr nz,.skipTypeImmunity
@@ -5477,7 +5477,7 @@ MoveHitTest: ; 3e56b (f:656b)
 	ld hl,W_ENEMYBATTSTATUS1
 	ld de,W_PLAYERMOVEEFFECT
 	ld bc,wEnemyMonStatus
-	ld a,[H_WHOSETURN]
+	ldh a,[H_WHOSETURN]
 	and a
 	jr z,.dreamEaterCheck
 ; enemy's turn
@@ -5506,7 +5506,7 @@ MoveHitTest: ; 3e56b (f:656b)
 .checkForDigOrFlyStatus
 	bit 6,[hl]
 	jp nz,.moveMissed
-	ld a,[H_WHOSETURN]
+	ldh a,[H_WHOSETURN]
 	and a
 	jr nz,.enemyTurn
 .playerTurn
@@ -5561,7 +5561,7 @@ MoveHitTest: ; 3e56b (f:656b)
 	call CalcHitChance ; scale the move accuracy according to attacker's accuracy and target's evasion
 	ld a,[W_PLAYERMOVEACCURACY]
 	ld b,a
-	ld a,[H_WHOSETURN]
+	ldh a,[H_WHOSETURN]
 	and a
 	jr z,.doAccuracyCheck
 	ld a,[W_ENEMYMOVEACCURACY]
@@ -5580,7 +5580,7 @@ MoveHitTest: ; 3e56b (f:656b)
 	ld [hl],a
 	inc a
 	ld [W_MOVEMISSED],a
-	ld a,[H_WHOSETURN]
+	ldh a,[H_WHOSETURN]
 	and a
 	jr z,.playerTurn2
 .enemyTurn2
@@ -5595,7 +5595,7 @@ MoveHitTest: ; 3e56b (f:656b)
 ; values for player turn
 CalcHitChance: ; 3e624 (f:6624)
 	ld hl,W_PLAYERMOVEACCURACY
-	ld a,[H_WHOSETURN]
+	ldh a,[H_WHOSETURN]
 	and a
 	ld a,[wPlayerMonAccuracyMod]
 	ld b,a
@@ -5614,10 +5614,10 @@ CalcHitChance: ; 3e624 (f:6624)
 	ld c,a ; c = 14 - EVASIONMOD (this "reflects" the value over 7, so that an increase in the target's evasion decreases the hit chance instead of increasing the hit chance)
 ; zero the high bytes of the multiplicand
 	xor a
-	ld [H_MULTIPLICAND],a
-	ld [H_MULTIPLICAND + 1],a
+	ldh [H_MULTIPLICAND],a
+	ldh [H_MULTIPLICAND + 1],a
 	ld a,[hl]
-	ld [H_MULTIPLICAND + 2],a ; set multiplicand to move accuracy
+	ldh [H_MULTIPLICAND + 2],a ; set multiplicand to move accuracy
 	push hl
 	ld d,$02 ; loop has two iterations
 ; loop to do the calculations, the first iteration multiplies by the accuracy ratio and the second iteration multiplies by the evasion ratio
@@ -5631,28 +5631,28 @@ CalcHitChance: ; 3e624 (f:6624)
 	add hl,bc ; hl = address of stat modifier ratio
 	pop bc
 	ld a,[hli]
-	ld [H_MULTIPLIER],a ; set multiplier to the numerator of the ratio
+	ldh [H_MULTIPLIER],a ; set multiplier to the numerator of the ratio
 	call Multiply
 	ld a,[hl]
-	ld [H_DIVISOR],a ; set divisor to the the denominator of the ratio (the dividend is the product of the previous multiplication)
+	ldh [H_DIVISOR],a ; set divisor to the the denominator of the ratio (the dividend is the product of the previous multiplication)
 	ld b,$04 ; number of bytes in the dividend
 	call Divide
-	ld a,[H_QUOTIENT + 3]
+	ldh a,[H_QUOTIENT + 3]
 	ld b,a
-	ld a,[H_QUOTIENT + 2]
+	ldh a,[H_QUOTIENT + 2]
 	or b
 	jp nz,.nextCalculation
 ; make sure the result is always at least one
-	ld [H_QUOTIENT + 2],a
+	ldh [H_QUOTIENT + 2],a
 	ld a,$01
-	ld [H_QUOTIENT + 3],a
+	ldh [H_QUOTIENT + 3],a
 .nextCalculation
 	ld b,c
 	dec d
 	jr nz,.loop
-	ld a,[H_QUOTIENT + 2]
+	ldh a,[H_QUOTIENT + 2]
 	and a ; is the calculated hit chance over 0xFF?
-	ld a,[H_QUOTIENT + 3]
+	ldh a,[H_QUOTIENT + 3]
 	jr z,.storeAccuracy
 ; if calculated hit chance over 0xFF
 	ld a,$ff ; set the hit chance to 0xFF
@@ -5672,29 +5672,29 @@ RandomizeDamage: ; 3e687 (f:6687)
 	ret c
 .DamageGreaterThanOne
 	xor a
-	ld [H_MULTIPLICAND], a
+	ldh [H_MULTIPLICAND], a
 	dec hl
 	ld a, [hli]
-	ld [H_MULTIPLICAND + 1], a
+	ldh [H_MULTIPLICAND + 1], a
 	ld a, [hl]
-	ld [H_MULTIPLICAND + 2], a
+	ldh [H_MULTIPLICAND + 2], a
 ; loop until a random number greater than or equal to 217 is generated
 .loop
 	call BattleRandom
 	rrca
 	cp 217
 	jr c, .loop
-	ld [H_MULTIPLIER], a
+	ldh [H_MULTIPLIER], a
 	call Multiply ; multiply damage by the random number, which is in the range [217, 255]
 	ld a, 255
-	ld [H_DIVISOR], a
+	ldh [H_DIVISOR], a
 	ld b, $4
 	call Divide ; divide the result by 255
 ; store the modified damage
-	ld a, [H_QUOTIENT + 2]
+	ldh a, [H_QUOTIENT + 2]
 	ld hl, W_DAMAGE
 	ld [hli], a
-	ld a, [H_QUOTIENT + 3]
+	ldh a, [H_QUOTIENT + 3]
 	ld [hl], a
 	ret
 
@@ -5711,7 +5711,7 @@ ExecuteEnemyMove: ; 3e6bc (f:66bc)
 	ld a, [wcc3e]
 	cp $e
 	jr z, .asm_3e6dc
-	cp $4
+	cp 4
 	ret nc
 .asm_3e6dc
 	ld hl, wccd5
@@ -5827,7 +5827,7 @@ asm_3e7a4: ; 3e7a4 (f:67a4)
 
 Func_3e7d1: ; 3e7d1 (f:67d1)
 	call SwapPlayerAndEnemyLevels
-	ld c, $1e
+	ld c, 30
 	call DelayFrames
 	ld a, [W_ENEMYMOVEEFFECT]
 	cp FLY_EFFECT
@@ -6033,7 +6033,7 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	xor a
 	ld [hli], a
 	ld [wCriticalHitOrOHKO], a
-	ld a, $28
+	ld a, 40
 	ld [hli], a
 	xor a
 	ld [hl], a
@@ -6049,11 +6049,11 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	ld [hl], a
 	xor a
 	ld [wcc5b], a
-	ld [H_WHOSETURN], a
+	ldh [H_WHOSETURN], a
 	ld a, POUND
 	call PlayMoveAnimation
 	ld a, $1
-	ld [H_WHOSETURN], a
+	ldh [H_WHOSETURN], a
 	call ApplyDamageToEnemyPokemon
 	jr .monHurtItselfOrFullyParalysed
 .checkIfTriedToUseDisabledMove
@@ -6197,7 +6197,7 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	ret
 
 GetCurrentMove: ; 3eabe (f:6abe)
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jp z, .player
 	ld de, W_ENEMYMOVENUM
@@ -6403,16 +6403,16 @@ DoBattleTransitionAndInitBattleVariables: ; 3ec32 (f:6c32)
 	predef BattleTransition
 	callab LoadHudAndHpBarAndStatusTilePatterns
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	ld a, $ff
 	ld [wUpdateSpritesEnabled], a
 	call ClearSprites
 	call ClearScreen
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
-	ld [hWY], a
-	ld [rWY], a
-	ld [hTilesetType], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hWY], a
+	ldh [rWY], a
+	ldh [hTilesetType], a
 	ld hl, wd060
 	ld [hli], a
 	ld [hli], a
@@ -6449,7 +6449,7 @@ LoadPlayerBackPic: ; 3ec92 (f:6c92)
 	predef ScaleSpriteByTwo
 	ld hl, wOAMBuffer
 	xor a
-	ld [$FF8B], a ; initial tile number
+	ldh [$FF8B], a ; initial tile number
 	ld b, $7 ; 7 columns
 	ld e, $a0 ; X for the left-most column
 .loop ; each loop iteration writes 3 OAM entries in a vertical column
@@ -6463,16 +6463,16 @@ LoadPlayerBackPic: ; 3ec92 (f:6c92)
 	add d ; increase Y by height of tile
 	ld d, a
 	inc hl
-	ld a, [$FF8B]
+	ldh a, [$FF8B]
 	ld [hli], a ; OAM tile number
 	inc a ; increment tile number
-	ld [$FF8B], a
+	ldh [$FF8B], a
 	inc hl
 	dec c
 	jr nz, .innerLoop
-	ld a, [$FF8B]
+	ldh a, [$FF8B]
 	add $4 ; increase tile number by 4
-	ld [$FF8B], a
+	ldh [$FF8B], a
 	ld a, $8 ; width of tile
 	add e ; increase X by width of tile
 	ld e, a
@@ -6486,14 +6486,14 @@ LoadPlayerBackPic: ; 3ec92 (f:6c92)
 	ld [$4000], a
 	ld hl, vSprites
 	ld de, S_SPRITEBUFFER1
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [H_LOADEDROMBANK]
 	ld b, a
 	ld c, 7 * 7
 	call CopyVideoData
 	xor a
 	ld [$0], a
 	ld a, $31
-	ld [$ffe1], a
+	ldh [$ffe1], a
 	hlCoord 1, 5
 	predef_jump Func_3f0c6
 
@@ -6516,12 +6516,12 @@ ApplyBurnAndParalysisPenaltiesToEnemy: ; 3ed1e (f:6d1e)
 	xor a
 
 ApplyBurnAndParalysisPenalties: ; 3ed1f (f:6d1f)
-	ld [H_WHOSETURN], a
+	ldh [H_WHOSETURN], a
 	call QuarterSpeedDueToParalysis
 	jp HalveAttackDueToBurn
 
 QuarterSpeedDueToParalysis: ; 3ed27 (f:6d27)
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .playerTurn
 .enemyTurn ; quarter the player's speed
@@ -6564,7 +6564,7 @@ QuarterSpeedDueToParalysis: ; 3ed27 (f:6d27)
 	ret
 
 HalveAttackDueToBurn: ; 3ed64 (f:6d64)
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .playerTurn
 .enemyTurn ; halve the player's attack
@@ -6654,35 +6654,35 @@ CalculateModifiedStat: ; 3eda5 (f:6da5)
 	ld b, 0
 	add hl, bc
 	xor a
-	ld [H_MULTIPLICAND], a
+	ldh [H_MULTIPLICAND], a
 	ld a, [de]
-	ld [H_MULTIPLICAND + 1], a
+	ldh [H_MULTIPLICAND + 1], a
 	inc de
 	ld a, [de]
-	ld [H_MULTIPLICAND + 2], a
+	ldh [H_MULTIPLICAND + 2], a
 	ld a, [hli]
-	ld [H_MULTIPLIER], a
+	ldh [H_MULTIPLIER], a
 	call Multiply
 	ld a, [hl]
-	ld [H_DIVISOR], a
+	ldh [H_DIVISOR], a
 	ld b, $4
 	call Divide
 	pop hl
-	ld a, [H_DIVIDEND + 3]
+	ldh a, [H_DIVIDEND + 3]
 	sub 999 % $100
-	ld a, [H_DIVIDEND + 2]
+	ldh a, [H_DIVIDEND + 2]
 	sbc 999 / $100
 	jp c, .storeNewStatValue
 ; cap the stat at 999
 	ld a, 999 / $100
-	ld [H_DIVIDEND + 2], a
+	ldh [H_DIVIDEND + 2], a
 	ld a, 999 % $100
-	ld [H_DIVIDEND + 3], a
+	ldh [H_DIVIDEND + 3], a
 .storeNewStatValue
-	ld a, [H_DIVIDEND + 2]
+	ldh a, [H_DIVIDEND + 2]
 	ld [hli], a
 	ld b, a
-	ld a, [H_DIVIDEND + 3]
+	ldh a, [H_DIVIDEND + 3]
 	ld [hl], a
 	or b
 	jr nz, .done
@@ -6748,7 +6748,7 @@ LoadHudAndHpBarAndStatusTilePatterns: ; 3ee58 (f:6e58)
 	call LoadHpBarAndStatusTilePatterns
 
 LoadHudTilePatterns: ; 3ee5b (f:6e5b)
-	ld a, [rLCDC]
+	ldh a, [rLCDC]
 	add a ; is LCD disabled?
 	jr c, .lcdEnabled
 .lcdDisabled
@@ -6828,7 +6828,7 @@ BattleRandom:
 
 
 Func_3eed3: ; 3eed3 (f:6ed3)
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	ld hl, wEnemyMonType1 ; wcfea (aliases: wEnemyMonType)
 	ld de, W_ENEMYBATTSTATUS1
@@ -6877,7 +6877,7 @@ asm_3ef23: ; 3ef23 (f:6f23)
 	ld a, [wd732]
 	bit 1, a
 	jr z, .asm_3ef2f
-	ld a, [hJoyHeld]
+	ldh a, [hJoyHeld]
 	bit 1, a ; B button pressed?
 	ret nz
 .asm_3ef2f
@@ -6906,7 +6906,7 @@ asm_3ef3d: ; 3ef3d (f:6f3d)
 	call _LoadTrainerPic
 	xor a
 	ld [wEnemyMonSpecies2], a
-	ld [$ffe1], a
+	ldh [$ffe1], a
 	dec a
 	ld [wAICount], a
 	hlCoord 12, 0
@@ -6962,7 +6962,7 @@ InitWildBattle: ; 3ef8b (f:6f8b)
 .spriteLoaded
 	xor a
 	ld [W_TRAINERCLASS], a
-	ld [$ffe1], a
+	ldh [$ffe1], a
 	hlCoord 12, 0
 	predef Func_3f0c6
 
@@ -6972,18 +6972,18 @@ InitBattle_Common: ; 3efeb (f:6feb)
 	call GoPAL_SET
 	call SlidePlayerAndEnemySilhouettesOnScreen
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	ld hl, .emptyString
 	call PrintText
 	call SaveScreenTilesToBuffer1
 	call ClearScreen
 	ld a, $98
-	ld [$ffbd], a
+	ldh [$ffbd], a
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	call Delay3
 	ld a, $9c
-	ld [$ffbd], a
+	ldh [$ffbd], a
 	call LoadScreenTilesFromBuffer1
 	hlCoord 9, 7
 	ld bc, $50a
@@ -7002,7 +7002,7 @@ InitBattle_Common: ; 3efeb (f:6feb)
 	pop af
 	ld [wMapPalOffset], a
 	ld a, [wd0d4]
-	ld [hTilesetType], a
+	ldh [hTilesetType], a
 	scf
 	ret
 .emptyString
@@ -7037,8 +7037,8 @@ Func_3f073: ; 3f073 (f:7073)
 	ld h, a
 	ld a, [wPredefRegisters + 1]
 	ld l, a
-	ld a, [$ffe1]
-	ld [H_DOWNARROWBLINKCNT1], a
+	ldh a, [$ffe1]
+	ldh [H_DOWNARROWBLINKCNT1], a
 	ld b, $4c
 	ld a, [W_ISINBATTLE]
 	and a
@@ -7068,7 +7068,7 @@ Func_3f073: ; 3f073 (f:7073)
 	ld bc, -123
 .asm_3f0bf
 	add hl, bc
-	ld a, [H_DOWNARROWBLINKCNT1]
+	ldh a, [H_DOWNARROWBLINKCNT1]
 	add $31
 	jr asm_3f0d0
 
@@ -7077,7 +7077,7 @@ Func_3f0c6: ; 3f0c6 (f:70c6)
 	ld h, a
 	ld a, [wPredefRegisters + 1]
 	ld l, a
-	ld a, [$ffe1]
+	ldh a, [$ffe1]
 asm_3f0d0: ; 3f0d0 (f:70d0)
 	ld bc, $707
 	ld de, $14
@@ -7103,7 +7103,7 @@ asm_3f0d0: ; 3f0d0 (f:70d0)
 	ret
 .asm_3f0ed
 	push bc
-	ld b, $0
+	ld b, 0
 	dec c
 	add hl, bc
 	pop bc
@@ -7130,8 +7130,8 @@ LoadMonBackPic:
 	ld a, [wBattleMonSpecies2]
 	ld [wcf91], a
 	hlCoord 1, 5
-	ld b, $7
-	ld c, $8
+	ld b, 7
+	ld c, 8
 	call ClearScreenArea
 	ld hl,  W_MONHBACKSPRITE - W_MONHEADER
 	call UncompressMonSprite
@@ -7141,7 +7141,7 @@ LoadMonBackPic:
 	ld hl, vSprites
 	ld de, vBackPic
 	ld c, (2*SPRITEBUFFERSIZE)/16 ; count of 16-byte chunks to be copied
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [H_LOADEDROMBANK]
 	ld b, a
 	jp CopyVideoData
 
@@ -7151,7 +7151,7 @@ JumpMoveEffect: ; 3f132 (f:7132)
 	ret
 
 _JumpMoveEffect: ; 3f138 (f:7138)
-	ld a, [$fff3]  ;whose turn?
+	ldh a, [$fff3]  ;whose turn?
 	and a
 	ld a, [W_PLAYERMOVEEFFECT]
 	jr z, .next1
@@ -7268,7 +7268,7 @@ MoveEffectPointerTable: ; 3f150 (f:7150)
 SleepEffect: ; 3f1fc (f:71fc)
 	ld de, wEnemyMonStatus
 	ld bc, W_ENEMYBATTSTATUS2
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jp z, .asm_3f20e
 	ld de, wBattleMonStatus
@@ -7318,7 +7318,7 @@ AlreadyAsleepText: ; 3f24a (f:724a)
 PoisonEffect: ; 3f24f (f:724f)
 	ld hl, wEnemyMonStatus
 	ld de, W_PLAYERMOVEEFFECT
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .asm_3f260
 	ld hl, wBattleMonStatus
@@ -7364,7 +7364,7 @@ PoisonEffect: ; 3f24f (f:724f)
 	set 3, [hl]
 	push de
 	dec de
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	ld b, ANIM_C7
 	ld hl, W_PLAYERBATTSTATUS3
@@ -7420,7 +7420,7 @@ DrainHPEffect: ; 3f2e9 (f:72e9)
 ExplodeEffect: ; 3f2f1 (f:72f1)
 	ld hl, wBattleMonHP
 	ld de, W_PLAYERBATTSTATUS2
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .asm_3f302
 	ld hl, wEnemyMonHP
@@ -7441,7 +7441,7 @@ FreezeBurnParalyzeEffect: ; 3f30c (f:730c)
 	ld [wcc5b], a
 	call CheckTargetSubstitute         ;test bit 4 of d063/d068 flags [target has substitute flag]
 	ret nz             ;return if they have a substitute, can't effect them
-	ld a, [$fff3]  ;whose turn?
+	ldh a, [$fff3]  ;whose turn?
 	and a
 	jp nz, opponentAttacker
 	ld a, [wEnemyMonStatus]
@@ -7556,7 +7556,7 @@ CheckDefrost: ; 3f3e2 (f:73e2)
 	and a, 1 << FRZ			;are they frozen?
 	ret z				;return if so
 						;not frozen
-	ld a, [$fff3]	;whose turn?
+	ldh a, [$fff3]	;whose turn?
 	and a
 	jr nz, .opponent
 	;player [attacker]
@@ -7595,7 +7595,7 @@ FireDefrostedText: ; 3f423 (f:7423)
 StatModifierUpEffect: ; 3f428 (f:7428)
 	ld hl, wPlayerMonStatMods
 	ld de, W_PLAYERMOVEEFFECT
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .asm_3f439
 	ld hl, wEnemyMonStatMods
@@ -7631,7 +7631,7 @@ StatModifierUpEffect: ; 3f428 (f:7428)
 	push hl
 	ld hl, wBattleMonAttack + 1
 	ld de, wcd12
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .asm_3f472
 	ld hl, wEnemyMonAttack + 1
@@ -7665,34 +7665,34 @@ StatModifierUpEffect: ; 3f428 (f:7428)
 	add hl, bc
 	pop bc
 	xor a
-	ld [H_NUMTOPRINT], a ; $ff96 (aliases: H_MULTIPLICAND)
+	ldh [H_NUMTOPRINT], a ; $ff96 (aliases: H_MULTIPLICAND)
 	ld a, [de]
-	ld [$ff97], a
+	ldh [$ff97], a
 	inc de
 	ld a, [de]
-	ld [$ff98], a
+	ldh [$ff98], a
 	ld a, [hli]
-	ld [H_REMAINDER], a ; $ff99 (aliases: H_DIVISOR, H_MULTIPLIER, H_POWEROFTEN)
+	ldh [H_REMAINDER], a ; $ff99 (aliases: H_DIVISOR, H_MULTIPLIER, H_POWEROFTEN)
 	call Multiply
 	ld a, [hl]
-	ld [H_REMAINDER], a ; $ff99 (aliases: H_DIVISOR, H_MULTIPLIER, H_POWEROFTEN)
+	ldh [H_REMAINDER], a ; $ff99 (aliases: H_DIVISOR, H_MULTIPLIER, H_POWEROFTEN)
 	ld b, $4
 	call Divide
 	pop hl
-	ld a, [$ff98]
+	ldh a, [$ff98]
 	sub $e7
-	ld a, [$ff97]
+	ldh a, [$ff97]
 	sbc $3
 	jp c, Func_3f4c3
 	ld a, 999 / $100
-	ld [$ff97], a
+	ldh [$ff97], a
 	ld a, 999 % $100
-	ld [$ff98], a
+	ldh [$ff98], a
 
 Func_3f4c3: ; 3f4c3 (f:74c3)
-	ld a, [$ff97]
+	ldh a, [$ff97]
 	ld [hli], a
-	ld a, [$ff98]
+	ldh a, [$ff98]
 	ld [hl], a
 	pop hl
 asm_3f4ca: ; 3f4ca (f:74ca)
@@ -7702,7 +7702,7 @@ asm_3f4ca: ; 3f4ca (f:74ca)
 	ld hl, W_PLAYERBATTSTATUS2
 	ld de, W_PLAYERMOVENUM
 	ld bc, wccf7
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .asm_3f4e6
 	ld hl, W_ENEMYBATTSTATUS2
@@ -7733,7 +7733,7 @@ asm_3f4ca: ; 3f4ca (f:74ca)
 	pop af
 	call nz, Bankswitch
 .asm_3f50e
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	call z, ApplyBadgeStatBoosts
 	ld hl, MonsStatsRoseText
@@ -7753,7 +7753,7 @@ MonsStatsRoseText: ; 3f528 (f:7528)
 	TX_FAR _MonsStatsRoseText
 	db $08 ; asm
 	ld hl, GreatlyRoseText
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	ld a, [W_PLAYERMOVEEFFECT]
 	jr z, .asm_3f53b
@@ -7776,7 +7776,7 @@ StatModifierDownEffect100:
 	ld hl, wEnemyMonStatMods
 	ld de, W_PLAYERMOVEEFFECT
 	ld bc, W_ENEMYBATTSTATUS1
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .got
 	ld hl, wPlayerMonStatMods
@@ -7791,7 +7791,7 @@ StatModifierDownEffect: ; 3f54c (f:754c)
 	ld hl, wEnemyMonStatMods
 	ld de, W_PLAYERMOVEEFFECT
 	ld bc, W_ENEMYBATTSTATUS1
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .asm_3f572
 	ld hl, wPlayerMonStatMods
@@ -7859,7 +7859,7 @@ StatModifierDownEffectApply:
 	push de
 	ld hl, wEnemyMonAttack + 1
 	ld de, wEnemyMonUnmodifiedAttack
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .asm_3f5d8
 	ld hl, wBattleMonAttack + 1
@@ -7893,33 +7893,33 @@ StatModifierDownEffectApply:
 	add hl, bc
 	pop bc
 	xor a
-	ld [H_NUMTOPRINT], a ; $ff96 (aliases: H_MULTIPLICAND)
+	ldh [H_NUMTOPRINT], a ; $ff96 (aliases: H_MULTIPLICAND)
 	ld a, [de]
-	ld [$ff97], a
+	ldh [$ff97], a
 	inc de
 	ld a, [de]
-	ld [$ff98], a
+	ldh [$ff98], a
 	ld a, [hli]
-	ld [H_REMAINDER], a ; $ff99 (aliases: H_DIVISOR, H_MULTIPLIER, H_POWEROFTEN)
+	ldh [H_REMAINDER], a ; $ff99 (aliases: H_DIVISOR, H_MULTIPLIER, H_POWEROFTEN)
 	call Multiply
 	ld a, [hl]
-	ld [H_REMAINDER], a ; $ff99 (aliases: H_DIVISOR, H_MULTIPLIER, H_POWEROFTEN)
+	ldh [H_REMAINDER], a ; $ff99 (aliases: H_DIVISOR, H_MULTIPLIER, H_POWEROFTEN)
 	ld b, $4
 	call Divide
 	pop hl
-	ld a, [$ff98]
+	ldh a, [$ff98]
 	ld b, a
-	ld a, [$ff97]
+	ldh a, [$ff97]
 	or b
 	jp nz, Func_3f624
-	ld [$ff97], a
+	ldh [$ff97], a
 	ld a, $1
-	ld [$ff98], a
+	ldh [$ff98], a
 
 Func_3f624: ; 3f624 (f:7624)
-	ld a, [$ff97]
+	ldh a, [$ff97]
 	ld [hli], a
-	ld a, [$ff98]
+	ldh a, [$ff98]
 	ld [hl], a
 	pop de
 	pop hl
@@ -7934,7 +7934,7 @@ asm_3f62c: ; 3f62c (f:762c)
 	jr nc, .asm_3f63b
 	call Func_3fb89
 .asm_3f63b
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	call nz, ApplyBadgeStatBoosts
 	ld hl, MonsStatsFellText
@@ -7964,7 +7964,7 @@ MonsStatsFellText: ; 3f661 (f:7661)
 	TX_FAR _MonsStatsFellText
 	db $08 ; asm
 	ld hl, FellText
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	ld a, [W_PLAYERMOVEEFFECT]
 	jr z, .asm_3f674
@@ -8029,7 +8029,7 @@ BideEffect: ; 3f6e5 (f:76e5)
 	ld hl, W_PLAYERBATTSTATUS1
 	ld de, W_NUMHITS
 	ld bc, wPlayerNumAttacksLeft
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .asm_3f6fc
 	ld hl, W_ENEMYBATTSTATUS1
@@ -8048,14 +8048,14 @@ BideEffect: ; 3f6e5 (f:76e5)
 	inc a
 	inc a
 	ld [bc], a
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	add XSTATITEM_ANIM
 	jp Func_3fb96
 
 ThrashPetalDanceEffect: ; 3f717 (f:7717)
 	ld hl, W_PLAYERBATTSTATUS1
 	ld de, wPlayerNumAttacksLeft
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .asm_3f728
 	ld hl, W_ENEMYBATTSTATUS1
@@ -8067,12 +8067,12 @@ ThrashPetalDanceEffect: ; 3f717 (f:7717)
 	inc a
 	inc a
 	ld [de], a
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	add ANIM_B0
 	jp Func_3fb96
 
 SwitchAndTeleportEffect: ; 3f739 (f:7739)
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr nz, .asm_3f791
 	ld a, [W_ISINBATTLE]
@@ -8190,7 +8190,7 @@ TwoToFiveAttacksEffect: ; 3f811 (f:7811)
 	ld hl, W_PLAYERBATTSTATUS1
 	ld de, wPlayerNumAttacksLeft
 	ld bc, W_NUMHITS
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .asm_3f828
 	ld hl, W_ENEMYBATTSTATUS1
@@ -8201,7 +8201,7 @@ TwoToFiveAttacksEffect: ; 3f811 (f:7811)
 	ret nz
 	set 2, [hl] ; mon is now attacking multiple times
 	ld hl, W_PLAYERMOVEEFFECT
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .asm_3f838
 	ld hl, W_ENEMYMOVEEFFECT
@@ -8235,7 +8235,7 @@ FlichSideEffect: ; 3f85b (f:785b)
 	ret nz
 	ld hl, W_ENEMYBATTSTATUS1
 	ld de, W_PLAYERMOVEEFFECT
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .asm_3f870
 	ld hl, W_PLAYERBATTSTATUS1
@@ -8265,7 +8265,7 @@ OneHitKOEffect: ; 3f884 (f:7884)
 ChargeEffect: ; 3f88c (f:788c)
 	ld hl, W_PLAYERBATTSTATUS1
 	ld de, W_PLAYERMOVEEFFECT
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	ld b, XSTATITEM_ANIM
 	jr z, .asm_3f8a1
@@ -8347,7 +8347,7 @@ DugAHoleText: ; 3f912 (f:7912)
 TrappingEffect: ; 3f917 (f:7917)
 	ld hl, W_PLAYERBATTSTATUS1
 	ld de, wPlayerNumAttacksLeft
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .asm_3f928
 	ld hl, W_ENEMYBATTSTATUS1
@@ -8398,7 +8398,7 @@ ConfusionEffect: ; 3f961 (f:7961)
 	jr nz, Func_3f9a6
 
 Func_3f96f: ; 3f96f (f:796f)
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	ld hl, W_ENEMYBATTSTATUS1
 	ld bc, wd070
@@ -8446,7 +8446,7 @@ SubstituteEffect: ; 3f9b9 (f:79b9)
 
 HyperBeamEffect: ; 3f9c1 (f:79c1)
 	ld hl, W_PLAYERBATTSTATUS2
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .asm_3f9cc
 	ld hl, W_ENEMYBATTSTATUS2
@@ -8457,7 +8457,7 @@ HyperBeamEffect: ; 3f9c1 (f:79c1)
 Func_3f9cf: ; 3f9cf (f:79cf)
 	push hl
 	ld hl, W_ENEMYBATTSTATUS2
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .asm_3f9db
 	ld hl, W_PLAYERBATTSTATUS2
@@ -8468,7 +8468,7 @@ Func_3f9cf: ; 3f9cf (f:79cf)
 
 RageEffect: ; 3f9df (f:79df)
 	ld hl, W_PLAYERBATTSTATUS2
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .player
 	ld hl, W_ENEMYBATTSTATUS2
@@ -8483,7 +8483,7 @@ MimicEffect: ; 3f9ed (f:79ed)
 	ld a, [W_MOVEMISSED]
 	and a
 	jr nz, .asm_3fa74
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	ld hl, wBattleMonMoves
 	ld a, [W_PLAYERBATTSTATUS1]
@@ -8508,7 +8508,7 @@ MimicEffect: ; 3f9ed (f:79ed)
 	and a
 	jr z, .asm_3fa17
 	ld d, a
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	ld hl, wBattleMonMoves
 	ld a, [wPlayerMoveListIndex]
@@ -8568,7 +8568,7 @@ DisableEffect: ; 3fa8a (f:7a8a)
 	jr nz, .asm_3fb06
 	ld de, W_ENEMYDISABLEDMOVE
 	ld hl, wEnemyMonMoves
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr z, .asm_3faa4
 	ld de, W_PLAYERDISABLEDMOVE
@@ -8590,7 +8590,7 @@ DisableEffect: ; 3fa8a (f:7a8a)
 	jr z, .asm_3faa8
 	ld [wd11e], a
 	push hl
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	ld hl, wBattleMonPP
 	jr nz, .asm_3facf
@@ -8626,7 +8626,7 @@ DisableEffect: ; 3fa8a (f:7a8a)
 	ld [de], a
 	call Func_3fb89
 	ld hl, wccee
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	jr nz, .asm_3faf8
 	inc hl
@@ -8723,7 +8723,7 @@ ParalyzedMayNotAttackText: ; 3fb74 (f:7b74)
 CheckTargetSubstitute: ; 3fb79 (f:7b79)
 	push hl
 	ld hl, W_ENEMYBATTSTATUS2
-	ld a, [$fff3]   ;whose turn?
+	ldh a, [$fff3]   ;whose turn?
 	and a
 	jr z, .next1
 	ld hl, W_PLAYERBATTSTATUS2
@@ -8733,7 +8733,7 @@ CheckTargetSubstitute: ; 3fb79 (f:7b79)
 	ret
 
 Func_3fb89: ; 3fb89 (f:7b89)
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	ld a, [W_PLAYERMOVENUM]
 	jr z, .asm_3fb94
@@ -8744,7 +8744,7 @@ Func_3fb89: ; 3fb89 (f:7b89)
 
 Func_3fb96: ; 3fb96 (f:7b96)
 	ld [W_ANIMATIONID], a
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	ld a, $6
 	jr z, .asm_3fba2
@@ -8756,7 +8756,7 @@ Func_3fb96: ; 3fb96 (f:7b96)
 Func_3fba8: ; 3fba8 (f:7ba8)
 	xor a
 	ld [wcc5b], a
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	ld a, [W_PLAYERMOVENUM]
 	jr z, .asm_3fbb7

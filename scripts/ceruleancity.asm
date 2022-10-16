@@ -28,7 +28,7 @@ CeruleanCityScript4: ; 194a7 (6:54a7)
 	ld hl, wd75b
 	set 7, [hl]
 	ld a, $2
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	xor a
 	ld [wJoyIgnore], a
@@ -55,7 +55,7 @@ CeruleanCityScript0: ; 194c8 (6:54c8)
 	ld [wSpriteStateData1 + $29], a
 	call Delay3
 	ld a, $2
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	jp DisplayTextID
 .asm_194f7
 	ld a, [wd75a]
@@ -67,7 +67,7 @@ CeruleanCityScript0: ; 194c8 (6:54c8)
 	ld a, [wWalkBikeSurfState]
 	and a
 	jr z, .asm_19512 ; 0x19508 $8
-	ld a, $ff
+	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a
 	call PlaySound
 .asm_19512
@@ -75,25 +75,25 @@ CeruleanCityScript0: ; 194c8 (6:54c8)
 	ld a, MUSIC_MEET_RIVAL
 	call PlayMusic
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld a, $f0
 	ld [wJoyIgnore], a
 	ld a, [W_XCOORD]
-	cp $14
+	cp 20
 	jr z, .asm_19535 ; 0x19526 $d
 	ld a, $1
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	ld a, $5
-	ld [$ff8b], a
+	ldh [$ff8b], a
 	call GetPointerWithinSpriteStateData2
-	ld [hl], $19
+	ld [hl], 25
 .asm_19535
 	ld a, HS_CERULEAN_RIVAL
 	ld [wcc4d], a
 	predef ShowObject
 	ld de, CeruleanCityMovement1
 	ld a, $1
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call MoveSprite
 	ld a, $1
 	ld [W_CERULEANCITYCURSCRIPT], a
@@ -114,9 +114,9 @@ CeruleanCityMovement1: ; 19559 (6:5559)
 
 CeruleanCityScript_1955d: ; 1955d (6:555d)
 	ld a,1
-	ld [$ff8c],a
+	ldh [$ff8c],a
 	xor a
-	ld [$ff8d],a
+	ldh [$ff8d],a
 	jp SetSpriteFacingDirectionAndDelay ; face object
 
 CeruleanCityScript1: ; 19567 (6:5567)
@@ -126,7 +126,7 @@ CeruleanCityScript1: ; 19567 (6:5567)
 	xor a
 	ld [wJoyIgnore], a
 	ld a, $1
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	ld hl, wd72d
 	set 6, [hl]
@@ -156,7 +156,7 @@ CeruleanCityScript1: ; 19567 (6:5567)
 	ld [wIsTrainerBattle], a
 
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	call CeruleanCityScript_1955d
 	ld a, $2
 	ld [W_CERULEANCITYCURSCRIPT], a
@@ -174,17 +174,17 @@ CeruleanCityScript2: ; 195b1 (6:55b1)
 	ld hl, wd75a
 	set 0, [hl]
 	ld a, $1
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
-	ld a, $ff
+	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a
 	call PlaySound
 	callba Music_RivalAlternateStart
 	ld a, $1
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call SetSpriteMovementBytesToFF
 	ld a, [W_XCOORD]
-	cp $14
+	cp 20
 	jr nz, .asm_195f0 ; 0x195e9 $5
 	ld de, CeruleanCityMovement4
 	jr .asm_195f3 ; 0x195ee $3
@@ -192,7 +192,7 @@ CeruleanCityScript2: ; 195b1 (6:55b1)
 	ld de, CeruleanCityMovement3
 .asm_195f3
 	ld a, $1
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call MoveSprite
 	ld a, $3
 	ld [W_CERULEANCITYCURSCRIPT], a
@@ -284,7 +284,7 @@ CeruleanCityText2: ; 1967c (6:567c)
 	ld hl, CeruleanCityText_196ee
 	ld de, CeruleanCityText_196ee
 	call SaveEndBattleTextPointers
-	ld a, [$ff8c]
+	ldh a, [$ff8c]
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
@@ -352,13 +352,13 @@ CeruleanCityText6: ; 19707 (6:5707)
 CeruleanCityText7: ; 1970c (6:570c)
 	db $08 ; asm
 	ldh a, [$d3]
-	cp $b4
+	cp 180
 	jr c, .asm_e9fc9 ; 0x19711
 	ld hl, CeruleanCityText_19730
 	call PrintText
 	jr .asm_d486e ; 0x19719
 .asm_e9fc9 ; 0x1971b
-	cp $64
+	cp 100
 	jr c, .asm_df99b ; 0x1971d
 	ld hl, CeruleanCityText_19735
 	call PrintText
@@ -384,19 +384,19 @@ CeruleanCityText_1973a: ; 1973a (6:573a)
 CeruleanCityText8: ; 1973f (6:573f)
 	db $08 ; asm
 	ldh a, [$d3]
-	cp $b4
+	cp 180
 	jr c, .asm_e28da ; 0x19744
 	ld hl, CeruleanCityText_1976f
 	call PrintText
 	jr .asm_f2f38 ; 0x1974c
 .asm_e28da ; 0x1974e
-	cp $78
+	cp 120
 	jr c, .asm_15d08 ; 0x19750
 	ld hl, CeruleanCityText_19774
 	call PrintText
 	jr .asm_f2f38 ; 0x19758
 .asm_15d08 ; 0x1975a
-	cp $3c
+	cp 60
 	jr c, .asm_d7fea ; 0x1975c
 	ld hl, CeruleanCityText_19779
 	call PrintText

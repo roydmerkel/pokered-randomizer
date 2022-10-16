@@ -21,9 +21,9 @@ PewterPokecenterText3: ; 5c59b (17:459b)
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld hl, PewterPokecenterText5
 	call PrintText
-	ld a, $ff
+	ld a, SFX_STOP_ALL_MUSIC
 	call PlaySound
-	ld c, $20
+	ld c, 32
 	call DelayFrames
 	ld hl, Unknown_5c608 ; $4608
 	ld de, wTrainerFacingDirection
@@ -52,13 +52,13 @@ PewterPokecenterText3: ; 5c59b (17:459b)
 	ld a, [wTrainerEngageDistance]
 	ld [wcd42], a
 	pop hl
-	ld c, $18
+	ld c, 24
 	call DelayFrames
 	push hl
 	call IsSongPlaying
 	pop hl
 	jr c, .asm_5c5d1 ; 0x5c5f6 $d9
-	ld c, $30
+	ld c, 48
 	call DelayFrames
 	call PlayDefaultMusic
 	jp TextScriptEnd

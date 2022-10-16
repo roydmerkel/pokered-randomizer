@@ -23,7 +23,7 @@ PokemonTower2Script0: ; 6050f (18:450f)
 	ld hl, CoordsData_6055e ; $455e
 	call ArePlayerCoordsInArray
 	ret nc
-	ld a, $ff
+	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a
 	call PlaySound
 	ld c, 0 ; BANK(Music_MeetRival)
@@ -43,16 +43,16 @@ PokemonTower2Script0: ; 6050f (18:450f)
 .asm_60544
 	ld [wd528], a
 	ld a, $1
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	ld a, b
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $1
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	xor a
-	ld [hJoyHeld], a
-	ld [hJoyPressed], a
+	ldh [hJoyHeld], a
+	ldh [hJoyPressed], a
 	ret
 
 CoordsData_6055e: ; 6055e (18:455e)
@@ -71,7 +71,7 @@ PokemonTower2Script1: ; 60563 (18:4563)
 	ld hl, wd764
 	set 7, [hl]
 	ld a, $1
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	ld de, MovementData_605b2
 	ld a, [wd764]
@@ -80,9 +80,9 @@ PokemonTower2Script1: ; 60563 (18:4563)
 	ld de, MovementData_605a9
 .asm_60589
 	ld a, $1
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call MoveSprite
-	ld a, $ff
+	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a
 	call PlaySound
 	callba Music_RivalAlternateStart

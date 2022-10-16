@@ -1046,7 +1046,7 @@ Func_28cb:: ; 28cb (0:28cb)
 	ld b, a
 	xor a
 	ld [wMusicHeaderPointer], a
-	ld a, $ff
+	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a
 	call PlaySound
 	ld a, [wAudioSavedROMBank]
@@ -2366,7 +2366,7 @@ DisplayEnemyTrainerTextAndStartBattle:: ; 324c (0:324c)
 	ret nz ; return if the enemy trainer hasn't finished walking to the player's sprite
 	ld [wJoyIgnore], a
 	ld a, [wSpriteIndex]
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	; fall through
 
@@ -2427,9 +2427,9 @@ EndTrainerBattle:: ; 3275 (0:3275)
 ResetButtonPressedAndMapScript:: ; 32c1 (0:32c1)
 	xor a
 	ld [wJoyIgnore], a
-	ld [hJoyHeld], a
-	ld [hJoyPressed], a
-	ld [hJoyReleased], a
+	ldh [hJoyHeld], a
+	ldh [hJoyPressed], a
+	ldh [hJoyReleased], a
 	ld [W_CURMAPSCRIPT], a               ; reset battle status
 	ret
 
@@ -2529,7 +2529,7 @@ CheckForEngagingTrainers:: ; 3306 (0:3306)
 ; hl = text if the player wins
 ; de = text if the player loses
 SaveEndBattleTextPointers:: ; 3354 (0:3354)
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [H_LOADEDROMBANK]
 	ld [wEndBattleTextRomBank], a
 	ld a, h
 	ld [wEndBattleWinTextPointer], a
@@ -2574,10 +2574,10 @@ PrintEndBattleText:: ; 3381 (0:3381)
 	res 7, [hl]
 	pop hl
 	ret z
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [H_LOADEDROMBANK]
 	push af
 	ld a, [wEndBattleTextRomBank]
-	ld [H_LOADEDROMBANK], a
+	ldh [H_LOADEDROMBANK], a
 	ld [MBC1RomBank], a
 	push hl
 	callba SaveTrainerName
@@ -2585,7 +2585,7 @@ PrintEndBattleText:: ; 3381 (0:3381)
 	call PrintText
 	pop hl
 	pop af
-	ld [H_LOADEDROMBANK], a
+	ldh [H_LOADEDROMBANK], a
 	ld [MBC1RomBank], a
 	callba FreezeEnemyTrainerSprite
 	jp WaitForSoundToFinish
@@ -2636,7 +2636,7 @@ PlayTrainerMusic:: ; 33e8 (0:33e8)
 	ret nz
 	xor a
 	ld [wMusicHeaderPointer], a
-	ld a, $ff
+	ld a, SFX_STOP_ALL_MUSIC
 	call PlaySound      ; stop music
 	ld a, 0 ; 0 ; BANK(Music_MeetEvilTrainer)
 	ld [wAudioROMBank], a

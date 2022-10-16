@@ -1,5 +1,5 @@
 Func_5317: ; 5317 (1:5317)
-	ld c, $50
+	ld c, 80
 	call DelayFrames
 	call ClearScreen
 	call UpdateSprites
@@ -7,8 +7,8 @@ Func_5317: ; 5317 (1:5317)
 	call LoadHpBarAndStatusTilePatterns
 	call LoadTrainerInfoTextBoxTiles
 	hlCoord 3, 8
-	ld b, $2
-	ld c, $c
+	ld b, 2
+	ld c, 12
 	call Func_5ab3
 	hlCoord 4, 10
 	ld de, PleaseWaitString ; $550f
@@ -21,19 +21,19 @@ Func_5317: ; 5317 (1:5317)
 Func_5345: ; 5345
 	ld hl, wd152
 	ld a, $fd
-	ld b, $6
+	ld b, 6
 .asm_534c
 	ld [hli], a
 	dec b
 	jr nz, .asm_534c
 	ld hl, wd141
 	ld a, $fd
-	ld b, $7
+	ld b, 7
 .asm_5357
 	ld [hli], a
 	dec b
 	jr nz, .asm_5357
-	ld b, $a
+	ld b, 10
 .asm_535d
 	call Random
 	cp $fd
@@ -63,7 +63,7 @@ Func_5345: ; 5345
 	jr nz, .asm_537d
 	ld hl, wPartyMons - 1
 	ld de, wTileMapBackup + 10
-	ld bc, $0
+	ld bc, 0
 .asm_538d
 	inc c
 	ld a, c
@@ -95,23 +95,23 @@ Func_5345: ; 5345
 	ld a, $ff
 	ld [de], a
 	call Func_227f
-	ld a, [$ffaa]
+	ldh a, [$ffaa]
 	cp $2
 	jr nz, .asm_53d2
 	call Delay3
 	xor a
-	ld [$ffac], a
+	ldh [$ffac], a
 	ld a, $81
-	ld [$ff02], a
+	ldh [$ff02], a
 	call DelayFrame
 	xor a
-	ld [$ffac], a
+	ldh [$ffac], a
 	ld a, $81
-	ld [$ff02], a
+	ldh [$ff02], a
 .asm_53d2
 	call Delay3
 	ld a, $8
-	ld [rIE], a ; $ffff
+	ldh [rIE], a ; $ffff
 	ld hl, wd141
 	ld de, wTileMapBackup2
 	ld bc, $11
@@ -126,13 +126,13 @@ Func_5345: ; 5345
 	ld [de], a
 	ld hl, wTileMapBackup
 	ld de, wTileMapBackup + 200
-	ld bc, $c8
+	ld bc, 200
 	call Func_216f
 	ld a, $d
-	ld [rIE], a ; $ffff
-	ld a, $ff
+	ldh [rIE], a ; $ffff
+	ld a, SFX_STOP_ALL_MUSIC
 	call PlaySound
-	ld a, [$ffaa]
+	ldh a, [$ffaa]
 	cp $2
 	jr z, .asm_5431
 	ld hl, wTileMapBackup2
@@ -146,7 +146,7 @@ Func_5345: ; 5345
 	jr z, .asm_5415
 	dec hl
 	ld de, wd148
-	ld c, $a
+	ld c, 10
 .asm_5427
 	ld a, [hli]
 	cp $fe
@@ -190,7 +190,7 @@ Func_5345: ; 5345
 	jr nz, .asm_5456
 	ld de, wTileMapBackup
 	ld hl, wPartyMons
-	ld c, $2
+	ld c, 2
 .asm_546a
 	ld a, [de]
 	inc de
@@ -219,7 +219,7 @@ Func_5345: ; 5345
 	jr nz, .asm_546a
 	ld de, wTileMapBackup + 200
 	ld hl, wEnemyMons
-	ld c, $2
+	ld c, 2
 .asm_5497
 	ld a, [de]
 	inc de
@@ -233,7 +233,7 @@ Func_5345: ; 5345
 	jr z, .asm_54b6
 	push hl
 	push bc
-	ld b, $0
+	ld b, 0
 	dec a
 	ld c, a
 	add hl, bc
@@ -252,11 +252,11 @@ Func_5345: ; 5345
 	ld [wcf8e], a
 	xor a
 	ld [wcc38], a
-	ld a, $ff
+	ld a, SFX_STOP_ALL_MUSIC
 	call PlaySound
-	ld a, [$ffaa]
+	ldh a, [$ffaa]
 	cp $2
-	ld c, $42
+	ld c, 66
 	call z, DelayFrames
 	ld a, [W_ISLINKBATTLE] ; W_ISLINKBATTLE
 	cp $3
@@ -285,7 +285,7 @@ PleaseWaitString: ; 550f (1:550f)
 
 Func_551c:
 	ld hl, PointerTable_5a5b ; $5a5b
-	ld b, $0
+	ld b, 0
 	ld a, [wcc38]
 	cp $ff
 	jp z, LoadTitlescreenGraphics
@@ -324,9 +324,9 @@ TradeCenter_SelectMon:
 	ld [wMenuWatchedKeys], a
 	ld a, [wEnemyPartyCount]
 	ld [wMaxMenuItem], a
-	ld a, $9
+	ld a, 9
 	ld [wTopMenuItemY], a
-	ld a, $1
+	ld a, 1
 	ld [wTopMenuItemX], a
 .asm_5574
 	ld hl, $fff6
@@ -384,9 +384,9 @@ TradeCenter_SelectMon:
 	ld [wMenuWatchedKeys], a
 	ld a, [wPartyCount]
 	ld [wMaxMenuItem], a
-	ld a, $1
+	ld a, 1
 	ld [wTopMenuItemY], a
-	ld a, $1
+	ld a, 1
 	ld [wTopMenuItemX], a
 	ld hl, wTileMap + $15
 	ld bc, $0601
@@ -451,8 +451,8 @@ TradeCenter_SelectMon:
 .asm_5679
 	push af
 	ld hl, wTileMap + $118
-	ld b, $2
-	ld c, $12
+	ld b, 2
+	ld c, 18
 	call Func_5ab3
 	ld hl, wTileMap + $142
 	ld de, .statsTrade
@@ -462,14 +462,14 @@ TradeCenter_SelectMon:
 	ld [wLastMenuItem], a
 	ld [wMenuJoypadPollCount], a
 	ld [wMaxMenuItem], a
-	ld a, $10
+	ld a, 16
 	ld [wTopMenuItemY], a
 .asm_569f
 	ld a, $7f
 	ld [wTileMap + $14b], a
 	ld a, $13
 	ld [wMenuWatchedKeys], a
-	ld a, $1
+	ld a, 1
 	ld [wTopMenuItemX], a
 	call HandleMenuInput
 	bit 4, a
@@ -486,7 +486,7 @@ TradeCenter_SelectMon:
 	ld [wTileMap + $141], a
 	ld a, $23
 	ld [wMenuWatchedKeys], a
-	ld a, $b
+	ld a, 11
 	ld [wTopMenuItemX], a
 	call HandleMenuInput
 	bit 5, a
@@ -537,7 +537,7 @@ TradeCenter_SelectMon:
 	ld [wTileMap + $141], a
 .asm_574a
 	call JoypadLowSensitivity
-	ld a, [hJoy5]
+	ldh a, [hJoy5]
 	and a
 	jr z, .asm_574a ; 0x5750 $f8
 	bit 0, a
@@ -585,8 +585,8 @@ Func_57a2:
 	ld bc, $0031
 	call FillMemory
 	ld hl, wTileMap + $12c
-	ld b, $1
-	ld c, $9
+	ld b, 1
+	ld c, 9
 	call Func_5ab3
 	ld hl, wTileMap + $142
 	ld de, CancelTextString
@@ -615,12 +615,12 @@ Func_57d6:
 
 Func_57f2:
 	ld hl, wTileMap
-	ld b, $6
-	ld c, $12
+	ld b, 6
+	ld c, 18
 	call Func_5ab3
 	ld hl, wTileMap + $a0
-	ld b, $6
-	ld c, $12
+	ld b, 6
+	ld c, 18
 	call Func_5ab3
 	ld hl, wTileMap + $5
 	ld de, wPlayerName
@@ -646,21 +646,21 @@ Func_5827:
 	push de
 	push hl
 	ld a, c
-	ld [$ff95], a
+	ldh [$ff95], a
 	call GetMonName
 	pop hl
 	call PlaceString
 	pop de
 	inc de
 	pop hl
-	ld bc, $0014
+	ld bc, 20
 	add hl, bc
 	pop bc
 	inc c
 	jr .asm_5829 ; 0x5847 $e0
 
 TradeCenter_Trade:
-	ld c, $64
+	ld c, 100
 	call DelayFrames
 	xor a
 	ld [wcc43], a
@@ -668,13 +668,13 @@ TradeCenter_Trade:
 	ld [wcc37], a
 	ld [wMenuJoypadPollCount], a
 	ld hl, wTileMap + $f0
-	ld b, $4
-	ld c, $12
+	ld b, 4
+	ld c, 18
 	call Func_5ab3
 	ld a, [wWhichTrade]
 	ld hl, wPartySpecies
 	ld c, a
-	ld b, $0
+	ld b, 0
 	add hl, bc
 	ld a, [hl]
 	ld [wd11e], a
@@ -686,7 +686,7 @@ TradeCenter_Trade:
 	ld a, [wTrainerEngageDistance]
 	ld hl, wEnemyPartyMons
 	ld c, a
-	ld b, $0
+	ld b, 0
 	add hl, bc
 	ld a, [hl]
 	ld [wd11e], a
@@ -709,8 +709,8 @@ TradeCenter_Trade:
 	ld a, $1
 	ld [wcc42], a
 	ld hl, wTileMap + $f0
-	ld b, $4
-	ld c, $12
+	ld b, 4
+	ld c, 18
 	call Func_5ab3
 	ld hl, wTileMap + $119
 	ld de, TradeCanceled
@@ -725,8 +725,8 @@ TradeCenter_Trade:
 	dec a
 	jr nz, .asm_58fd ; 0x58e5 $16
 	ld hl, wTileMap + $f0
-	ld b, $4
-	ld c, $12
+	ld b, 4
+	ld c, 18
 	call Func_5ab3
 	ld hl, wTileMap + $119
 	ld de, TradeCanceled
@@ -768,7 +768,7 @@ TradeCenter_Trade:
 	ld a, [wWhichTrade]
 	ld [wWhichPokemon], a
 	ld hl, wPartySpecies
-	ld b, $0
+	ld b, 0
 	ld c, a
 	add hl, bc
 	ld a, [hl]
@@ -780,7 +780,7 @@ TradeCenter_Trade:
 	ld c, a
 	ld [wWhichPokemon], a
 	ld hl, wEnemyPartyMons
-	ld d, $0
+	ld d, 0
 	ld e, a
 	add hl, de
 	ld a, [hl]
@@ -800,25 +800,25 @@ TradeCenter_Trade:
 	ld [wccd4], a
 	ld a, [wTrainerEngageDistance]
 	ld hl, wEnemyPartyMons
-	ld b, $0
+	ld b, 0
 	ld c, a
 	add hl, bc
 	ld a, [hl]
 	ld [wTrainerEngageDistance], a
-	ld a, $a
+	ld a, 10
 	ld [wMusicHeaderPointer], a
 	ld a, $2
 	ld [wAudioSavedROMBank], a
 	ld a, MUSIC_SAFARI_ZONE
 	ld [wNewSoundID], a
 	call PlaySound
-	ld c, $64
+	ld c, 100
 	call DelayFrames
 	call ClearScreen
 	call LoadHpBarAndStatusTilePatterns
 	xor a
 	ld [wcc5b], a
-	ld a, [$ffaa]
+	ldh a, [$ffaa]
 	cp $1
 	jr z, .asm_59d9 ; 0x59d0 $7
 	predef Func_410e2
@@ -830,24 +830,24 @@ TradeCenter_Trade:
 	call ClearScreen
 	call LoadTrainerInfoTextBoxTiles
 	call Func_226e
-	ld c, $28
+	ld c, 40
 	call DelayFrames
 	ld hl, wTileMap + $f0
-	ld b, $4
-	ld c, $12
+	ld b, 4
+	ld c, 18
 	call Func_5ab3
 	ld hl, wTileMap + $119
 	ld de, TradeCompleted
 	call PlaceString
 	predef SaveSAVtoSRAM2
-	ld c, $32
+	ld c, 50
 	call DelayFrames
 	xor a
 	ld [wcc38], a
 	jp Func_5345
 
 Func_5a18:
-	ld c, $64
+	ld c, 100
 	call DelayFrames
 	xor a
 	ld [wcc38], a
@@ -896,8 +896,8 @@ Func_5a5f: ; 5a5f (1:5a5f)
 	ld [W_GRASSRATE], a ; W_GRASSRATE
 	inc a
 	ld [W_ISLINKBATTLE], a ; W_ISLINKBATTLE
-	ld [hJoy5], a
-	ld a, $a
+	ldh [hJoy5], a
+	ld a, 10
 	ld [wMusicHeaderPointer], a
 	ld a, 0 ; 0 ; BANK(Music_Celadon)
 	ld [wAudioSavedROMBank], a
@@ -920,7 +920,7 @@ Func_5ab3: ; 5ab3 (1:5ab3)
 	inc a
 	ld [hl], a
 	pop hl
-	ld de, $14
+	ld de, 20
 	add hl, de
 .asm_5ac2
 	push hl
@@ -930,7 +930,7 @@ Func_5ab3: ; 5ab3 (1:5ab3)
 	call Func_5ae0
 	ld [hl], $77
 	pop hl
-	ld de, $14
+	ld de, 20
 	add hl, de
 	dec b
 	jr nz, .asm_5ac2

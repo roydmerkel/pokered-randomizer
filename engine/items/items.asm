@@ -224,14 +224,14 @@ ItemUseBall: ; d687 (3:5687)
 .noAilments	;$572e
 	push bc		;save RANDOM number
 	xor a
-	ld [H_MULTIPLICAND],a
+	ldh [H_MULTIPLICAND],a
 	ld hl,wEnemyMonMaxHP
 	ld a,[hli]
-	ld [H_MULTIPLICAND + 1],a
+	ldh [H_MULTIPLICAND + 1],a
 	ld a,[hl]
-	ld [H_MULTIPLICAND + 2],a
+	ldh [H_MULTIPLICAND + 2],a
 	ld a,255
-	ld [H_MULTIPLIER],a
+	ldh [H_MULTIPLIER],a
 	call Multiply	; MaxHP * 255
 	ld a,[wcf91]
 	cp a,GREAT_BALL
@@ -239,7 +239,7 @@ ItemUseBall: ; d687 (3:5687)
 	jr nz,.next7
 	ld a,8
 .next7	;$574d
-	ld [H_DIVISOR],a
+	ldh [H_DIVISOR],a
 	ld b,4		; number of bytes in dividend
 	call Divide
 	ld hl,wEnemyMonHP
@@ -258,39 +258,39 @@ ItemUseBall: ; d687 (3:5687)
 	jr nz,.next8
 	inc a
 .next8	;$5766
-	ld [H_DIVISOR],a
+	ldh [H_DIVISOR],a
 	ld b,4
 	call Divide	; ((MaxHP * 255) / BallFactor) / (CurHP / 4)
-	ld a,[H_QUOTIENT + 2]
+	ldh a,[H_QUOTIENT + 2]
 	and a
 	jr z,.next9
 	ld a,255
-	ld [H_QUOTIENT + 3],a
+	ldh [H_QUOTIENT + 3],a
 .next9	;$5776
 	pop bc
 	ld a,[wEnemyMonCatchRate]	;enemy: Catch Rate
 	cp b
 	jr c,.next10
-	ld a,[H_QUOTIENT + 2]
+	ldh a,[H_QUOTIENT + 2]
 	and a
 	jr nz,.BallSuccess ; if ((MaxHP * 255) / BallFactor) / (CurHP / 4) > 0x255, automatic success
 	call Random
 	ld b,a
-	ld a,[H_QUOTIENT + 3]
+	ldh a,[H_QUOTIENT + 3]
 	cp b
 	jr c,.next10
 .BallSuccess	;$578b
 	jr .BallSuccess2
 .next10	;$578d
-	ld a,[H_QUOTIENT + 3]
+	ldh a,[H_QUOTIENT + 3]
 	ld [wd11e],a
 	xor a
-	ld [H_MULTIPLICAND],a
-	ld [H_MULTIPLICAND + 1],a
+	ldh [H_MULTIPLICAND],a
+	ldh [H_MULTIPLICAND + 1],a
 	ld a,[wEnemyMonCatchRate]	;enemy: Catch Rate
-	ld [H_MULTIPLICAND + 2],a
+	ldh [H_MULTIPLICAND + 2],a
 	ld a,100
-	ld [H_MULTIPLIER],a
+	ldh [H_MULTIPLIER],a
 	call Multiply	; CatchRate * 100
 	ld a,[wcf91]
 	ld b,255
@@ -304,18 +304,18 @@ ItemUseBall: ; d687 (3:5687)
 	jr z,.next11
 .next11	;$57b8
 	ld a,b
-	ld [H_DIVISOR],a
+	ldh [H_DIVISOR],a
 	ld b,4
 	call Divide
-	ld a,[H_QUOTIENT + 2]
+	ldh a,[H_QUOTIENT + 2]
 	and a
 	ld b,$63
 	jr nz,.next12
 	ld a,[wd11e]
-	ld [H_MULTIPLIER],a
+	ldh [H_MULTIPLIER],a
 	call Multiply
 	ld a,255
-	ld [H_DIVISOR],a
+	ldh [H_DIVISOR],a
 	ld b,4
 	call Divide
 	ld a,[wEnemyMonStatus]	;status ailments
@@ -326,11 +326,11 @@ ItemUseBall: ; d687 (3:5687)
 	jr z,.next14
 	ld b,10
 .next14	;$57e6
-	ld a,[H_QUOTIENT + 3]
+	ldh a,[H_QUOTIENT + 3]
 	add b
-	ld [H_QUOTIENT + 3],a
+	ldh [H_QUOTIENT + 3],a
 .next13	;$57eb
-	ld a,[H_QUOTIENT + 3]
+	ldh a,[H_QUOTIENT + 3]
 	cp a,10
 	ld b,$20
 	jr c,.next12
@@ -350,7 +350,7 @@ ItemUseBall: ; d687 (3:5687)
 	ld a,TOSS_ANIM
 	ld [W_ANIMATIONID],a
 	xor a
-	ld [$fff3],a
+	ldh [$fff3],a
 	ld [wcc5b],a
 	ld [wd05b],a
 	ld a,[wWhichPokemon]
@@ -562,7 +562,7 @@ ItemUseBicycle: ; d977 (3:5977)
 	jp nc,NoCyclingAllowedHere
 	call ItemUseReloadOverworldData
 	xor a ; no keys pressed
-	ld [hJoyHeld],a ; current joypad state
+	ldh [hJoyHeld],a ; current joypad state
 	inc a
 	ld [wWalkBikeSurfState],a ; change player state to bicycling
 	ld hl,GotOnBicycleText
@@ -593,11 +593,11 @@ ItemUseSurfboard: ; d9b4 (3:59b4)
 	jp PrintText
 .tryToStopSurfing
 	xor a
-	ld [$ff8c],a
+	ldh [$ff8c],a
 	ld d,16 ; talking range in pixels (normal range)
 	call IsSpriteInFrontOfPlayer2
 	res 7,[hl]
-	ld a,[$ff8c]
+	ldh a,[$ff8c]
 	and a ; is there a sprite in the way?
 	jr nz,.cannotStopSurfing
 	ld hl,TilePairCollisionsWater
@@ -924,18 +924,18 @@ ItemUseMedicine: ; dabb (3:5abb)
 	call AddNTimes
 	ld a,[hli]
 	ld [wHPBarMaxHP + 1],a
-	ld [H_DIVIDEND],a
+	ldh [H_DIVIDEND],a
 	ld a,[hl]
 	ld [wHPBarMaxHP],a
-	ld [H_DIVIDEND + 1],a
+	ldh [H_DIVIDEND + 1],a
 	ld a,5
-	ld [H_DIVISOR],a
+	ldh [H_DIVISOR],a
 	ld b,2 ; number of bytes
 	call Divide ; get 1/5 of max HP of pokemon that used Softboiled
 	ld bc,wPartyMon1HP - wPartyMon1MaxHP
 	add hl,bc ; hl now points to LSB of current HP of pokemon that used Softboiled
 ; subtract 1/5 of max HP from current HP of pokemon that used Softboiled
-	ld a,[H_QUOTIENT + 3]
+	ldh a,[H_QUOTIENT + 3]
 	push af
 	ld b,a
 	ld a,[hl]
@@ -943,7 +943,7 @@ ItemUseMedicine: ; dabb (3:5abb)
 	sub b
 	ld [hld],a
 	ld [wHPBarNewHP],a
-	ld a,[H_QUOTIENT + 2]
+	ldh a,[H_QUOTIENT + 2]
 	ld b,a
 	ld a,[hl]
 	ld [wHPBarOldHP+1],a
@@ -956,15 +956,15 @@ ItemUseMedicine: ; dabb (3:5abb)
 	call AddNTimes ; calculate coordinates of HP bar of pokemon that used Softboiled
 	ld a,RBSFX_02_3d
 	call PlaySoundWaitForCurrent ; play sound
-	ld a,[$fff6]
+	ldh a,[$fff6]
 	set 0,a
-	ld [$fff6],a
+	ldh [$fff6],a
 	ld a,$02
 	ld [wListMenuID],a
 	predef UpdateHPBar2 ; animate HP bar decrease of pokemon that used Softboiled
-	ld a,[$fff6]
+	ldh a,[$fff6]
 	res 0,a
-	ld [$fff6],a
+	ldh [$fff6],a
 	pop af
 	ld b,a ; store heal amount (1/5 of max HP)
 	ld hl,wHPBarOldHP + 1
@@ -1106,15 +1106,15 @@ ItemUseMedicine: ; dabb (3:5abb)
 	jr z,.playStatusAilmentCuringSound
 	ld a,RBSFX_02_3d ; HP healing sound
 	call PlaySoundWaitForCurrent ; play sound
-	ld a,[$fff6]
+	ldh a,[$fff6]
 	set 0,a
-	ld [$fff6],a
+	ldh [$fff6],a
 	ld a,$02
 	ld [wListMenuID],a
 	predef UpdateHPBar2 ; animate the HP bar lengthening
-	ld a,[$fff6]
+	ldh a,[$fff6]
 	res 0,a
-	ld [$fff6],a
+	ldh [$fff6],a
 	ld a,$f7 ; revived message
 	ld [wd07d],a
 	ld a,[wcf91]
@@ -1130,13 +1130,13 @@ ItemUseMedicine: ; dabb (3:5abb)
 	call PlaySoundWaitForCurrent ; play sound
 .showHealingItemMessage
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED],a
+	ldh [H_AUTOBGTRANSFERENABLED],a
 	call ClearScreen
 	dec a
 	ld [wUpdateSpritesEnabled],a
 	call RedrawPartyMenu ; redraws the party menu and displays the message
 	ld a,1
-	ld [H_AUTOBGTRANSFERENABLED],a
+	ldh [H_AUTOBGTRANSFERENABLED],a
 	ld c,50
 	call DelayFrames
 	call WaitForTextScrollButtonPress ; wait for a button press
@@ -1253,11 +1253,11 @@ ItemUseMedicine: ; dabb (3:5abb)
 	ld bc,-19
 	add hl,bc ; hl now points to experience
 ; update experience to minimum for new level
-	ld a,[$ff96]
+	ldh a,[$ff96]
 	ld [hli],a
-	ld a,[$ff97]
+	ldh a,[$ff97]
 	ld [hli],a
-	ld a,[$ff98]
+	ldh a,[$ff98]
 	ld [hl],a
 	pop hl
 	ld a,[wWhichPokemon]
@@ -1365,7 +1365,7 @@ BaitRockCommon: ; df7f (3:5f7f)
 	ld [W_ANIMATIONID],a
 	xor a
 	ld [wcc5b],a
-	ld [H_WHOSETURN],a
+	ldh [H_WHOSETURN],a
 	ld [de],a ; zero escape factor (for bait), zero bait factor (for rock)
 .randomLoop ; loop until a random number less than 5 is generated
 	call Random
@@ -1605,7 +1605,7 @@ ItemUseXStat: ; e104 (3:6104)
 	call LoadScreenTilesFromBuffer1 ; restore saved screen
 	call Delay3
 	xor a
-	ld [H_WHOSETURN],a ; set turn to player's turn
+	ldh [H_WHOSETURN],a ; set turn to player's turn
 	callba StatModifierUpEffect ; do stat increase move
 	pop hl
 	pop af
@@ -1755,7 +1755,7 @@ PlayedFluteHadEffectText: ; e215 (3:6215)
 	and a
 	jr nz,.done
 ; play out-of-battle pokeflute music
-	ld a,$ff
+	ld a,SFX_STOP_ALL_MUSIC
 	call PlaySound ; turn off music
 	ld a, RBSFX_02_5e
 	ld c, 0;BANK(SFX_02_5e)
@@ -2392,13 +2392,13 @@ RestoreBonusPP: ; e606 (3:6606)
 AddBonusPP: ; e642 (3:6642)
 	push bc
 	ld a,[de] ; normal max PP of move
-	ld [H_DIVIDEND + 3],a
+	ldh [H_DIVIDEND + 3],a
 	xor a
-	ld [H_DIVIDEND],a
-	ld [H_DIVIDEND + 1],a
-	ld [H_DIVIDEND + 2],a
+	ldh [H_DIVIDEND],a
+	ldh [H_DIVIDEND + 1],a
+	ldh [H_DIVIDEND + 2],a
 	ld a,5
-	ld [H_DIVISOR],a
+	ldh [H_DIVISOR],a
 	ld b,4
 	call Divide
 	ld a,[hl] ; move PP
@@ -2409,7 +2409,7 @@ AddBonusPP: ; e642 (3:6642)
 	srl a
 	ld c,a ; c = number of PP Ups used
 .loop
-	ld a,[H_QUOTIENT + 3]
+	ldh a,[H_QUOTIENT + 3]
 	cp a,8 ; is the amount greater than or equal to 8?
 	jr c,.addAmount
 	ld a,7 ; cap the amount at 7
@@ -2751,13 +2751,13 @@ Func_e7a4: ; e7a4 (3:67a4)
 	ld d, a
 	callab CalcExperience
 	pop de
-	ld a, [H_NUMTOPRINT] ; $ff96 (aliases: H_MULTIPLICAND)
+	ldh a, [H_NUMTOPRINT] ; $ff96 (aliases: H_MULTIPLICAND)
 	ld [de], a
 	inc de
-	ld a, [$ff97]
+	ldh a, [$ff97]
 	ld [de], a
 	inc de
-	ld a, [$ff98]
+	ldh a, [$ff98]
 	ld [de], a
 	inc de
 	xor a

@@ -24,26 +24,26 @@ SSAnne2Script0: ; 613be (18:53be)
 	ld hl, CoordsData_61411 ; $5411
 	call ArePlayerCoordsInArray
 	ret nc
-	ld a, $ff
+	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a
 	call PlaySound
 	ld c, 0 ; BANK(Music_MeetRival)
 	ld a, MUSIC_MEET_RIVAL
 	call PlayMusic
 	ld a, [wWhichTrade]
-	ld [$ffdb], a
+	ldh [$ffdb], a
 	ld a, HS_SS_ANNE_2_RIVAL
 	ld [wcc4d], a
 	predef ShowObject
 	call Delay3
 	ld a, $2
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call SetSpriteMovementBytesToFF
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld a, $f0
 	ld [wJoyIgnore], a
-	ld a, [$ffdb]
+	ldh a, [$ffdb]
 	cp $2
 	jr nz, .asm_61400 ; 0x613f9 $5
 	ld de, MovementData_6140c
@@ -67,7 +67,7 @@ CoordsData_61411: ; 61411 (18:5411)
 
 SSAnne2Script_61416: ; 61416 (18:5416)
 	ld a, [W_XCOORD] ; wd362
-	cp $25
+	cp 37
 	jr nz, .asm_61426
 	ld a, $2
 	ld [wd528], a
@@ -76,9 +76,9 @@ SSAnne2Script_61416: ; 61416 (18:5416)
 .asm_61426
 	xor a
 .asm_61427
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	ld a, $2
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	jp SetSpriteFacingDirectionAndDelay
 
 SSAnne2Script1: ; 61430 (18:5430)
@@ -89,7 +89,7 @@ SSAnne2Script1: ; 61430 (18:5430)
 	xor a
 	ld [wJoyIgnore], a
 	ld a, $2
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	call Delay3
 	ld a, SONY2 + $c8
@@ -128,13 +128,13 @@ SSAnne2Script2: ; 6146d (18:546d)
 	ld a, $f0
 	ld [wJoyIgnore], a
 	ld a, $3
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	ld a, $2
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call SetSpriteMovementBytesToFF
 	ld a, [W_XCOORD]
-	cp $25
+	cp 37
 	jr nz, .asm_61497 ; 0x61490 $5
 	ld de, MovementData_614b9
 	jr .asm_6149a ; 0x61495 $3
@@ -142,9 +142,9 @@ SSAnne2Script2: ; 6146d (18:546d)
 	ld de, MovementData_614b7
 .asm_6149a
 	ld a, $2
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call MoveSprite
-	ld a, $ff
+	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a
 	call PlaySound
 	callba Music_RivalAlternateStart
