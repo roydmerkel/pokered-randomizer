@@ -425,37 +425,37 @@ UpdateChannels: ; e8125
 	jr z, .skip
 	; load wavepattern into $ff30-$ff3f
 	ld a, [hli]
-	ldh [$ff30], a
+	ldh [rWave_0], a
 	ld a, [hli]
-	ldh [$ff31], a
+	ldh [rWave_1], a
 	ld a, [hli]
-	ldh [$ff32], a
+	ldh [rWave_2], a
 	ld a, [hli]
-	ldh [$ff33], a
+	ldh [rWave_3], a
 	ld a, [hli]
-	ldh [$ff34], a
+	ldh [rWave_4], a
 	ld a, [hli]
-	ldh [$ff35], a
+	ldh [rWave_5], a
 	ld a, [hli]
-	ldh [$ff36], a
+	ldh [rWave_6], a
 	ld a, [hli]
-	ldh [$ff37], a
+	ldh [rWave_7], a
 	ld a, [hli]
-	ldh [$ff38], a
+	ldh [rWave_8], a
 	ld a, [hli]
-	ldh [$ff39], a
+	ldh [rWave_9], a
 	ld a, [hli]
-	ldh [$ff3a], a
+	ldh [rWave_a], a
 	ld a, [hli]
-	ldh [$ff3b], a
+	ldh [rWave_b], a
 	ld a, [hli]
-	ldh [$ff3c], a
+	ldh [rWave_c], a
 	ld a, [hli]
-	ldh [$ff3d], a
+	ldh [rWave_d], a
 	ld a, [hli]
-	ldh [$ff3e], a
+	ldh [rWave_e], a
 	ld a, [hli]
-	ldh [$ff3f], a
+	ldh [rWave_f], a
 .skip
 	pop hl
 	ld a, [Crysaudio+$193]

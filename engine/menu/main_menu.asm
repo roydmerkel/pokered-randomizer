@@ -218,7 +218,7 @@ LinkMenu: ; 5c0a (1:5c0a)
 	call DelayFrame
 	call DelayFrame
 	ld a, $81
-	ldh [$ff02], a
+	ldh [rSC], a
 .asm_5cb1
 	ld b, $7f
 	ld c, $7f

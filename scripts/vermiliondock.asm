@@ -171,7 +171,7 @@ VermilionDock_1dc7c: ; 1dc7c (7:5c7c)
 	cp l
 	jr nz, .asm_1dc86 ; 0x1dc89 $fb
 	ld a, h
-	ldh [$ff43], a
+	ldh [rSCX], a
 .asm_1dc8e
 	ldh a, [rLY]
 	cp h

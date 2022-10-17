@@ -31,7 +31,7 @@ Func_71e1: ; 71e1 (1:71e1)
 	xor a
 	ldh [$ffad], a
 	ld a, $80
-	ldh [$ff02], a
+	ldh [rSC], a
 	ld a, [wcc47]
 	dec a
 	ld [wcc47], a
@@ -39,7 +39,7 @@ Func_71e1: ; 71e1 (1:71e1)
 	ld a, $1
 	ldh [rSB], a
 	ld a, $81
-	ldh [$ff02], a
+	ldh [rSC], a
 	call DelayFrame
 	jr .asm_71eb ; 0x7218 $d1
 .asm_721a
@@ -155,5 +155,5 @@ Func_72d7: ; 72d7 (1:72d7)
 	xor a
 	ldh [$ffad], a
 	ld a, $80
-	ldh [$ff02], a
+	ldh [rSC], a
 	ret

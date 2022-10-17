@@ -102,12 +102,12 @@ Func_5345: ; 5345
 	xor a
 	ldh [$ffac], a
 	ld a, $81
-	ldh [$ff02], a
+	ldh [rSC], a
 	call DelayFrame
 	xor a
 	ldh [$ffac], a
 	ld a, $81
-	ldh [$ff02], a
+	ldh [rSC], a
 .asm_53d2
 	call Delay3
 	ld a, $8

@@ -328,10 +328,10 @@ SendSGBPacket: ; 71feb (1c:5feb)
 	ldh [$fff9],a
 ; send RESET signal (P14=LOW, P15=LOW)
 	xor a
-	ldh [$ff00],a
+	ldh [rJOYP],a
 ; set P14=HIGH, P15=HIGH
 	ld a,$30
-	ldh [$ff00],a
+	ldh [rJOYP],a
 ;load length of packets (16 bytes)
 	ld b,$10
 .nextByte
@@ -348,10 +348,10 @@ SendSGBPacket: ; 71feb (1c:5feb)
 ; else (if 0th bit is zero) set P14=LOW,P15=HIGH (send bit 0)
 	ld a,$20
 .next0
-	ldh [$ff00],a
+	ldh [rJOYP],a
 ; must set P14=HIGH,P15=HIGH between each "pulse"
 	ld a,$30
-	ldh [$ff00],a
+	ldh [rJOYP],a
 ; rotation will put next bit in 0th position (so  we can always use command
 ; "bit 0,d" to fetch the bit that has to be sent)
 	rr d
@@ -362,10 +362,10 @@ SendSGBPacket: ; 71feb (1c:5feb)
 	jr nz,.nextByte
 ; send bit 1 as a "stop bit" (end of parameter data)
 	ld a,$20
-	ldh [$ff00],a
+	ldh [rJOYP],a
 ; set P14=HIGH,P15=HIGH
 	ld a,$30
-	ldh [$ff00],a
+	ldh [rJOYP],a
 	xor a
 	ldh [$fff9],a
 ; wait for about 70000 cycles
@@ -566,7 +566,7 @@ Func_72156: ; 72156 (1c:6156)
 
 Func_7216d: ; 7216d (1c:616d)
 	ld a, $80
-	ldh [$ff68], a
+	ldh [rBGPI], a
 	inc hl
 	ld c, $20
 .asm_72174
@@ -581,7 +581,7 @@ Func_7216d: ; 7216d (1c:616d)
 	inc d
 .asm_72180
 	ld a, [de]
-	ldh [$ff69], a
+	ldh [rBGPD], a
 	dec c
 	jr nz, .asm_72174
 	ret

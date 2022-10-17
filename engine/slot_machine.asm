@@ -434,9 +434,9 @@ SlotMachine_37588: ; 37588 (d:7588)
 	jp [hl]
 
 .asm_37638
-	ldh a, [$ff47]
+	ldh a, [rBGP]
 	xor $40
-	ldh [$ff47], a
+	ldh [rBGP], a
 	ld c, $5
 	call DelayFrames
 	dec b

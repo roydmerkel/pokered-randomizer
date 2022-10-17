@@ -77,7 +77,7 @@ DisplayCreditsMon: ; 740cb (1d:40cb)
 	call Func_74164
 	call FillMiddleOfScreenWithWhite
 	ld a,$FC
-	ldh [$FF47],a
+	ldh [rBGP],a
 	ld bc,7
 .next
 	call Func_74140
@@ -94,7 +94,7 @@ DisplayCreditsMon: ; 740cb (1d:40cb)
 	xor a
 	ldh [hWY],a
 	ld a,$C0
-	ldh [$FF47],a
+	ldh [rBGP],a
 	ret
 
 INCLUDE "data/credit_mons.asm"

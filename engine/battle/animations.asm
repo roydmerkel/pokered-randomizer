@@ -793,7 +793,7 @@ DoBallTossSpecialEffects: ; 78f3e (1e:4f3e)
 	dec b
 	jr nz,.loop
 	ld a,%00001000
-	ldh [$ff10],a ; Channel 1 sweep register
+	ldh [rNR10],a ; Channel 1 sweep register
 	ret
 .isTrainerBattle ; if it's a trainer battle, shorten the animation by one frame
 	ld a,[W_SUBANIMCOUNTER]
@@ -2022,11 +2022,11 @@ AnimationWavyScreen: ; 79666 (1e:5666)
 	ret
 
 Func_796ae: ; 796ae (1e:56ae)
-	ldh a, [$ff41]
+	ldh a, [rSTAT]
 	and $3
 	jr nz, Func_796ae
 	ld a, [hl]
-	ldh [$ff43], a
+	ldh [rSCX], a
 	inc hl
 	ld a, [hl]
 	cp d

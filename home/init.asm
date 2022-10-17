@@ -23,15 +23,15 @@ rLCDC_DEFAULT EQU %11100011
 	xor a
 	ldh [rIF], a
 	ldh [rIE], a
-	ldh [$ff43], a
-	ldh [$ff42], a
+	ldh [rSCX], a
+	ldh [rSCY], a
 	ldh [rSB], a
-	ldh [$ff02], a
+	ldh [rSC], a
 	ldh [rWX], a
 	ldh [rWY], a
-	ldh [$ff06], a
-	ldh [$ff07], a
-	ldh [$ff47], a
+	ldh [rTMA], a
+	ldh [rTAC], a
+	ldh [rBGP], a
 	; only commenting these out because I need some space lol
 	;ldh [rOBP0], a
 	;ldh [rOBP1], a
@@ -67,10 +67,10 @@ rLCDC_DEFAULT EQU %11100011
 
 	xor a
 	ldh [hTilesetType], a
-	ldh [$ff41], a
+	ldh [rSTAT], a
 	ldh [$ffae], a
 	ldh [$ffaf], a
-	ldh [$ff0f], a
+	ldh [rIF], a
 	ld a, 1 << VBLANK + 1 << TIMER + 1 << SERIAL
 	ldh [rIE], a
 

@@ -6,24 +6,24 @@ Serial:: ; 2125 (0:2125)
 	ldh a, [$ffaa]
 	inc a
 	jr z, .asm_2142
-	ldh a, [$ff01]
+	ldh a, [rSB]
 	ldh [$ffad], a
 	ldh a, [$ffac]
-	ldh [$ff01], a
+	ldh [rSB], a
 	ldh a, [$ffaa]
 	cp $2
 	jr z, .asm_2162
 	ld a, $80
-	ldh [$ff02], a
+	ldh [rSC], a
 	jr .asm_2162
 .asm_2142
-	ldh a, [$ff01]
+	ldh a, [rSB]
 	ldh [$ffad], a
 	ldh [$ffaa], a
 	cp $2
 	jr z, .asm_215f
 	xor a
-	ldh [$ff01], a
+	ldh [rSB], a
 	ld a, $3
 	ldh [rDIV], a ; $ff04
 .asm_2153
@@ -31,11 +31,11 @@ Serial:: ; 2125 (0:2125)
 	bit 7, a
 	jr nz, .asm_2153
 	ld a, $80
-	ldh [$ff02], a
+	ldh [rSC], a
 	jr .asm_2162
 .asm_215f
 	xor a
-	ldh [$ff01], a
+	ldh [rSB], a
 .asm_2162
 	ld a, $1
 	ldh [$ffa9], a
@@ -88,7 +88,7 @@ Func_219a:: ; 219a (0:219a)
 	cp $2
 	jr nz, .asm_21a7
 	ld a, $81
-	ldh [$ff02], a
+	ldh [rSC], a
 .asm_21a7
 	ldh a, [$ffa9]
 	and a
@@ -270,7 +270,7 @@ Func_22c3:: ; 22c3 (0:22c3)
 	cp $2
 	jr nz, asm_22d7
 	ld a, $81
-	ldh [$ff02], a
+	ldh [rSC], a
 asm_22d7:: ; 22d7 (0:22d7)
 	ldh a, [$ffad]
 	ld [wcc3d], a
@@ -291,14 +291,14 @@ Func_22ed:: ; 22ed (0:22ed)
 	cp $2
 	ret nz
 	ld a, $81
-	ldh [$ff02], a
+	ldh [rSC], a
 	ret
 
 Func_22fa:: ; 22fa (0:22fa)
 	ld a, $2
-	ldh [$ff01], a
+	ldh [rSB], a
 	xor a
 	ldh [$ffad], a
 	ld a, $80
-	ldh [$ff02], a
+	ldh [rSC], a
 	ret
