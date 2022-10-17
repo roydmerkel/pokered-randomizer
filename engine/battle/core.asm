@@ -5197,7 +5197,7 @@ BuildingRageText: ; 3e2f8 (f:62f8)
 ; copy last move for Mirror Move
 ; sets zero flag on failure and unsets zero flag on success
 MirrorMoveCopyMove: ; 3e2fd (f:62fd)
-	ld a,[H_WHOSETURN]
+	ldh a,[H_WHOSETURN]
 	and a
 ; values for player turn
 	ld a,[wccf2]

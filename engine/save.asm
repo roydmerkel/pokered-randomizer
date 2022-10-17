@@ -61,7 +61,7 @@ LoadSAVCheckSum: ; 73623 (1c:7623)
 	ld bc, $200
 	call CopyData
 	ld a, [$b522+$30]
-	ld [hTilesetType], a
+	ldh [hTilesetType], a
 	ld hl, $b0c0+$30
 	ld de, W_NUMINBOX
 	ld bc, wBoxMonNicksEnd - W_NUMINBOX
@@ -206,7 +206,7 @@ SaveSAVtoSRAM0: ; 7378c (1c:778c)
 	ld de, $b0c0+$30
 	ld bc, wBoxMonNicksEnd - W_NUMINBOX
 	call CopyData
-	ld a, [hTilesetType]
+	ldh a, [hTilesetType]
 	ld [$b522+$30], a
 	ld hl, $a598
 	ld bc, $f8b
@@ -436,7 +436,7 @@ Func_7390e: ; 7390e (1c:790e)
 
 Func_7393f: ; 7393f (1c:793f)
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	ld a, $3
 	ld [wMenuWatchedKeys], a ; wMenuWatchedKeys
 	ld a, $b
@@ -502,7 +502,7 @@ Func_7393f: ; 7393f (1c:793f)
 	dec a
 	jr nz, .asm_739c2
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	ret
 
 ChooseABoxText: ; 739d4 (1c:79d4)

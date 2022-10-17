@@ -64,7 +64,7 @@ GetPrizeMenuId: ; 5278e (14:678e)
 ; display the three prizes' names
 ; (distinguishing between Pokemon names
 ; and Items (specifically TMs) names)
-	ld a,[$FF8C]
+	ldh a,[$FF8C]
 	sub a,$03       ; prize-texts' id are 3, 4 and 5
 	ld [wd12f],a    ; prize-texts' id (relative, i.e. 0, 1 or 2)
 	add a
@@ -179,11 +179,11 @@ LoadCoinsToSubtract: ; 528b1 (14:68b1)
 	ld hl,wd141 ; first prize's price
 	add hl,de ; get selected prize's price
 	xor a
-	ld [$FF9F],a
+	ldh [$FF9F],a
 	ld a,[hli]
-	ld [$FFA0],a
+	ldh [$FFA0],a
 	ld a,[hl]
-	ld [$FFA1],a
+	ldh [$FFA1],a
 	ret
 
 HandlePrizeChoice: ; 528c6 (14:68c6)

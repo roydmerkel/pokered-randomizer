@@ -29,9 +29,9 @@ PokemonTower6Script0: ; 60b17 (18:4b17)
 	call ArePlayerCoordsInArray
 	jp nc, CheckFightingMapTrainers
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld a, $6
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	call DisplayTextID
 	ld a, MAROWAK
 	ld [W_CUROPPONENT], a ; wd059
@@ -63,7 +63,7 @@ PokemonTower6Script4: ; 60b48 (18:4b48)
 	ld hl, wd768
 	set 7, [hl]
 	ld a, $7
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	call DisplayTextID
 	xor a
 	ld [wJoyIgnore], a

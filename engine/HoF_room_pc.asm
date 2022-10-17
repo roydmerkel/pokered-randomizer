@@ -19,7 +19,7 @@ HallOfFamePC: ; 7405c (1d:405c)
 	hlCoord 0, 14
 	call Func_7417b
 	ld a, $c0
-	ld [rBGP], a ; $ff47
+	ldh [rBGP], a ; $ff47
 	call EnableLCD
 	ld a, SFX_STOP_ALL_MUSIC
 	call PlaySoundWaitForCurrent
@@ -72,12 +72,12 @@ DisplayCreditsMon: ; 740cb (1d:40cb)
 	ld hl,vBGMap0
 	call Func_74164
 	ld a,$A7
-	ld [$FF4B],a
+	ldh [rWX],a
 	ld hl,vBGMap1
 	call Func_74164
 	call FillMiddleOfScreenWithWhite
 	ld a,$FC
-	ld [$FF47],a
+	ldh [$FF47],a
 	ld bc,7
 .next
 	call Func_74140
@@ -86,15 +86,15 @@ DisplayCreditsMon: ; 740cb (1d:40cb)
 	ld c,$14
 .next2
 	call Func_74140
-	ld a,[$FF4B]
+	ldh a,[rWX]
 	sub 8
-	ld [$FF4B],a
+	ldh [rWX],a
 	dec c
 	jr nz,.next2
 	xor a
-	ld [hWY],a
+	ldh [hWY],a
 	ld a,$C0
-	ld [$FF47],a
+	ldh [$FF47],a
 	ret
 
 INCLUDE "data/credit_mons.asm"
@@ -112,13 +112,13 @@ Func_74140: ; 74140 (1d:4140)
 	ret
 
 Func_74152: ; 74152 (1d:4152)
-	ldh a, [$ff44]
+	ldh a, [rLY]
 	cp l
 	jr nz, Func_74152
 	ld a, h
 	ldh [rSCX], a ; $ff43
 .asm_7415a
-	ldh a, [$ff44]
+	ldh a, [rLY]
 	cp h
 	jr z, .asm_7415a
 	ret

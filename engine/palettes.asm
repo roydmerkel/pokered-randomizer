@@ -325,13 +325,13 @@ SendSGBPacket: ; 71feb (1c:5feb)
 ; joypad input (said routine, located at $15f, does nothing if $fff9 is not
 ; zero)
 	ld a,$01
-	ld [$fff9],a
+	ldh [$fff9],a
 ; send RESET signal (P14=LOW, P15=LOW)
 	xor a
-	ld [$ff00],a
+	ldh [$ff00],a
 ; set P14=HIGH, P15=HIGH
 	ld a,$30
-	ld [$ff00],a
+	ldh [$ff00],a
 ;load length of packets (16 bytes)
 	ld b,$10
 .nextByte
@@ -348,10 +348,10 @@ SendSGBPacket: ; 71feb (1c:5feb)
 ; else (if 0th bit is zero) set P14=LOW,P15=HIGH (send bit 0)
 	ld a,$20
 .next0
-	ld [$ff00],a
+	ldh [$ff00],a
 ; must set P14=HIGH,P15=HIGH between each "pulse"
 	ld a,$30
-	ld [$ff00],a
+	ldh [$ff00],a
 ; rotation will put next bit in 0th position (so  we can always use command
 ; "bit 0,d" to fetch the bit that has to be sent)
 	rr d
@@ -362,12 +362,12 @@ SendSGBPacket: ; 71feb (1c:5feb)
 	jr nz,.nextByte
 ; send bit 1 as a "stop bit" (end of parameter data)
 	ld a,$20
-	ld [$ff00],a
+	ldh [$ff00],a
 ; set P14=HIGH,P15=HIGH
 	ld a,$30
-	ld [$ff00],a
+	ldh [$ff00],a
 	xor a
-	ld [$fff9],a
+	ldh [$fff9],a
 ; wait for about 70000 cycles
 	call Wait7000
 ; restore (previously pushed) number of packets
@@ -445,41 +445,41 @@ Func_7209b: ; 7209b (1c:609b)
 	di
 	call SendSGBPacket
 	ld a, $1
-	ld [$fff9], a
+	ldh [$fff9], a
 	ei
 	call Wait7000
-	ld a, [rJOYP] ; $ff0
+	ldh a, [rJOYP] ; $ff0
 	and $3
 	cp $3
 	jr nz, .asm_720fd
 	ld a, $20
-	ld [rJOYP], a ; $ff0
-	ld a, [rJOYP] ; $ff0
-	ld a, [rJOYP] ; $ff0
+	ldh [rJOYP], a ; $ff0
+	ldh a, [rJOYP] ; $ff0
+	ldh a, [rJOYP] ; $ff0
 	call Wait7000
 	call Wait7000
 	ld a, $30
-	ld [rJOYP], a ; $ff0
+	ldh [rJOYP], a ; $ff0
 	call Wait7000
 	call Wait7000
 	ld a, $10
-	ld [rJOYP], a ; $ff0
-	ld a, [rJOYP] ; $ff0
-	ld a, [rJOYP] ; $ff0
-	ld a, [rJOYP] ; $ff0
-	ld a, [rJOYP] ; $ff0
-	ld a, [rJOYP] ; $ff0
-	ld a, [rJOYP] ; $ff0
+	ldh [rJOYP], a ; $ff0
+	ldh a, [rJOYP] ; $ff0
+	ldh a, [rJOYP] ; $ff0
+	ldh a, [rJOYP] ; $ff0
+	ldh a, [rJOYP] ; $ff0
+	ldh a, [rJOYP] ; $ff0
+	ldh a, [rJOYP] ; $ff0
 	call Wait7000
 	call Wait7000
 	ld a, $30
-	ld [rJOYP], a ; $ff0
-	ld a, [rJOYP] ; $ff0
-	ld a, [rJOYP] ; $ff0
-	ld a, [rJOYP] ; $ff0
+	ldh [rJOYP], a ; $ff0
+	ldh a, [rJOYP] ; $ff0
+	ldh a, [rJOYP] ; $ff0
+	ldh a, [rJOYP] ; $ff0
 	call Wait7000
 	call Wait7000
-	ld a, [rJOYP] ; $ff0
+	ldh a, [rJOYP] ; $ff0
 	and $3
 	cp $3
 	jr nz, .asm_720fd
@@ -501,7 +501,7 @@ Func_7210b: ; 7210b (1c:610b)
 	push de
 	call DisableLCD
 	ld a, $e4
-	ld [rBGP], a ; $ff47
+	ldh [rBGP], a ; $ff47
 	ld de, vChars1
 	ld a, [wcf2d]
 	and a
@@ -527,11 +527,11 @@ Func_7210b: ; 7210b (1c:610b)
 	dec c
 	jr nz, .asm_72132
 	ld a, $e3
-	ld [rLCDC], a ; $ff40
+	ldh [rLCDC], a ; $ff40
 	pop hl
 	call SendSGBPacket
 	xor a
-	ld [rBGP], a ; $ff47
+	ldh [rBGP], a ; $ff47
 	ei
 	ret
 
@@ -566,7 +566,7 @@ Func_72156: ; 72156 (1c:6156)
 
 Func_7216d: ; 7216d (1c:616d)
 	ld a, $80
-	ld [$ff68], a
+	ldh [$ff68], a
 	inc hl
 	ld c, $20
 .asm_72174
@@ -581,7 +581,7 @@ Func_7216d: ; 7216d (1c:616d)
 	inc d
 .asm_72180
 	ld a, [de]
-	ld [$ff69], a
+	ldh [$ff69], a
 	dec c
 	jr nz, .asm_72174
 	ret

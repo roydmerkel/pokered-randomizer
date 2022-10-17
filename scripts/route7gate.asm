@@ -31,13 +31,13 @@ Route7GateScript0: ; 1e128 (7:6128)
 	ld a, $8
 	ld [wd528], a
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	callba RemoveGuardDrink
-	ld a, [$ffdb]
+	ldh a, [$ffdb]
 	and a
 	jr nz, .asm_1e15a ; 0x1e148 $10
 	ld a, $2
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	call Route7GateScript_1e111
 	ld a, $1
@@ -45,7 +45,7 @@ Route7GateScript0: ; 1e128 (7:6128)
 	ret
 .asm_1e15a
 	ld a, $3
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	ld hl, wd728
 	set 6, [hl]

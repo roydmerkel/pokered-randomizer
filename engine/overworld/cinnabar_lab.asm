@@ -35,7 +35,7 @@ GiveFossilToCinnabarLab: ; 61006 (18:5006)
 	ld e, a
 	add hl, de
 	ld a, [hl]
-	ld [$ffdb], a
+	ldh [$ffdb], a
 	cp DOME_FOSSIL
 	jr z, .choseDomeFossil
 	cp HELIX_FOSSIL
@@ -61,7 +61,7 @@ GiveFossilToCinnabarLab: ; 61006 (18:5006)
 	ld hl, LabFossil_610b3
 	call PrintText
 	ld a, [W_FOSSILITEM]
-	ld [$ffdb], a
+	ldh [$ffdb], a
 	callba RemoveItemByID
 	ld hl, LabFossil_610b8
 	call PrintText
@@ -93,7 +93,7 @@ LabFossil_610bd: ; 610bd (18:50bd)
 Func_610c2: ; 610c2 (18:50c2)
 	ld hl, wcc5b
 	xor a
-	ld [$ffdb], a
+	ldh [$ffdb], a
 .asm_610c8
 	ld a, [hli]
 	cp $ff
@@ -102,7 +102,7 @@ Func_610c2: ; 610c2 (18:50c2)
 	ld [wd11e], a
 	call GetItemName
 	hlCoord 2, 2
-	ld a, [$ffdb]
+	ldh a, [$ffdb]
 	ld bc, $28
 	call AddNTimes
 	ld de, wcd6d

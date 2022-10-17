@@ -39,7 +39,7 @@ LoadMapSpriteTilePatterns: ; 17871 (5:7871)
 	ld b,$10 ; number of sprite slots
 	ld hl,wSpriteStateData2 + $0d
 	xor a
-	ld [$ff8e],a ; 4-tile sprite counter
+	ldh [$ff8e],a ; 4-tile sprite counter
 .copyPictureIDLoop ; loop to copy picture ID from $C2XD to $C2XE
 	ld a,[hli] ; $C2XD (sprite picture ID)
 	ld [hld],a ; $C2XE
@@ -98,14 +98,14 @@ LoadMapSpriteTilePatterns: ; 17871 (5:7871)
 	cp a,SPRITE_BALL ; is it a 4-tile sprite?
 	jr c,.notFourTileSprite
 	pop af
-	ld a,[$ff8e] ; 4-tile sprite counter
+	ldh a,[$ff8e] ; 4-tile sprite counter
 	add a,11
 	jr .storeVRAMSlot
 .notFourTileSprite
 	pop af
 .storeVRAMSlot
 	ld [hl],a ; store VRAM slot at $C2XE
-	ld [$ff8d],a ; used to determine if it's 4-tile sprite later
+	ldh [$ff8d],a ; used to determine if it's 4-tile sprite later
 	ld a,b ; a = current sprite picture ID
 	dec a
 	add a
@@ -128,7 +128,7 @@ LoadMapSpriteTilePatterns: ; 17871 (5:7871)
 	push bc
 	ld hl,vNPCSprites ; VRAM base address
 	ld bc,$c0 ; number of bytes per VRAM slot
-	ld a,[$ff8d]
+	ldh a,[$ff8d]
 	cp a,11 ; is it a 4-tile sprite?
 	jr nc,.fourTileSpriteVRAMAddr
 	ld d,a
@@ -142,13 +142,13 @@ LoadMapSpriteTilePatterns: ; 17871 (5:7871)
 	jr .loadStillTilePattern
 .fourTileSpriteVRAMAddr
 	ld hl,vSprites + $7c0 ; address for second 4-tile sprite
-	ld a,[$ff8e] ; 4-tile sprite counter
+	ldh a,[$ff8e] ; 4-tile sprite counter
 	and a ; is it the first 4-tile sprite?
 	jr nz,.loadStillTilePattern
 ; if it's the first 4-tile sprite
 	ld hl,vSprites + $780 ; address for first 4-tile sprite
 	inc a
-	ld [$ff8e],a ; 4-tile sprite counter
+	ldh [$ff8e],a ; 4-tile sprite counter
 .loadStillTilePattern
 	pop bc
 	pop de
@@ -168,7 +168,7 @@ LoadMapSpriteTilePatterns: ; 17871 (5:7871)
 .skipFirstLoad
 	pop de
 	pop hl
-	ld a,[$ff8d]
+	ldh a,[$ff8d]
 	cp a,11 ; is it a 4-tile sprite?
 	jr nc,.skipSecondLoad ; if so, there is no second block
 	push de

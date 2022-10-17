@@ -44,7 +44,7 @@ SilphCo4Script_19d5d: ; 19d5d (6:5d5d)
 	ld a, [hl]
 	ld c, a
 	xor a
-	ld [$ffe0], a
+	ldh [$ffe0], a
 	pop hl
 .asm_19d69
 	ld a, [hli]
@@ -69,12 +69,12 @@ SilphCo4Script_19d5d: ; 19d5d (6:5d5d)
 	ret
 .asm_19d85
 	xor a
-	ld [$ffe0], a
+	ldh [$ffe0], a
 	ret
 
 SilphCo4Script_19d89: ; 19d89 (6:5d89)
 	ld hl, wd82a
-	ld a, [$ffe0]
+	ldh a, [$ffe0]
 	and a
 	ret z
 	cp $1

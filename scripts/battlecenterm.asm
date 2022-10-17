@@ -1,14 +1,14 @@
 BattleCenterMScript: ; 4fd10 (13:7d10)
 	call EnableAutoTextBoxDrawing
-	ld a, [$ffaa]
+	ldh a, [$ffaa]
 	cp $2
 	ld a, $8
 	jr z, .asm_4fd1d ; 0x4fd19 $2
 	ld a, $c
 .asm_4fd1d
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	ld a, $1
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call SetSpriteFacingDirection
 	ld hl, wd72d
 	bit 0, [hl]
@@ -21,7 +21,7 @@ BattleCenterMScript: ; 4fd10 (13:7d10)
 	ld [hl], a
 	ld a, $8
 	ld [wSpriteStateData1 + $19], a
-	ld a, [$ffaa]
+	ldh a, [$ffaa]
 	cp $2
 	ret z
 	ld a, $7

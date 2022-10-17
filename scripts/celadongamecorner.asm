@@ -12,7 +12,7 @@ CeladonGameCornerScript_48bcf: ; 48bcf (12:4bcf)
 	res 6, [hl]
 	ret z
 	call Random
-	ld a, [$ffd3]
+	ldh a, [$ffd3]
 	cp $7
 	jr nc, .asm_48be2
 	ld a, $8
@@ -58,10 +58,10 @@ CeladonGameCornerScript1: ; 48c19 (12:4c19)
 	ld a, $f0
 	ld [wJoyIgnore], a
 	ld a, $d
-	ld [H_SPRITEHEIGHT], a
+	ldh [H_SPRITEHEIGHT], a
 	call DisplayTextID
 	ld a, $b
-	ld [H_SPRITEHEIGHT], a
+	ldh [H_SPRITEHEIGHT], a
 	call SetSpriteMovementBytesToFF
 	ld de, MovementData_48c5a
 	ld a, [W_YCOORD]
@@ -76,7 +76,7 @@ CeladonGameCornerScript1: ; 48c19 (12:4c19)
 	ld de, MovementData_48c63
 .asm_48c4d
 	ld a, $b
-	ld [H_DOWNARROWBLINKCNT2], a
+	ldh [H_DOWNARROWBLINKCNT2], a
 	call MoveSprite
 	ld a, $2
 	ld [W_CELADONGAMECORNERCURSCRIPT], a
@@ -514,7 +514,7 @@ GameCornerBlankText2: ; 48f8d (12:4f8d)
 
 Has9990Coins: ; 48f95 (12:4f95)
 	ld a, $99
-	ld [$ffa0], a
+	ldh [$ffa0], a
 	ld a, $90
-	ld [$ffa1], a
+	ldh [$ffa1], a
 	jp HasEnoughCoins

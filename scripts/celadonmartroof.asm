@@ -83,7 +83,7 @@ CeladonMartRoofScript_4840c: ; 4840c (12:440c)
 	ld e, a
 	add hl, de
 	ld a, [hl]
-	ld [$ffdb], a
+	ldh [$ffdb], a
 	cp FRESH_WATER
 	jr z, .asm_484b6
 	cp SODA_POP
@@ -200,7 +200,7 @@ CeladonMartRoofText_4852c: ; 4852c (12:452c)
 CeladonMartRoofScript_48532: ; 48532 (12:4532)
 	ld hl, wcc5b
 	xor a
-	ld [$ffdb], a
+	ldh [$ffdb], a
 .asm_48538
 	ld a, [hli]
 	cp $ff
@@ -209,7 +209,7 @@ CeladonMartRoofScript_48532: ; 48532 (12:4532)
 	ld [wd11e], a
 	call GetItemName
 	hlCoord 2, 2
-	ld a, [$ffdb]
+	ldh a, [$ffdb]
 	ld bc, $28
 	call AddNTimes
 	ld de, wcd6d

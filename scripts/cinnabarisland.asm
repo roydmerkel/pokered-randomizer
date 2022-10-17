@@ -27,10 +27,10 @@ CinnabarIslandScript0: ; 1ca38 (7:4a38)
 	ld a, $8
 	ld [wd528], a
 	ld a, $8
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld a, $1
 	ld [wSimulatedJoypadStatesIndex], a
 	ld a, D_DOWN

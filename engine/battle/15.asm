@@ -55,15 +55,15 @@ GainExperience: ; 5524f (15:524f)
 	jr .gainStatExpLoop
 .asm_552a1
 	xor a
-	ld [H_MULTIPLICAND], a
-	ld [H_MULTIPLICAND + 1], a
+	ldh [H_MULTIPLICAND], a
+	ldh [H_MULTIPLICAND + 1], a
 	ld a, [wEnemyMonBaseExp]
-	ld [H_MULTIPLICAND + 2], a
+	ldh [H_MULTIPLICAND + 2], a
 	ld a, [wEnemyMonLevel]
-	ld [H_MULTIPLIER], a
+	ldh [H_MULTIPLIER], a
 	call Multiply
 	ld a, 7
-	ld [H_DIVISOR], a
+	ldh [H_DIVISOR], a
 	ld b, 4
 	call Divide
 	ld hl, -((wPartyMon1HPExp + 1) - wPartyMon1OTID + 4 * 2)
@@ -91,12 +91,12 @@ GainExperience: ; 5524f (15:524f)
 	inc hl
 ; add the gained exp to the party mon's exp
 	ld b, [hl]
-	ld a, [H_QUOTIENT + 3]
+	ldh a, [H_QUOTIENT + 3]
 	ld [wcf4c], a
 	add b
 	ld [hld], a
 	ld b, [hl]
-	ld a, [H_QUOTIENT + 2]
+	ldh a, [H_QUOTIENT + 2]
 	ld [wcf4b], a
 	adc b
 	ld [hl], a
@@ -119,11 +119,11 @@ GainExperience: ; 5524f (15:524f)
 	ld d, MAX_LEVEL
 	callab CalcExperience ; get max exp
 ; compare max exp with current exp
-	ld a, [$ff96]
+	ldh a, [$ff96]
 	ld b, a
-	ld a, [$ff97]
+	ldh a, [$ff97]
 	ld c, a
-	ld a, [$ff98]
+	ldh a, [$ff98]
 	ld d, a
 	pop hl
 	ld a, [hld]
@@ -311,14 +311,14 @@ DivideExpDataByNumMonsGainingExp: ; 5546c (15:546c)
 	ld c, $7
 .divideLoop
 	xor a
-	ld [H_DIVIDEND], a
+	ldh [H_DIVIDEND], a
 	ld a, [hl]
-	ld [H_DIVIDEND + 1], a
+	ldh [H_DIVIDEND + 1], a
 	ld a, [wd11e]
-	ld [H_DIVISOR], a
+	ldh [H_DIVISOR], a
 	ld b, $2
 	call Divide ; divide value by number of mons gaining exp
-	ld a, [H_QUOTIENT + 3]
+	ldh a, [H_QUOTIENT + 3]
 	ld [hli], a
 	dec c
 	jr nz, .divideLoop
@@ -326,17 +326,17 @@ DivideExpDataByNumMonsGainingExp: ; 5546c (15:546c)
 
 ; multiplies exp by 1.5
 BoostExp: ; 5549f (15:549f)
-	ld a, [H_QUOTIENT + 2]
+	ldh a, [H_QUOTIENT + 2]
 	ld b, a
-	ld a, [H_QUOTIENT + 3]
+	ldh a, [H_QUOTIENT + 3]
 	ld c, a
 	srl b
 	rr c
 	add c
-	ld [H_QUOTIENT + 3], a
-	ld a, [H_QUOTIENT + 2]
+	ldh [H_QUOTIENT + 3], a
+	ldh a, [H_QUOTIENT + 2]
 	adc b
-	ld [H_QUOTIENT + 2], a
+	ldh [H_QUOTIENT + 2], a
 	ret
 
 GainedText: ; 554b2 (15:54b2)

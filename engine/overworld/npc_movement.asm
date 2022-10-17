@@ -63,7 +63,7 @@ Func_1a44c: ; 1a44c (6:644c)
 	call FillMemory
 	ld [hl], $ff
 	ld a, [wSpriteIndex]
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	ld de, wNPCMovementDirections2
 	call MoveSprite
 	ld a, $1
@@ -85,7 +85,7 @@ Func_1a485: ; 1a485 (6:6485)
 	ret nz
 	ld a, [wcca1]
 	ld [wSimulatedJoypadStatesIndex], a
-	ld [$ff95], a
+	ldh [$ff95], a
 	predef ConvertNPCMovementDirectionsToJoypadMasks
 	call StartSimulatingJoypadStates
 	ld a, $2
@@ -276,7 +276,7 @@ FreezeEnemyTrainerSprite: ; 1a5e7 (6:65e7)
 	jr .loop
 .notRival
 	ld a, [wSpriteIndex]
-	ld [H_SPRITEINDEX], a
+	ldh [H_SPRITEINDEX], a
 	jp SetSpriteMovementBytesToFF
 
 RivalIDs: ; 1a605 (6:6605)

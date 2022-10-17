@@ -78,9 +78,9 @@ Mansion3Script_Switches: ; 5227a (14:627a)
 	cp $4
 	ret nz
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld a, $6
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	jp DisplayTextID
 
 Mansion3TextPointers: ; 5228a (14:628a)

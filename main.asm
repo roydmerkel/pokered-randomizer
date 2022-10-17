@@ -27,34 +27,34 @@ ResetStatusAndHalveMoneyOnBlackout::
 	ld [W_ISINBATTLE], a
 	ld [wMapPalOffset], a
 	ld [wNPCMovementScriptFunctionNum], a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld [wNPCMovementScriptPointerTableNum], a
 	ld [wFlags_0xcd60], a
 
-	ld [$ff9f], a
-	ld [$ff9f + 1], a
-	ld [$ff9f + 2], a
+	ldh [$ff9f], a
+	ldh [$ff9f + 1], a
+	ldh [$ff9f + 2], a
 	call HasEnoughMoney
 	jr c, .lostmoney ; never happens
 
 	; Halve the player's money.
 	ld a, [wPlayerMoney]
-	ld [$ff9f], a
+	ldh [$ff9f], a
 	ld a, [wPlayerMoney + 1]
-	ld [$ff9f + 1], a
+	ldh [$ff9f + 1], a
 	ld a, [wPlayerMoney + 2]
-	ld [$ff9f + 2], a
+	ldh [$ff9f + 2], a
 	xor a
-	ld [$ffa2], a
-	ld [$ffa3], a
+	ldh [$ffa2], a
+	ldh [$ffa3], a
 	ld a, 2
-	ld [$ffa4], a
+	ldh [$ffa4], a
 	predef DivideBCDPredef3
-	ld a, [$ffa2]
+	ldh a, [$ffa2]
 	ld [wPlayerMoney], a
-	ld a, [$ffa2 + 1]
+	ldh a, [$ffa2 + 1]
 	ld [wPlayerMoney + 1], a
-	ld a, [$ffa2 + 2]
+	ldh a, [$ffa2 + 2]
 	ld [wPlayerMoney + 2], a
 
 .lostmoney
@@ -186,7 +186,7 @@ _UpdateSprites: ; 4c34 (1:4c34)
 	ld l, a
 	sub $e
 	ld c, a
-	ld [H_CURRENTSPRITEOFFSET], a
+	ldh [H_CURRENTSPRITEOFFSET], a
 	ld a, [hl]
 	and a
 	jr z, .skipSprite   ; tests $c2Xe
@@ -211,10 +211,10 @@ _UpdateSprites: ; 4c34 (1:4c34)
 UpdateNonPlayerSprite:
 	dec a
 	swap a
-	ld [$ff93], a  ; $10 * sprite#
+	ldh [$ff93], a  ; $10 * sprite#
 	ld a, [wNPCMovementScriptSpriteOffset] ; some sprite offset?
 	ld b, a
-	ld a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [H_CURRENTSPRITEOFFSET]
 	cp b
 	jr nz, .unequal
 	jp Func_5236
@@ -234,7 +234,7 @@ DetectCollisionBetweenSprites:
 	nop
 
 	ld h, wSpriteStateData1 / $100
-	ld a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [H_CURRENTSPRITEOFFSET]
 	add wSpriteStateData1 % $100
 	ld l, a
 
@@ -259,7 +259,7 @@ DetectCollisionBetweenSprites:
 	and $f0
 	or c
 
-	ld [$ff90], a ; store Y coordinate adjusted for direction of movement
+	ldh [$ff90], a ; store Y coordinate adjusted for direction of movement
 
 	ld a, [hli] ; a = [$c1i5] (delta X) (-1, 0, or 1)
 	call SetSpriteCollisionValues
@@ -272,7 +272,7 @@ DetectCollisionBetweenSprites:
 	and $f0
 	or c
 
-	ld [$ff91], a ; store X coordinate adjusted for direction of movement
+	ldh [$ff91], a ; store X coordinate adjusted for direction of movement
 
 	ld a, l
 	add 7
@@ -282,18 +282,18 @@ DetectCollisionBetweenSprites:
 	ld [hld], a ; zero [$c1id] XXX what's [$c1id] for?
 	ld [hld], a ; zero [$c1ic] (directions in which collisions occurred)
 
-	ld a, [$ff91]
+	ldh a, [$ff91]
 	ld [hld], a ; [$c1ib] = adjusted X coordiate
-	ld a, [$ff90]
+	ldh a, [$ff90]
 	ld [hl], a ; [$c1ia] = adjusted Y coordinate
 
 	xor a ; zero the loop counter
 
 .loop
-	ld [$ff8f], a ; store loop counter
+	ldh [$ff8f], a ; store loop counter
 	swap a
 	ld e, a
-	ld a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [H_CURRENTSPRITEOFFSET]
 	cp e ; does the loop sprite match the current sprite?
 	jp z, .next ; go to the next sprite if they match
 
@@ -308,7 +308,7 @@ DetectCollisionBetweenSprites:
 	inc a
 	jp z, .next ; go the next sprite if offscreen
 
-	ld a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [H_CURRENTSPRITEOFFSET]
 	add 10
 	ld l, a
 
@@ -334,7 +334,7 @@ DetectCollisionBetweenSprites:
 	cpl
 	inc a
 .noCarry1
-	ld [$ff90], a ; store the distance between the two sprites' adjusted Y values
+	ldh [$ff90], a ; store the distance between the two sprites' adjusted Y values
 
 ; Use the carry flag set by the above subtraction to determine which sprite's
 ; Y coordinate is larger. This information is used later to set [$c1ic],
@@ -356,11 +356,11 @@ DetectCollisionBetweenSprites:
 	ld b, 9
 
 .next1
-	ld a, [$ff90] ; a = distance between adjusted Y coordinates
+	ldh a, [$ff90] ; a = distance between adjusted Y coordinates
 	sub b
-	ld [$ff92], a ; store distance adjusted using sprite i's direction
+	ldh [$ff92], a ; store distance adjusted using sprite i's direction
 	ld a, b
-	ld [$ff90], a ; store 7 or 9 depending on sprite i's delta Y
+	ldh [$ff90], a ; store 7 or 9 depending on sprite i's delta Y
 	jr c, .checkXDistance
 
 ; If sprite j's delta Y is 0, then b = 7, else b = 9.
@@ -373,7 +373,7 @@ DetectCollisionBetweenSprites:
 	ld b, 9
 
 .next2
-	ld a, [$ff92] ; a = distance adjusted using sprite i's direction
+	ldh a, [$ff92] ; a = distance adjusted using sprite i's direction
 	sub b ; adjust distance using sprite j's direction
 	jr z, .checkXDistance
 	jr nc, .next ; go to next sprite if distance is still positive after both adjustments
@@ -405,7 +405,7 @@ DetectCollisionBetweenSprites:
 	cpl
 	inc a
 .noCarry2
-	ld [$ff91], a ; store the distance between the two sprites' adjusted X values
+	ldh [$ff91], a ; store the distance between the two sprites' adjusted X values
 
 ; Use the carry flag set by the above subtraction to determine which sprite's
 ; X coordinate is larger. This information is used later to set [$c1ic],
@@ -427,11 +427,11 @@ DetectCollisionBetweenSprites:
 	ld b, 9
 
 .next3
-	ld a, [$ff91] ; a = distance between adjusted X coordinates
+	ldh a, [$ff91] ; a = distance between adjusted X coordinates
 	sub b
-	ld [$ff92], a ; store distance adjusted using sprite i's direction
+	ldh [$ff92], a ; store distance adjusted using sprite i's direction
 	ld a, b
-	ld [$ff91], a ; store 7 or 9 depending on sprite i's delta X
+	ldh [$ff91], a ; store 7 or 9 depending on sprite i's delta X
 	jr c, .collision
 
 ; If sprite j's delta X is 0, then b = 7, else b = 9.
@@ -444,15 +444,15 @@ DetectCollisionBetweenSprites:
 	ld b, 9
 
 .next4
-	ld a, [$ff92] ; a = distance adjusted using sprite i's direction
+	ldh a, [$ff92] ; a = distance adjusted using sprite i's direction
 	sub b ; adjust distance using sprite j's direction
 	jr z, .collision
 	jr nc, .next ; go to next sprite if distance is still positive after both adjustments
 
 .collision
-	ld a, [$ff91] ; a = 7 or 9 depending on sprite i's delta X
+	ldh a, [$ff91] ; a = 7 or 9 depending on sprite i's delta X
 	ld b, a
-	ld a, [$ff90] ; a = 7 or 9 depending on sprite i's delta Y
+	ldh a, [$ff90] ; a = 7 or 9 depending on sprite i's delta Y
 	inc l
 
 ; If delta X isn't 0 and delta Y is 0, then b = %0011, else b = %1100.
@@ -474,7 +474,7 @@ DetectCollisionBetweenSprites:
 ; set bit in [$c1ie] or [$c1if] to indicate which sprite the collision occurred with
 	inc l
 	inc l
-	ld a, [$ff8f] ; a = loop counter
+	ldh a, [$ff8f] ; a = loop counter
 	ld de, SpriteCollisionBitTable
 	add a
 	add e
@@ -491,7 +491,7 @@ DetectCollisionBetweenSprites:
 	ld [hl], a
 
 .next
-	ld a, [$ff8f] ; a = loop counter
+	ldh a, [$ff8f] ; a = loop counter
 	inc a
 	cp $10
 	jp nz, .loop
@@ -578,7 +578,7 @@ TestBattle:
 	; do it all again.
 	ld a, 1
 	ld [wUpdateSpritesEnabled], a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	jr .loop
 
 INCLUDE "engine/overworld/item.asm"
@@ -632,7 +632,7 @@ LoadSpecialWarpData: ; 62ff (1:62ff)
 	cp BATTLE_CENTER
 	jr nz, .notBattleCenter
 	ld hl, BattleCenterSpec1
-	ld a, [$ffaa]
+	ldh a, [$ffaa]
 	cp $2
 	jr z, .copyWarpData
 	ld hl, BattleCenterSpec2
@@ -641,7 +641,7 @@ LoadSpecialWarpData: ; 62ff (1:62ff)
 	cp TRADE_CENTER
 	jr nz, .notTradeCenter
 	ld hl, TradeCenterSpec1
-	ld a, [$ffaa]
+	ldh a, [$ffaa]
 	cp $2
 	jr z, .copyWarpData
 	ld hl, TradeCenterSpec2
@@ -881,18 +881,18 @@ HandleItemListSwapping: ; 6b44 (1:6b44)
 	cp b
 	jr z,.swapSameItemType
 .swapDifferentItems
-	ld [$ff95],a ; [$ff95] = second item ID
+	ldh [$ff95],a ; [$ff95] = second item ID
 	ld a,[hld]
-	ld [$ff96],a ; [$ff96] = second item quantity
+	ldh [$ff96],a ; [$ff96] = second item quantity
 	ld a,[de]
 	ld [hli],a ; put first item ID in second item slot
 	inc de
 	ld a,[de]
 	ld [hl],a ; put first item quantity in second item slot
-	ld a,[$ff96]
+	ldh a,[$ff96]
 	ld [de],a ; put second item quantity in first item slot
 	dec de
-	ld a,[$ff95]
+	ldh a,[$ff95]
 	ld [de],a ; put second item ID in first item slot
 	xor a
 	ld [wMenuItemToSwap],a ; 0 means no item is currently being swapped
@@ -995,7 +995,7 @@ DisplayTextIDInit: ; 7096 (1:7096)
 	ld a,[wAutoTextBoxDrawingControl]
 	bit 0,a
 	jr nz,.skipDrawingTextBoxBorder
-	ld a,[$ff8c] ; text ID (or sprite ID)
+	ldh a,[$ff8c] ; text ID (or sprite ID)
 	and a
 	jr nz,.notStartMenu
 ; if text ID is 0 (i.e. the start menu)
@@ -1062,10 +1062,10 @@ DisplayTextIDInit: ; 7096 (1:7096)
 	ld b,$9c ; window background address
 	call CopyScreenTileBufferToVRAM ; transfer background in WRAM to VRAM
 	xor a
-	ld [hWY],a ; put the window on the screen
+	ldh [hWY],a ; put the window on the screen
 	call LoadFontTilePatterns
 	ld a,$01
-	ld [H_AUTOBGTRANSFERENABLED],a ; enable continuous WRAM to VRAM transfer each V-blank
+	ldh [H_AUTOBGTRANSFERENABLED],a ; enable continuous WRAM to VRAM transfer each V-blank
 	ret
 
 ; function that displays the start menu
@@ -1719,7 +1719,7 @@ Func_76e1: ; 76e1 (1:36e1)
 	call TextBoxBorder
 	call UpdateSprites
 	ld a, $c
-	ld [$fff7], a
+	ldh [$fff7], a
 	hlCoord 13, 12
 	ld de, PokemonMenuEntries ; $77c2
 	jp PlaceString
@@ -1794,7 +1794,7 @@ Func_76e1: ; 76e1 (1:36e1)
 .asm_7776
 	pop hl
 	ld a, [wcd42]
-	ld [$fff7], a
+	ldh [$fff7], a
 	hlCoord 0, 12
 	ld a, [wcd42]
 	inc a
@@ -2025,15 +2025,15 @@ INCLUDE "data/map_header_banks.asm"
 
 ClearVariablesAfterLoadingMapData: ; c335 (3:4335)
 	ld a, $90
-	ld [hWY], a
-	ld [rWY], a
+	ldh [hWY], a
+	ldh [rWY], a
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	ld [wStepCounter], a
 	ld [W_LONEATTACKNO], a ; W_GYMLEADERNO
-	ld [hJoyPressed], a
-	ld [hJoyReleased], a
-	ld [hJoyHeld], a
+	ldh [hJoyPressed], a
+	ldh [hJoyReleased], a
+	ldh [hJoyHeld], a
 	ld [wcd6a], a
 	ld [wd5a3], a
 	ld hl, wCardKeyDoorY
@@ -2063,7 +2063,7 @@ IsPlayerStandingOnWarp: ; c35f (3:435f)
 	ld a, [hli] ; target warp
 	ld [wDestinationWarpID], a
 	ld a, [hl] ; target map
-	ld [$ff8b], a
+	ldh [$ff8b], a
 	ld hl, wd736
 	set 2, [hl] ; standing on warp flag
 	ret
@@ -2359,7 +2359,7 @@ _GetTileAndCoordsInFrontOfPlayer: ; c589 (3:4589)
 
 GetTileTwoStepsInFrontOfPlayer: ; c5be (3:45be)
 	xor a
-	ld [$ffdb], a
+	ldh [$ffdb], a
 	ld hl, W_YCOORD
 	ld a, [hli]
 	ld d, a
@@ -2440,33 +2440,33 @@ CheckForBoulderCollisionWithSprites: ; c636 (3:4636)
 	ld hl, wSpriteStateData2 + $14
 	add hl, de
 	ld a, [hli] ; map Y position
-	ld [$ffdc], a
+	ldh [$ffdc], a
 	ld a, [hl] ; map X position
-	ld [$ffdd], a
+	ldh [$ffdd], a
 	ld a, [W_NUMSPRITES]
 	ld c, a
 	ld de, $f
 	ld hl, wSpriteStateData2 + $14
-	ld a, [$ffdb]
+	ldh a, [$ffdb]
 	and $3 ; facing up or down?
 	jr z, .pushingHorizontallyLoop
 .pushingVerticallyLoop
 	inc hl
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	cp [hl]
 	jr nz, .nextSprite1 ; if X coordinates don't match
 	dec hl
 	ld a, [hli]
 	ld b, a
-	ld a, [$ffdb]
+	ldh a, [$ffdb]
 	rrca
 	jr c, .pushingDown
 ; pushing up
-	ld a, [$ffdc]
+	ldh a, [$ffdc]
 	dec a
 	jr .compareYCoords
 .pushingDown
-	ld a, [$ffdc]
+	ldh a, [$ffdc]
 	inc a
 .compareYCoords
 	cp b
@@ -2479,19 +2479,19 @@ CheckForBoulderCollisionWithSprites: ; c636 (3:4636)
 .pushingHorizontallyLoop
 	ld a, [hli]
 	ld b, a
-	ld a, [$ffdc]
+	ldh a, [$ffdc]
 	cp b
 	jr nz, .nextSprite2
 	ld b, [hl]
-	ld a, [$ffdb]
+	ldh a, [$ffdb]
 	bit 2, a
 	jr nz, .pushingLeft
 ; pushing right
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	inc a
 	jr .compareXCoords
 .pushingLeft
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	dec a
 .compareXCoords
 	cp b
@@ -2577,7 +2577,7 @@ ApplyOutOfBattlePoisonDamage: ; c69c (3:469c)
 	ld [wJoyIgnore], a
 	call EnableAutoTextBoxDrawing
 	ld a, $d0
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	pop de
 	pop hl
@@ -2626,7 +2626,7 @@ ApplyOutOfBattlePoisonDamage: ; c69c (3:469c)
 .blackOut
 	call EnableAutoTextBoxDrawing
 	ld a, $d1
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	ld hl, wd72e
 	set 5, [hl]
@@ -2697,9 +2697,9 @@ LoadTilesetHeader: ; c754 (3:4754)
 	dec c
 	jr nz, .copyTilesetHeaderLoop
 	ld a, [hl]
-	ld [hTilesetType], a
+	ldh [hTilesetType], a
 	xor a
-	ld [$ffd8], a
+	ldh [$ffd8], a
 	pop hl
 	ld a, [W_CURMAPTILESET]
 	push hl
@@ -2712,7 +2712,7 @@ LoadTilesetHeader: ; c754 (3:4754)
 	jr c, .asm_c797
 	ld a, [W_CURMAPTILESET]
 	ld b, a
-	ld a, [$ff8b]
+	ldh a, [$ff8b]
 	cp b
 	jr z, .done
 .asm_c797
@@ -3192,13 +3192,13 @@ RedrawMapView: ; eedc (3:6edc)
 	ld a, [W_ISINBATTLE] ; W_ISINBATTLE
 	inc a
 	ret z
-	ld a, [H_AUTOBGTRANSFERENABLED]
+	ldh a, [H_AUTOBGTRANSFERENABLED]
 	push af
-	ld a, [hTilesetType]
+	ldh a, [hTilesetType]
 	push af
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
-	ld [hTilesetType], a ; no flower/water BG tile animations
+	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hTilesetType], a ; no flower/water BG tile animations
 	call LoadCurrentMapView
 	call GoPAL_SET_CF1C
 	ld hl, wMapViewVRAMPointer
@@ -3215,7 +3215,7 @@ RedrawMapView: ; eedc (3:6edc)
 	ld a, h
 	ld [wHPBarMaxHP + 1], a
 	ld a, 2
-	ld [$ffbe], a
+	ldh [$ffbe], a
 	ld c, 9 ; number of rows of 2x2 tiles (this covers the whole screen)
 .redrawRowLoop
 	push bc
@@ -3223,7 +3223,7 @@ RedrawMapView: ; eedc (3:6edc)
 	push hl
 	ld hl, wTileMap - 2 * 20
 	ld de, 20
-	ld a, [$ffbe]
+	ldh a, [$ffbe]
 .asm_ef1a
 	add hl, de
 	dec a
@@ -3231,7 +3231,7 @@ RedrawMapView: ; eedc (3:6edc)
 	call CopyToScreenEdgeTiles
 	pop hl
 	ld de, $20
-	ld a, [$ffbe]
+	ldh a, [$ffbe]
 	ld c, a
 .asm_ef28
 	add hl, de
@@ -3240,11 +3240,11 @@ RedrawMapView: ; eedc (3:6edc)
 	or $98
 	dec c
 	jr nz, .asm_ef28
-	ld [H_SCREENEDGEREDRAWADDR + 1], a
+	ldh [H_SCREENEDGEREDRAWADDR + 1], a
 	ld a, l
-	ld [H_SCREENEDGEREDRAWADDR], a
+	ldh [H_SCREENEDGEREDRAWADDR], a
 	ld a, REDRAWROW
-	ld [H_SCREENEDGEREDRAW], a
+	ldh [H_SCREENEDGEREDRAW], a
 	call DelayFrame
 	ld hl, $ffbe
 	inc [hl]
@@ -3254,9 +3254,9 @@ RedrawMapView: ; eedc (3:6edc)
 	dec c
 	jr nz, .redrawRowLoop
 	pop af
-	ld [hTilesetType], a
+	ldh [hTilesetType], a
 	pop af
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	ret
 
 CompareHLWithBC: ; ef4e (3:6f4e)
@@ -3302,19 +3302,19 @@ LoadMissableObjects: ; f132 (3:7132)
 	sub d
 	ld h, a
 	ld a, h
-	ld [H_DIVIDEND], a
+	ldh [H_DIVIDEND], a
 	ld a, l
-	ld [H_DIVIDEND+1], a
+	ldh [H_DIVIDEND+1], a
 	xor a
-	ld [H_DIVIDEND+2], a
-	ld [H_DIVIDEND+3], a
+	ldh [H_DIVIDEND+2], a
+	ldh [H_DIVIDEND+3], a
 	ld a, $3
-	ld [H_DIVISOR], a
+	ldh [H_DIVISOR], a
 	ld b, $2
 	call Divide                ; divide difference by 3, resulting in the global offset (number of missable items before ours)
 	ld a, [W_CURMAP] ; W_CURMAP
 	ld b, a
-	ld a, [H_DIVIDEND+3]
+	ldh a, [H_DIVIDEND+3]
 	ld c, a                    ; store global offset in c
 	ld de, W_MISSABLEOBJECTLIST
 	pop hl
@@ -3370,7 +3370,7 @@ InitializeMissableObjectsFlags: ; f175 (3:7175)
 
 ; tests if current sprite is a missable object that is hidden/has been removed
 IsObjectHidden: ; f1a6 (3:71a6)
-	ld a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [H_CURRENTSPRITEOFFSET]
 	swap a
 	ld b, a
 	ld hl, W_MISSABLEOBJECTLIST
@@ -3391,7 +3391,7 @@ IsObjectHidden: ; f1a6 (3:71a6)
 .notHidden
 	xor a
 .hidden
-	ld [$ffe5], a
+	ldh [$ffe5], a
 	ret
 
 ; adds missable object (items, leg. pokemon, etc.) to the map
@@ -3493,15 +3493,15 @@ TryPushingBoulder: ; f225 (3:7225)
 	bit 1, a ; has boulder dust animation from previous push played yet?
 	ret nz
 	xor a
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call IsSpriteInFrontOfPlayer
-	ld a, [$ff8c]
+	ldh a, [$ff8c]
 	ld [wBoulderSpriteIndex], a
 	and a
 	jp z, ResetBoulderPushFlags
 	ld hl, wSpriteStateData1 + 1
 	ld d, $0
-	ld a, [$ff8c]
+	ldh a, [$ff8c]
 	swap a
 	ld e, a
 	add hl, de
@@ -3514,14 +3514,14 @@ TryPushingBoulder: ; f225 (3:7225)
 	bit 6, [hl]
 	set 6, [hl] ; indicate that the player has tried pushing
 	ret z ; the player must try pushing twice before the boulder will move
-	ld a, [hJoyHeld]
+	ldh a, [hJoyHeld]
 	and $f0
 	ret z
 	predef CheckForCollisionWhenPushingBoulder
 	ld a, [wTileInFrontOfBoulderAndBoulderCollisionResult]
 	and a ; was there a collision?
 	jp nz, ResetBoulderPushFlags
-	ld a, [hJoyHeld]
+	ldh a, [hJoyHeld]
 	ld b, a
 	ld a, [wSpriteStateData1 + 9] ; player's sprite facing direction
 	cp SPRITE_FACING_UP
@@ -3579,7 +3579,7 @@ DoBoulderDustAnimation: ; f2b5 (3:72b5)
 	call ResetBoulderPushFlags
 	set 7, [hl]
 	ld a, [wBoulderSpriteIndex]
-	ld [H_SPRITEINDEX], a
+	ldh [H_SPRITEINDEX], a
 	call GetSpriteMovementByte2Pointer
 	ld [hl], $10
 	ld a, RBSFX_02_56
@@ -3604,7 +3604,7 @@ _AddPartyMon: ; f2e5 (3:72e5)
 	ret nc
 	ld [de], a
 	ld a, [de]
-	ld [$ffe4], a
+	ldh [$ffe4], a
 	add e
 	ld e, a
 	jr nc, .asm_f300
@@ -3621,7 +3621,7 @@ _AddPartyMon: ; f2e5 (3:72e5)
 	jr z, .asm_f315
 	ld hl, wEnemyMonOT
 .asm_f315
-	ld a, [$ffe4]
+	ldh a, [$ffe4]
 	dec a
 	call SkipFixedLengthTextEntries
 	ld d, h
@@ -3633,7 +3633,7 @@ _AddPartyMon: ; f2e5 (3:72e5)
 	and a
 	jr nz, .asm_f33f
 	ld hl, wPartyMonNicks ; wPartyMonNicks
-	ld a, [$ffe4]
+	ldh a, [$ffe4]
 	dec a
 	call SkipFixedLengthTextEntries
 	ld a, $2
@@ -3646,7 +3646,7 @@ _AddPartyMon: ; f2e5 (3:72e5)
 	jr z, .asm_f34c
 	ld hl, wEnemyMons
 .asm_f34c
-	ld a, [$ffe4]
+	ldh a, [$ffe4]
 	dec a
 	ld bc, wPartyMon2 - wPartyMon1
 	call AddNTimes
@@ -3711,10 +3711,10 @@ _AddPartyMon: ; f2e5 (3:72e5)
 	xor a
 	ld b, a
 	call CalcStat      ; calc HP stat (set cur Hp to max HP)
-	ld a, [H_MULTIPLICAND+1]
+	ldh a, [H_MULTIPLICAND+1]
 	ld [de], a
 	inc de
-	ld a, [H_MULTIPLICAND+2]
+	ldh a, [H_MULTIPLICAND+2]
 	ld [de], a
 	inc de
 	xor a
@@ -3786,13 +3786,13 @@ _AddPartyMon: ; f2e5 (3:72e5)
 	callab CalcExperience
 	pop de
 	inc de
-	ld a, [H_MULTIPLICAND] ; write experience
+	ldh a, [H_MULTIPLICAND] ; write experience
 	ld [de], a
 	inc de
-	ld a, [H_MULTIPLICAND+1]
+	ldh a, [H_MULTIPLICAND+1]
 	ld [de], a
 	inc de
-	ld a, [H_MULTIPLICAND+2]
+	ldh a, [H_MULTIPLICAND+2]
 	ld [de], a
 	xor a
 	ld b, $a
@@ -4281,37 +4281,37 @@ DivideBCDPredef4::
 
 DivideBCD::
 	xor a
-	ld [$ffa5], a
-	ld [$ffa6], a
-	ld [$ffa7], a
+	ldh [$ffa5], a
+	ldh [$ffa6], a
+	ldh [$ffa7], a
 	ld d, $1
 .asm_f72a
-	ld a, [$ffa2]
+	ldh a, [$ffa2]
 	and $f0
 	jr nz, .asm_f75b
 	inc d
-	ld a, [$ffa2]
+	ldh a, [$ffa2]
 	swap a
 	and $f0
 	ld b, a
-	ld a, [$ffa3]
+	ldh a, [$ffa3]
 	swap a
-	ld [$ffa3], a
+	ldh [$ffa3], a
 	and $f
 	or b
-	ld [$ffa2], a
-	ld a, [$ffa3]
+	ldh [$ffa2], a
+	ldh a, [$ffa3]
 	and $f0
 	ld b, a
-	ld a, [$ffa4]
+	ldh a, [$ffa4]
 	swap a
-	ld [$ffa4], a
+	ldh [$ffa4], a
 	and $f
 	or b
-	ld [$ffa3], a
-	ld a, [$ffa4]
+	ldh [$ffa3], a
+	ldh a, [$ffa4]
 	and $f0
-	ld [$ffa4], a
+	ldh [$ffa4], a
 	jr .asm_f72a
 .asm_f75b
 	push de
@@ -4321,16 +4321,16 @@ DivideBCD::
 	ld a, b
 	swap a
 	and $f0
-	ld [$ffa5], a
+	ldh [$ffa5], a
 	dec d
 	jr z, .asm_f7bc
 	push de
 	call Func_f7d7
 	call Func_f800
 	pop de
-	ld a, [$ffa5]
+	ldh a, [$ffa5]
 	or b
-	ld [$ffa5], a
+	ldh [$ffa5], a
 	dec d
 	jr z, .asm_f7bc
 	push de
@@ -4340,16 +4340,16 @@ DivideBCD::
 	ld a, b
 	swap a
 	and $f0
-	ld [$ffa6], a
+	ldh [$ffa6], a
 	dec d
 	jr z, .asm_f7bc
 	push de
 	call Func_f7d7
 	call Func_f800
 	pop de
-	ld a, [$ffa6]
+	ldh a, [$ffa6]
 	or b
-	ld [$ffa6], a
+	ldh [$ffa6], a
 	dec d
 	jr z, .asm_f7bc
 	push de
@@ -4359,23 +4359,23 @@ DivideBCD::
 	ld a, b
 	swap a
 	and $f0
-	ld [$ffa7], a
+	ldh [$ffa7], a
 	dec d
 	jr z, .asm_f7bc
 	push de
 	call Func_f7d7
 	call Func_f800
 	pop de
-	ld a, [$ffa7]
+	ldh a, [$ffa7]
 	or b
-	ld [$ffa7], a
+	ldh [$ffa7], a
 .asm_f7bc
-	ld a, [$ffa5]
-	ld [$ffa2], a
-	ld a, [$ffa6]
-	ld [$ffa3], a
-	ld a, [$ffa7]
-	ld [$ffa4], a
+	ldh a, [$ffa5]
+	ldh [$ffa2], a
+	ldh a, [$ffa6]
+	ldh [$ffa3], a
+	ldh a, [$ffa7]
+	ldh [$ffa4], a
 	pop de
 	ld a, $6
 	sub d
@@ -4390,28 +4390,28 @@ DivideBCD::
 	ret
 
 Func_f7d7: ; f7d7 (3:77d7)
-	ld a, [$ffa4]
+	ldh a, [$ffa4]
 	swap a
 	and $f
 	ld b, a
-	ld a, [$ffa3]
+	ldh a, [$ffa3]
 	swap a
-	ld [$ffa3], a
+	ldh [$ffa3], a
 	and $f0
 	or b
-	ld [$ffa4], a
-	ld a, [$ffa3]
+	ldh [$ffa4], a
+	ldh a, [$ffa3]
 	and $f
 	ld b, a
-	ld a, [$ffa2]
+	ldh a, [$ffa2]
 	swap a
-	ld [$ffa2], a
+	ldh [$ffa2], a
 	and $f0
 	or b
-	ld [$ffa3], a
-	ld a, [$ffa2]
+	ldh [$ffa3], a
+	ldh a, [$ffa2]
 	and $f
-	ld [$ffa2], a
+	ldh [$ffa2], a
 	ret
 
 Func_f800: ; f800 (3:7800)
@@ -4491,11 +4491,11 @@ InitPlayerData:
 InitPlayerData2:
 
 	call Random
-	ld a, [hRandomSub]
+	ldh a, [hRandomSub]
 	ld [wPlayerID], a
 
 	call Random
-	ld a, [hRandomAdd]
+	ldh a, [hRandomAdd]
 	ld [wPlayerID + 1], a
 
 	ld a, $ff
@@ -4571,35 +4571,35 @@ FindPathToPlayer: ; f8ba (3:78ba)
 	ld hl, wNPCMovementDirections2
 	ld de, $0
 .loop
-	ld a, [$ff99]
+	ldh a, [$ff99]
 	ld b, a
-	ld a, [$ff95] ; Y distance in steps
+	ldh a, [$ff95] ; Y distance in steps
 	call CalcDifference
 	ld d, a
 	and a
 	jr nz, .asm_f8da
-	ld a, [$ff98]
+	ldh a, [$ff98]
 	set 0, a
-	ld [$ff98], a
+	ldh [$ff98], a
 .asm_f8da
-	ld a, [$ff9a]
+	ldh a, [$ff9a]
 	ld b, a
-	ld a, [$ff96] ; X distance in steps
+	ldh a, [$ff96] ; X distance in steps
 	call CalcDifference
 	ld e, a
 	and a
 	jr nz, .asm_f8ec
-	ld a, [$ff98]
+	ldh a, [$ff98]
 	set 1, a
-	ld [$ff98], a
+	ldh [$ff98], a
 .asm_f8ec
-	ld a, [$ff98]
+	ldh a, [$ff98]
 	cp $3
 	jr z, .done
 	ld a, e
 	cp d
 	jr c, .asm_f90a
-	ld a, [$ff9d]
+	ldh a, [$ff9d]
 	bit 1, a
 	jr nz, .asm_f900
 	ld d, NPC_MOVEMENT_RIGHT
@@ -4607,12 +4607,12 @@ FindPathToPlayer: ; f8ba (3:78ba)
 .asm_f900
 	ld d, NPC_MOVEMENT_LEFT
 .asm_f902
-	ld a, [$ff9a]
+	ldh a, [$ff9a]
 	add $1
-	ld [$ff9a], a
+	ldh [$ff9a], a
 	jr .asm_f91c
 .asm_f90a
-	ld a, [$ff9d]
+	ldh a, [$ff9d]
 	bit 0, a
 	jr nz, .asm_f914
 	ld d, NPC_MOVEMENT_DOWN
@@ -4620,15 +4620,15 @@ FindPathToPlayer: ; f8ba (3:78ba)
 .asm_f914
 	ld d, NPC_MOVEMENT_UP
 .asm_f916
-	ld a, [$ff99]
+	ldh a, [$ff99]
 	add $1
-	ld [$ff99], a
+	ldh [$ff99], a
 .asm_f91c
 	ld a, d
 	ld [hli], a
-	ld a, [$ff97]
+	ldh a, [$ff97]
 	inc a
-	ld [$ff97], a
+	ldh [$ff97], a
 	jp .loop
 .done
 	ld [hl], $ff
@@ -4636,13 +4636,13 @@ FindPathToPlayer: ; f8ba (3:78ba)
 
 CalcPositionOfPlayerRelativeToNPC: ; f929 (3:7929)
 	xor a
-	ld [$ff9d], a
+	ldh [$ff9d], a
 	ld a, [wSpriteStateData1 + 4] ; player's sprite screen Y position in pixels
 	ld d, a
 	ld a, [wSpriteStateData1 + 6] ; player's sprite screen X position in pixels
 	ld e, a
 	ld hl, wSpriteStateData1
-	ld a, [$ff95] ; sprite offset
+	ldh a, [$ff95] ; sprite offset
 	add l
 	add $4
 	ld l, a
@@ -4675,7 +4675,7 @@ CalcPositionOfPlayerRelativeToNPC: ; f929 (3:7929)
 	ld [hli], a
 	call DivideBytes ; divide Y absolute distance by 16
 	ld a, [hl] ; quotient
-	ld [$ff95], a
+	ldh [$ff95], a
 	pop hl
 	inc hl
 	ld b, e
@@ -4696,23 +4696,23 @@ CalcPositionOfPlayerRelativeToNPC: ; f929 (3:7929)
 	res 1, [hl]
 	pop hl
 .divideXDistance
-	ld [$ffe5], a
+	ldh [$ffe5], a
 	ld a, 16
-	ld [$ffe6], a
+	ldh [$ffe6], a
 	call DivideBytes ; divide X absolute distance by 16
-	ld a, [$ffe7] ; quotient
-	ld [$ff96], a
-	ld a, [$ff9b]
+	ldh a, [$ffe7] ; quotient
+	ldh [$ff96], a
+	ldh a, [$ff9b]
 	and a
 	ret z
-	ld a, [$ff9d]
+	ldh a, [$ff9d]
 	cpl
 	and $3
-	ld [$ff9d], a
+	ldh [$ff9d], a
 	ret
 
 ConvertNPCMovementDirectionsToJoypadMasks: ; f9a0 (3:79a0)
-	ld a, [$ff95]
+	ldh a, [$ff95]
 	ld [wNPCMovementDirections2Index], a
 	dec a
 	ld de, wSimulatedJoypadStatesEnd
@@ -4726,9 +4726,9 @@ ConvertNPCMovementDirectionsToJoypadMasks: ; f9a0 (3:79a0)
 	call ConvertNPCMovementDirectionToJoypadMask
 	ld [de], a
 	inc de
-	ld a, [$ff95]
+	ldh a, [$ff95]
 	dec a
-	ld [$ff95], a
+	ldh [$ff95], a
 	jr nz, .loop
 	ret
 

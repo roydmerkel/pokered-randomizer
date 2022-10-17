@@ -146,7 +146,7 @@ ViridianGymScript3: ; 74988 (1d:4988)
 	ld [wJoyIgnore], a
 ViridianGymScript3_74995: ; 74995 (1d:4995)
 	ld a, $c
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	call DisplayTextID
 	ld hl, wd751
 	set 1, [hl]
@@ -155,14 +155,14 @@ ViridianGymScript3_74995: ; 74995 (1d:4995)
 	call GiveItem
 	jr nc, .BagFull
 	ld a, $d
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	call DisplayTextID
 	ld hl, wd751
 	set 0, [hl]
 	jr .asm_749be
 .BagFull
 	ld a, $e
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	call DisplayTextID
 .asm_749be
 	ld hl, W_OBTAINEDBADGES

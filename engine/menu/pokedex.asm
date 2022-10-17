@@ -10,7 +10,7 @@ ShowPokedexMenu: ; 40000 (10:4000)
 	ld [wLastMenuItem],a
 	inc a
 	ld [wd11e],a
-	ld [hJoy7],a
+	ldh [hJoy7],a
 .setUpGraphics
 	ld b,$08
 	call GoPAL_SET
@@ -35,7 +35,7 @@ ShowPokedexMenu: ; 40000 (10:4000)
 	ld [wcc37],a
 	ld [wCurrentMenuItem],a
 	ld [wLastMenuItem],a
-	ld [hJoy7],a
+	ldh [hJoy7],a
 	ld [wWastedByteCD3A],a
 	ld [wOverrideSimulatedJoypadStatesMask],a
 	pop af
@@ -153,7 +153,7 @@ HandlePokedexSideMenu: ; 4006d (10:406d)
 ; sets carry flag if player presses A, unsets carry flag if player presses B
 HandlePokedexListMenu: ; 40111 (10:4111)
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED],a
+	ldh [H_AUTOBGTRANSFERENABLED],a
 ; draw the horizontal line separating the seen and owned amounts from the menu
 	hlCoord 15, 8
 	ld a,$7a ; horizontal line tile
@@ -212,7 +212,7 @@ HandlePokedexListMenu: ; 40111 (10:4111)
 	ld [wWhichTrade],a ; max seen pokemon
 .loop
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED],a
+	ldh [H_AUTOBGTRANSFERENABLED],a
 	hlCoord 4, 2
 	ld bc,$0e0a
 	call ClearScreenArea
@@ -276,7 +276,7 @@ HandlePokedexListMenu: ; 40111 (10:4111)
 	dec d
 	jr nz,.printPokemonLoop
 	ld a,01
-	ld [H_AUTOBGTRANSFERENABLED],a
+	ldh [H_AUTOBGTRANSFERENABLED],a
 	call Delay3
 	call GBPalNormal
 	call HandleMenuInput
@@ -409,10 +409,10 @@ ShowPokedexDataInternal: ; 402e2 (10:42e2)
 	call GoPAL_SET
 	pop af
 	ld [wd11e],a
-	ld a,[hTilesetType]
+	ldh a,[hTilesetType]
 	push af
 	xor a
-	ld [hTilesetType],a
+	ldh [hTilesetType],a
 	hlCoord 0, 0
 	ld de,1
 	ld bc,$6414
@@ -530,9 +530,9 @@ ShowPokedexDataInternal: ; 402e2 (10:42e2)
 	ld bc,$0205 ; no leading zeroes, right-aligned, 2 bytes, 5 digits
 	call PrintNumber ; print weight
 	hlCoord 14, 8
-	ld a,[$ff8c]
+	ldh a,[$ff8c]
 	sub a,10
-	ld a,[$ff8b]
+	ldh a,[$ff8b]
 	sbc a,0
 	jr nc,.next
 	ld [hl],"0" ; if the weight is less than 10, put a 0 before the decimal point
@@ -542,24 +542,24 @@ ShowPokedexDataInternal: ; 402e2 (10:42e2)
 	ld [hld],a ; make space for the decimal point by moving the last digit forward one tile
 	ld [hl],$f2 ; decimal point tile
 	pop af
-	ld [$ff8c],a ; restore original value of [$ff8c]
+	ldh [$ff8c],a ; restore original value of [$ff8c]
 	pop af
-	ld [$ff8b],a ; restore original value of [$ff8b]
+	ldh [$ff8b],a ; restore original value of [$ff8b]
 	pop hl
 	inc hl ; hl = address of pokedex description text
 	bcCoord 1, 11
 	ld a,2
-	ld [$fff4],a
+	ldh [$fff4],a
 	call TextCommandProcessor ; print pokedex description text
 	xor a
-	ld [$fff4],a
+	ldh [$fff4],a
 .waitForButtonPress
 	call JoypadLowSensitivity
-	ld a,[hJoy5]
+	ldh a,[hJoy5]
 	and a,%00000011 ; A button and B button
 	jr z,.waitForButtonPress
 	pop af
-	ld [hTilesetType],a
+	ldh [hTilesetType],a
 	call GBPalWhiteOut
 	call ClearScreen
 	call GoPAL_SET_CF1C

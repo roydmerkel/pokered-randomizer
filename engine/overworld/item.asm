@@ -1,7 +1,7 @@
 PickupItem:
 	call EnableAutoTextBoxDrawing
 
-	ld a, [H_DOWNARROWBLINKCNT2] ; $ff8c
+	ldh a, [H_DOWNARROWBLINKCNT2] ; $ff8c
 	ld b, a
 	ld hl, W_MISSABLEOBJECTLIST
 .missableObjectsListLoop
@@ -15,10 +15,10 @@ PickupItem:
 
 .isMissable
 	ld a, [hl]
-	ld [$ffdb], a
+	ldh [$ffdb], a
 
 	ld hl, W_MAPSPRITEEXTRADATA
-	ld a, [H_DOWNARROWBLINKCNT2] ; $ff8c
+	ldh a, [H_DOWNARROWBLINKCNT2] ; $ff8c
 	dec a
 	add a
 	ld d, 0
@@ -30,7 +30,7 @@ PickupItem:
 	call GiveItem
 	jr nc, .BagFull
 
-	ld a, [$ffdb]
+	ldh a, [$ffdb]
 	ld [wcc4d], a
 	predef HideObject
 	ld a, 1

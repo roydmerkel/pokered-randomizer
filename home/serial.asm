@@ -3,44 +3,44 @@ Serial:: ; 2125 (0:2125)
 	push bc
 	push de
 	push hl
-	ld a, [$ffaa]
+	ldh a, [$ffaa]
 	inc a
 	jr z, .asm_2142
-	ld a, [$ff01]
-	ld [$ffad], a
-	ld a, [$ffac]
-	ld [$ff01], a
-	ld a, [$ffaa]
+	ldh a, [$ff01]
+	ldh [$ffad], a
+	ldh a, [$ffac]
+	ldh [$ff01], a
+	ldh a, [$ffaa]
 	cp $2
 	jr z, .asm_2162
 	ld a, $80
-	ld [$ff02], a
+	ldh [$ff02], a
 	jr .asm_2162
 .asm_2142
-	ld a, [$ff01]
-	ld [$ffad], a
-	ld [$ffaa], a
+	ldh a, [$ff01]
+	ldh [$ffad], a
+	ldh [$ffaa], a
 	cp $2
 	jr z, .asm_215f
 	xor a
-	ld [$ff01], a
+	ldh [$ff01], a
 	ld a, $3
-	ld [rDIV], a ; $ff04
+	ldh [rDIV], a ; $ff04
 .asm_2153
-	ld a, [rDIV] ; $ff04
+	ldh a, [rDIV] ; $ff04
 	bit 7, a
 	jr nz, .asm_2153
 	ld a, $80
-	ld [$ff02], a
+	ldh [$ff02], a
 	jr .asm_2162
 .asm_215f
 	xor a
-	ld [$ff01], a
+	ldh [$ff01], a
 .asm_2162
 	ld a, $1
-	ld [$ffa9], a
+	ldh [$ffa9], a
 	ld a, $fe
-	ld [$ffac], a
+	ldh [$ffac], a
 	pop hl
 	pop de
 	pop bc
@@ -49,10 +49,10 @@ Serial:: ; 2125 (0:2125)
 
 Func_216f:: ; 216f (0:216f)
 	ld a, $1
-	ld [$ffab], a
+	ldh [$ffab], a
 .asm_2173
 	ld a, [hl]
-	ld [$ffac], a
+	ldh [$ffac], a
 	call Func_219a
 	push bc
 	ld b, a
@@ -61,7 +61,7 @@ Func_216f:: ; 216f (0:216f)
 .asm_217e
 	dec a
 	jr nz, .asm_217e
-	ld a, [$ffab]
+	ldh a, [$ffab]
 	and a
 	ld a, b
 	pop bc
@@ -70,7 +70,7 @@ Func_216f:: ; 216f (0:216f)
 	cp $fd
 	jr nz, .asm_2173
 	xor a
-	ld [$ffab], a
+	ldh [$ffab], a
 	jr .asm_2173
 .asm_2192
 	ld [de], a
@@ -83,17 +83,17 @@ Func_216f:: ; 216f (0:216f)
 
 Func_219a:: ; 219a (0:219a)
 	xor a
-	ld [$ffa9], a
-	ld a, [$ffaa]
+	ldh [$ffa9], a
+	ldh a, [$ffaa]
 	cp $2
 	jr nz, .asm_21a7
 	ld a, $81
-	ld [$ff02], a
+	ldh [$ff02], a
 .asm_21a7
-	ld a, [$ffa9]
+	ldh a, [$ffa9]
 	and a
 	jr nz, .asm_21f1
-	ld a, [$ffaa]
+	ldh a, [$ffaa]
 	cp $1
 	jr nz, .asm_21cc
 	call Func_2237
@@ -111,7 +111,7 @@ Func_219a:: ; 219a (0:219a)
 	jr nz, .asm_21a7
 	jp Func_223f
 .asm_21cc
-	ld a, [rIE] ; $ffff
+	ldh a, [rIE] ; $ffff
 	and $f
 	cp $8
 	jr nz, .asm_21a7
@@ -123,7 +123,7 @@ Func_219a:: ; 219a (0:219a)
 	dec a
 	ld [wd075], a
 	jr nz, .asm_21a7
-	ld a, [$ffaa]
+	ldh a, [$ffaa]
 	cp $1
 	jr z, .asm_21f1
 	ld a, $ff
@@ -132,8 +132,8 @@ Func_219a:: ; 219a (0:219a)
 	jr nz, .asm_21ee
 .asm_21f1
 	xor a
-	ld [$ffa9], a
-	ld a, [rIE] ; $ffff
+	ldh [$ffa9], a
+	ldh a, [rIE] ; $ffff
 	and $f
 	sub $8
 	jr nz, .asm_2204
@@ -141,7 +141,7 @@ Func_219a:: ; 219a (0:219a)
 	ld a, $50
 	ld [wd075], a
 .asm_2204
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	cp $fe
 	ret nz
 	call Func_2237
@@ -159,13 +159,13 @@ Func_219a:: ; 219a (0:219a)
 	call Func_2237
 	jr z, Func_223f
 .asm_221f
-	ld a, [rIE] ; $ffff
+	ldh a, [rIE] ; $ffff
 	and $f
 	cp $8
 	ld a, $fe
 	ret z
 	ld a, [hl]
-	ld [$ffac], a
+	ldh [$ffac], a
 	call DelayFrame
 	jp Func_219a
 
@@ -195,18 +195,18 @@ Func_2247:: ; 2247 (0:2247)
 	ld de, wcc3d
 	ld c, $2
 	ld a, $1
-	ld [$ffab], a
+	ldh [$ffab], a
 .asm_2253
 	call DelayFrame
 	ld a, [hl]
-	ld [$ffac], a
+	ldh [$ffac], a
 	call Func_219a
 	ld b, a
 	inc hl
-	ld a, [$ffab]
+	ldh a, [$ffab]
 	and a
 	ld a, $0
-	ld [$ffab], a
+	ldh [$ffab], a
 	jr nz, .asm_2253
 	ld a, b
 	ld [de], a
@@ -265,20 +265,20 @@ Func_22c3:: ; 22c3 (0:22c3)
 	call asm_22d7
 	ld a, [wcc42]
 	add $60
-	ld [$ffac], a
-	ld a, [$ffaa]
+	ldh [$ffac], a
+	ldh a, [$ffaa]
 	cp $2
 	jr nz, asm_22d7
 	ld a, $81
-	ld [$ff02], a
+	ldh [$ff02], a
 asm_22d7:: ; 22d7 (0:22d7)
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	ld [wcc3d], a
 	and $f0
 	cp $60
 	ret nz
 	xor a
-	ld [$ffad], a
+	ldh [$ffad], a
 	ld a, [wcc3d]
 	and $f
 	ld [wcc3e], a
@@ -286,19 +286,19 @@ asm_22d7:: ; 22d7 (0:22d7)
 
 Func_22ed:: ; 22ed (0:22ed)
 	xor a
-	ld [$ffac], a
-	ld a, [$ffaa]
+	ldh [$ffac], a
+	ldh a, [$ffaa]
 	cp $2
 	ret nz
 	ld a, $81
-	ld [$ff02], a
+	ldh [$ff02], a
 	ret
 
 Func_22fa:: ; 22fa (0:22fa)
 	ld a, $2
-	ld [$ff01], a
+	ldh [$ff01], a
 	xor a
-	ld [$ffad], a
+	ldh [$ffad], a
 	ld a, $80
-	ld [$ff02], a
+	ldh [$ff02], a
 	ret

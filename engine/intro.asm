@@ -1,14 +1,14 @@
 PlayIntro: ; 41682 (10:5682)
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	inc a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	call PlayShootingStar
 	call PlayIntroScene
 	call GBFadeOutToWhite
 	xor a
-	ld [$ffae], a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [$ffae], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	call ClearSprites
 	call DelayFrame
 	ret
@@ -17,11 +17,11 @@ PlayIntroScene: ; 4169d (10:569d)
 	ld b, $7
 	call GoPAL_SET
 	ld a, %11100100
-	ld [rBGP], a
-	ld [rOBP0], a
-	ld [rOBP1], a
+	ldh [rBGP], a
+	ldh [rOBP0], a
+	ldh [rOBP1], a
 	xor a
-	ld [$ffae], a
+	ldh [$ffae], a
 	ld b, $3
 	call Func_4183f
 	ld a, 0
@@ -229,7 +229,7 @@ Func_4180e: ; 4180e (10:580e)
 	jr z, .asm_4181d
 	cp $1
 	jr z, .asm_4182d
-	ld a, [$ffae]
+	ldh a, [$ffae]
 	dec a
 	dec a
 	jr .asm_41831
@@ -243,11 +243,11 @@ Func_4180e: ; 4180e (10:580e)
 	call Func_417ae
 	pop de
 .asm_4182d
-	ld a, [$ffae]
+	ldh a, [$ffae]
 	inc a
 	inc a
 .asm_41831
-	ld [$ffae], a
+	ldh [$ffae], a
 	push de
 	ld c, $2
 	call CheckForUserInterruption
@@ -296,7 +296,7 @@ PlayShootingStar: ; 4188a (10:588a)
 	call GoPAL_SET
 	callba LoadCopyrightAndTextBoxTiles
 	ld a, $e4
-	ld [rBGP], a ; $ff47
+	ldh [rBGP], a ; $ff47
 	ld c, $b4
 	call DelayFrames
 	call ClearScreen

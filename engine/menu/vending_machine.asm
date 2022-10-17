@@ -37,17 +37,17 @@ VendingMachineMenu: ; 74ee0 (1d:4ee0)
 	cp $3
 	jr z, .asm_74f93
 	xor a
-	ld [$ff9f], a
-	ld [$ffa1], a
+	ldh [$ff9f], a
+	ldh [$ffa1], a
 	ld a, $2
-	ld [$ffa0], a
+	ldh [$ffa0], a
 	call HasEnoughMoney
 	jr nc, .enoughMoney
 	ld hl, VendingMachineText4
 	jp PrintText
 .enoughMoney
 	call Func_74fe7
-	ld a, [$ffdb]
+	ldh a, [$ffdb]
 	ld b, a
 	ld c, 1
 	call GiveItem
@@ -119,13 +119,13 @@ Func_74fe7: ; 74fe7 (1d:4fe7)
 	ld e, a
 	add hl, de
 	ld a, [hli]
-	ld [$ffdb], a
+	ldh [$ffdb], a
 	ld a, [hli]
-	ld [$ffdc], a
+	ldh [$ffdc], a
 	ld a, [hli]
-	ld [$ffdd], a
+	ldh [$ffdd], a
 	ld a, [hl]
-	ld [$ffde], a
+	ldh [$ffde], a
 	ret
 
 VendingPrices: ; 75000 (1d:5000)

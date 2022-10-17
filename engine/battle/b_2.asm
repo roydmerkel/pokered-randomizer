@@ -41,16 +41,16 @@ ScaleFirstThreeSpriteColumnsByTwo: ; 2fe55 (b:7e55)
 
 ScaleLastSpriteColumnByTwo: ; 2fe7d (b:7e7d)
 	ld a, 4*8 - 4 ; $1c, 4 tiles minus 4 unused rows
-	ld [H_SPRITEINTERLACECOUNTER], a ; $ff8b
+	ldh [H_SPRITEINTERLACECOUNTER], a ; $ff8b
 	ld bc, -1 ; $ffff
 .columnInnerLoop
 	ld a, [de]
 	dec de
 	swap a                    ; only high nybble contains information
 	call ScalePixelsByTwo
-	ld a, [H_SPRITEINTERLACECOUNTER] ; $ff8b
+	ldh a, [H_SPRITEINTERLACECOUNTER] ; $ff8b
 	dec a
-	ld [H_SPRITEINTERLACECOUNTER], a ; $ff8b
+	ldh [H_SPRITEINTERLACECOUNTER], a ; $ff8b
 	jr nz, .columnInnerLoop
 	dec de                    ; skip last 4 rows of new column
 	dec de
@@ -88,34 +88,34 @@ PayDayEffect_ ; 2feb8 (b:7eb8)
 	xor a
 	ld hl, wcd6d
 	ld [hli], a
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	ld a, [wBattleMonLevel]
 	jr z, .asm_2fec8
 	ld a, [wEnemyMonLevel]
 .asm_2fec8
 	add a
-	ld [$ff98], a
+	ldh [$ff98], a
 	xor a
-	ld [$ff95], a
-	ld [$ff96], a
-	ld [$ff97], a
+	ldh [$ff95], a
+	ldh [$ff96], a
+	ldh [$ff97], a
 	ld a, $64
-	ld [$ff99], a
+	ldh [$ff99], a
 	ld b, $4
 	call Divide
-	ld a, [$ff98]
+	ldh a, [$ff98]
 	ld [hli], a
-	ld a, [$ff99]
-	ld [$ff98], a
+	ldh a, [$ff99]
+	ldh [$ff98], a
 	ld a, $a
-	ld [$ff99], a
+	ldh [$ff99], a
 	ld b, $4
 	call Divide
-	ld a, [$ff98]
+	ldh a, [$ff98]
 	swap a
 	ld b, a
-	ld a, [$ff99]
+	ldh a, [$ff99]
 	add b
 	ld [hl], a
 	ld de, wTotalPayDayMoney + 2

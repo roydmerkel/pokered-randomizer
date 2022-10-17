@@ -126,13 +126,13 @@ TryingToLearn: ; 6f07 (1:6f07)
 	call TextBoxBorder
 	hlCoord 6, 8
 	ld de, wd0e1
-	ld a, [$fff6]
+	ldh a, [$fff6]
 	set 2, a
-	ld [$fff6], a
+	ldh [$fff6], a
 	call PlaceString
-	ld a, [$fff6]
+	ldh a, [$fff6]
 	res 2, a
-	ld [$fff6], a
+	ldh [$fff6], a
 	ld hl, wTopMenuItemY ; wTopMenuItemY
 	ld a, $8
 	ld [hli], a

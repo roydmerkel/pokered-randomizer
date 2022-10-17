@@ -97,11 +97,11 @@ MainMenu: ; 5af2 (1:5af2)
 	set 5,[hl]
 .next6
 	xor a
-	ld [hJoyPressed],a
-	ld [hJoyReleased],a
-	ld [hJoyHeld],a
+	ldh [hJoyPressed],a
+	ldh [hJoyReleased],a
+	ldh [hJoyHeld],a
 	call Joypad
-	ld a,[hJoyHeld]
+	ldh a,[hJoyHeld]
 	bit 0,a
 	jr nz,.next5
 	bit 1,a
@@ -203,7 +203,7 @@ LinkMenu: ; 5c0a (1:5c0a)
 	ld a, [wcc42]
 	and $c
 	jr z, .asm_5c98
-	ld a, [$ffaa]
+	ldh a, [$ffaa]
 	cp $2
 	jr z, .asm_5ca1
 .asm_5c98
@@ -212,13 +212,13 @@ LinkMenu: ; 5c0a (1:5c0a)
 	and $3
 	ld [wCurrentMenuItem], a ; wCurrentMenuItem
 .asm_5ca1
-	ld a, [$ffaa]
+	ldh a, [$ffaa]
 	cp $2
 	jr nz, .asm_5cb1
 	call DelayFrame
 	call DelayFrame
 	ld a, $81
-	ld [$ff02], a
+	ldh [$ff02], a
 .asm_5cb1
 	ld b, $7f
 	ld c, $7f
@@ -316,9 +316,9 @@ Func_5d52: ; 5d52 (1:5d52)
 ; enter map after using a special warp or loading the game from the main menu
 SpecialEnterMap: ; 5d5f (1:5d5f)
 	xor a
-	ld [hJoyPressed], a
-	ld [hJoyHeld], a
-	ld [hJoy5], a
+	ldh [hJoyPressed], a
+	ldh [hJoyHeld], a
+	ldh [hJoy5], a
 	ld [wd72d], a
 	ld hl, wd732
 	set 0, [hl] ; count play time
@@ -344,7 +344,7 @@ TradeCenterText: ; 5d97 (1:5d97)
 
 ContinueGame: ; 5db5 (1:5db5)
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	hlCoord 4, 7
 	ld b, $8
 	ld c, $e
@@ -362,13 +362,13 @@ ContinueGame: ; 5db5 (1:5db5)
 	hlCoord 13, 15
 	call Func_5e55
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	ld c, $1e
 	jp DelayFrames
 
 PrintSaveScreenText: ; 5def (1:5def)
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	ld hl, wTileMap + $4
 	ld b, $8
 	ld c, $e
@@ -388,7 +388,7 @@ PrintSaveScreenText: ; 5def (1:5def)
 	ld hl, wTileMap + $ad
 	call Func_5e55
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	ld c, $1e
 	jp DelayFrames
 
@@ -466,14 +466,14 @@ DisplayOptionMenu: ; 5e8a (1:5e8a)
 	ld a,[wWhichTrade] ; text speed cursor X coordinate
 	ld [wTopMenuItemX],a
 	ld a,$01
-	ld [H_AUTOBGTRANSFERENABLED],a ; enable auto background transfer
+	ldh [H_AUTOBGTRANSFERENABLED],a ; enable auto background transfer
 	call Delay3
 .loop
 	call PlaceMenuCursor
 	call SetOptionsFromCursorPositions
 .getJoypadStateLoop
 	call JoypadLowSensitivity
-	ld a,[hJoy5]
+	ldh a,[hJoy5]
 	ld b,a
 	and a,%11111011 ; any key besides select pressed?
 	jr z,.getJoypadStateLoop

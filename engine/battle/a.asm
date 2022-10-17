@@ -5,7 +5,7 @@ LeechSeedEffect_: ; 2bea9 (a:7ea9)
 	jr nz, .asm_2bee7
 	ld hl, W_ENEMYBATTSTATUS2 ; W_ENEMYBATTSTATUS2
 	ld de, wEnemyMonType1 ; wcfea (aliases: wEnemyMonType)
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	jr z, .asm_2bec8
 	ld hl, W_PLAYERBATTSTATUS2 ; W_PLAYERBATTSTATUS2

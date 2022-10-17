@@ -507,9 +507,9 @@ _HandleMidJump: ; 7087e (1c:487e)
 	call UpdateSprites
 	call Delay3
 	xor a
-	ld [hJoyHeld], a
-	ld [hJoyPressed], a
-	ld [hJoyReleased], a
+	ldh [hJoyHeld], a
+	ldh [hJoyPressed], a
+	ldh [hJoyReleased], a
 	ld [wPlayerJumpingYScreenCoordsIndex], a
 	ld hl, wd736
 	res 6, [hl] ; not jumping down a ledge any more

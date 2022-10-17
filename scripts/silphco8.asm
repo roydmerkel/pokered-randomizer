@@ -35,7 +35,7 @@ SilphCo8Script_56541: ; 56541 (15:6541)
 	ld a, [hl]
 	ld c, a
 	xor a
-	ld [$ffe0], a
+	ldh [$ffe0], a
 	pop hl
 .asm_5654d
 	ld a, [hli]
@@ -60,11 +60,11 @@ SilphCo8Script_56541: ; 56541 (15:6541)
 	ret
 .asm_56569
 	xor a
-	ld [$ffe0], a
+	ldh [$ffe0], a
 	ret
 
 SilphCo8Script_5656d: ; 5656d (15:656d)
-	ld a, [$ffe0]
+	ldh a, [$ffe0]
 	and a
 	ret z
 	ld hl, wd832

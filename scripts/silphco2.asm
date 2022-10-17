@@ -44,7 +44,7 @@ SilphCo2Script_59d43: ; 59d43 (16:5d43)
 	ld a, [hl]
 	ld c, a
 	xor a
-	ld [$ffe0], a
+	ldh [$ffe0], a
 	pop hl
 .asm_59d4f
 	ld a, [hli]
@@ -69,12 +69,12 @@ SilphCo2Script_59d43: ; 59d43 (16:5d43)
 	ret
 .asm_59d6b
 	xor a
-	ld [$ffe0], a
+	ldh [$ffe0], a
 	ret
 
 SilphCo2Script_59d6f: ; 59d6f (16:5d6f)
 	ld hl, wd826
-	ld a, [$ffe0]
+	ldh a, [$ffe0]
 	and a
 	ret z
 	cp $1

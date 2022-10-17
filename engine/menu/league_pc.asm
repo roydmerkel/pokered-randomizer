@@ -6,10 +6,10 @@ PKMNLeaguePC: ; 0x7657e
 	push hl
 	ld a, [wUpdateSpritesEnabled]
 	push af
-	ld a, [hTilesetType]
+	ldh a, [hTilesetType]
 	push af
 	xor a
-	ld [hTilesetType], a
+	ldh [hTilesetType], a
 	ld [W_SPRITEFLIPPED], a
 	ld [wUpdateSpritesEnabled], a
 	ld [wTrainerScreenX], a
@@ -38,7 +38,7 @@ PKMNLeaguePC: ; 0x7657e
 	jr nz, .first
 .second
 	pop af
-	ld [hTilesetType], a
+	ldh [hTilesetType], a
 	pop af
 	ld [wUpdateSpritesEnabled], a
 	pop hl
@@ -54,7 +54,7 @@ Func_765e5: ; 765e5 (1d:65e5)
 	push bc
 	call Func_76610
 	call WaitForTextScrollButtonPress
-	ld a, [hJoyHeld]
+	ldh a, [hJoyHeld]
 	bit 1, a
 	jr nz, .exit
 	ld hl, wHallOfFame + HOF_MON

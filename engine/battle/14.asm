@@ -1,5 +1,5 @@
 Func_525af: ; 525af (14:65af)
-	ld a, [hTilesetType]
+	ldh a, [hTilesetType]
 	ld [wd0d4], a
 	xor a
 	ld [wcd6a], a
@@ -42,7 +42,7 @@ Func_525af: ; 525af (14:65af)
 ParalyzeEffect_: ; 52601 (14:6601)
 	ld hl, wEnemyMonStatus ; wcfe9
 	ld de, W_PLAYERMOVETYPE ; wcfd5
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	jp z, .asm_52613
 	ld hl, wBattleMonStatus ; wBattleMonStatus

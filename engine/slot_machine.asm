@@ -25,7 +25,7 @@ PromptUserToPlaySlots: ; 3730e (d:730e)
 	call GoPAL_SET
 	call GBPalNormal
 	ld a, $e4
-	ld [$ff48], a
+	ldh [rOBP0], a
 	ld hl, wd730
 	set 6, [hl]
 	xor a
@@ -434,9 +434,9 @@ SlotMachine_37588: ; 37588 (d:7588)
 	jp [hl]
 
 .asm_37638
-	ld a, [$ff47]
+	ldh a, [$ff47]
 	xor $40
-	ld [$ff47], a
+	ldh [$ff47], a
 	ld c, $5
 	call DelayFrames
 	dec b
@@ -452,7 +452,7 @@ SlotMachine_37588: ; 37588 (d:7588)
 	call SlotMachine_3776b
 	call SlotMachine_3775f
 	ld a, $e4
-	ld [$ff48], a
+	ldh [rOBP0], a
 	jp .loop
 
 SlotsMachineText_37665: ; 37665 (d:7665)
@@ -666,10 +666,10 @@ SlotMachine_3776b: ; 3776b (d:776b)
 	ld a, [W_SUBANIMTRANSFORM]
 	dec a
 	jr nz, .skip1
-	ld a, [$ff48]
+	ldh a, [rOBP0]
 	xor $40
-	ld [$ff48], a
-	ld a, $5
+	ldh [rOBP0], a
+	ld a, 5
 .skip1
 	ld [W_SUBANIMTRANSFORM], a
 	ld a, [wTrainerScreenX]
@@ -797,7 +797,7 @@ SlotMachine_3784e: ; 3784e (d:784e)
 SlotMachine_37882: ; 37882 (d:7882)
 	call DelayFrame
 	call JoypadLowSensitivity
-	ld a, [hJoy5]
+	ldh a, [hJoy5]
 	and $1
 	ret z
 	ld hl, wTrainerSpriteOffset

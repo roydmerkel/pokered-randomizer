@@ -19,10 +19,10 @@ Route16GateScript0: ; 496d7 (12:56d7)
 	call ArePlayerCoordsInArray
 	ret nc
 	ld a, $3
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld a, [wWhichTrade]
 	cp $1
 	jr z, .asm_4970e ; 0x496f1 $1b
@@ -59,7 +59,7 @@ Route16GateScript1: ; 4971d (12:571d)
 
 Route16GateScript2: ; 49727 (12:5727)
 	ld a, $1
-	ld [H_SPRITEHEIGHT], a
+	ldh [H_SPRITEHEIGHT], a
 	call DisplayTextID
 	ld a, $1
 	ld [wSimulatedJoypadStatesIndex], a

@@ -18,12 +18,12 @@ SafariZoneEntranceScriptPointers: ; 751d9 (1d:51d9)
 	call ArePlayerCoordsInArray
 	ret nc
 	ld a, $3
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	ld a, $ff
 	ld [wJoyIgnore], a
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld a, $c
 	ld [wSpriteStateData1 + 9], a
 	ld a, [wWhichTrade]
@@ -52,11 +52,11 @@ SafariZoneEntranceScriptPointers: ; 751d9 (1d:51d9)
 	ret nz
 .SafariZoneEntranceScript2
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld [wJoyIgnore], a
 	call UpdateSprites
 	ld a, $4
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	ld a, $ff
 	ld [wJoyIgnore], a
@@ -83,7 +83,7 @@ SafariZoneEntranceScriptPointers: ; 751d9 (1d:51d9)
 	ld a, $f0
 	ld [wJoyIgnore], a
 	ld a, $6
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	xor a
 	ld [W_NUMSAFARIBALLS], a
@@ -95,7 +95,7 @@ SafariZoneEntranceScriptPointers: ; 751d9 (1d:51d9)
 	jr .asm_75286 ; 0x7527d $7
 .asm_7527f
 	ld a, $5
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 .asm_75286
 	ret
@@ -155,11 +155,11 @@ SafariZoneEntranceTextPointers: ; 752b9 (1d:52b9)
 	and a
 	jp nz,.PleaseComeAgain
 	xor a
-	ld [$ff9f],a
+	ldh [$ff9f],a
 	ld a,$05
-	ld [$ffa0],a
+	ldh [$ffa0],a
 	ld a,$00
-	ld [$ffa1],a
+	ldh [$ffa1],a
 	call HasEnoughMoney
 	jr nc,.success
 	ld hl,.NotEnoughMoneyText

@@ -21,11 +21,11 @@
 
 .xf1f9f
 	xor a
-	ld [$ff9f],a
+	ldh [$ff9f],a
 	ld a,$05
-	ld [$ffa0],a
+	ldh [$ffa0],a
 	ld a,$00
-	ld [$ffa1],a
+	ldh [$ffa1],a
 	call HasEnoughMoney
 	jr nc,.success
 	ld hl,.NotEnoughMoneyText
@@ -142,12 +142,12 @@ SafariZoneEntranceAutoWalk:
 	ld bc,3
 	call $b1 ; yellow $00b1
 	xor a
-	ld [$ffa2],a
-	ld [$ffa3],a
+	ldh [$ffa2],a
+	ldh [$ffa3],a
 	ld a,$17 ; ¥17 per safari ball
-	ld [$ffa4],a
+	ldh [$ffa4],a
 	predef DivideBCDPredef3
-	ld a,[$ffa4]
+	ldh a,[$ffa4]
 	call .xf211e
 	pop af
 	ld hl,$d346

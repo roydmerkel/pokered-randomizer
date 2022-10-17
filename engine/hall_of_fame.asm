@@ -19,12 +19,12 @@ AnimateHallOfFame: ; 701a0 (1c:41a0)
 	call FillMemory
 	xor a
 	ld [wUpdateSpritesEnabled], a
-	ld [hTilesetType], a
+	ldh [hTilesetType], a
 	ld [W_SPRITEFLIPPED], a
 	ld [wd358], a
 	ld [wTrainerScreenY], a
 	inc a
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	ld hl, wd5a2
 	ld a, [hl]
 	inc a
@@ -32,7 +32,7 @@ AnimateHallOfFame: ; 701a0 (1c:41a0)
 	inc [hl]
 .asm_701eb
 	ld a, $90
-	ld [hWY], a
+	ldh [hWY], a
 	ld c, 0 ; BANK(Music_HallOfFame)
 	ld a, MUSIC_HALL_OF_FAME
 	call PlayMusic
@@ -86,7 +86,7 @@ AnimateHallOfFame: ; 701a0 (1c:41a0)
 	call Func_70377
 	call Func_70423
 	xor a
-	ld [hWY], a
+	ldh [hWY], a
 	ld hl, rLCDC ; $ff40
 	res 3, [hl]
 	ret
@@ -97,9 +97,9 @@ HallOfFameText: ; 7026b (1c:426b)
 Func_70278: ; 70278 (1c:4278)
 	call ClearScreen
 	ld a, $d0
-	ld [$ffaf], a
+	ldh [$ffaf], a
 	ld a, $c0
-	ld [$ffae], a
+	ldh [$ffae], a
 	ld a, [wWhichTrade] ; wWhichTrade
 	ld [wcf91], a
 	ld [wd0b5], a
@@ -120,7 +120,7 @@ Func_70278: ; 70278 (1c:4278)
 	ld c, $0
 	call GoPAL_SET
 	ld a, $e4
-	ld [rBGP], a ; $ff47
+	ldh [rBGP], a ; $ff47
 	ld c, $31
 	call Func_7036d
 	ld d, $a0
@@ -132,16 +132,16 @@ Func_70278: ; 70278 (1c:4278)
 .asm_702c7
 	call .asm_702d5
 	xor a
-	ld [$ffaf], a
+	ldh [$ffaf], a
 	ld c, a
 	call Func_7036d
 	ld d, $0
 	ld e, $fc
 .asm_702d5
 	call DelayFrame
-	ld a, [$ffae]
+	ldh a, [$ffae]
 	add e
-	ld [$ffae], a
+	ldh [$ffae], a
 	cp d
 	jr nz, .asm_702d5
 	ret

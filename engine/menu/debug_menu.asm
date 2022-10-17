@@ -123,7 +123,7 @@ CloseDebugMenu::
     res 1, [hl] ; one spaced
     ret
 	;call Joypad
-	;ld a,[hJoyPressed]
+	;ldh a,[hJoyPressed]
 	;bit 0,a ; was A button newly pressed?
 	;jr nz,CloseDebugMenu
 	;call LoadTextBoxTilePatterns

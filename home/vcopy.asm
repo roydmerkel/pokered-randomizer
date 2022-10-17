@@ -37,19 +37,19 @@ ClearBgMap:: ; 1cf0 (0:1cf0)
 ; of the screen toward which they moved is exposed and has to be redrawn.
 ; This function does the redrawing.
 RedrawExposedScreenEdge:: ; 1d01 (0:1d01)
-	ld a,[H_SCREENEDGEREDRAW]
+	ldh a,[H_SCREENEDGEREDRAW]
 	and a
 	ret z
 	ld b,a
 	xor a
-	ld [H_SCREENEDGEREDRAW],a
+	ldh [H_SCREENEDGEREDRAW],a
 	dec b
 	jr nz,.redrawRow
 .redrawColumn
 	ld hl,wScreenEdgeTiles
-	ld a,[H_SCREENEDGEREDRAWADDR]
+	ldh a,[H_SCREENEDGEREDRAWADDR]
 	ld e,a
-	ld a,[H_SCREENEDGEREDRAWADDR + 1]
+	ldh a,[H_SCREENEDGEREDRAWADDR + 1]
 	ld d,a
 	ld c,18 ; screen height
 .loop1
@@ -72,13 +72,13 @@ RedrawExposedScreenEdge:: ; 1d01 (0:1d01)
 	dec c
 	jr nz,.loop1
 	xor a
-	ld [H_SCREENEDGEREDRAW],a
+	ldh [H_SCREENEDGEREDRAW],a
 	ret
 .redrawRow
 	ld hl,wScreenEdgeTiles
-	ld a,[H_SCREENEDGEREDRAWADDR]
+	ldh a,[H_SCREENEDGEREDRAWADDR]
 	ld e,a
-	ld a,[H_SCREENEDGEREDRAWADDR + 1]
+	ldh a,[H_SCREENEDGEREDRAWADDR + 1]
 	ld d,a
 	push de
 	call .drawHalf ; draw upper half
@@ -116,15 +116,15 @@ RedrawExposedScreenEdge:: ; 1d01 (0:1d01)
 ; the above function, RedrawExposedScreenEdge, is used when walking to
 ; improve efficiency.
 AutoBgMapTransfer:: ; 1d57 (0:1d57)
-	ld a,[H_AUTOBGTRANSFERENABLED]
+	ldh a,[H_AUTOBGTRANSFERENABLED]
 	and a
 	ret z
 	ld hl,[sp + 0]
 	ld a,h
-	ld [H_SPTEMP],a
+	ldh [H_SPTEMP],a
 	ld a,l
-	ld [H_SPTEMP + 1],a ; save stack pinter
-	ld a,[H_AUTOBGTRANSFERPORTION]
+	ldh [H_SPTEMP + 1],a ; save stack pinter
+	ldh a,[H_AUTOBGTRANSFERPORTION]
 	and a
 	jr z,.transferTopThird
 	dec a
@@ -132,9 +132,9 @@ AutoBgMapTransfer:: ; 1d57 (0:1d57)
 .transferBottomThird
 	hlCoord 0, 12
 	ld sp,hl
-	ld a,[H_AUTOBGTRANSFERDEST + 1]
+	ldh a,[H_AUTOBGTRANSFERDEST + 1]
 	ld h,a
-	ld a,[H_AUTOBGTRANSFERDEST]
+	ldh a,[H_AUTOBGTRANSFERDEST]
 	ld l,a
 	ld de,(12 * 32)
 	add hl,de
@@ -143,24 +143,24 @@ AutoBgMapTransfer:: ; 1d57 (0:1d57)
 .transferTopThird
 	hlCoord 0, 0
 	ld sp,hl
-	ld a,[H_AUTOBGTRANSFERDEST + 1]
+	ldh a,[H_AUTOBGTRANSFERDEST + 1]
 	ld h,a
-	ld a,[H_AUTOBGTRANSFERDEST]
+	ldh a,[H_AUTOBGTRANSFERDEST]
 	ld l,a
 	ld a,TRANSFERMIDDLE
 	jr .doTransfer
 .transferMiddleThird
 	hlCoord 0, 6
 	ld sp,hl
-	ld a,[H_AUTOBGTRANSFERDEST + 1]
+	ldh a,[H_AUTOBGTRANSFERDEST + 1]
 	ld h,a
-	ld a,[H_AUTOBGTRANSFERDEST]
+	ldh a,[H_AUTOBGTRANSFERDEST]
 	ld l,a
 	ld de,(6 * 32)
 	add hl,de
 	ld a,TRANSFERBOTTOM
 .doTransfer
-	ld [H_AUTOBGTRANSFERPORTION],a ; store next portion
+	ldh [H_AUTOBGTRANSFERPORTION],a ; store next portion
 	ld b,6
 
 TransferBgRows:: ; 1d9e (0:1d9e)
@@ -188,9 +188,9 @@ TransferBgRows:: ; 1d9e (0:1d9e)
 	dec b
 	jr nz, TransferBgRows
 
-	ld a, [H_SPTEMP]
+	ldh a, [H_SPTEMP]
 	ld h, a
-	ld a, [H_SPTEMP + 1]
+	ldh a, [H_SPTEMP + 1]
 	ld l, a
 	ld sp, hl
 	ret
@@ -198,27 +198,27 @@ TransferBgRows:: ; 1d9e (0:1d9e)
 ; Copies [H_VBCOPYBGNUMROWS] rows from H_VBCOPYBGSRC to H_VBCOPYBGDEST.
 ; If H_VBCOPYBGSRC is XX00, the transfer is disabled.
 VBlankCopyBgMap:: ; 1de1 (0:1de1)
-	ld a,[H_VBCOPYBGSRC] ; doubles as enabling byte
+	ldh a,[H_VBCOPYBGSRC] ; doubles as enabling byte
 	and a
 	ret z
 	ld hl,[sp + 0]
 	ld a,h
-	ld [H_SPTEMP],a
+	ldh [H_SPTEMP],a
 	ld a,l
-	ld [H_SPTEMP + 1],a ; save stack pointer
-	ld a,[H_VBCOPYBGSRC]
+	ldh [H_SPTEMP + 1],a ; save stack pointer
+	ldh a,[H_VBCOPYBGSRC]
 	ld l,a
-	ld a,[H_VBCOPYBGSRC + 1]
+	ldh a,[H_VBCOPYBGSRC + 1]
 	ld h,a
 	ld sp,hl
-	ld a,[H_VBCOPYBGDEST]
+	ldh a,[H_VBCOPYBGDEST]
 	ld l,a
-	ld a,[H_VBCOPYBGDEST + 1]
+	ldh a,[H_VBCOPYBGDEST + 1]
 	ld h,a
-	ld a,[H_VBCOPYBGNUMROWS]
+	ldh a,[H_VBCOPYBGNUMROWS]
 	ld b,a
 	xor a
-	ld [H_VBCOPYBGSRC],a ; disable transfer so it doesn't continue next V-blank
+	ldh [H_VBCOPYBGSRC],a ; disable transfer so it doesn't continue next V-blank
 	jr TransferBgRows
 
 
@@ -230,31 +230,31 @@ VBlankCopyDouble::
 ; The process is straightforward:
 ; copy each byte twice.
 
-	ld a, [H_VBCOPYDOUBLESIZE]
+	ldh a, [H_VBCOPYDOUBLESIZE]
 	and a
 	ret z
 
 	ld hl, [sp + 0]
 	ld a, h
-	ld [H_SPTEMP], a
+	ldh [H_SPTEMP], a
 	ld a, l
-	ld [H_SPTEMP + 1], a
+	ldh [H_SPTEMP + 1], a
 
-	ld a, [H_VBCOPYDOUBLESRC]
+	ldh a, [H_VBCOPYDOUBLESRC]
 	ld l, a
-	ld a, [H_VBCOPYDOUBLESRC + 1]
+	ldh a, [H_VBCOPYDOUBLESRC + 1]
 	ld h, a
 	ld sp, hl
 
-	ld a, [H_VBCOPYDOUBLEDEST]
+	ldh a, [H_VBCOPYDOUBLEDEST]
 	ld l, a
-	ld a, [H_VBCOPYDOUBLEDEST + 1]
+	ldh a, [H_VBCOPYDOUBLEDEST + 1]
 	ld h, a
 
-	ld a, [H_VBCOPYDOUBLESIZE]
+	ldh a, [H_VBCOPYDOUBLESIZE]
 	ld b, a
 	xor a ; transferred
-	ld [H_VBCOPYDOUBLESIZE], a
+	ldh [H_VBCOPYDOUBLESIZE], a
 
 .loop
 	rept 3
@@ -282,19 +282,19 @@ VBlankCopyDouble::
 	jr nz, .loop
 
 	ld a, l
-	ld [H_VBCOPYDOUBLEDEST], a
+	ldh [H_VBCOPYDOUBLEDEST], a
 	ld a, h
-	ld [H_VBCOPYDOUBLEDEST + 1], a
+	ldh [H_VBCOPYDOUBLEDEST + 1], a
 
 	ld hl, [sp + 0]
 	ld a, l
-	ld [H_VBCOPYDOUBLESRC], a
+	ldh [H_VBCOPYDOUBLESRC], a
 	ld a, h
-	ld [H_VBCOPYDOUBLESRC + 1], a
+	ldh [H_VBCOPYDOUBLESRC + 1], a
 
-	ld a, [H_SPTEMP]
+	ldh a, [H_SPTEMP]
 	ld h, a
-	ld a, [H_SPTEMP + 1]
+	ldh a, [H_SPTEMP + 1]
 	ld l, a
 	ld sp, hl
 
@@ -309,31 +309,31 @@ VBlankCopy::
 ; are updated, so transfer can
 ; continue in subsequent calls.
 
-	ld a, [H_VBCOPYSIZE]
+	ldh a, [H_VBCOPYSIZE]
 	and a
 	ret z
 
 	ld hl, [sp + 0]
 	ld a, h
-	ld [H_SPTEMP], a
+	ldh [H_SPTEMP], a
 	ld a, l
-	ld [H_SPTEMP + 1], a
+	ldh [H_SPTEMP + 1], a
 
-	ld a, [H_VBCOPYSRC]
+	ldh a, [H_VBCOPYSRC]
 	ld l, a
-	ld a, [H_VBCOPYSRC + 1]
+	ldh a, [H_VBCOPYSRC + 1]
 	ld h, a
 	ld sp, hl
 
-	ld a, [H_VBCOPYDEST]
+	ldh a, [H_VBCOPYDEST]
 	ld l, a
-	ld a, [H_VBCOPYDEST + 1]
+	ldh a, [H_VBCOPYDEST + 1]
 	ld h, a
 
-	ld a, [H_VBCOPYSIZE]
+	ldh a, [H_VBCOPYSIZE]
 	ld b, a
 	xor a ; transferred
-	ld [H_VBCOPYSIZE], a
+	ldh [H_VBCOPYSIZE], a
 
 .loop
 	rept 7
@@ -353,19 +353,19 @@ VBlankCopy::
 	jr nz, .loop
 
 	ld a, l
-	ld [H_VBCOPYDEST], a
+	ldh [H_VBCOPYDEST], a
 	ld a, h
-	ld [H_VBCOPYDEST + 1], a
+	ldh [H_VBCOPYDEST + 1], a
 
 	ld hl, [sp + 0]
 	ld a, l
-	ld [H_VBCOPYSRC], a
+	ldh [H_VBCOPYSRC], a
 	ld a, h
-	ld [H_VBCOPYSRC + 1], a
+	ldh [H_VBCOPYSRC + 1], a
 
-	ld a, [H_SPTEMP]
+	ldh a, [H_SPTEMP]
 	ld h, a
-	ld a, [H_SPTEMP + 1]
+	ldh a, [H_SPTEMP + 1]
 	ld l, a
 	ld sp, hl
 
@@ -376,13 +376,13 @@ UpdateMovingBgTiles::
 ; Animate water and flower
 ; tiles in the overworld.
 
-	ld a, [hTilesetType]
+	ldh a, [hTilesetType]
 	and a
 	ret z ; no animations if indoors (or if a menu set this to 0)
 
-	ld a, [$ffd8]
+	ldh a, [$ffd8]
 	inc a
-	ld [$ffd8], a
+	ldh [$ffd8], a
 	cp $14
 	ret c
 	cp $15
@@ -412,17 +412,17 @@ UpdateMovingBgTiles::
 	dec c
 	jr nz, .left
 .done
-	ld a, [hTilesetType]
+	ldh a, [hTilesetType]
 	rrca
 	ret nc
 ; if in a cave, no flower animations
 	xor a
-	ld [$ffd8], a
+	ldh [$ffd8], a
 	ret
 
 .flower
 	xor a
-	ld [$ffd8], a
+	ldh [$ffd8], a
 
 	ld a, [wd085]
 	and 3

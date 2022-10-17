@@ -118,10 +118,10 @@ AccessedMyPCText: ; 17f32 (5:7f32)
 ; removes one of the specified item ID [$FFdb] from bag (if existent)
 RemoveItemByID: ; 17f37 (5:7f37)
 	ld hl, wBagItems ; wd31e
-	ld a, [$ffdb]
+	ldh a, [$ffdb]
 	ld b, a
 	xor a
-	ld [$ffdc], a
+	ldh [$ffdc], a
 .asm_17f40
 	ld a, [hli]
 	cp $ff
@@ -129,14 +129,14 @@ RemoveItemByID: ; 17f37 (5:7f37)
 	cp b
 	jr z, .asm_17f4f
 	inc hl
-	ld a, [$ffdc]
+	ldh a, [$ffdc]
 	inc a
-	ld [$ffdc], a
+	ldh [$ffdc], a
 	jr .asm_17f40
 .asm_17f4f
 	ld a, $1
 	ld [wcf96], a
-	ld a, [$ffdc]
+	ldh a, [$ffdc]
 	ld [wWhichPokemon], a ; wWhichPokemon
 	ld hl, wNumBagItems ; wNumBagItems
 	jp RemoveItemFromInventory

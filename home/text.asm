@@ -62,7 +62,7 @@ PlaceNextChar:: ; 1956 (0:1956)
 	cp $4E
 	jr nz,.next
 	ld bc,$0028
-	ld a,[$FFF6]
+	ldh a,[$FFF6]
 	bit 2,a
 	jr z,.next2
 	ld bc,$14
@@ -190,7 +190,7 @@ Char59:: ; 1a2f (0:1a2f)
 ; or
 ; player active monster’s name
 ; (like Char5A but flipped)
-	ld a,[H_WHOSETURN]
+	ldh a,[H_WHOSETURN]
 	xor 1
 	jr MonsterNameCharsCommon
 
@@ -199,7 +199,7 @@ Char5A:: ; 1a35 (0:1a35)
 ; player active monster’s name
 ; or
 ; enemy active monster’s name, prefixed with “Enemy ”
-	ld a,[H_WHOSETURN]
+	ldh a,[H_WHOSETURN]
 MonsterNameCharsCommon:: ; 1a37 (0:1a37)
 	push de
 	and a
@@ -372,7 +372,7 @@ TextCommandProcessor:: ; 1b40 (0:1b40)
 	push af
 	set 1,a
 	ld e,a
-	ld a,[$fff4]
+	ldh a,[$fff4]
 	xor e
 	ld [wd358],a
 	ld a,c
@@ -575,7 +575,7 @@ TextCommand09:: ; 1bff (0:1bff)
 TextCommand0A:: ; 1c1d (0:1c1d)
 	push bc
 	call Joypad
-	ld a,[hJoyHeld]
+	ldh a,[hJoyHeld]
 	and a,%00000011 ; A and B buttons
 	jr nz,.skipDelay
 	ld c,30
@@ -655,7 +655,7 @@ TextCommand0C:: ; 1c78 (0:1c78)
 	push de
 	call Joypad
 	pop de
-	ld a,[hJoyHeld] ; joypad state
+	ldh a,[hJoyHeld] ; joypad state
 	and a,%00000011 ; is A or B button pressed?
 	jr nz,.skipDelay ; if so, skip the delay
 	ld c,10
@@ -684,14 +684,14 @@ TextCommand0D:: ; 1c9a (0:1c9a)
 ; BB = bank
 TextCommand17:: ; 1ca3 (0:1ca3)
 	pop hl
-	ld a,[H_LOADEDROMBANK]
+	ldh a,[H_LOADEDROMBANK]
 	push af
 	ld a,[hli]
 	ld e,a
 	ld a,[hli]
 	ld d,a
 	ld a,[hli]
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	push hl
 	ld l,e
@@ -699,7 +699,7 @@ TextCommand17:: ; 1ca3 (0:1ca3)
 	call TextCommandProcessor
 	pop hl
 	pop af
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	jp NextTextCommand
 

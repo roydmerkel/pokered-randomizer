@@ -19,7 +19,7 @@
 ; f8: leveled up
 DrawPartyMenu_: ; 12cd2 (4:6cd2)
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED],a
+	ldh [H_AUTOBGTRANSFERENABLED],a
 	call ClearScreen
 	call UpdateSprites ; move sprites
 	callba Func_71791 ; load pokemon icon graphics
@@ -34,7 +34,7 @@ RedrawPartyMenu_: ; 12ce3 (4:6ce3)
 	ld de,wPartySpecies
 	xor a
 	ld c,a
-	ld [$FF8C],a ; loop counter
+	ldh [$FF8C],a ; loop counter
 	ld [wcf2d],a
 .loop
 	ld a,[de]
@@ -50,10 +50,10 @@ RedrawPartyMenu_: ; 12ce3 (4:6ce3)
 	pop hl
 	call PlaceString ; print the pokemon's name
 	callba Func_71868 ; place the appropriate pokemon icon
-	ld a,[$FF8C] ; loop counter
+	ldh a,[$FF8C] ; loop counter
 	ld [wWhichPokemon],a
 	inc a
-	ld [$FF8C],a
+	ldh [$FF8C],a
 	call LoadMonData
 	pop hl
 	push hl
@@ -88,14 +88,14 @@ RedrawPartyMenu_: ; 12ce3 (4:6ce3)
 	pop hl
 	push hl
 	ld bc,20 + 1 ; down 1 row and right 1 column
-	ld a,[$FFF6]
+	ldh a,[$FFF6]
 	set 0,a
-	ld [$FFF6],a
+	ldh [$FFF6],a
 	add hl,bc
 	predef Func_128f6 ; draw HP bar and prints current / max HP
-	ld a,[$FFF6]
+	ldh a,[$FFF6]
 	res 0,a
-	ld [$FFF6],a
+	ldh [$FFF6],a
 	call SetPartyMenuHealthBarColor ; color the HP bar (on SGB)
 	pop hl
 	jr .printLevel
@@ -213,7 +213,7 @@ RedrawPartyMenu_: ; 12ce3 (4:6ce3)
 	pop af
 	ld [hl],a
 	ld a,1
-	ld [H_AUTOBGTRANSFERENABLED],a
+	ldh [H_AUTOBGTRANSFERENABLED],a
 	call Delay3
 	jp GBPalNormal
 .printItemUseMessage

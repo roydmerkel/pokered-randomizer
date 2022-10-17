@@ -11,9 +11,9 @@ Route15GateUpstairsText1: ; 49651 (12:5651)
 	bit 0, a
 	jr nz, .asm_49683 ; 0x49657 $2a
 	ld a, 50 ; pokemon needed
-	ld [$ffdb], a
+	ldh [$ffdb], a
 	ld a, EXP__ALL ; oak's aide reward
-	ld [$ffdc], a
+	ldh [$ffdc], a
 	ld [wd11e], a
 	call GetItemName
 	ld hl, wcd6d
@@ -21,7 +21,7 @@ Route15GateUpstairsText1: ; 49651 (12:5651)
 	ld bc, $000d
 	call CopyData
 	predef OaksAideScript ; call oak's aide script
-	ld a, [$ffdb]
+	ldh a, [$ffdb]
 	cp $1
 	jr nz, .asm_49689 ; 0x4967c $b
 	ld hl, wd7dd

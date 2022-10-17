@@ -10,15 +10,15 @@ CalcLevelFromExperience: ; 58f43 (16:4f43)
 	push hl
 	ld hl, wcfa8 ; current exp
 ; compare exp needed for level d with current exp
-	ld a, [H_MULTIPLICAND + 2]
+	ldh a, [H_MULTIPLICAND + 2]
 	ld c, a
 	ld a, [hld]
 	sub c
-	ld a, [H_MULTIPLICAND + 1]
+	ldh a, [H_MULTIPLICAND + 1]
 	ld c, a
 	ld a, [hld]
 	sbc c
-	ld a, [H_MULTIPLICAND]
+	ldh a, [H_MULTIPLICAND]
 	ld c, a
 	ld a, [hl]
 	sbc c
@@ -45,98 +45,98 @@ CalcExperience: ; 58f6a (16:4f6a)
 	add hl, bc
 	call CalcDSquared
 	ld a, d
-	ld [H_MULTIPLIER], a ; $ff99
+	ldh [H_MULTIPLIER], a ; $ff99
 	call Multiply
 	ld a, [hl]
 	and $f0
 	swap a
-	ld [H_MULTIPLIER], a ; $ff99
+	ldh [H_MULTIPLIER], a ; $ff99
 	call Multiply
 	ld a, [hli]
 	and $f
-	ld [H_DIVISOR], a ; $ff99
+	ldh [H_DIVISOR], a ; $ff99
 	ld b, $4
 	call Divide
-	ld a, [H_MULTIPLICAND] ; $ff96 (aliases: H_NUMTOPRINT)
+	ldh a, [H_MULTIPLICAND] ; $ff96 (aliases: H_NUMTOPRINT)
 	push af
-	ld a, [H_MULTIPLICAND+1]
+	ldh a, [H_MULTIPLICAND+1]
 	push af
-	ld a, [H_MULTIPLICAND+2]
+	ldh a, [H_MULTIPLICAND+2]
 	push af
 	call CalcDSquared
 	ld a, [hl]
 	and $7f
-	ld [H_MULTIPLIER], a ; $ff99
+	ldh [H_MULTIPLIER], a ; $ff99
 	call Multiply
-	ld a, [H_MULTIPLICAND] ; $ff96 (aliases: H_NUMTOPRINT)
+	ldh a, [H_MULTIPLICAND] ; $ff96 (aliases: H_NUMTOPRINT)
 	push af
-	ld a, [H_MULTIPLICAND+1]
+	ldh a, [H_MULTIPLICAND+1]
 	push af
-	ld a, [H_MULTIPLICAND+2]
+	ldh a, [H_MULTIPLICAND+2]
 	push af
 	ld a, [hli]
 	push af
 	xor a
-	ld [H_MULTIPLICAND], a ; $ff96
-	ld [H_MULTIPLICAND+1], a
+	ldh [H_MULTIPLICAND], a ; $ff96
+	ldh [H_MULTIPLICAND+1], a
 	ld a, d
-	ld [H_MULTIPLICAND+2], a
+	ldh [H_MULTIPLICAND+2], a
 	ld a, [hli]
-	ld [H_MULTIPLIER], a
+	ldh [H_MULTIPLIER], a
 	call Multiply
 	ld b, [hl]
-	ld a, [H_MULTIPLICAND+2]
+	ldh a, [H_MULTIPLICAND+2]
 	sub b
-	ld [H_MULTIPLICAND+2], a
+	ldh [H_MULTIPLICAND+2], a
 	ld b, $0
-	ld a, [H_MULTIPLICAND+1]
+	ldh a, [H_MULTIPLICAND+1]
 	sbc b
-	ld [H_MULTIPLICAND+1], a
-	ld a, [H_MULTIPLICAND] ; $ff96
+	ldh [H_MULTIPLICAND+1], a
+	ldh a, [H_MULTIPLICAND] ; $ff96
 	sbc b
-	ld [H_MULTIPLICAND], a ; $ff96
+	ldh [H_MULTIPLICAND], a ; $ff96
 	pop af
 	and $80
 	jr nz, .subtractSquaredTerm ; check sign
 	pop bc
-	ld a, [H_MULTIPLICAND+2]
+	ldh a, [H_MULTIPLICAND+2]
 	add b
-	ld [H_MULTIPLICAND+2], a
+	ldh [H_MULTIPLICAND+2], a
 	pop bc
-	ld a, [H_MULTIPLICAND+1]
+	ldh a, [H_MULTIPLICAND+1]
 	adc b
-	ld [H_MULTIPLICAND+1], a
+	ldh [H_MULTIPLICAND+1], a
 	pop bc
-	ld a, [H_MULTIPLICAND]
+	ldh a, [H_MULTIPLICAND]
 	adc b
-	ld [H_MULTIPLICAND], a
+	ldh [H_MULTIPLICAND], a
 	jr .addCubedTerm
 .subtractSquaredTerm
 	pop bc
-	ld a, [H_MULTIPLICAND+2]
+	ldh a, [H_MULTIPLICAND+2]
 	sub b
-	ld [H_MULTIPLICAND+2], a
+	ldh [H_MULTIPLICAND+2], a
 	pop bc
-	ld a, [H_MULTIPLICAND+1]
+	ldh a, [H_MULTIPLICAND+1]
 	sbc b
-	ld [H_MULTIPLICAND+1], a
+	ldh [H_MULTIPLICAND+1], a
 	pop bc
-	ld a, [H_MULTIPLICAND]
+	ldh a, [H_MULTIPLICAND]
 	sbc b
-	ld [H_MULTIPLICAND], a
+	ldh [H_MULTIPLICAND], a
 .addCubedTerm
 	pop bc
-	ld a, [H_MULTIPLICAND+2]
+	ldh a, [H_MULTIPLICAND+2]
 	add b
-	ld [H_MULTIPLICAND+2], a
+	ldh [H_MULTIPLICAND+2], a
 	pop bc
-	ld a, [H_MULTIPLICAND+1]
+	ldh a, [H_MULTIPLICAND+1]
 	adc b
-	ld [H_MULTIPLICAND+1], a
+	ldh [H_MULTIPLICAND+1], a
 	pop bc
-	ld a, [H_MULTIPLICAND]
+	ldh a, [H_MULTIPLICAND]
 	adc b
-	ld [H_MULTIPLICAND], a
+	ldh [H_MULTIPLICAND], a
 	ret
 
 .erratic
@@ -153,22 +153,22 @@ CalcExperience: ; 58f6a (16:4f6a)
     add hl, de
     add hl, de
     ld a, [hli]
-	ld [H_MULTIPLICAND], a
+	ldh [H_MULTIPLICAND], a
     ld a, [hli]
-	ld [H_MULTIPLICAND+1], a
+	ldh [H_MULTIPLICAND+1], a
     ld a, [hli]
-	ld [H_MULTIPLICAND+2], a
+	ldh [H_MULTIPLICAND+2], a
 	pop de
 	ret
 
 ; calculates d*d
 CalcDSquared: ; 59010 (16:5010)
 	xor a
-	ld [H_MULTIPLICAND], a ; $ff96 (aliases: H_NUMTOPRINT)
-	ld [H_MULTIPLICAND+1], a
+	ldh [H_MULTIPLICAND], a ; $ff96 (aliases: H_NUMTOPRINT)
+	ldh [H_MULTIPLICAND+1], a
 	ld a, d
-	ld [H_MULTIPLICAND+2], a
-	ld [H_MULTIPLIER], a ; $ff99 (aliases: H_DIVISOR, H_REMAINDER, H_POWEROFTEN)
+	ldh [H_MULTIPLICAND+2], a
+	ldh [H_MULTIPLIER], a ; $ff99 (aliases: H_DIVISOR, H_REMAINDER, H_POWEROFTEN)
 	jp Multiply
 
 ; each entry has the following scheme:

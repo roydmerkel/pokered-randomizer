@@ -47,9 +47,9 @@ Mansion2Script_Switches: ; 52037 (14:6037)
 	cp $4
 	ret nz
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld a, $5
-	ld [H_SPRITEHEIGHT], a
+	ldh [H_SPRITEHEIGHT], a
 	jp DisplayTextID
 
 Mansion2ScriptPointers: ; 52047 (14:6047)

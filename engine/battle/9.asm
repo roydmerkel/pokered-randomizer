@@ -156,7 +156,7 @@ CooltrainerFName: ; 27f79 (9:7f79)
 
 FocusEnergyEffect_: ; 27f86 (9:7f86)
 	ld hl, W_PLAYERBATTSTATUS2 ; W_PLAYERBATTSTATUS2
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	jr z, .asm_27f91
 	ld hl, W_ENEMYBATTSTATUS2 ; W_ENEMYBATTSTATUS2

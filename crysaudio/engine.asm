@@ -208,10 +208,10 @@ _UpdateSound:: ; e805
 	call FadeMusic
 	; write volume to hardware register
 	ld a, [Volume]
-	ld [rNR50], a
+	ldh [rNR50], a
 	; write SO on/off to hardware register
 	ld a, [SoundOutput]
-	ld [rNR51], a
+	ldh [rNR51], a
 	ret
 ; e8125
 
@@ -251,7 +251,7 @@ UpdateChannels: ; e8125
 	jr z, .asm_e8159
 	;
 	ld a, [SoundInput]
-	ld [rNR10], a
+	ldh [rNR10], a
 .asm_e8159
 	bit 5, [hl] ; rest
 	jr nz, .ch1rest
@@ -264,33 +264,33 @@ UpdateChannels: ; e8125
 	jr .asm_e8175
 .asm_e816b
 	ld a, [Crysaudio+$194]
-	ld [rNR13], a
+	ldh [rNR13], a
 	ld a, [Crysaudio+$195]
-	ld [rNR14], a
+	ldh [rNR14], a
 .asm_e8175
 	bit 0, [hl]
 	ret z
 	ld a, [Crysaudio+$192]
 	ld d, a
-	ld a, [rNR11]
+	ldh a, [rNR11]
 	and a, $3f ; sound length
 	or d
-	ld [rNR11], a
+	ldh [rNR11], a
 	ret
 .asm_e8184
 	ld a, [Crysaudio+$192]
 	ld d, a
-	ld a, [rNR11]
+	ldh a, [rNR11]
 	and a, $3f ; sound length
 	or d
-	ld [rNR11], a
+	ldh [rNR11], a
 	ld a, [Crysaudio+$194]
-	ld [rNR13], a
+	ldh [rNR13], a
 	ret
 .ch1rest
-	ld a, [rNR52]
+	ldh a, [rNR52]
 	and a, %10001110 ; ch1 off
-	ld [rNR52], a
+	ldh [rNR52], a
 	ld hl, rNR10
 	call ClearChannel
 	ret
@@ -298,14 +298,14 @@ UpdateChannels: ; e8125
 	ld hl, Crysaudio+$192
 	ld a, $3f ; sound length
 	or [hl]
-	ld [rNR11], a
+	ldh [rNR11], a
 	ld a, [Crysaudio+$193]
-	ld [rNR12], a
+	ldh [rNR12], a
 	ld a, [Crysaudio+$194]
-	ld [rNR13], a
+	ldh [rNR13], a
 	ld a, [Crysaudio+$195]
 	or a, $80
-	ld [rNR14], a
+	ldh [rNR14], a
 	ret
 
 .Channel2
@@ -322,31 +322,31 @@ UpdateChannels: ; e8125
 	ret z
 	ld a, [Crysaudio+$192]
 	ld d, a
-	ld a, [rNR21]
+	ldh a, [rNR21]
 	and a, $3f ; sound length
 	or d
-	ld [rNR21], a
+	ldh [rNR21], a
 	ret
 .asm_e81db ; unused
 	ld a, [Crysaudio+$194]
-	ld [rNR23], a
+	ldh [rNR23], a
 	ld a, [Crysaudio+$195]
-	ld [rNR24], a
+	ldh [rNR24], a
 	ret
 .asm_e81e6
 	ld a, [Crysaudio+$192]
 	ld d, a
-	ld a, [rNR21]
+	ldh a, [rNR21]
 	and a, $3f ; sound length
 	or d
-	ld [rNR21], a
+	ldh [rNR21], a
 	ld a, [Crysaudio+$194]
-	ld [rNR23], a
+	ldh [rNR23], a
 	ret
 .ch2rest
-	ld a, [rNR52]
+	ldh a, [rNR52]
 	and a, %10001101 ; ch2 off
-	ld [rNR52], a
+	ldh [rNR52], a
 	ld hl, $ff15
 	call ClearChannel
 	ret
@@ -354,14 +354,14 @@ UpdateChannels: ; e8125
 	ld hl, Crysaudio+$192
 	ld a, $3f ; sound length
 	or [hl]
-	ld [rNR21], a
+	ldh [rNR21], a
 	ld a, [Crysaudio+$193]
-	ld [rNR22], a
+	ldh [rNR22], a
 	ld a, [Crysaudio+$194]
-	ld [rNR23], a
+	ldh [rNR23], a
 	ld a, [Crysaudio+$195]
 	or a, $80 ; initial (restart)
-	ld [rNR24], a
+	ldh [rNR24], a
 	ret
 
 .Channel3
@@ -377,34 +377,34 @@ UpdateChannels: ; e8125
 	ret
 .asm_e822f ; unused
 	ld a, [Crysaudio+$194]
-	ld [rNR33], a
+	ldh [rNR33], a
 	ld a, [Crysaudio+$195]
-	ld [rNR34], a
+	ldh [rNR34], a
 	ret
 .asm_e823a
 	ld a, [Crysaudio+$194]
-	ld [rNR33], a
+	ldh [rNR33], a
 	ret
 .ch3rest
-	ld a, [rNR52]
+	ldh a, [rNR52]
 	and a, %10001011 ; ch3 off
-	ld [rNR52], a
+	ldh [rNR52], a
 	ld hl, rNR30
 	call ClearChannel
 	ret
 .asm_e824d
 	ld a, $3f
-	ld [rNR31], a
+	ldh [rNR31], a
 	xor a
-	ld [rNR30], a
+	ldh [rNR30], a
 	call .asm_e8268
 	ld a, $80
-	ld [rNR30], a
+	ldh [rNR30], a
 	ld a, [Crysaudio+$194]
-	ld [rNR33], a
+	ldh [rNR33], a
 	ld a, [Crysaudio+$195]
 	or a, $80
-	ld [rNR34], a
+	ldh [rNR34], a
 	ret
 .asm_e8268
 	push hl
@@ -425,43 +425,43 @@ UpdateChannels: ; e8125
 	jr z, .skip
 	; load wavepattern into $ff30-$ff3f
 	ld a, [hli]
-	ld [$ff30], a
+	ldh [$ff30], a
 	ld a, [hli]
-	ld [$ff31], a
+	ldh [$ff31], a
 	ld a, [hli]
-	ld [$ff32], a
+	ldh [$ff32], a
 	ld a, [hli]
-	ld [$ff33], a
+	ldh [$ff33], a
 	ld a, [hli]
-	ld [$ff34], a
+	ldh [$ff34], a
 	ld a, [hli]
-	ld [$ff35], a
+	ldh [$ff35], a
 	ld a, [hli]
-	ld [$ff36], a
+	ldh [$ff36], a
 	ld a, [hli]
-	ld [$ff37], a
+	ldh [$ff37], a
 	ld a, [hli]
-	ld [$ff38], a
+	ldh [$ff38], a
 	ld a, [hli]
-	ld [$ff39], a
+	ldh [$ff39], a
 	ld a, [hli]
-	ld [$ff3a], a
+	ldh [$ff3a], a
 	ld a, [hli]
-	ld [$ff3b], a
+	ldh [$ff3b], a
 	ld a, [hli]
-	ld [$ff3c], a
+	ldh [$ff3c], a
 	ld a, [hli]
-	ld [$ff3d], a
+	ldh [$ff3d], a
 	ld a, [hli]
-	ld [$ff3e], a
+	ldh [$ff3e], a
 	ld a, [hli]
-	ld [$ff3f], a
+	ldh [$ff3f], a
 .skip
 	pop hl
 	ld a, [Crysaudio+$193]
 	and a, $f0
 	sla a
-	ld [rNR32], a
+	ldh [rNR32], a
 	ret
 
 .Channel4
@@ -475,24 +475,24 @@ UpdateChannels: ; e8125
 	ret
 .asm_e82c1 ; unused
 	ld a, [Crysaudio+$194]
-	ld [rNR43], a
+	ldh [rNR43], a
 	ret
 .ch4rest
-	ld a, [rNR52]
+	ldh a, [rNR52]
 	and a, %10000111 ; ch4 off
-	ld [rNR52], a
+	ldh [rNR52], a
 	ld hl, $ff1f
 	call ClearChannel
 	ret
 .asm_e82d4
 	ld a, $3f ; sound length
-	ld [rNR41], a
+	ldh [rNR41], a
 	ld a, [Crysaudio+$193]
-	ld [rNR42], a
+	ldh [rNR42], a
 	ld a, [Crysaudio+$194]
-	ld [rNR43], a
+	ldh [rNR43], a
 	ld a, $80
-	ld [rNR44], a
+	ldh [rNR44], a
 	ret
 ; e82e7
 
@@ -538,15 +538,15 @@ Functione8307: ; e8307
 	ld hl, Tablee8350
 .updatehw
 	xor a
-	ld [rNR10], a ; sweep off
+	ldh [rNR10], a ; sweep off
 	ld a, [hli]
-	ld [rNR11], a ; sound length / duty cycle
+	ldh [rNR11], a ; sound length / duty cycle
 	ld a, [hli]
-	ld [rNR12], a ; ch1 volume envelope
+	ldh [rNR12], a ; ch1 volume envelope
 	ld a, [hli]
-	ld [rNR13], a ; ch1 frequency lo
+	ldh [rNR13], a ; ch1 frequency lo
 	ld a, [hli]
-	ld [rNR14], a ; ch1 frequency hi
+	ldh [rNR14], a ; ch1 frequency hi
 .asm_e8335
 	ld a, d
 	inc a
@@ -1212,7 +1212,7 @@ ParseMusic: ; e85e1
 	jr nz, .ok
 	; ????
 	xor a
-	ld [rNR10], a ; sweep = 0
+	ldh [rNR10], a ; sweep = 0
 .ok
 ; stop playing
 	; turn channel off
@@ -2705,56 +2705,56 @@ _PlaySFX:: ; e8c04
 	jr z, .ch6
 	res 0, [hl] ; turn it off
 	xor a
-	ld [rNR11], a ; length/wavepattern = 0
+	ldh [rNR11], a ; length/wavepattern = 0
 	ld a, $08
-	ld [rNR12], a ; envelope = 0
+	ldh [rNR12], a ; envelope = 0
 	xor a
-	ld [rNR13], a ; frequency lo = 0
+	ldh [rNR13], a ; frequency lo = 0
 	ld a, $80
-	ld [rNR14], a ; restart sound (freq hi = 0)
+	ldh [rNR14], a ; restart sound (freq hi = 0)
 	xor a
 	ld [SoundInput], a ; global sound off
-	ld [rNR10], a ; sweep = 0
+	ldh [rNR10], a ; sweep = 0
 .ch6
 	ld hl, Crysaudio+$fe ; ch6 on?
 	bit 0, [hl]
 	jr z, .ch7
 	res 0, [hl] ; turn it off
 	xor a
-	ld [rNR21], a ; length/wavepattern = 0
+	ldh [rNR21], a ; length/wavepattern = 0
 	ld a, $08
-	ld [rNR22], a ; envelope = 0
+	ldh [rNR22], a ; envelope = 0
 	xor a
-	ld [rNR23], a ; frequency lo = 0
+	ldh [rNR23], a ; frequency lo = 0
 	ld a, $80
-	ld [rNR24], a ; restart sound (freq hi = 0)
+	ldh [rNR24], a ; restart sound (freq hi = 0)
 .ch7
 	ld hl, Crysaudio+$130 ; ch7 on?
 	bit 0, [hl]
 	jr z, .ch8
 	res 0, [hl] ; turn it off
 	xor a
-	ld [rNR30], a ; sound mode #3 off
-	ld [rNR31], a ; length/wavepattern = 0
+	ldh [rNR30], a ; sound mode #3 off
+	ldh [rNR31], a ; length/wavepattern = 0
 	ld a, $08
-	ld [rNR32], a ; envelope = 0
+	ldh [rNR32], a ; envelope = 0
 	xor a
-	ld [rNR33], a ; frequency lo = 0
+	ldh [rNR33], a ; frequency lo = 0
 	ld a, $80
-	ld [rNR34], a ; restart sound (freq hi = 0)
+	ldh [rNR34], a ; restart sound (freq hi = 0)
 .ch8
 	ld hl, Crysaudio+$162 ; ch8 on?
 	bit 0, [hl]
 	jr z, .chscleared
 	res 0, [hl] ; turn it off
 	xor a
-	ld [rNR41], a ; length/wavepattern = 0
+	ldh [rNR41], a ; length/wavepattern = 0
 	ld a, $08
-	ld [rNR42], a ; envelope = 0
+	ldh [rNR42], a ; envelope = 0
 	xor a
-	ld [rNR43], a ; frequency lo = 0
+	ldh [rNR43], a ; frequency lo = 0
 	ld a, $80
-	ld [rNR44], a ; restart sound (freq hi = 0)
+	ldh [rNR44], a ; restart sound (freq hi = 0)
 	xor a
 	ld [NoiseSampleAddressLo], a
 	ld [NoiseSampleAddressHi], a

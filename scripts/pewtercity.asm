@@ -31,7 +31,7 @@ PewterCityScript_1925e: ; 1925e (6:525e)
 	ld a, $f0
 	ld [wJoyIgnore], a
 	ld a, $5
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	jp DisplayTextID
 
 CoordsData_19277: ; 19277 (6:5277)
@@ -46,32 +46,32 @@ PewterCityScript1: ; 19280 (6:5280)
 	and a
 	ret nz
 	ld a, $3
-	ld [H_SPRITEINDEX], a
+	ldh [H_SPRITEINDEX], a
 	ld a, SPRITE_FACING_UP
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, ($3 << 4) | SPRITE_FACING_UP
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	call SetSpriteImageIndexAfterSettingFacingDirection
 	call PlayDefaultMusic
 	ld hl, wFlags_0xcd60
 	set 4, [hl]
 	ld a, $d
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	ld a, $3c
-	ld [$ffeb], a
+	ldh [$ffeb], a
 	ld a, $30
-	ld [$ffec], a
+	ldh [$ffec], a
 	ld a, $c
-	ld [$ffed], a
+	ldh [$ffed], a
 	ld a, $11
-	ld [$ffee], a
+	ldh [$ffee], a
 	ld a, $3
 	ld [wSpriteIndex], a
 	call SetSpritePosition1
 	ld a, $3
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	ld de, MovementData_PewterMuseumGuyExit ; $52ce
 	call MoveSprite
 	ld a, $2
@@ -110,32 +110,32 @@ PewterCityScript4: ; 19305 (6:5305)
 	and a
 	ret nz
 	ld a, $5
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	ld a, SPRITE_FACING_LEFT
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, ($1 << 4) | SPRITE_FACING_LEFT
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	call SetSpriteImageIndexAfterSettingFacingDirection
 	call PlayDefaultMusic
 	ld hl, wFlags_0xcd60
 	set 4, [hl]
 	ld a, $e
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	ld a, $3c
-	ld [$ffeb], a
+	ldh [$ffeb], a
 	ld a, $40
-	ld [$ffec], a
+	ldh [$ffec], a
 	ld a, $16
-	ld [$ffed], a
+	ldh [$ffed], a
 	ld a, $10
-	ld [$ffee], a
+	ldh [$ffee], a
 	ld a, $5
 	ld [wSpriteIndex], a
 	call SetSpritePosition1
 	ld a, $5
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	ld de, MovementData_PewterGymGuyExit
 	call MoveSprite
 	ld a, $5

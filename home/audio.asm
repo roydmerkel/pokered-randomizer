@@ -99,16 +99,16 @@ OpenSRAMForSound::
 ;	
 ;    call OpenSRAMForSound
 ;    
-;	ld a, [hROMBank]
+;	ldh a, [hROMBank]
 ;	push af
 ;	ld a, BANK(_SoundRestart)
-;	ld [hROMBank], a
+;	ldh [hROMBank], a
 ;	ld [$2000], a
 ;
 ;	call _SoundRestart
 ;
 ;	pop af
-;	ld [hROMBank], a
+;	ldh [hROMBank], a
 ;	ld [$2000], a
 ;
 ;	pop af
@@ -130,16 +130,16 @@ UpdateSound:: ; 3b6a
     ret nz
 	
     
-	ld a, [hROMBank]
+	ldh a, [hROMBank]
 	push af
 	ld a, BANK(_UpdateSound)
-	ld [hROMBank], a
+	ldh [hROMBank], a
 	ld [$2000], a
 
 	call _UpdateSound
 
 	pop af
-	ld [hROMBank], a
+	ldh [hROMBank], a
 	ld [$2000], a
 
 ;	pop af
@@ -160,16 +160,16 @@ PlayMusic:: ; 3b97
 	push bc
 	push af
     
-	ld a, [hROMBank]
+	ldh a, [hROMBank]
 	push af
 	ld a, BANK(_PlayMusic) ; and BANK(_SoundRestart)
-	ld [hROMBank], a
+	ldh [hROMBank], a
 	ld [$2000], a
 
 	call _PlayMusic
 
 	pop af
-	ld [hROMBank], a
+	ldh [hROMBank], a
 	ld [$2000], a
 	jr PopAllRet
 ; 3bbc
@@ -189,12 +189,12 @@ PlayCry:: ; 13d0 (0:13d0)
 	ld d, 0
 
 ; Save current bank
-	ld a, [hROMBank]
+	ldh a, [hROMBank]
 	push af
 
 ; Cry headers are stuck in one bank.
 	ld a, BANK(CryHeaders)
-	ld [hROMBank], a
+	ldh [hROMBank], a
 	ld [$2000], a
 
 ; Each header is 6 bytes long:
@@ -221,13 +221,13 @@ PlayCry:: ; 13d0 (0:13d0)
 	ld [CryLength+1], a
 
 	ld a, BANK(PlayCry_)
-	ld [hROMBank], a
+	ldh [hROMBank], a
 	ld [$2000], a
 
 	call PlayCry_
 
 	pop af
-	ld [hROMBank], a
+	ldh [hROMBank], a
 	ld [$2000], a
 	
 	call WaitForSoundToFinish
@@ -255,10 +255,10 @@ PlaySFX:: ; 3c23
 
 PlaySFX_play
 .play
-	ld a, [hROMBank]
+	ldh a, [hROMBank]
 	push af
 	ld a, BANK(_PlaySFX)
-	ld [hROMBank], a
+	ldh [hROMBank], a
 	ld [$2000], a ; bankswitch
 
 	ld a, e
@@ -266,7 +266,7 @@ PlaySFX_play
 	call _PlaySFX
 
 	pop af
-	ld [hROMBank], a
+	ldh [hROMBank], a
 	ld [$2000], a ; bankswitch
 .quit
 PopAllRet:
@@ -281,13 +281,13 @@ _LoadMusicByte:: ; 3b86
 ; CurMusicByte = [a:de]
 GLOBAL LoadMusicByte
     
-	ld [hROMBank], a
+	ldh [hROMBank], a
 	ld [$2000], a
 
 	ld a, [de]
 	ld [CurMusicByte], a
 	ld a, BANK(LoadMusicByte)
 
-	ld [hROMBank], a
+	ldh [hROMBank], a
 	ld [$2000], a
 	ret

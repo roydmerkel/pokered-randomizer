@@ -56,7 +56,7 @@ RocketHideout4Script3: ; 454b6 (11:54b6)
 	ld hl, wd81b
 	set 7, [hl]
 	ld a, $a
-	ld [H_SPRITEHEIGHT], a
+	ldh [H_SPRITEHEIGHT], a
 	call DisplayTextID
 	call GBFadeOutToBlack
 	ld a, HS_ROCKET_HIDEOUT_4_GIOVANNI

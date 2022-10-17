@@ -31,7 +31,7 @@ PokemonTower7Script2: ; 60d23 (18:4d23)
 	ld a, $f0
 	ld [wJoyIgnore], a
 	ld a, [wSpriteIndex]
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	call DisplayTextID
 	call PokemonTower7Script_60db6
 	ld a, $3
@@ -72,7 +72,7 @@ PokemonTower7Script4: ; 60d86 (18:4d86)
 	ld a, $4
 	ld [wSpriteStateData1 + 9], a
 	ld a, $95
-	ld [H_DOWNARROWBLINKCNT1], a ; $ff8b
+	ldh [H_DOWNARROWBLINKCNT1], a ; $ff8b
 	ld a, $1
 	ld [wDestinationWarpID], a
 	ld a, LAVENDER_TOWN
@@ -107,7 +107,7 @@ PokemonTower7Script_60db6: ; 60db6 (18:4db6)
 	ld d, [hl]
 	ld e, a
 	ld a, [wSpriteIndex]
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	jp MoveSprite
 .asm_60dde
 	inc hl

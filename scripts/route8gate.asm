@@ -30,13 +30,13 @@ Route8GateScript0: ; 1e1ee (7:61ee)
 	ld a, $2
 	ld [wd528], a
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	callba RemoveGuardDrink
-	ld a, [$ffdb]
+	ldh a, [$ffdb]
 	and a
 	jr nz, .asm_1e220 ; 0x1e20e $10
 	ld a, $2
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	call Route8GateScript_1e1d7
 	ld a, $1
@@ -46,7 +46,7 @@ Route8GateScript0: ; 1e1ee (7:61ee)
 	ld hl, wd728
 	set 6, [hl]
 	ld a, $3
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	jp DisplayTextID
 
 CoordsData_1e22c: ; 1e22c (7:622c)

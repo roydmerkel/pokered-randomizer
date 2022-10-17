@@ -55,7 +55,7 @@ Func_12924: ; 12924 (4:6924)
 	push hl
 	call DrawHPBar
 	pop hl
-	ld a, [$fff6]
+	ldh a, [$fff6]
 	bit 0, a
 	jr z, .asm_12937
 	ld bc, $9

@@ -23,9 +23,9 @@ Museum1FScript0: ; 5c10d (17:410d)
 	ret nz
 .asm_5c120
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld a, $1
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	jp DisplayTextID
 
 Museum1FScript1: ; 5c12a (17:412a)
@@ -73,7 +73,7 @@ Museum1FText1: ; 5c135 (17:4135)
 	ld [wd125], a
 	call DisplayTextBoxID
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld hl, Museum1FText_5c21f
 	call PrintText
 	call YesNoChoice
@@ -81,10 +81,10 @@ Museum1FText1: ; 5c135 (17:4135)
 	and a
 	jr nz, .asm_de133
 	xor a
-	ld [$ff9f], a
-	ld [$ffa0], a
+	ldh [$ff9f], a
+	ldh [$ffa0], a
 	ld a, $50
-	ld [$ffa1], a
+	ldh [$ffa1], a
 	call HasEnoughMoney
 	jr nc, .asm_0f3e3
 	ld hl, Museum1FText_5c229

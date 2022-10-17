@@ -1,8 +1,8 @@
 LoadShootingStarGraphics: ; 70000 (1c:4000)
 	ld a, $f9
-	ld [rOBP0], a ; $ff48
+	ldh [rOBP0], a ; $ff48
 	ld a, $a4
-	ld [rOBP1], a ; $ff49
+	ldh [rOBP1], a ; $ff49
 	ld de, AnimationTileset2 + $30 ; $471e ; star tile (top left quadrant)
 	ld hl, vChars1 + $200
 	ld bc, (BANK(AnimationTileset2) << 8) + $01
@@ -182,9 +182,9 @@ Func_7011f: ; 7011f (1c:411f)
 	add hl, de
 	dec c
 	jr nz, .asm_7012b
-	ld a, [rOBP1] ; $ff49
+	ldh a, [rOBP1] ; $ff49
 	xor $a0
-	ld [rOBP1], a ; $ff49
+	ldh [rOBP1], a ; $ff49
 	ld c, $3
 	call CheckForUserInterruption
 	ret c

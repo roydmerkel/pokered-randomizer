@@ -62,8 +62,8 @@ BrunoScript0: ; 76339 (1d:6339)
 	call ArePlayerCoordsInArray
 	jp nc, CheckFightingMapTrainers
 	xor a
-	ld [hJoyPressed], a
-	ld [hJoyHeld], a
+	ldh [hJoyPressed], a
+	ldh [hJoyHeld], a
 	ld [wSimulatedJoypadStatesEnd], a
 	ld [wSimulatedJoypadStatesIndex], a
 	ld a, [wWhichTrade] ; wWhichTrade
@@ -75,7 +75,7 @@ BrunoScript0: ; 76339 (1d:6339)
 	jr z, asm_7631d
 .asm_7635d
 	ld a, $2
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	call DisplayTextID
 	ld a, D_UP
 	ld [wSimulatedJoypadStatesEnd], a
@@ -111,7 +111,7 @@ BrunoScript2: ; 76396 (1d:6396)
 	cp $ff
 	jp z, BrunoScript_7630d
 	ld a, $1
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	jp DisplayTextID
 
 BrunoTextPointers: ; 763a8 (1d:63a8)

@@ -11,7 +11,7 @@ SetDefaultNamesBeforeTitlescreen: ; 42b7 (1:42b7)
 	ld de, W_RIVALNAME ; wd34a
 	call CopyFixedLengthText
 	xor a
-	ld [hWY], a
+	ldh [hWY], a
 	ld [wd358], a
 	ld hl, wd732
 	ld [hli], a
@@ -24,14 +24,14 @@ SetDefaultNamesBeforeTitlescreen: ; 42b7 (1:42b7)
 LoadTitlescreenGraphics: ; 42dd (1:42dd)
 	call GBPalWhiteOut
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	xor a
-	ld [hTilesetType], a
-	ld [$ffae], a
+	ldh [hTilesetType], a
+	ldh [$ffae], a
 	ld a, $40
-	ld [$ffaf], a
+	ldh [$ffaf], a
 	ld a, $90
-	ld [hWY], a
+	ldh [hWY], a
 	call ClearScreen
 	call DisableLCD
 	call LoadFontTilePatterns
@@ -122,7 +122,7 @@ ENDC
 	call Func_4533
 	call SaveScreenTilesToBuffer1
 	ld a, $40
-	ld [hWY], a
+	ldh [hWY], a
 	call LoadScreenTilesFromBuffer2
 	ld a, $98
 	call Func_4533
@@ -130,7 +130,7 @@ ENDC
 	call GoPAL_SET
 	call GBPalNormal
 	ld a, $e4
-	ld [rOBP0], a ; $ff48
+	ldh [rOBP0], a ; $ff48
 	ld bc, $ffaf ; background scroll Y
 	ld hl, .TitleScreenPokemonLogoYScrolls ; $43db
 .asm_43c6
@@ -171,7 +171,7 @@ ENDC
 	ret
 .asm_43f4
     xor a
-	ld [hSCY], a
+	ldh [hSCY], a
     
 	call LoadScreenTilesFromBuffer1
 	ld c, $24
@@ -180,7 +180,7 @@ ENDC
 	call PlaySound
 	call PrintGameVersionOnTitleScreen
 	ld a, $90
-	ld [hWY], a
+	ldh [hWY], a
 	ld d, $90
 .asm_440a
 	ld h, d
@@ -223,9 +223,9 @@ ENDC
 	call GBPalWhiteOutWithDelay3
 	call ClearSprites
 	xor a
-	ld [hWY], a
+	ldh [hWY], a
 	inc a
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	call ClearScreen
 	ld a, $98
 	call Func_4533
@@ -233,7 +233,7 @@ ENDC
 	call Func_4533
 	call Delay3
 	call LoadGBPal
-	ld a, [hJoyHeld]
+	ldh a, [hJoyHeld]
 	ld b, a
 	and $46
 	cp $46
@@ -268,7 +268,7 @@ Func_4496: ; 4496 (1:4496)
 	call Func_4524
 
 	ld a, $90
-	ld [hWY], a
+	ldh [hWY], a
 	ld d, 1 ; scroll out
 	callba TitleScroll
 	ret
@@ -277,20 +277,20 @@ Func_44c1: ; 44c1 (1:44c1)
 	ld d, 0 ; scroll in
 	callba TitleScroll
 	xor a
-	ld [hWY], a
+	ldh [hWY], a
 	ret
 
 Func_44cf: ; 44cf (1:44cf)
 .wait
-	ld a, [$ff44] ; rLY
+	ldh a, [rLY] ; rLY
 	cp l
 	jr nz, .wait
 
 	ld a, h
-	ld [rSCX], a ; $ff43
+	ldh [rSCX], a ; $ff43
 
 .wait2
-	ld a, [$ff44] ; rLY
+	ldh a, [rLY] ; rLY
 	cp h
 	jr z, .wait2
 	ret
@@ -346,12 +346,12 @@ Func_4524: ; 4524 (1:4524)
 	jp LoadFrontSpriteByMonIndex
 
 Func_4533: ; 4533 (1:4533)
-	ld [$ffbd], a
+	ldh [$ffbd], a
 	jp Delay3
 
 LoadCopyrightAndTextBoxTiles: ; 4538 (1:4538)
 	xor a
-	ld [hWY], a
+	ldh [hWY], a
 	call ClearScreen
 	call LoadTextBoxTilePatterns
 

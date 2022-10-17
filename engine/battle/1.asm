@@ -1,5 +1,5 @@
 DrainHPEffect_: ; 783f (1:783f)
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	ld a, [W_PLAYERMOVEEFFECT] ; wcfd2
 	jr z, .goteffect
@@ -34,7 +34,7 @@ DrainHPEffect_: ; 783f (1:783f)
 
 	ld hl, wBattleMonHP ; wd015
 	ld de, wBattleMonMaxHP ; wd023
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	jp z, Func_7861
 	ld hl, wEnemyMonHP ; wEnemyMonHP
@@ -86,7 +86,7 @@ Func_7861: ; 7861 (1:7861)
 	ld [wHPBarNewHP+1], a
 	inc de
 .asm_789c
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	hlCoord 10, 9
 	ld a, $1
@@ -100,7 +100,7 @@ Func_7861: ; 7861 (1:7861)
 	predef DrawEnemyHUDAndHPBar
 	callab ReadPlayerMonCurHPAndStatus
 	ld hl, SuckedHealthText ; $78dc
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	ld a, [W_PLAYERMOVEEFFECT] ; wcfd3
 	jr z, .asm_78d2

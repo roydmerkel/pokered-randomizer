@@ -36,10 +36,10 @@ StatusScreen: ; 12953 (4:6953)
 	ld hl, vChars2 + $720
 	ld bc,(BANK(PTile) << 8 | $01)
 	call CopyVideoDataDouble ; P (for PP), inline
-	ld a, [hTilesetType]
+	ldh a, [hTilesetType]
 	push af
 	xor a
-	ld [hTilesetType], a
+	ldh [hTilesetType], a
 	hlCoord 19, 1
 	ld bc, $060a
 	call DrawLineBox ; Draws the box around name, HP and status
@@ -109,7 +109,7 @@ StatusScreen: ; 12953 (4:6953)
 	call PlayCry ; play Pokémon cry
 	call WaitForTextScrollButtonPress ; wait for button
 	pop af
-	ld [hTilesetType], a
+	ldh [hTilesetType], a
 	ret
 .unk_12a7e ; 0x12a7e ; I don't know what this does, iterates over pointers?
 	ld a, [wcc49]
@@ -227,11 +227,11 @@ StatsText: ; 12b3a (4:6b3a)
 	next "SPECIAL@"
 
 StatusScreen2: ; 12b57 (4:6b57)
-	ld a, [hTilesetType]
+	ldh a, [hTilesetType]
 	push af
 	xor a
-	ld [hTilesetType], a
-	ld [$ffba], a
+	ldh [hTilesetType], a
+	ldh [$ffba], a
 	ld bc, $0005
 	ld hl, wd0dc
 	call FillMemory
@@ -356,11 +356,11 @@ StatusScreen2: ; 12b57 (4:6b57)
 	hlCoord 9, 1
 	call PlaceString
 	ld a, $1
-	ld [$ffba], a
+	ldh [$ffba], a
 	call Delay3
 	call WaitForTextScrollButtonPress ; wait for button
 	pop af
-	ld [hTilesetType], a
+	ldh [hTilesetType], a
 	ld hl, wd72c
 	res 1, [hl]
 	ld a, $77
@@ -375,13 +375,13 @@ StatusScreen2: ; 12b57 (4:6b57)
 	ld d, a
 	callab CalcExperience
 	ld hl, wcfa8
-	ld a, [$ff98]
+	ldh a, [$ff98]
 	sub [hl]
 	ld [hld], a
-	ld a, [$ff97]
+	ldh a, [$ff97]
 	sbc [hl]
 	ld [hld], a
-	ld a, [$ff96]
+	ldh a, [$ff96]
 	sbc [hl]
 	ld [hld], a
 	ret

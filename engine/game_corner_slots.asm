@@ -22,7 +22,7 @@ StartSlotMachine: ; 37e2d (d:7e2d)
 	ld a, $fa
 .asm_37e5a
 	ld [wcc5b], a
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [H_LOADEDROMBANK]
 	ld [wcc5e], a
 	call PromptUserToPlaySlots
 	ret

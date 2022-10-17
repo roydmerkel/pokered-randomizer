@@ -38,14 +38,14 @@ asm_ef82: ; ef82 (3:6f82)
 	call ClearSprites
 	call RestoreScreenTilesAndReloadTilePatterns
 	ld a, $90
-	ld [hWY], a
+	ldh [hWY], a
 	call Delay3
 	call LoadGBPal
 	call LoadCurrentMapView
 	call SaveScreenTilesToBuffer2
 	call Delay3
 	xor a
-	ld [hWY], a
+	ldh [hWY], a
 	ld hl, UsedCutText
 	call PrintText
 	call LoadScreenTilesFromBuffer2
@@ -63,7 +63,7 @@ asm_ef82: ; ef82 (3:6f82)
 	ld a, RBSFX_02_56
 	call PlaySound
 	ld a, $90
-	ld [hWY], a
+	ldh [hWY], a
 	call UpdateSprites
 	jp RedrawMapView
 
@@ -75,7 +75,7 @@ AnimateCutTree: ; eff7 (3:6ff7)
 	xor a
 	ld [wcd50], a
 	ld a, $e4
-	ld [rOBP1], a ; $ff49
+	ldh [rOBP1], a ; $ff49
 	ld a, [wcd4d]
 	cp $52
 	jr z, .asm_f020

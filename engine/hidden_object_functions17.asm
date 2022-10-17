@@ -61,10 +61,10 @@ DisplayMonFrontSpriteInBox: ; 5dbd9 (17:5bd9)
 ; Displays a pokemon's front sprite in a pop-up window.
 ; [wcf91] = pokemon interal id number
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	call Delay3
 	xor a
-	ld [hWY], a
+	ldh [hWY], a
 	call SaveScreenTilesToBuffer1
 	ld a, $11
 	ld [wd125], a
@@ -76,14 +76,14 @@ DisplayMonFrontSpriteInBox: ; 5dbd9 (17:5bd9)
 	ld de, vChars1 + $310
 	call LoadMonFrontSprite
 	ld a, $80
-	ld [$ffe1], a
+	ldh [$ffe1], a
 	hlCoord 10, 11
 	predef Func_3f073
 	call WaitForTextScrollButtonPress
 	call LoadScreenTilesFromBuffer1
 	call Delay3
 	ld a, $90
-	ld [hWY], a
+	ldh [hWY], a
 	ret
 
 PrintBlackboardLinkCableText: ; 5dc1a (17:5c1a)
@@ -358,12 +358,12 @@ GymTrashScript: ; 5ddfc (17:5dfc)
 	add hl, de
 	ld a, [hli]
 
-	ld [$ffdb], a
+	ldh [$ffdb], a
 	push hl
 	call Random
 	swap a
 	ld b, a
-	ld a, [$ffdb]
+	ldh a, [$ffdb]
 	and b
 	dec a
 	pop hl

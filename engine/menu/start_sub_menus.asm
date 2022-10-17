@@ -50,7 +50,7 @@ StartMenu_Pokemon: ; 130a9 (4:70a9)
 	ld hl,wTopMenuItemY
 	ld a,c
 	ld [hli],a ; top menu item Y
-	ld a,[$fff7]
+	ldh a,[$fff7]
 	ld [hli],a ; top menu item X
 	xor a
 	ld [hli],a ; current menu item ID
@@ -239,21 +239,21 @@ StartMenu_Pokemon: ; 130a9 (4:70a9)
 	ld bc,wPartyMon2 - wPartyMon1
 	call AddNTimes
 	ld a,[hli]
-	ld [H_DIVIDEND],a
+	ldh [H_DIVIDEND],a
 	ld a,[hl]
-	ld [H_DIVIDEND + 1],a
+	ldh [H_DIVIDEND + 1],a
 	ld a,5
-	ld [H_DIVISOR],a
+	ldh [H_DIVISOR],a
 	ld b,2 ; number of bytes
 	call Divide
 	ld bc,wPartyMon1HP - wPartyMon1MaxHP
 	add hl,bc
 	ld a,[hld]
 	ld b,a
-	ld a,[H_QUOTIENT + 3]
+	ldh a,[H_QUOTIENT + 3]
 	sub b
 	ld b,[hl]
-	ld a,[H_QUOTIENT + 2]
+	ldh a,[H_QUOTIENT + 2]
 	sbc b
 	jp nc,.notHealthyEnough
 	ld a,[wcc2b]
@@ -500,10 +500,10 @@ StartMenu_TrainerInfo: ; 13460 (4:7460)
 	call GBPalWhiteOut
 	call ClearScreen
 	call UpdateSprites ; move sprites
-	ld a,[hTilesetType]
+	ldh a,[hTilesetType]
 	push af
 	xor a
-	ld [hTilesetType],a
+	ldh [hTilesetType],a
 	call DrawTrainerInfo
 	predef DrawBadges ; draw badges
 	ld b,$0d
@@ -517,7 +517,7 @@ StartMenu_TrainerInfo: ; 13460 (4:7460)
 	call ReloadMapData
 	call LoadGBPal
 	pop af
-	ld [hTilesetType],a
+	ldh [hTilesetType],a
 	jp RedisplayStartMenu
 
 ; loads tile patterns and draws everything except for gym leader faces / badges
@@ -694,7 +694,7 @@ StartMenu_SaveReset: ; 135e3 (4:75e3)
 
 StartMenu_Option: ; 135f6 (4:75f6)
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED],a
+	ldh [H_AUTOBGTRANSFERENABLED],a
 	call ClearScreen
 	call UpdateSprites
 	callab DisplayOptionMenu
@@ -780,10 +780,10 @@ SwitchPartyMon_Stats: ; 13653 (4:7653)
 	inc d
 .asm_13696
 	ld a, [hl]
-	ld [H_DIVIDEND], a ; $ff95 (aliases: H_PRODUCT, H_PASTLEADINGZEROES, H_QUOTIENT)
+	ldh [H_DIVIDEND], a ; $ff95 (aliases: H_PRODUCT, H_PASTLEADINGZEROES, H_QUOTIENT)
 	ld a, [de]
 	ld [hl], a
-	ld a, [H_DIVIDEND] ; $ff95 (aliases: H_PRODUCT, H_PASTLEADINGZEROES, H_QUOTIENT)
+	ldh a, [H_DIVIDEND] ; $ff95 (aliases: H_PRODUCT, H_PASTLEADINGZEROES, H_QUOTIENT)
 	ld [de], a
 	ld hl, wPartyMons
 	ld bc, wPartyMon2 - wPartyMon1

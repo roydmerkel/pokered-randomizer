@@ -15,7 +15,7 @@ VermilionCityScript: ; 197a1 (6:57a1)
 
 VermilionCityScript_197c0: ; 197c0 (6:57c0)
 	call Random
-	ld a, [$ffd4]
+	ldh a, [$ffd4]
 	and $e
 	ld [wd743], a
 	ret
@@ -46,10 +46,10 @@ VermilionCityScript0: ; 197e6 (6:57e6)
 	call ArePlayerCoordsInArray
 	ret nc
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld [wcf0d], a
 	ld a, $3
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	ld a, [wd803]
 	bit 2, a
@@ -100,7 +100,7 @@ VermilionCityScript3: ; 1984e (6:584e)
 	ret nz
 	xor a
 	ld [wJoyIgnore], a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld a, $0
 	ld [W_VERMILIONCITYCURSCRIPT], a
 	ret

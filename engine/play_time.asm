@@ -56,6 +56,6 @@ CountDownIgnoreInputBitReset: ; 18e36 (6:4e36)
 	ld [wd730], a
 	ret z
 	xor a
-	ld [hJoyPressed], a
-	ld [hJoyHeld], a
+	ldh [hJoyPressed], a
+	ldh [hJoyHeld], a
 	ret

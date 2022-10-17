@@ -19,27 +19,27 @@ Func_71e1: ; 71e1 (1:71e1)
 	ld a, $5a
 	ld [wcc47], a
 .asm_71eb
-	ld a, [$ffaa]
+	ldh a, [$ffaa]
 	cp $2
 	jr z, .asm_721a ; 0x71ef $29
 	cp $1
 	jr z, .asm_721a ; 0x71f3 $25
 	ld a, $ff
-	ld [$ffaa], a
+	ldh [$ffaa], a
 	ld a, $2
-	ld [rSB], a
+	ldh [rSB], a
 	xor a
-	ld [$ffad], a
+	ldh [$ffad], a
 	ld a, $80
-	ld [$ff02], a
+	ldh [$ff02], a
 	ld a, [wcc47]
 	dec a
 	ld [wcc47], a
 	jr z, .asm_7287 ; 0x720b $7a
 	ld a, $1
-	ld [rSB], a
+	ldh [rSB], a
 	ld a, $81
-	ld [$ff02], a
+	ldh [$ff02], a
 	call DelayFrame
 	jr .asm_71eb ; 0x7218 $d1
 .asm_721a
@@ -69,7 +69,7 @@ Func_71e1: ; 71e1 (1:71e1)
 	ld [hli], a
 	xor a
 	ld [hl], a
-	ld [$ffa9], a
+	ldh [$ffa9], a
 	ld [wcc42], a
 	call Func_227f
 	ld hl, wcc47
@@ -149,11 +149,11 @@ CableClubNPCText6: ; 72d2 (1:72d2)
 Func_72d7: ; 72d7 (1:72d7)
 	call Delay3
 	ld a, $ff
-	ld [$ffaa], a
+	ldh [$ffaa], a
 	ld a, $2
-	ld [rSB], a
+	ldh [rSB], a
 	xor a
-	ld [$ffad], a
+	ldh [$ffad], a
 	ld a, $80
-	ld [$ff02], a
+	ldh [$ff02], a
 	ret

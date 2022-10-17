@@ -1,6 +1,6 @@
 DisplayStartMenu:: ; 2acd (0:2acd)
 	ld a,$04 ; hardcoded Bank, not sure what's it refers to
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a ; ROM bank 4
 	ld a,[wWalkBikeSurfState] ; walking/biking/surfing
 	ld [wWalkBikeSurfStateCopy],a
@@ -90,7 +90,7 @@ RedisplayStartMenu:: ; 2adf (0:2adf)
 ; EXIT falls through to here
 CloseStartMenu:: ; 2b70 (0:2b70)
 	call Joypad
-	ld a,[hJoyPressed]
+	ldh a,[hJoyPressed]
 	bit 0,a ; was A button newly pressed?
 	jr nz,CloseStartMenu
 	call LoadTextBoxTilePatterns

@@ -62,8 +62,8 @@ LoreleiScript0: ; 761e2 (1d:61e2)
 	call ArePlayerCoordsInArray
 	jp nc, CheckFightingMapTrainers
 	xor a
-	ld [hJoyPressed], a
-	ld [hJoyHeld], a
+	ldh [hJoyPressed], a
+	ldh [hJoyHeld], a
 	ld [wSimulatedJoypadStatesEnd], a
 	ld [wSimulatedJoypadStatesIndex], a
 	ld a, [wWhichTrade] ; wWhichTrade
@@ -75,7 +75,7 @@ LoreleiScript0: ; 761e2 (1d:61e2)
 	jr z, asm_761c6
 .asm_76206
 	ld a, $2
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	call DisplayTextID
 	ld a, D_UP
 	ld [wSimulatedJoypadStatesEnd], a
@@ -110,7 +110,7 @@ LoreleiScript2: ; 7623f (1d:623f)
 	cp $ff
 	jp z, LoreleiScript_761b6
 	ld a, $1
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	jp DisplayTextID
 
 LoreleiTextPointers: ; 76251 (1d:6251)

@@ -49,7 +49,7 @@ Route23Script0: ; 51219 (14:5219)
 	ret nc
 .asm_51237
 	ld a, e
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	ld a, c
 	ld [wWhichTrade], a
 	ld b, $2
@@ -61,7 +61,7 @@ Route23Script0: ; 51219 (14:5219)
 	call Route23Script_5125d
 	call DisplayTextID
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ret
 
 YCoordsData_51255: ; 51255 (14:5255)

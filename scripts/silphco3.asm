@@ -38,7 +38,7 @@ DataTable_59fa8: ; 59fa8 (16:5fa8)
 
 SilphCo3Script_59fad: ; 59fad (16:5fad)
 	ld hl, wd828
-	ld a, [$ffe0]
+	ldh a, [$ffe0]
 	and a
 	ret z
 	cp $1

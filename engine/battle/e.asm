@@ -1,5 +1,5 @@
 Func_39680: ; 39680 (e:5680)
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	ld a, [wd060]
 	ld hl, wBattleMonAttack + 1
@@ -28,7 +28,7 @@ Func_3969f: ; 3969f (e:569f)
 	ret
 
 Func_396a7: ; 396a7 (e:56a7)
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	ld a, [wd061]
 	ld hl, wBattleMonAttack
@@ -1281,17 +1281,17 @@ AIUseDireHit: ; 0x3a7c2 unused
 	jp AIPrintItemUse
 
 Func_3a7cf: ; 3a7cf (e:67cf)
-	ld [H_DIVISOR],a
+	ldh [H_DIVISOR],a
 	ld hl,wEnemyMonMaxHP
 	ld a,[hli]
-	ld [H_DIVIDEND],a
+	ldh [H_DIVIDEND],a
 	ld a,[hl]
-	ld [H_DIVIDEND + 1],a
+	ldh [H_DIVIDEND + 1],a
 	ld b,2
 	call Divide
-	ld a,[H_QUOTIENT + 3]
+	ldh a,[H_QUOTIENT + 3]
 	ld c,a
-	ld a,[H_QUOTIENT + 2]
+	ldh a,[H_QUOTIENT + 2]
 	ld b,a
 	ld hl,wEnemyMonHP + 1
 	ld a,[hld]

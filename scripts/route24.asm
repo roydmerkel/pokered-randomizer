@@ -29,9 +29,9 @@ Route24Script0: ; 513d5 (14:53d5)
 	call ArePlayerCoordsInArray
 	jp nc, CheckFightingMapTrainers
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld a, $1
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	call DisplayTextID
 	ld hl, wd7f0
 	bit 1, [hl]
@@ -70,7 +70,7 @@ Route24Script3: ; 51422 (14:5422)
 	ld hl, wd7ef
 	set 1, [hl]
 	ld a, $1
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	call DisplayTextID
 	xor a
 	ld [wJoyIgnore], a
@@ -173,12 +173,12 @@ Route24Text1: ; 514a4 (14:54a4)
 	ld hl, Route24Text_5152b
 	ld de, Route24Text_5152b
 	call SaveEndBattleTextPointers
-	ld a, [$ff8c]
+	ldh a, [$ff8c]
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld a, $3
 	ld [W_ROUTE24CURSCRIPT], a
 	ld [W_CURMAPSCRIPT], a

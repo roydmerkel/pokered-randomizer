@@ -16,14 +16,14 @@ Func_410f3: ; 410f3 (10:50f3)
 Func_41102: ; 41102 (10:5102)
 	ld a, [W_OPTIONS] ; W_OPTIONS
 	push af
-	ld a, [$ffaf]
+	ldh a, [$ffaf]
 	push af
-	ld a, [$ffae]
+	ldh a, [$ffae]
 	push af
 	xor a
 	ld [W_OPTIONS], a ; W_OPTIONS
-	ld [$ffaf], a
-	ld [$ffae], a
+	ldh [$ffaf], a
+	ldh [$ffae], a
 	push de
 .asm_41115
 	pop de
@@ -45,9 +45,9 @@ Func_41102: ; 41102 (10:5102)
 	jp [hl]
 .asm_4112d
 	pop af
-	ld [$ffae], a
+	ldh [$ffae], a
 	pop af
-	ld [$ffaf], a
+	ldh [$ffaf], a
 	pop af
 	ld [W_OPTIONS], a ; W_OPTIONS
 	ret
@@ -84,10 +84,10 @@ Func_41181: ; 41181 (10:5181)
 
 Func_41186: ; 41186 (10:5186)
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	call Delay3
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	ret
 
 Delay50: ; 41191 (10:5191)
@@ -128,10 +128,10 @@ LoadTradingGFXAndMonNames: ; 411a1 (10:51a1)
 	jr z, .asm_411e5
 	ld a, $f0
 .asm_411e5
-	ld [rOBP0], a ; $ff48
+	ldh [rOBP0], a ; $ff48
 	call EnableLCD
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	ld a, [wWhichTrade] ; wWhichTrade
 	ld [wd11e], a
 	call GetMonName
@@ -145,7 +145,7 @@ LoadTradingGFXAndMonNames: ; 411a1 (10:51a1)
 
 Func_4120b: ; 4120b (10:520b)
 	ld a, $d0
-	ld [rOBP1], a ; $ff49
+	ldh [rOBP1], a ; $ff49
 	ld b, BANK(Func_7176c)
 	ld hl, Func_7176c
 	jp Bankswitch
@@ -173,14 +173,14 @@ Func_4123b: ; 4123b (10:523b)
 
 Func_41245: ; 41245 (10:5245)
 	ld a, $ab
-	ld [rLCDC], a ; $ff40
+	ldh [rLCDC], a ; $ff40
 	ld a, $50
-	ld [hWY], a
+	ldh [hWY], a
 	ld a, $86
-	ld [rWX], a ; $ff4b
-	ld [$ffae], a
+	ldh [rWX], a ; $ff4b
+	ldh [$ffae], a
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	hlCoord 4, 0
 	ld b, $6
 	ld c, $a
@@ -196,8 +196,8 @@ Func_41245: ; 41245 (10:5245)
 	push af
 	call DelayFrame
 	pop af
-	ld [rWX], a ; $ff4b
-	ld [$ffae], a
+	ldh [rWX], a ; $ff4b
+	ldh [$ffae], a
 	dec a
 	dec a
 	and a
@@ -210,7 +210,7 @@ Func_41245: ; 41245 (10:5245)
 	ld a, [wWhichTrade] ; wWhichTrade
 	call PlayCry
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	ret
 
 Func_41298: ; 41298 (10:5298)
@@ -222,10 +222,10 @@ Func_41298: ; 41298 (10:5298)
 	ld hl, vBGMap1 + $8c
 	call Func_414ae
 	ld a, $a0
-	ld [$ffae], a
+	ldh [$ffae], a
 	call DelayFrame
 	ld a, $8b
-	ld [rLCDC], a ; $ff40
+	ldh [rLCDC], a ; $ff40
 	hlCoord 6, 2
 	ld b, $7
 	call Func_41842
@@ -234,9 +234,9 @@ Func_41298: ; 41298 (10:5298)
 	call PlaySound
 	ld c, $14
 .asm_412c8
-	ld a, [$ffae]
+	ldh a, [$ffae]
 	add $4
-	ld [$ffae], a
+	ldh [$ffae], a
 	dec c
 	jr nz, .asm_412c8
 	ret
@@ -247,7 +247,7 @@ Func_412d2: ; 412d2 (10:52d2)
 	ld c, 10
 	call DelayFrames
 	ld a, $e4
-	ld [rOBP0], a ; $ff48
+	ldh [rOBP0], a ; $ff48
 	xor a
 	ld [wd09f], a
 	ld bc, $2060
@@ -281,13 +281,13 @@ Func_412d2: ; 412d2 (10:52d2)
 .asm_41318
 	call ClearSprites
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	call ClearScreen
 	ld b, $98
 	call CopyScreenTileBufferToVRAM
 	call Delay3
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	ret
 
 UnknownOAM_4132e: ; 4132e (10:532e)
@@ -305,13 +305,13 @@ Func_41336: ; 41336 (10:5336)
 	call Func_427a7
 	call Func_41186
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	ld a, [wTrainerEngageDistance]
 	call Func_415a4
 	ld a, ANIM_AD
 	call Func_41676
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	ld a, [wTrainerEngageDistance]
 	call PlayCry
 	call Func_41181
@@ -325,7 +325,7 @@ Func_41376: ; 41376 (10:5376)
 	ld a, $1
 	ld [wd08a], a
 	ld a, $e4
-	ld [rOBP0], a ; $ff48
+	ldh [rOBP0], a ; $ff48
 	ld a, $54
 	ld [W_BASECOORDX], a ; wd081
 	ld a, $1c
@@ -341,7 +341,7 @@ Func_41376: ; 41376 (10:5376)
 	ld b, $6
 	call Func_414c5
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	call Func_4149f
 	ld b, $4
 	call Func_414c5
@@ -349,7 +349,7 @@ Func_41376: ; 41376 (10:5376)
 	ld b, $6
 	call Func_414c5
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	call Func_41525
 	jp ClearSprites
 
@@ -373,7 +373,7 @@ Func_413c6: ; 413c6 (10:53c6)
 	ld b, $6
 	call Func_414c5
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	call Func_4149f
 	ld b, $4
 	call Func_414c5
@@ -381,23 +381,23 @@ Func_413c6: ; 413c6 (10:53c6)
 	ld b, $6
 	call Func_414c5
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	jp ClearSprites
 
 Func_41411: ; 41411 (10:5411)
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	call ClearScreen
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	call Func_4120b
 	call DelayFrame
 	ld a, $ab
-	ld [rLCDC], a ; $ff40
+	ldh [rLCDC], a ; $ff40
 	xor a
-	ld [$ffae], a
+	ldh [$ffae], a
 	ld a, $90
-	ld [hWY], a
+	ldh [hWY], a
 	ret
 
 Func_4142d: ; 4142d (10:542d)
@@ -478,11 +478,11 @@ Func_414ae: ; 414ae (10:54ae)
 	call CopyToScreenEdgeTiles
 	pop hl
 	ld a, h
-	ld [H_SCREENEDGEREDRAWADDR + 1], a
+	ldh [H_SCREENEDGEREDRAWADDR + 1], a
 	ld a, l
-	ld [H_SCREENEDGEREDRAWADDR], a ; $ffd1
+	ldh [H_SCREENEDGEREDRAWADDR], a ; $ffd1
 	ld a, $2
-	ld [H_SCREENEDGEREDRAW], a ; $ffd0
+	ldh [H_SCREENEDGEREDRAW], a ; $ffd0
 	ld c, $a
 	jp DelayFrames
 
@@ -494,14 +494,14 @@ Func_414c5: ; 414c5 (10:54c5)
 	ld a, e
 	dec a
 	jr z, .asm_414d5
-	ld a, [$ffae]
+	ldh a, [$ffae]
 	sub $2
 	jr .asm_414d9
 .asm_414d5
-	ld a, [$ffae]
+	ldh a, [$ffae]
 	add $2
 .asm_414d9
-	ld [$ffae], a
+	ldh [$ffae], a
 	call DelayFrame
 	dec d
 	jr nz, .asm_414cb
@@ -514,9 +514,9 @@ Func_414e8: ; 414e8 (10:54e8)
 	push de
 	push bc
 	push hl
-	ld a, [rBGP] ; $ff47
+	ldh a, [rBGP] ; $ff47
 	xor $3c
-	ld [rBGP], a ; $ff47
+	ldh [rBGP], a ; $ff47
 	ld hl, wOAMBuffer + $02
 	ld de, $4
 	ld c, $14
@@ -637,9 +637,9 @@ Func_415a4: ; 415a4 (10:55a4)
 	ld b, $b
 	ld c, $0
 	call GoPAL_SET
-	ld a, [H_AUTOBGTRANSFERENABLED] ; $ffba
+	ldh a, [H_AUTOBGTRANSFERENABLED] ; $ffba
 	xor $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	call GetMonHeader
 	hlCoord 7, 2
 	call LoadFlippedFrontSpriteByMonIndex
@@ -648,16 +648,16 @@ Func_415a4: ; 415a4 (10:55a4)
 
 Func_415c8: ; 415c8 (10:55c8)
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	call ClearScreen
 	ld a, $e3
-	ld [rLCDC], a ; $ff40
+	ldh [rLCDC], a ; $ff40
 	ld a, $7
-	ld [rWX], a ; $ff4b
+	ldh [rWX], a ; $ff4b
 	xor a
-	ld [hWY], a
+	ldh [hWY], a
 	ld a, $90
-	ld [$ffae], a
+	ldh [$ffae], a
 	ret
 
 Func_415df: ; 415df (10:55df)
@@ -665,17 +665,17 @@ Func_415df: ; 415df (10:55df)
 	call DelayFrames
 .asm_415e4
 	call DelayFrame
-	ld a, [rWX] ; $ff4b
+	ldh a, [rWX] ; $ff4b
 	inc a
 	inc a
-	ld [rWX], a ; $ff4b
+	ldh [rWX], a ; $ff4b
 	cp $a1
 	jr nz, .asm_415e4
 	call Func_41196
 	ld c, $a
 	call DelayFrames
 	ld a, $7
-	ld [rWX], a ; $ff4b
+	ldh [rWX], a ; $ff4b
 	ret
 
 PrintTradeWentToText: ; 415fe (10:55fe)

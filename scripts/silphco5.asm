@@ -47,7 +47,7 @@ SilphCo5Coords: ; 19f97 (6:5f97) ; coords?
 
 SilphCo5Script_19f9e: ; 19f9e (6:5f9e)
 	ld hl, wd82c
-	ld a, [$ffe0]
+	ldh a, [$ffe0]
 	and a
 	ret z
 	cp $1

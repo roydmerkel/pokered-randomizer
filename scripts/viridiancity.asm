@@ -32,10 +32,10 @@ ViridianCityScript_1900b: ; 1900b (6:500b)
 	cp $20
 	ret nz
 	ld a, $e
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	call ViridianCityScript_190cf
 	ld a, $3
 	ld [W_VIRIDIANCITYCURSCRIPT], a
@@ -52,10 +52,10 @@ ViridianCityScript_1903d: ; 1903d (6:503d)
 	cp $13
 	ret nz
 	ld a, $5
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	call ViridianCityScript_190cf
 	ld a, $3
 	ld [W_VIRIDIANCITYCURSCRIPT], a
@@ -68,13 +68,13 @@ ViridianCityScript_1903d: ; 1903d (6:503d)
 
 ViridianCityScript1: ; 19062 (6:5062)
 	ld a, [wSpriteStateData1 + $34]
-	ld [$ffeb], a
+	ldh [$ffeb], a
 	ld a, [wSpriteStateData1 + $36]
-	ld [$ffec], a
+	ldh [$ffec], a
 	ld a, [wSpriteStateData2 + $34]
-	ld [$ffed], a
+	ldh [$ffed], a
 	ld a, [wSpriteStateData2 + $35]
-	ld [$ffee], a
+	ldh [$ffee], a
 	xor a
 	ld [wListScrollOffset], a
 
@@ -90,20 +90,20 @@ ViridianCityScript1: ; 19062 (6:5062)
 	ret
 
 ViridianCityScript2: ; 1908f (6:508f)
-	ld a, [$ffeb]
+	ldh a, [$ffeb]
 	ld [wSpriteStateData1 + $34], a
-	ld a, [$ffec]
+	ldh a, [$ffec]
 	ld [wSpriteStateData1 + $36], a
-	ld a, [$ffed]
+	ldh a, [$ffed]
 	ld [wSpriteStateData2 + $34], a
-	ld a, [$ffee]
+	ldh a, [$ffee]
 	ld [wSpriteStateData2 + $35], a
 	call UpdateSprites
 	call Delay3
 	xor a
 	ld [wJoyIgnore], a
 	ld a, $f
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	xor a
 	ld [W_BATTLETYPE], a

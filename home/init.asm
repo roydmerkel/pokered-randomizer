@@ -1,7 +1,7 @@
 SoftReset::
 	call StopAllSounds
 	call GBPalWhiteOut
-	ld c, $20
+	ld c, 32
 	call DelayFrames
 	; fallthrough
 
@@ -21,23 +21,23 @@ rLCDC_DEFAULT EQU %11100011
 	di
 
 	xor a
-	ld [rIF], a
-	ld [rIE], a
-	ld [$ff43], a
-	ld [$ff42], a
-	ld [rSB], a
-	ld [$ff02], a
-	ld [$ff4b], a
-	ld [$ff4a], a
-	ld [$ff06], a
-	ld [$ff07], a
-	ld [$ff47], a
+	ldh [rIF], a
+	ldh [rIE], a
+	ldh [$ff43], a
+	ldh [$ff42], a
+	ldh [rSB], a
+	ldh [$ff02], a
+	ldh [rWX], a
+	ldh [rWY], a
+	ldh [$ff06], a
+	ldh [$ff07], a
+	ldh [$ff47], a
 	; only commenting these out because I need some space lol
-	;ld [$ff48], a
-	;ld [$ff49], a
+	;ldh [rOBP0], a
+	;ldh [rOBP1], a
 
 	ld a, rLCDC_ENABLE_MASK
-	ld [rLCDC], a
+	ldh [rLCDC], a
 	call DisableLCD
 
 	ld sp, wStack
@@ -61,27 +61,27 @@ rLCDC_DEFAULT EQU %11100011
 	call ClearSprites
 
 	ld a, Bank(WriteDMACodeToHRAM)
-	ld [H_LOADEDROMBANK], a
+	ldh [H_LOADEDROMBANK], a
 	ld [MBC1RomBank], a
 	call WriteDMACodeToHRAM
 
 	xor a
-	ld [hTilesetType], a
-	ld [$ff41], a
-	ld [$ffae], a
-	ld [$ffaf], a
-	ld [$ff0f], a
+	ldh [hTilesetType], a
+	ldh [$ff41], a
+	ldh [$ffae], a
+	ldh [$ffaf], a
+	ldh [$ff0f], a
 	ld a, 1 << VBLANK + 1 << TIMER + 1 << SERIAL
-	ld [rIE], a
+	ldh [rIE], a
 
 	ld a, 144 ; move the window off-screen
-	ld [hWY], a
-	ld [rWY], a
+	ldh [hWY], a
+	ldh [rWY], a
 	ld a, 7
-	ld [rWX], a
+	ldh [rWX], a
 
 	ld a, $ff
-	ld [$ffaa], a
+	ldh [$ffaa], a
 
 	ld h, vBGMap0 / $100
 	call ClearBgMap
@@ -89,9 +89,9 @@ rLCDC_DEFAULT EQU %11100011
 	call ClearBgMap
 
 	ld a, rLCDC_DEFAULT
-	ld [rLCDC], a
+	ldh [rLCDC], a
 	ld a, 16
-	ld [hSoftReset], a
+	ldh [hSoftReset], a
 	call StopAllSounds
 
 	ei
@@ -102,9 +102,9 @@ rLCDC_DEFAULT EQU %11100011
 	ld [wAudioROMBank], a
 	ld [wAudioSavedROMBank], a
 	ld a, $9c
-	ld [$ffbd], a
+	ldh [$ffbd], a
 	xor a
-	ld [$ffbc], a
+	ldh [$ffbc], a
 	dec a
 	ld [wUpdateSpritesEnabled], a
 	predef PlayIntro
@@ -114,7 +114,7 @@ rLCDC_DEFAULT EQU %11100011
 	call GBPalNormal
 	call ClearSprites
 	ld a, rLCDC_DEFAULT
-	ld [rLCDC], a
+	ldh [rLCDC], a
 
 	jp SetDefaultNamesBeforeTitlescreen
 

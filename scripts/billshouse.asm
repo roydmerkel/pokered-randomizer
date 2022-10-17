@@ -23,7 +23,7 @@ BillsHouseScript1: ; 1e783 (7:6783)
 	ld de, MovementData_1e7a0
 .asm_1e78f
 	ld a, $1
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call MoveSprite
 	ld a, $2
 	ld [W_BILLSHOUSECURSCRIPT], a
@@ -59,13 +59,13 @@ BillsHouseScript3: ; 1e7c5 (7:67c5)
 	ld a, $2
 	ld [wSpriteIndex], a
 	ld a, $c
-	ld [$ffeb], a
+	ldh [$ffeb], a
 	ld a, $40
-	ld [$ffec], a
+	ldh [$ffec], a
 	ld a, $6
-	ld [$ffed], a
+	ldh [$ffed], a
 	ld a, $5
-	ld [$ffee], a
+	ldh [$ffee], a
 	call SetSpritePosition1
 	ld a, HS_BILL_1
 	ld [wcc4d], a
@@ -73,7 +73,7 @@ BillsHouseScript3: ; 1e7c5 (7:67c5)
 	ld c, $8
 	call DelayFrames
 	ld a, $2
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	ld de, MovementData_1e807
 	call MoveSprite
 	ld a, $4
@@ -99,7 +99,7 @@ BillsHouseScript4: ; 1e80d (7:680d)
 
 BillsHouseScript5: ; 1e827 (7:6827)
 	ld a, $4
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	ld a, $0
 	ld [W_BILLSHOUSECURSCRIPT], a

@@ -1,6 +1,6 @@
 Func_213c8:: ; 213c8 (8:53c8)
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	call SaveScreenTilesToBuffer2
 	ld a, [wd5a2]
 	and a
@@ -85,7 +85,7 @@ Func_213c8:: ; 213c8 (8:53c8)
 	ld [wCurrentMenuItem], a ; wCurrentMenuItem
 	ld [wLastMenuItem], a ; wLastMenuItem
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	ret
 
 SomeonesPCText:   db "SOMEONE's PC@"
@@ -170,7 +170,7 @@ BillsPCMenu:
 	ld de, BoxNoPCText ; $5713
 	call PlaceString
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	call Delay3
 	call HandleMenuInput
 	bit 1, a
@@ -511,7 +511,7 @@ MonWasReleasedText: ; 0x21820
 	db "@"
 
 PrintJustAMomentText1:: ; 5824 (8:5825)
-	ld a, [$ffaa]
+	ldh a, [$ffaa]
 	cp $1
 	ret z
 	ld a, [wSpriteStateData1 + 9]
@@ -529,7 +529,7 @@ PrintJustAMomentText1:: ; 5824 (8:5825)
 	jp PrintPredefTextID
 
 PrintJustAMomentText2:: ; 5845 (8:5845)
-	ld a, [$ffaa]
+	ldh a, [$ffaa]
 	cp $2
 	ret z
 	ld a, [wSpriteStateData1 + 9]

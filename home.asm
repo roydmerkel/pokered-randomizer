@@ -36,28 +36,28 @@ SECTION "Home", ROM0
 
 DisableLCD::
 	xor a
-	ld [rIF], a
-	ld a, [rIE]
+	ldh [rIF], a
+	ldh a, [rIE]
 	ld b, a
 	res 0, a
-	ld [rIE], a
+	ldh [rIE], a
 
 .wait
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp LY_VBLANK
 	jr nz, .wait
 
-	ld a, [rLCDC]
+	ldh a, [rLCDC]
 	and $ff ^ rLCDC_ENABLE_MASK
-	ld [rLCDC], a
+	ldh [rLCDC], a
 	ld a, b
-	ld [rIE], a
+	ldh [rIE], a
 	ret
 
 EnableLCD::
-	ld a, [rLCDC]
+	ldh a, [rLCDC]
 	set rLCDC_ENABLE, a
-	ld [rLCDC], a
+	ldh [rLCDC], a
 	ret
 
 ClearSprites::
@@ -150,11 +150,11 @@ CheckForUserInterruption:: ; 12f8 (0:12f8)
 	call JoypadLowSensitivity
 	pop bc
 
-	ld a, [hJoyHeld]
+	ldh a, [hJoyHeld]
 	cp D_UP + SELECT + B_BUTTON
 	jr z, .input
 
-	ld a, [hJoy5]
+	ldh a, [hJoy5]
 	and START | A_BUTTON
 	jr nz, .input
 
@@ -173,10 +173,10 @@ CheckForUserInterruption:: ; 12f8 (0:12f8)
 ; a = ID of destination warp within destination map
 LoadDestinationWarpPosition:: ; 1313 (0:1313)
 	ld b,a
-	ld a,[H_LOADEDROMBANK]
+	ldh a,[H_LOADEDROMBANK]
 	push af
 	ld a,[wPredefParentBank]
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	ld a,b
 	add a
@@ -188,7 +188,7 @@ LoadDestinationWarpPosition:: ; 1313 (0:1313)
 	ld de,wCurrentTileBlockMapViewPointer
 	call CopyData
 	pop af
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	ret
 
@@ -320,18 +320,18 @@ LoadFrontSpriteByMonIndex:: ; 1389 (0:1389)
 	ld de, vFrontPic
 	call LoadMonFrontSprite
 	pop hl
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [H_LOADEDROMBANK]
 	push af
 	ld a, Bank(asm_3f0d0)
-	ld [H_LOADEDROMBANK], a
+	ldh [H_LOADEDROMBANK], a
 	ld [$2000], a
 	xor a
-	ld [$ffe1], a
+	ldh [$ffe1], a
 	call asm_3f0d0
 	xor a
 	ld [W_SPRITEFLIPPED], a
 	pop af
-	ld [H_LOADEDROMBANK], a
+	ldh [H_LOADEDROMBANK], a
 	ld [$2000], a
 	ret
 
@@ -369,10 +369,10 @@ GetCryData:: ; 13d9 (0:13d9)
 
 
 DisplayPartyMenu:: ; 13fc (0:13fc)
-	ld a,[hTilesetType]
+	ldh a,[hTilesetType]
 	push af
 	xor a
-	ld [hTilesetType],a
+	ldh [hTilesetType],a
 	call GBPalWhiteOutWithDelay3
 	call ClearSprites
 	call PartyMenuInit
@@ -380,10 +380,10 @@ DisplayPartyMenu:: ; 13fc (0:13fc)
 	jp HandlePartyMenuInput
 
 GoBackToPartyMenu:: ; 1411 (0:1411)
-	ld a,[hTilesetType]
+	ldh a,[hTilesetType]
 	push af
 	xor a
-	ld [hTilesetType],a
+	ldh [hTilesetType],a
 	call PartyMenuInit
 	call RedrawPartyMenu
 	jp HandlePartyMenuInput
@@ -445,7 +445,7 @@ HandlePartyMenuInput:: ; 145a (0:145a)
 	and a
 	jp nz,.swappingPokemon
 	pop af
-	ld [hTilesetType],a
+	ldh [hTilesetType],a
 	bit 1,b
 	jr nz,.noPokemonChosen
 	ld a,[wPartyCount]
@@ -518,15 +518,15 @@ PrintStatusCondition:: ; 14e1 (0:14e1)
 	and a
 	ret
 PrintStatusConditionNotFainted ; 14f6
-	ld a,[H_LOADEDROMBANK]
+	ldh a,[H_LOADEDROMBANK]
 	push af
 	ld a,BANK(PrintStatusAilment)
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	call PrintStatusAilment ; print status condition
 	pop bc
 	ld a,b
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	ret
 
@@ -575,10 +575,10 @@ Func_152e:: ; 152e (0:152e)
 ; INPUT:
 ; [wd0b5] = pokemon ID
 GetMonHeader:: ; 1537 (0:1537)
-	ld a,[H_LOADEDROMBANK]
+	ldh a,[H_LOADEDROMBANK]
 	push af
 	ld a,BANK(BaseStats)
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	push bc
 	push de
@@ -625,7 +625,7 @@ GetMonHeader:: ; 1537 (0:1537)
 	pop de
 	pop bc
 	pop af
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	ret
 
@@ -787,7 +787,7 @@ LoadMonFrontSprite:: ; 1665 (0:1665)
 LoadUncompressedSpriteData:: ; 1672 (0:1672)
 	push de
 	and $f
-	ld [H_SPRITEWIDTH], a ; each byte contains 8 pixels (in 1bpp), so tiles=bytes for width
+	ldh [H_SPRITEWIDTH], a ; each byte contains 8 pixels (in 1bpp), so tiles=bytes for width
 	ld b, a
 	ld a, $7
 	sub b      ; 7-w
@@ -798,7 +798,7 @@ LoadUncompressedSpriteData:: ; 1672 (0:1672)
 	add a
 	add a
 	sub b      ; 7*((8-w)/2) ; skip for horizontal center (in tiles)
-	ld [H_SPRITEOFFSET], a
+	ldh [H_SPRITEOFFSET], a
 	ld a, c
 	swap a
 	and $f
@@ -806,16 +806,16 @@ LoadUncompressedSpriteData:: ; 1672 (0:1672)
 	add a
 	add a
 	add a     ; 8*tiles is height in bytes
-	ld [H_SPRITEHEIGHT], a ; $ff8c
+	ldh [H_SPRITEHEIGHT], a ; $ff8c
 	ld a, $7
 	sub b      ; 7-h         ; skip for vertical center (in tiles, relative to current column)
 	ld b, a
-	ld a, [H_SPRITEOFFSET]
+	ldh a, [H_SPRITEOFFSET]
 	add b     ; 7*((8-w)/2) + 7-h ; combined overall offset (in tiles)
 	add a
 	add a
 	add a     ; 8*(7*((8-w)/2) + 7-h) ; combined overall offset (in bytes)
-	ld [H_SPRITEOFFSET], a
+	ldh [H_SPRITEOFFSET], a
 	xor a
 	ld [$4000], a
 	ld hl, S_SPRITEBUFFER0
@@ -834,15 +834,15 @@ LoadUncompressedSpriteData:: ; 1672 (0:1672)
 ; copies and aligns the sprite data properly inside the sprite buffer
 ; sprite buffers are 7*7 tiles in size, the loaded sprite is centered within this area
 AlignSpriteDataCentered:: ; 16c2 (0:16c2)
-	ld a, [H_SPRITEOFFSET]
+	ldh a, [H_SPRITEOFFSET]
 	ld b, $0
 	ld c, a
 	add hl, bc
-	ld a, [H_SPRITEWIDTH] ; $ff8b
+	ldh a, [H_SPRITEWIDTH] ; $ff8b
 .columnLoop
 	push af
 	push hl
-	ld a, [H_SPRITEHEIGHT] ; $ff8c
+	ldh a, [H_SPRITEHEIGHT] ; $ff8c
 	ld c, a
 .columnInnerLoop
 	ld a, [de]
@@ -881,7 +881,7 @@ InterlaceMergeSpriteBuffers:: ; 16ea (0:16ea)
 	ld de, S_SPRITEBUFFER1 + (SPRITEBUFFERSIZE - 1) ; source 2: end of buffer 1
 	ld bc, S_SPRITEBUFFER0 + (SPRITEBUFFERSIZE - 1) ; source 1: end of buffer 0
 	ld a, SPRITEBUFFERSIZE/2 ; $c4
-	ld [H_SPRITEINTERLACECOUNTER], a ; $ff8b
+	ldh [H_SPRITEINTERLACECOUNTER], a ; $ff8b
 .interlaceLoop
 	ld a, [de]
 	dec de
@@ -895,9 +895,9 @@ InterlaceMergeSpriteBuffers:: ; 16ea (0:16ea)
 	ld a, [bc]
 	dec bc
 	ld [hld], a   ; write byte of source 1
-	ld a, [H_SPRITEINTERLACECOUNTER] ; $ff8b
+	ldh a, [H_SPRITEINTERLACECOUNTER] ; $ff8b
 	dec a
-	ld [H_SPRITEINTERLACECOUNTER], a ; $ff8b
+	ldh [H_SPRITEINTERLACECOUNTER], a ; $ff8b
 	jr nz, .interlaceLoop
 	ld a, [W_SPRITEFLIPPED]
 	and a
@@ -915,7 +915,7 @@ InterlaceMergeSpriteBuffers:: ; 16ea (0:16ea)
 	pop hl
 	ld de, S_SPRITEBUFFER1
 	ld c, (2*SPRITEBUFFERSIZE)/16 ; $31, number of 16 byte chunks to be copied
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [H_LOADEDROMBANK]
 	ld b, a
 	jp CopyVideoData
 
@@ -936,14 +936,14 @@ UpdateSprites:: ; 2429 (0:2429)
 	ld a, [wUpdateSpritesEnabled]
 	dec a
 	ret nz
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [H_LOADEDROMBANK]
 	push af
 	ld a, Bank(_UpdateSprites)
-	ld [H_LOADEDROMBANK], a
+	ldh [H_LOADEDROMBANK], a
 	ld [$2000], a
 	call _UpdateSprites
 	pop af
-	ld [H_LOADEDROMBANK], a
+	ldh [H_LOADEDROMBANK], a
 	ld [$2000], a
 	ret
 
@@ -1058,7 +1058,7 @@ Func_28cb:: ; 28cb (0:28cb)
 ; this function is used to display sign messages, sprite dialog, etc.
 ; INPUT: [$ff8c] = sprite ID or text ID
 DisplayTextID:: ; 2920 (0:2920)
-	ld a,[H_LOADEDROMBANK]
+	ldh a,[H_LOADEDROMBANK]
 	push af
 	callba DisplayTextIDInit ; initialization
 	ld hl,wcf11
@@ -1069,13 +1069,13 @@ DisplayTextID:: ; 2920 (0:2920)
 	call SwitchToMapRomBank
 .skipSwitchToMapBank
 	ld a,30 ; half a second
-	ld [H_FRAMECOUNTER],a ; used as joypad poll timer
+	ldh [H_FRAMECOUNTER],a ; used as joypad poll timer
 	ld hl,W_MAPTEXTPTR
 	ld a,[hli]
 	ld h,[hl]
 	ld l,a ; hl = map text pointer
 	ld d,$00
-	ld a,[$ff8c] ; text ID
+	ldh a,[$ff8c] ; text ID
 	ld [wSpriteIndex],a
 	and a
 	jp z,DisplayStartMenu
@@ -1089,7 +1089,7 @@ DisplayTextID:: ; 2920 (0:2920)
 	jp z,DisplayRepelWoreOffText
 	ld a,[W_NUMSPRITES]
 	ld e,a
-	ld a,[$ff8c] ; sprite ID
+	ldh a,[$ff8c] ; sprite ID
 	cp e
 	jr z,.spriteHandling
 	jr nc,.skipSpriteHandling
@@ -1102,7 +1102,7 @@ DisplayTextID:: ; 2920 (0:2920)
 	pop bc
 	pop de
 	ld hl,W_MAPSPRITEDATA ; NPC text entries
-	ld a,[$ff8c]
+	ldh a,[$ff8c]
 	dec a
 	add a
 	add l
@@ -1160,7 +1160,7 @@ AfterDisplayingTextID:: ; 29d6 (0:29d6)
 ; loop to hold the dialogue box open as long as the player keeps holding down the A button
 HoldTextDisplayOpen:: ; 29df (0:29df)
 	call Joypad
-	ld a,[hJoyHeld]
+	ldh a,[hJoyHeld]
 	bit 0,a ; is the A button being pressed?
 	jr nz,HoldTextDisplayOpen
 
@@ -1168,11 +1168,11 @@ CloseTextDisplay:: ; 29e8 (0:29e8)
 	ld a,[W_CURMAP]
 	call SwitchToMapRomBank
 	ld a,$90
-	ld [hWY],a ; move the window off the screen
+	ldh [hWY],a ; move the window off the screen
 	call DelayFrame
 	call LoadGBPal
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED],a ; disable continuous WRAM to VRAM transfer each V-blank
+	ldh [H_AUTOBGTRANSFERENABLED],a ; disable continuous WRAM to VRAM transfer each V-blank
 ; loop to make sprites face the directions they originally faced before the dialogue
 	ld hl,wSpriteStateData2 + $19
 	ld c,$0f
@@ -1186,7 +1186,7 @@ CloseTextDisplay:: ; 29e8 (0:29e8)
 	dec c
 	jr nz,.restoreSpriteFacingDirectionLoop
 	ld a,BANK(InitMapSprites)
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	call InitMapSprites ; reload sprite tile pattern data (since it was partially overwritten by text tile patterns)
 	ld hl,wcfc4
@@ -1196,7 +1196,7 @@ CloseTextDisplay:: ; 29e8 (0:29e8)
 	call z,LoadPlayerSpriteGraphics
 	call LoadCurrentMapView
 	pop af
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	jp UpdateSprites
 
@@ -1209,14 +1209,14 @@ DisplayPokemartDialogue:: ; 2a2e (0:2a2e)
 	call LoadItemList
 	ld a,$02
 	ld [wListMenuID],a ; selects between subtypes of menus
-	ld a,[H_LOADEDROMBANK]
+	ldh a,[H_LOADEDROMBANK]
 	push af
 	ld a,Bank(DisplayPokemartDialogue_)
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	call DisplayPokemartDialogue_
 	pop af
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	jp AfterDisplayingTextID
 
@@ -1242,18 +1242,18 @@ LoadItemList:: ; 2a5a (0:2a5a)
 
 DisplayPokemonCenterDialogue:: ; 2a72 (0:2a72)
 	xor a
-	ld [$ff8b],a
-	ld [$ff8c],a
-	ld [$ff8d],a
+	ldh [$ff8b],a
+	ldh [$ff8c],a
+	ldh [$ff8d],a
 	inc hl
-	ld a,[H_LOADEDROMBANK]
+	ldh a,[H_LOADEDROMBANK]
 	push af
 	ld a,Bank(DisplayPokemonCenterDialogue_)
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	call DisplayPokemonCenterDialogue_
 	pop af
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	jp AfterDisplayingTextID
 
@@ -1335,14 +1335,14 @@ AddAmountSoldToMoney:: ; 2b9e (0:2b9e)
 ; [wWhichPokemon] = index (within the inventory) of the item to remove
 ; [wcf96] = quantity to remove
 RemoveItemFromInventory:: ; 2bbb (0:2bbb)
-	ld a,[H_LOADEDROMBANK]
+	ldh a,[H_LOADEDROMBANK]
 	push af
 	ld a,BANK(RemoveItemFromInventory_)
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	call RemoveItemFromInventory_
 	pop af
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	ret
 
@@ -1354,15 +1354,15 @@ RemoveItemFromInventory:: ; 2bbb (0:2bbb)
 ; sets carry flag if successful, unsets carry flag if unsuccessful
 AddItemToInventory:: ; 2bcf (0:2bcf)
 	push bc
-	ld a,[H_LOADEDROMBANK]
+	ldh a,[H_LOADEDROMBANK]
 	push af
 	ld a,BANK(AddItemToInventory_)
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	call AddItemToInventory_
 	pop bc
 	ld a,b
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	pop bc
 	ret
@@ -1372,9 +1372,9 @@ AddItemToInventory:: ; 2bcf (0:2bcf)
 ; [wcf8b] = address of the list (2 bytes)
 DisplayListMenuID:: ; 2be6 (0:2be6)
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED],a ; disable auto-transfer
+	ldh [H_AUTOBGTRANSFERENABLED],a ; disable auto-transfer
 	ld a,1
-	ld [hJoy7],a ; joypad state update flag
+	ldh [hJoy7],a ; joypad state update flag
 	ld a,[W_BATTLETYPE]
 	and a ; is it the Old Man battle?
 	jr nz,.specialBattleType
@@ -1426,10 +1426,10 @@ DisplayListMenuID:: ; 2be6 (0:2be6)
 
 DisplayListMenuIDLoop:: ; 2c53 (0:2c53)
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED],a ; disable transfer
+	ldh [H_AUTOBGTRANSFERENABLED],a ; disable transfer
 	call PrintListMenuEntries
 	ld a,1
-	ld [H_AUTOBGTRANSFERENABLED],a ; enable transfer
+	ldh [H_AUTOBGTRANSFERENABLED],a ; enable transfer
 	call Delay3
 	ld a,[W_BATTLETYPE]
 	and a ; is it the Old Man battle?
@@ -1531,7 +1531,7 @@ DisplayListMenuIDLoop:: ; 2c53 (0:2c53)
 	ld a,[wCurrentMenuItem]
 	ld [wd12d],a
 	xor a
-	ld [hJoy7],a ; joypad state update flag
+	ldh [hJoy7],a ; joypad state update flag
 	ld hl,wd730
 	res 6,[hl] ; turn on letter printing delay
 	jp BankswitchBack
@@ -1587,7 +1587,7 @@ DisplayChooseQuantityMenu:: ; 2d57 (0:2d57)
 	jp .incrementQuantity
 .waitForKeyPressLoop
 	call JoypadLowSensitivity
-	ld a,[hJoyPressed] ; newly pressed buttons
+	ldh a,[hJoyPressed] ; newly pressed buttons
 	bit 0,a ; was the A button pressed?
 	jp nz,.buttonAPressed
 	bit 1,a ; was the B button pressed?
@@ -1640,22 +1640,22 @@ DisplayChooseQuantityMenu:: ; 2d57 (0:2d57)
 	pop bc
 	dec b
 	jr nz,.addLoop
-	ld a,[$ff8e]
+	ldh a,[$ff8e]
 	and a ; should the price be halved (for selling items)?
 	jr z,.skipHalvingPrice
 	xor a
-	ld [$ffa2],a
-	ld [$ffa3],a
+	ldh [$ffa2],a
+	ldh [$ffa3],a
 	ld a,$02
-	ld [$ffa4],a
+	ldh [$ffa4],a
 	predef DivideBCDPredef3 ; halves the price
 ; store the halved price
-	ld a,[$ffa2]
-	ld [$ff9f],a
-	ld a,[$ffa3]
-	ld [$ffa0],a
-	ld a,[$ffa4]
-	ld [$ffa1],a
+	ldh a,[$ffa2]
+	ldh [$ff9f],a
+	ldh a,[$ffa3]
+	ldh [$ffa0],a
+	ldh a,[$ffa4]
+	ldh [$ffa1],a
 .skipHalvingPrice
 	hlCoord 12, 10
 	ld de,SpacesBetweenQuantityAndPriceText
@@ -1692,7 +1692,7 @@ ExitListMenu:: ; 2e3b (0:2e3b)
 	ld [wd12e],a
 	ld [wcc37],a
 	xor a
-	ld [hJoy7],a
+	ldh [hJoy7],a
 	ld hl,wd730
 	res 6,[hl]
 	call BankswitchBack
@@ -1895,10 +1895,10 @@ ListMenuCancelText:: ; 2f97 (0:2f97)
 
 GetMonName:: ; 2f9e (0:2f9e)
 	push hl
-	ld a,[H_LOADEDROMBANK]
+	ldh a,[H_LOADEDROMBANK]
 	push af
 	ld a,BANK(MonsterNames) ; 07
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	ld a,[wd11e]
 	dec a
@@ -1914,7 +1914,7 @@ GetMonName:: ; 2f9e (0:2f9e)
 	ld [hl], "@"
 	pop de
 	pop af
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	pop hl
 	ret
@@ -2039,7 +2039,7 @@ GetMoveName:: ; 3058 (0:3058)
 
 ; reloads text box tile patterns, current map view, and tileset tile patterns
 ReloadMapData:: ; 3071 (0:3071)
-	ld a,[H_LOADEDROMBANK]
+	ldh a,[H_LOADEDROMBANK]
 	push af
 	ld a,[W_CURMAP]
 	call SwitchToMapRomBank
@@ -2049,13 +2049,13 @@ ReloadMapData:: ; 3071 (0:3071)
 	call LoadTilesetTilePatternData
 	call EnableLCD
 	pop af
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	ret
 
 ; reloads tileset tile patterns
 ReloadTilesetTilePatterns:: ; 3090 (0:3090)
-	ld a,[H_LOADEDROMBANK]
+	ldh a,[H_LOADEDROMBANK]
 	push af
 	ld a,[W_CURMAP]
 	call SwitchToMapRomBank
@@ -2063,7 +2063,7 @@ ReloadTilesetTilePatterns:: ; 3090 (0:3090)
 	call LoadTilesetTilePatternData
 	call EnableLCD
 	pop af
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	ret
 
@@ -2104,15 +2104,15 @@ UseItem:: ; 30bc (0:30bc)
 ; OUTPUT:
 ; clears carry flag if the item is tossed, sets carry flag if not
 TossItem:: ; 30c4 (0:30c4)
-	ld a,[H_LOADEDROMBANK]
+	ldh a,[H_LOADEDROMBANK]
 	push af
 	ld a,BANK(TossItem_)
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	call TossItem_
 	pop de
 	ld a,d
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	ret
 
@@ -2137,15 +2137,15 @@ IsKeyItem:: ; 30d9 (0:30d9)
 ; INPUT:
 ; [wd125] = text box ID
 DisplayTextBoxID:: ; 30e8 (0:30e8)
-	ld a,[H_LOADEDROMBANK]
+	ldh a,[H_LOADEDROMBANK]
 	push af
 	ld a,BANK(DisplayTextBoxID_)
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	call DisplayTextBoxID_
 	pop bc
 	ld a,b
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	ret
 
@@ -2179,15 +2179,15 @@ RunNPCMovementScript:: ; 310e (0:310e)
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [H_LOADEDROMBANK]
 	push af
 	ld a, [wNPCMovementScriptBank]
-	ld [H_LOADEDROMBANK], a
+	ldh [H_LOADEDROMBANK], a
 	ld [$2000], a
 	ld a, [wNPCMovementScriptFunctionNum]
 	call CallFunctionInTable
 	pop af
-	ld [H_LOADEDROMBANK], a
+	ldh [H_LOADEDROMBANK], a
 	ld [$2000], a
 	ret
 .NPCMovementScriptPointerTables
@@ -2755,9 +2755,9 @@ SetSpriteFacingDirectionAndDelay:: ; 34a6 (0:34a6)
 
 SetSpriteFacingDirection:: ; 34ae (0:34ae)
 	ld a, $9
-	ld [H_SPRITEDATAOFFSET], a
+	ldh [H_SPRITEDATAOFFSET], a
 	call GetPointerWithinSpriteStateData1
-	ld a, [$ff8d]
+	ldh a, [$ff8d]
 	ld [hl], a
 	ret
 
@@ -2817,7 +2817,7 @@ CheckCoords:: ; 34c7 (0:34c7)
 CheckBoulderCoords:: ; 34e4 (0:34e4)
 	push hl
 	ld hl, wSpriteStateData2 + $04
-	ld a, [H_SPRITEINDEX]
+	ldh a, [H_SPRITEINDEX]
 	swap a
 	ld d, $0
 	ld e, a
@@ -2839,9 +2839,9 @@ GetPointerWithinSpriteStateData2:: ; 3500 (0:3500)
 	ld h, $c2
 
 _GetPointerWithinSpriteStateData:
-	ld a, [H_SPRITEDATAOFFSET]
+	ldh a, [H_SPRITEDATAOFFSET]
 	ld b, a
-	ld a, [H_SPRITEINDEX]
+	ldh a, [H_SPRITEINDEX]
 	swap a
 	add b
 	ld l, a
@@ -2859,7 +2859,7 @@ DecodeRLEList:: ; 350c (0:350c)
 	ld a, [de]
 	cp $ff
 	jr z, .endOfList
-	ld [H_DOWNARROWBLINKCNT1], a ; store byte value to be written
+	ldh [H_DOWNARROWBLINKCNT1], a ; store byte value to be written
 	inc de
 	ld a, [de]
 	ld b, $0
@@ -2867,7 +2867,7 @@ DecodeRLEList:: ; 350c (0:350c)
 	ld a, [wRLEByteCount]
 	add c
 	ld [wRLEByteCount], a     ; update total number of written bytes
-	ld a, [H_DOWNARROWBLINKCNT1] ; $ff8b
+	ldh a, [H_DOWNARROWBLINKCNT1] ; $ff8b
 	call FillMemory              ; write a c-times to output
 	inc de
 	jr .listLoop
@@ -2884,7 +2884,7 @@ SetSpriteMovementBytesToFE:: ; 3533 (0:3533)
 	call GetSpriteMovementByte1Pointer
 	ld [hl], $fe
 	call GetSpriteMovementByte2Pointer
-	ld a, [$ff8d]
+	ldh a, [$ff8d]
 	ld [hl], a
 	pop hl
 	ret
@@ -2902,7 +2902,7 @@ SetSpriteMovementBytesToFF:: ; 3541 (0:3541)
 ; returns the sprite movement byte 1 pointer for sprite [$FF8C] in hl
 GetSpriteMovementByte1Pointer:: ; 354e (0:354e)
 	ld h,$C2
-	ld a,[H_SPRITEINDEX] ; the sprite to move
+	ldh a,[H_SPRITEINDEX] ; the sprite to move
 	swap a
 	add a,6
 	ld l,a
@@ -2912,7 +2912,7 @@ GetSpriteMovementByte1Pointer:: ; 354e (0:354e)
 GetSpriteMovementByte2Pointer:: ; 3558 (0:3558)
 	push de
 	ld hl,W_MAPSPRITEDATA
-	ld a,[$FF8C] ; the sprite to move
+	ldh a,[$FF8C] ; the sprite to move
 	dec a
 	add a
 	ld d,0
@@ -2981,27 +2981,27 @@ BankswitchHome:: ; 35bc (0:35bc)
 ; switches to bank # in a
 ; Only use this when in the home bank!
 	ld [wcf09],a
-	ld a,[H_LOADEDROMBANK]
+	ldh a,[H_LOADEDROMBANK]
 	ld [wcf08],a
 	ld a,[wcf09]
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	ret
 
 BankswitchBack:: ; 35cd (0:35cd)
 ; returns from BankswitchHome
 	ld a,[wcf08]
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	ret
 
 Bankswitch:: ; 35d6 (0:35d6)
 ; self-contained bankswitch, use this when not in the home bank
 ; switches to the bank in b
-	ld a,[H_LOADEDROMBANK]
+	ldh a,[H_LOADEDROMBANK]
 	push af
 	ld a,b
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	ld bc,.Return
 	push bc
@@ -3009,7 +3009,7 @@ Bankswitch:: ; 35d6 (0:35d6)
 .Return
 	pop bc
 	ld a,b
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	ret
 
@@ -3121,7 +3121,7 @@ DivideBytes:: ; 366b (0:366b)
 
 
 LoadFontTilePatterns::
-	ld a, [rLCDC]
+	ldh a, [rLCDC]
 	bit 7, a ; is the LCD enabled?
 	jr nz, .on
 .off
@@ -3137,7 +3137,7 @@ LoadFontTilePatterns::
 	jp CopyVideoDataDouble ; if LCD is on, transfer during V-blank
 
 LoadTextBoxTilePatterns::
-	ld a, [rLCDC]
+	ldh a, [rLCDC]
 	bit 7, a ; is the LCD enabled?
 	jr nz, .on
 .off
@@ -3153,7 +3153,7 @@ LoadTextBoxTilePatterns::
 	jp CopyVideoData ; if LCD is on, transfer during V-blank
 
 LoadHpBarAndStatusTilePatterns::
-	ld a, [rLCDC]
+	ldh a, [rLCDC]
 	bit 7, a ; is the LCD enabled?
 	jr nz, .on
 .off
@@ -3203,13 +3203,13 @@ SaveScreenTilesToBuffer2:: ; 36f4 (0:36f4)
 LoadScreenTilesFromBuffer2:: ; 3701 (0:3701)
 	call LoadScreenTilesFromBuffer2DisableBGTransfer
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	ret
 
 ; loads screen tiles stored in wTileMapBackup2 but leaves H_AUTOBGTRANSFERENABLED disabled
 LoadScreenTilesFromBuffer2DisableBGTransfer:: ; 3709 (0:3709)
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	ld hl, wTileMapBackup2
 	ld de, wTileMap
 	ld bc, $168
@@ -3224,13 +3224,13 @@ SaveScreenTilesToBuffer1:: ; 3719 (0:3719)
 
 LoadScreenTilesFromBuffer1:: ; 3725 (0:3725)
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	ld hl, wTileMapBackup
 	ld de, wTileMap
 	ld bc, $168
 	call CopyData
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	ret
 
 DelayFrames:: ; 3739 (0:3739)
@@ -3344,7 +3344,7 @@ GetName:: ; 376b (0:376b)
 	jp nc, GetMachineName
 .notitem
     
-	ld a,[H_LOADEDROMBANK]
+	ldh a,[H_LOADEDROMBANK]
 	push af
 	push hl
 	push bc
@@ -3362,7 +3362,7 @@ GetName:: ; 376b (0:376b)
 .otherEntries ; $378d
 	;2-7 = OTHER ENTRIES
 	ld a,[wPredefBank]
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	ld a,[W_LISTTYPE]    ;VariousNames' entryID
 	dec a
@@ -3375,12 +3375,12 @@ GetName:: ; 376b (0:376b)
 	ld hl,NamePointers
 	add hl,de
 	ld a,[hli]
-	ld [$ff96],a
+	ldh [$ff96],a
 	ld a,[hl]
-	ld [$ff95],a
-	ld a,[$ff95]
+	ldh [$ff95],a
+	ldh a,[$ff95]
 	ld h,a
-	ld a,[$ff96]
+	ldh a,[$ff96]
 	ld l,a
 	ld a,[wd0b5]
 	ld b,a
@@ -3410,12 +3410,12 @@ GetName:: ; 376b (0:376b)
 	pop bc
 	pop hl
 	pop af
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	ret
 
 GetItemPrice:: ; 37df (0:37df)
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [H_LOADEDROMBANK]
 	push af
 	ld a, [wListMenuID] ; wListMenuID
 	cp MOVESLISTMENU
@@ -3423,7 +3423,7 @@ GetItemPrice:: ; 37df (0:37df)
 	jr nz, .asm_37ed
 	ld a, $f ; hardcoded Bank
 .asm_37ed
-	ld [H_LOADEDROMBANK], a
+	ldh [H_LOADEDROMBANK], a
 	ld [$2000], a
 	ld hl, wcf8f
 	ld a, [hli]
@@ -3439,21 +3439,21 @@ GetItemPrice:: ; 37df (0:37df)
 	jr nz, .asm_3802
 	dec hl
 	ld a, [hld]
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	ld a, [hld]
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	ld a, [hl]
-	ld [H_DOWNARROWBLINKCNT1], a ; $ff8b
+	ldh [H_DOWNARROWBLINKCNT1], a ; $ff8b
 	jr .asm_381c
 .asm_3812
 	ld a, Bank(GetMachinePrice)
-	ld [H_LOADEDROMBANK], a
+	ldh [H_LOADEDROMBANK], a
 	ld [$2000], a
 	call GetMachinePrice
 .asm_381c
 	ld de, H_DOWNARROWBLINKCNT1 ; $ff8b
 	pop af
-	ld [H_LOADEDROMBANK], a
+	ldh [H_LOADEDROMBANK], a
 	ld [$2000], a
 	ret
 
@@ -3488,52 +3488,52 @@ CopyString:: ; 3829 (0:3829)
 ;    ([hJoy7] == 1, [hJoy6] == 0)
 JoypadLowSensitivity:: ; 3831 (0:3831)
 	call Joypad
-	ld a,[hJoy7] ; flag
+	ldh a,[hJoy7] ; flag
 	and a ; get all currently pressed buttons or only newly pressed buttons?
-	ld a,[hJoyPressed] ; newly pressed buttons
+	ldh a,[hJoyPressed] ; newly pressed buttons
 	jr z,.storeButtonState
-	ld a,[hJoyHeld] ; all currently pressed buttons
+	ldh a,[hJoyHeld] ; all currently pressed buttons
 .storeButtonState
-	ld [hJoy5],a
-	ld a,[hJoyPressed] ; newly pressed buttons
+	ldh [hJoy5],a
+	ldh a,[hJoyPressed] ; newly pressed buttons
 	and a ; have any buttons been newly pressed since last check?
 	jr z,.noNewlyPressedButtons
 .newlyPressedButtons
 	ld a,30 ; half a second delay
-	ld [H_FRAMECOUNTER],a
+	ldh [H_FRAMECOUNTER],a
 	ret
 .noNewlyPressedButtons
-	ld a,[H_FRAMECOUNTER]
+	ldh a,[H_FRAMECOUNTER]
 	and a ; is the delay over?
 	jr z,.delayOver
 .delayNotOver
 	xor a
-	ld [hJoy5],a ; report no buttons as pressed
+	ldh [hJoy5],a ; report no buttons as pressed
 	ret
 .delayOver
 ; if [hJoy6] = 0 and A or B is pressed, report no buttons as pressed
-	ld a,[hJoyHeld]
+	ldh a,[hJoyHeld]
 	and A_BUTTON | B_BUTTON
 	jr z,.setShortDelay
-	ld a,[hJoy6] ; flag
+	ldh a,[hJoy6] ; flag
 	and a
 	jr nz,.setShortDelay
 	xor a
-	ld [hJoy5],a
+	ldh [hJoy5],a
 .setShortDelay
 	ld a,5 ; 1/12 of a second delay
-	ld [H_FRAMECOUNTER],a
+	ldh [H_FRAMECOUNTER],a
 	ret
 
 WaitForTextScrollButtonPress:: ; 3865 (0:3865)
-	ld a, [H_DOWNARROWBLINKCNT1]
+	ldh a, [H_DOWNARROWBLINKCNT1]
 	push af
-	ld a, [H_DOWNARROWBLINKCNT2]
+	ldh a, [H_DOWNARROWBLINKCNT2]
 	push af
 	xor a
-	ld [H_DOWNARROWBLINKCNT1], a
+	ldh [H_DOWNARROWBLINKCNT1], a
 	ld a, $6
-	ld [H_DOWNARROWBLINKCNT2], a
+	ldh [H_DOWNARROWBLINKCNT2], a
 .loop
 	push hl
 	ld a, [wTownMapSpriteBlinkingEnabled]
@@ -3546,13 +3546,13 @@ WaitForTextScrollButtonPress:: ; 3865 (0:3865)
 	pop hl
 	call JoypadLowSensitivity
 	predef Func_5a5f
-	ld a, [hJoy5]
+	ldh a, [hJoy5]
 	and A_BUTTON | B_BUTTON
 	jr z, .loop
 	pop af
-	ld [H_DOWNARROWBLINKCNT2], a
+	ldh [H_DOWNARROWBLINKCNT2], a
 	pop af
-	ld [H_DOWNARROWBLINKCNT1], a
+	ldh [H_DOWNARROWBLINKCNT1], a
 	ret
 
 ; (unless in link battle) waits for A or B being pressed and outputs the scrolling sound effect
@@ -3595,14 +3595,14 @@ Divide:: ; 38b9 (0:38b9)
 	push hl
 	push de
 	push bc
-	ld a,[H_LOADEDROMBANK]
+	ldh a,[H_LOADEDROMBANK]
 	push af
 	ld a,Bank(_Divide)
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	call _Divide
 	pop af
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [$2000],a
 	pop bc
 	pop de
@@ -3632,14 +3632,14 @@ PrintLetterDelay:: ; 38d3 (0:38d3)
 	jr z,.waitOneFrame
 	ld a,[W_OPTIONS]
 	and $f
-	ld [H_FRAMECOUNTER],a
+	ldh [H_FRAMECOUNTER],a
 	jr .checkButtons
 .waitOneFrame
 	ld a,1
-	ld [H_FRAMECOUNTER],a
+	ldh [H_FRAMECOUNTER],a
 .checkButtons
 	call Joypad
-	ld a,[hJoyHeld]
+	ldh a,[hJoyHeld]
 .checkAButton
 	bit 0,a ; is the A button pressed?
 	jr z,.checkBButton
@@ -3651,12 +3651,12 @@ PrintLetterDelay:: ; 38d3 (0:38d3)
 	call DelayFrame
 	jr .done
 .buttonsNotPressed ; if neither A nor B is pressed
-	ld a,[H_FRAMECOUNTER]
+	ldh a,[H_FRAMECOUNTER]
 	and a
 	jr nz,.checkButtons
 .done
 	ld a, TRANSFERBOTTOM
-	ld [H_AUTOBGTRANSFERPORTION], a
+	ldh [H_AUTOBGTRANSFERPORTION], a
 	
 	pop bc
 	pop de
@@ -3703,10 +3703,10 @@ CalcStats:: ; 3936 (0:3936)
 .statsLoop
 	inc c
 	call CalcStat
-	ld a, [H_MULTIPLICAND+1]
+	ldh a, [H_MULTIPLICAND+1]
 	ld [de], a
 	inc de
-	ld a, [H_MULTIPLICAND+2]
+	ldh a, [H_MULTIPLICAND+2]
 	ld [de], a
 	inc de
 	ld a, c
@@ -3739,22 +3739,22 @@ CalcStat:: ; 394a (0:394a)
 	add hl, bc          ; skip to corresponding stat exp value
 .statExpLoop            ; calculates ceil(Sqrt(stat exp)) in b
 	xor a
-	ld [H_MULTIPLICAND], a
-	ld [H_MULTIPLICAND+1], a
+	ldh [H_MULTIPLICAND], a
+	ldh [H_MULTIPLICAND+1], a
 	inc b               ; increment current stat exp bonus
 	ld a, b
 	cp $ff
 	jr z, .statExpDone
-	ld [H_MULTIPLICAND+2], a
-	ld [H_MULTIPLIER], a
+	ldh [H_MULTIPLICAND+2], a
+	ldh [H_MULTIPLIER], a
 	call Multiply
 	ld a, [hld]
 	ld d, a
-	ld a, [$ff98]
+	ldh a, [$ff98]
 	sub d
 	ld a, [hli]
 	ld d, a
-	ld a, [$ff97]
+	ldh a, [$ff97]
 	sbc d               ; test if (current stat exp bonus)^2 < stat exp
 	jr c, .statExpLoop
 .statExpDone
@@ -3834,22 +3834,22 @@ CalcStat:: ; 394a (0:394a)
 	jr nc, .noCarry2
 	inc d                     ; da = (Base + IV) * 2 + ceil(Sqrt(stat exp)) / 4
 .noCarry2
-	ld [H_MULTIPLICAND+2], a
+	ldh [H_MULTIPLICAND+2], a
 	ld a, d
-	ld [H_MULTIPLICAND+1], a
+	ldh [H_MULTIPLICAND+1], a
 	xor a
-	ld [H_MULTIPLICAND], a
+	ldh [H_MULTIPLICAND], a
 	ld a, [W_CURENEMYLVL] ; W_CURENEMYLVL
-	ld [H_MULTIPLIER], a
+	ldh [H_MULTIPLIER], a
 	call Multiply            ; ((Base + IV) * 2 + ceil(Sqrt(stat exp)) / 4) * Level
-	ld a, [H_MULTIPLICAND]
-	ld [H_DIVIDEND], a
-	ld a, [H_MULTIPLICAND+1]
-	ld [H_DIVIDEND+1], a
-	ld a, [H_MULTIPLICAND+2]
-	ld [H_DIVIDEND+2], a
+	ldh a, [H_MULTIPLICAND]
+	ldh [H_DIVIDEND], a
+	ldh a, [H_MULTIPLICAND+1]
+	ldh [H_DIVIDEND+1], a
+	ldh a, [H_MULTIPLICAND+2]
+	ldh [H_DIVIDEND+2], a
 	ld a, $64
-	ld [H_DIVISOR], a
+	ldh [H_DIVISOR], a
 	ld a, $3
 	ld b, a
 	call Divide             ; (((Base + IV) * 2 + ceil(Sqrt(stat exp)) / 4) * Level) / 100
@@ -3859,38 +3859,38 @@ CalcStat:: ; 394a (0:394a)
 	jr nz, .notHPStat
 	ld a, [W_CURENEMYLVL] ; W_CURENEMYLVL
 	ld b, a
-	ld a, [H_MULTIPLICAND+2]
+	ldh a, [H_MULTIPLICAND+2]
 	add b
-	ld [H_MULTIPLICAND+2], a
+	ldh [H_MULTIPLICAND+2], a
 	jr nc, .noCarry3
-	ld a, [H_MULTIPLICAND+1]
+	ldh a, [H_MULTIPLICAND+1]
 	inc a
-	ld [H_MULTIPLICAND+1], a ; HP: (((Base + IV) * 2 + ceil(Sqrt(stat exp)) / 4) * Level) / 100 + Level
+	ldh [H_MULTIPLICAND+1], a ; HP: (((Base + IV) * 2 + ceil(Sqrt(stat exp)) / 4) * Level) / 100 + Level
 .noCarry3
 	ld a, $a
 .notHPStat
 	ld b, a
-	ld a, [H_MULTIPLICAND+2]
+	ldh a, [H_MULTIPLICAND+2]
 	add b
-	ld [H_MULTIPLICAND+2], a
+	ldh [H_MULTIPLICAND+2], a
 	jr nc, .noCarry4
-	ld a, [H_MULTIPLICAND+1]
+	ldh a, [H_MULTIPLICAND+1]
 	inc a                    ; non-HP: (((Base + IV) * 2 + ceil(Sqrt(stat exp)) / 4) * Level) / 100 + 5
-	ld [H_MULTIPLICAND+1], a ; HP: (((Base + IV) * 2 + ceil(Sqrt(stat exp)) / 4) * Level) / 100 + Level + 10
+	ldh [H_MULTIPLICAND+1], a ; HP: (((Base + IV) * 2 + ceil(Sqrt(stat exp)) / 4) * Level) / 100 + Level + 10
 .noCarry4
-	ld a, [H_MULTIPLICAND+1] ; check for overflow (>999)
+	ldh a, [H_MULTIPLICAND+1] ; check for overflow (>999)
 	cp $4
 	jr nc, .overflow
 	cp $3
 	jr c, .noOverflow
-	ld a, [H_MULTIPLICAND+2]
+	ldh a, [H_MULTIPLICAND+2]
 	cp $e8
 	jr c, .noOverflow
 .overflow
 	ld a, $3                 ; overflow: cap at 999
-	ld [H_MULTIPLICAND+1], a
+	ldh [H_MULTIPLICAND+1], a
 	ld a, $e7
-	ld [H_MULTIPLICAND+2], a
+	ldh [H_MULTIPLICAND+2], a
 .noOverflow
 	pop bc
 	pop de
@@ -3898,28 +3898,28 @@ CalcStat:: ; 394a (0:394a)
 	ret
 
 AddEnemyMonToPlayerParty:: ; 3a53 (0:3a53)
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [H_LOADEDROMBANK]
 	push af
 	ld a, BANK(_AddEnemyMonToPlayerParty)
-	ld [H_LOADEDROMBANK], a
+	ldh [H_LOADEDROMBANK], a
 	ld [$2000], a
 	call _AddEnemyMonToPlayerParty
 	pop bc
 	ld a, b
-	ld [H_LOADEDROMBANK], a
+	ldh [H_LOADEDROMBANK], a
 	ld [$2000], a
 	ret
 
 Func_3a68:: ; 3a68 (0:3a68)
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [H_LOADEDROMBANK]
 	push af
 	ld a, BANK(Func_f51e)
-	ld [H_LOADEDROMBANK], a
+	ldh [H_LOADEDROMBANK], a
 	ld [$2000], a
 	call Func_f51e
 	pop bc
 	ld a, b
-	ld [H_LOADEDROMBANK], a
+	ldh [H_LOADEDROMBANK], a
 	ld [$2000], a
 	ret
 
@@ -3999,14 +3999,14 @@ HandleMenuInput:: ; 3abe (0:3abe)
 	ld [wd09b],a
 
 HandleMenuInputPokemonSelection:: ; 3ac2 (0:3ac2)
-	ld a,[H_DOWNARROWBLINKCNT1]
+	ldh a,[H_DOWNARROWBLINKCNT1]
 	push af
-	ld a,[H_DOWNARROWBLINKCNT2]
+	ldh a,[H_DOWNARROWBLINKCNT2]
 	push af ; save existing values on stack
 	xor a
-	ld [H_DOWNARROWBLINKCNT1],a ; blinking down arrow timing value 1
+	ldh [H_DOWNARROWBLINKCNT1],a ; blinking down arrow timing value 1
 	ld a,$06
-	ld [H_DOWNARROWBLINKCNT2],a ; blinking down arrow timing value 2
+	ldh [H_DOWNARROWBLINKCNT2],a ; blinking down arrow timing value 2
 .loop1
 	xor a
 	ld [W_SUBANIMTRANSFORM],a ; counter for pokemon shaking animation
@@ -4021,7 +4021,7 @@ HandleMenuInputPokemonSelection:: ; 3ac2 (0:3ac2)
 .getJoypadState
 	pop hl
 	call JoypadLowSensitivity
-	ld a,[hJoy5]
+	ldh a,[hJoy5]
 	and a ; was a key pressed?
 	jr nz,.keyPressed
 	push hl
@@ -4035,16 +4035,16 @@ HandleMenuInputPokemonSelection:: ; 3ac2 (0:3ac2)
 .giveUpWaiting
 ; if a key wasn't pressed within the specified number of checks
 	pop af
-	ld [H_DOWNARROWBLINKCNT2],a
+	ldh [H_DOWNARROWBLINKCNT2],a
 	pop af
-	ld [H_DOWNARROWBLINKCNT1],a ; restore previous values
+	ldh [H_DOWNARROWBLINKCNT1],a ; restore previous values
 	xor a
 	ld [wMenuWrappingEnabled],a ; disable menu wrapping
 	ret
 .keyPressed
 	xor a
 	ld [wcc4b],a
-	ld a,[hJoy5]
+	ldh a,[hJoy5]
 	ld b,a
 	bit 6,a ; pressed Up key?
 	jr z,.checkIfDownPressed
@@ -4086,7 +4086,7 @@ HandleMenuInputPokemonSelection:: ; 3ac2 (0:3ac2)
 	and b ; does the menu care about any of the pressed keys?
 	jp z,.loop1
 .checkIfAButtonOrBButtonPressed
-	ld a,[hJoy5]
+	ldh a,[hJoy5]
 	and A_BUTTON | B_BUTTON
 	jr z,.skipPlayingSound
 .AButtonOrBButtonPressed
@@ -4099,12 +4099,12 @@ HandleMenuInputPokemonSelection:: ; 3ac2 (0:3ac2)
 	call PlaySound ; play sound
 .skipPlayingSound
 	pop af
-	ld [H_DOWNARROWBLINKCNT2],a
+	ldh [H_DOWNARROWBLINKCNT2],a
 	pop af
-	ld [H_DOWNARROWBLINKCNT1],a ; restore previous values
+	ldh [H_DOWNARROWBLINKCNT1],a ; restore previous values
 	xor a
 	ld [wMenuWrappingEnabled],a ; disable menu wrapping
-	ld a,[hJoy5]
+	ldh a,[hJoy5]
 	ret
 .noWrappingAround
 	ld a,[wcc37]
@@ -4132,7 +4132,7 @@ PlaceMenuCursor:: ; 3b7c (0:3b7c)
 	and a ; was the previous menu id 0?
 	jr z,.checkForArrow1
 	push af
-	ld a,[$fff6]
+	ldh a,[$fff6]
 	bit 1,a ; is the menu double spaced?
 	jr z,.doubleSpaced1
 	ld bc,20
@@ -4158,7 +4158,7 @@ PlaceMenuCursor:: ; 3b7c (0:3b7c)
 	and a
 	jr z,.checkForArrow2
 	push af
-	ld a,[$fff6]
+	ldh a,[$fff6]
 	bit 1,a ; is the menu double spaced?
 	jr z,.doubleSpaced2
 	ld bc,20
@@ -4225,36 +4225,36 @@ HandleDownArrowBlinkTiming:: ; 3c04 (0:3c04)
 	cp b
 	jr nz,.downArrowOff
 .downArrowOn
-	ld a,[H_DOWNARROWBLINKCNT1]
+	ldh a,[H_DOWNARROWBLINKCNT1]
 	dec a
-	ld [H_DOWNARROWBLINKCNT1],a
+	ldh [H_DOWNARROWBLINKCNT1],a
 	ret nz
-	ld a,[H_DOWNARROWBLINKCNT2]
+	ldh a,[H_DOWNARROWBLINKCNT2]
 	dec a
-	ld [H_DOWNARROWBLINKCNT2],a
+	ldh [H_DOWNARROWBLINKCNT2],a
 	ret nz
 	ld a," "
 	ld [hl],a
 	ld a,$ff
-	ld [H_DOWNARROWBLINKCNT1],a
+	ldh [H_DOWNARROWBLINKCNT1],a
 	ld a,$06
-	ld [H_DOWNARROWBLINKCNT2],a
+	ldh [H_DOWNARROWBLINKCNT2],a
 	ret
 .downArrowOff
-	ld a,[H_DOWNARROWBLINKCNT1]
+	ldh a,[H_DOWNARROWBLINKCNT1]
 	and a
 	ret z
 	dec a
-	ld [H_DOWNARROWBLINKCNT1],a
+	ldh [H_DOWNARROWBLINKCNT1],a
 	ret nz
 	dec a
-	ld [H_DOWNARROWBLINKCNT1],a
-	ld a,[H_DOWNARROWBLINKCNT2]
+	ldh [H_DOWNARROWBLINKCNT1],a
+	ldh a,[H_DOWNARROWBLINKCNT2]
 	dec a
-	ld [H_DOWNARROWBLINKCNT2],a
+	ldh [H_DOWNARROWBLINKCNT2],a
 	ret nz
 	ld a,$06
-	ld [H_DOWNARROWBLINKCNT2],a
+	ldh [H_DOWNARROWBLINKCNT2],a
 	ld a,$ee ; down arrow
 	ld [hl],a
 	ret
@@ -4301,9 +4301,9 @@ LEFT_ALIGN     EQU 6
 
 	push bc
 	xor a
-	ld [H_PASTLEADINGZEROES], a
-	ld [H_NUMTOPRINT], a
-	ld [H_NUMTOPRINT + 1], a
+	ldh [H_PASTLEADINGZEROES], a
+	ldh [H_NUMTOPRINT], a
+	ldh [H_NUMTOPRINT + 1], a
 	ld a, b
 	and $f
 	cp 1
@@ -4312,26 +4312,26 @@ LEFT_ALIGN     EQU 6
 	jr z, .word
 .long
 	ld a, [de]
-	ld [H_NUMTOPRINT], a
+	ldh [H_NUMTOPRINT], a
 	inc de
 	ld a, [de]
-	ld [H_NUMTOPRINT + 1], a
+	ldh [H_NUMTOPRINT + 1], a
 	inc de
 	ld a, [de]
-	ld [H_NUMTOPRINT + 2], a
+	ldh [H_NUMTOPRINT + 2], a
 	jr .start
 
 .word
 	ld a, [de]
-	ld [H_NUMTOPRINT + 1], a
+	ldh [H_NUMTOPRINT + 1], a
 	inc de
 	ld a, [de]
-	ld [H_NUMTOPRINT + 2], a
+	ldh [H_NUMTOPRINT + 2], a
 	jr .start
 
 .byte
 	ld a, [de]
-	ld [H_NUMTOPRINT + 2], a
+	ldh [H_NUMTOPRINT + 2], a
 
 .start
 	push de
@@ -4360,16 +4360,16 @@ if (\1) / $10000
 	ld a, \1 / $10000 % $100
 else	xor a
 endc
-	ld [H_POWEROFTEN + 0], a
+	ldh [H_POWEROFTEN + 0], a
 
 if (\1) / $100
 	ld a, \1 / $100   % $100
 else	xor a
 endc
-	ld [H_POWEROFTEN + 1], a
+	ldh [H_POWEROFTEN + 1], a
 
 	ld a, \1 / $1     % $100
-	ld [H_POWEROFTEN + 2], a
+	ldh [H_POWEROFTEN + 2], a
 
 	call .PrintDigit
 	call .NextDigit
@@ -4383,7 +4383,7 @@ endm
 
 .tens
 	ld c, 0
-	ld a, [H_NUMTOPRINT + 2]
+	ldh a, [H_NUMTOPRINT + 2]
 .mod
 	cp 10
 	jr c, .ok
@@ -4393,9 +4393,9 @@ endm
 .ok
 
 	ld b, a
-	ld a, [H_PASTLEADINGZEROES]
+	ldh a, [H_PASTLEADINGZEROES]
 	or c
-	ld [H_PASTLEADINGZEROES], a
+	ldh [H_PASTLEADINGZEROES], a
 	jr nz, .past
 	call .PrintLeadingZero
 	jr .next
@@ -4420,74 +4420,74 @@ endm
 ; Print the quotient, and keep the modulus.
 	ld c, 0
 .loop
-	ld a, [H_POWEROFTEN]
+	ldh a, [H_POWEROFTEN]
 	ld b, a
-	ld a, [H_NUMTOPRINT]
-	ld [H_SAVEDNUMTOPRINT], a
+	ldh a, [H_NUMTOPRINT]
+	ldh [H_SAVEDNUMTOPRINT], a
 	cp b
 	jr c, .underflow0
 	sub b
-	ld [H_NUMTOPRINT], a
-	ld a, [H_POWEROFTEN + 1]
+	ldh [H_NUMTOPRINT], a
+	ldh a, [H_POWEROFTEN + 1]
 	ld b, a
-	ld a, [H_NUMTOPRINT + 1]
-	ld [H_SAVEDNUMTOPRINT + 1], a
+	ldh a, [H_NUMTOPRINT + 1]
+	ldh [H_SAVEDNUMTOPRINT + 1], a
 	cp b
 	jr nc, .noborrow1
 
-	ld a, [H_NUMTOPRINT]
+	ldh a, [H_NUMTOPRINT]
 	or 0
 	jr z, .underflow1
 	dec a
-	ld [H_NUMTOPRINT], a
-	ld a, [H_NUMTOPRINT + 1]
+	ldh [H_NUMTOPRINT], a
+	ldh a, [H_NUMTOPRINT + 1]
 .noborrow1
 
 	sub b
-	ld [H_NUMTOPRINT + 1], a
-	ld a, [H_POWEROFTEN + 2]
+	ldh [H_NUMTOPRINT + 1], a
+	ldh a, [H_POWEROFTEN + 2]
 	ld b, a
-	ld a, [H_NUMTOPRINT + 2]
-	ld [H_SAVEDNUMTOPRINT + 2], a
+	ldh a, [H_NUMTOPRINT + 2]
+	ldh [H_SAVEDNUMTOPRINT + 2], a
 	cp b
 	jr nc, .noborrow2
 
-	ld a, [H_NUMTOPRINT + 1]
+	ldh a, [H_NUMTOPRINT + 1]
 	and a
 	jr nz, .borrowed
 
-	ld a, [H_NUMTOPRINT]
+	ldh a, [H_NUMTOPRINT]
 	and a
 	jr z, .underflow2
 	dec a
-	ld [H_NUMTOPRINT], a
+	ldh [H_NUMTOPRINT], a
 	xor a
 .borrowed
 
 	dec a
-	ld [H_NUMTOPRINT + 1], a
-	ld a, [H_NUMTOPRINT + 2]
+	ldh [H_NUMTOPRINT + 1], a
+	ldh a, [H_NUMTOPRINT + 2]
 .noborrow2
 	sub b
-	ld [H_NUMTOPRINT + 2], a
+	ldh [H_NUMTOPRINT + 2], a
 	inc c
 	jr .loop
 
 .underflow2
-	ld a, [H_SAVEDNUMTOPRINT + 1]
-	ld [H_NUMTOPRINT + 1], a
+	ldh a, [H_SAVEDNUMTOPRINT + 1]
+	ldh [H_NUMTOPRINT + 1], a
 .underflow1
-	ld a, [H_SAVEDNUMTOPRINT]
-	ld [H_NUMTOPRINT], a
+	ldh a, [H_SAVEDNUMTOPRINT]
+	ldh [H_NUMTOPRINT], a
 .underflow0
-	ld a, [H_PASTLEADINGZEROES]
+	ldh a, [H_PASTLEADINGZEROES]
 	or c
 	jr z, .PrintLeadingZero
 
 	ld a, "0"
 	add c
 	ld [hl], a
-	ld [H_PASTLEADINGZEROES], a
+	ldh [H_PASTLEADINGZEROES], a
 	ret
 
 .PrintLeadingZero:
@@ -4504,7 +4504,7 @@ endm
 	jr nz, .inc
 	bit LEFT_ALIGN, d
 	jr z, .inc
-	ld a, [H_PASTLEADINGZEROES]
+	ldh a, [H_PASTLEADINGZEROES]
 	and a
 	ret z
 .inc
@@ -4586,17 +4586,17 @@ Delay3::
 GBPalNormal::
 ; Reset BGP and OBP0.
 	ld a, %11100100 ; 3210
-	ld [rBGP], a
+	ldh [rBGP], a
 	ld a, %11010000 ; 3100
-	ld [rOBP0], a
+	ldh [rOBP0], a
 	ret
 
 GBPalWhiteOut::
 ; White out all palettes.
 	xor a
-	ld [rBGP],a
-	ld [rOBP0],a
-	ld [rOBP1],a
+	ldh [rBGP],a
+	ldh [rOBP0],a
+	ldh [rOBP1],a
 	ret
 
 
@@ -4681,7 +4681,7 @@ Random::
 	push de
 	push bc
 	callba Random_
-	ld a, [hRandomAdd]
+	ldh a, [hRandomAdd]
 	pop bc
 	pop de
 	pop hl
@@ -4697,22 +4697,22 @@ Func_3ead:: ; 3ead (0:3ead)
 	jp Bankswitch
 
 CheckForHiddenObjectOrBookshelfOrCardKeyDoor:: ; 3eb5 (0:3eb5)
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [H_LOADEDROMBANK]
 	push af
-	ld a, [hJoyHeld]
+	ldh a, [hJoyHeld]
 	bit 0, a ; A button
 	jr z, .nothingFound
 ; A button is pressed
 	ld a, Bank(CheckForHiddenObject)
 	ld [MBC1RomBank], a
-	ld [H_LOADEDROMBANK], a
+	ldh [H_LOADEDROMBANK], a
 	call CheckForHiddenObject
-	ld a, [$ffee]
+	ldh a, [$ffee]
 	and a
 	jr nz, .hiddenObjectNotFound
 	ld a, [wHiddenObjectFunctionRomBank]
 	ld [MBC1RomBank], a
-	ld [H_LOADEDROMBANK], a
+	ldh [H_LOADEDROMBANK], a
 	ld de, .returnAddress
 	push de
 	jp [hl]
@@ -4721,20 +4721,20 @@ CheckForHiddenObjectOrBookshelfOrCardKeyDoor:: ; 3eb5 (0:3eb5)
 	jr .done
 .hiddenObjectNotFound
 	callba PrintBookshelfText
-	ld a, [$ffdb]
+	ldh a, [$ffdb]
 	and a
 	jr z, .done
 .nothingFound
 	ld a, $ff
 .done
-	ld [$ffeb], a
+	ldh [$ffeb], a
 	pop af
 	ld [MBC1RomBank], a
-	ld [H_LOADEDROMBANK], a
+	ldh [H_LOADEDROMBANK], a
 	ret
 
 PrintPredefTextID:: ; 3ef5 (0:3ef5)
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	ld hl, TextPredefs
 	call SetMapTextPointer
 	ld hl, wcf11
@@ -4743,17 +4743,17 @@ PrintPredefTextID:: ; 3ef5 (0:3ef5)
 
 RestoreMapTextPointer:: ; 3f05 (0:3f05)
 	ld hl, W_MAPTEXTPTR
-	ld a, [$ffec]
+	ldh a, [$ffec]
 	ld [hli], a
-	ld a, [$ffec + 1]
+	ldh a, [$ffec + 1]
 	ld [hl], a
 	ret
 
 SetMapTextPointer:: ; 3f0f (0:3f0f)
 	ld a, [W_MAPTEXTPTR]
-	ld [$ffec], a
+	ldh [$ffec], a
 	ld a, [W_MAPTEXTPTR + 1]
-	ld [$ffec + 1], a
+	ldh [$ffec + 1], a
 	ld a, l
 	ld [W_MAPTEXTPTR], a
 	ld a, h

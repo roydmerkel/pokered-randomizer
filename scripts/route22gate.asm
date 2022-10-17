@@ -4,7 +4,7 @@ Route22GateScript: ; 1e683 (7:6683)
 	ld a, [W_ROUTE22GATECURSCRIPT]
 	call CallFunctionInTable
 	ld a, [W_YCOORD]
-	cp $4
+	cp 4
 	ld a, ROUTE_23
 	jr c, .asm_1e69a ; 0x1e696 $2
 	ld a, ROUTE_22
@@ -22,9 +22,9 @@ Route22GateScript0: ; 1e6a4 (7:66a4)
 	call ArePlayerCoordsInArray
 	ret nc
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld a, $1
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	jp DisplayTextID
 
 Route22GateScriptCoords: ; 1e6b5 (7:66b5)

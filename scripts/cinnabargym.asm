@@ -37,7 +37,7 @@ CinnabarGymScript_75792: ; 75792 (1d:5792)
 	ret
 
 CinnabarGymScript_757a0: ; 757a0 (1d:57a0)
-	ld a, [H_DOWNARROWBLINKCNT2] ; $ff8c
+	ldh a, [H_DOWNARROWBLINKCNT2] ; $ff8c
 	ld [wTrainerHeaderFlagBit], a
 	ret
 
@@ -51,7 +51,7 @@ CinnabarGymScript0: ; 757ae (1d:57ae)
 	ld a, [wda38]
 	and a
 	ret z
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	cp $4
 	jr nz, .asm_757c3 ; 0x757b7 $a
 	ld a, $4
@@ -83,7 +83,7 @@ CinnabarGymScript1: ; 757dc (1d:57dc)
 	ld [wJoyIgnore], a
 	ld a, [wda38]
 	ld [wTrainerHeaderFlagBit], a
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	jp DisplayTextID
 
 CinnabarGymScript_757f1: ; 757f1 (1d:57f1)
@@ -94,7 +94,7 @@ CinnabarGymScript2: ; 757f6 (1d:57f6)
 	cp $ff
 	jp z, CinnabarGymScript_75792
 	ld a, [wTrainerHeaderFlagBit]
-	ld [$ffdb], a
+	ldh [$ffdb], a
 	ld c, a
 	ld b, $2
 	ld hl, wd79a
@@ -108,7 +108,7 @@ CinnabarGymScript2: ; 757f6 (1d:57f6)
 	call WaitForSoundToFinish
 .asm_7581b
 	ld a, [wTrainerHeaderFlagBit]
-	ld [$ffdb], a
+	ldh [$ffdb], a
 	ld c, a
 	ld b, $1
 	ld hl, wd79a
@@ -138,7 +138,7 @@ CinnabarGymScript3: ; 7584a (1d:584a)
 	ld [wJoyIgnore], a
 CinnabarGymScript3_75857: ; 75857 (1d:5857)
 	ld a, $a
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	ld hl, wd79a
 	set 1, [hl]
@@ -147,14 +147,14 @@ CinnabarGymScript3_75857: ; 75857 (1d:5857)
 	call GiveItem
 	jr nc, .BagFull
 	ld a, $b
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	ld hl, wd79a
 	set 0, [hl]
 	jr .asm_75880 ; 0x75877 $7
 .BagFull
 	ld a, $c
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 .asm_75880
 	ld hl, W_OBTAINEDBADGES
@@ -189,7 +189,7 @@ CinnabarGymTextPointers: ; 7589f (1d:589f)
 	dw TM38NoRoomText
 
 CinnabarGymScript_758b7: ; 758b7 (1d:58b7)
-	ld a, [H_DOWNARROWBLINKCNT2] ; $ff8c
+	ldh a, [H_DOWNARROWBLINKCNT2] ; $ff8c
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters

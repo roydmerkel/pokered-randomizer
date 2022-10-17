@@ -24,7 +24,7 @@ PrintBookshelfText: ; fb50 (3:7b50)
 	pop af
 	call PrintPredefTextID
 	xor a
-	ld [$ffdb], a
+	ldh [$ffdb], a
 	ret
 .nextBookshelfEntry1
 	inc hl
@@ -33,7 +33,7 @@ PrintBookshelfText: ; fb50 (3:7b50)
 	jr .loop
 .noMatch
 	ld a, $ff
-	ld [$ffdb], a
+	ldh [$ffdb], a
 	ld b, BANK(PrintCardKeyText)
 	ld hl, PrintCardKeyText
 	jp Bankswitch
@@ -120,16 +120,16 @@ TownMapText: ; fc12 (3:7c12)
 	set 6, [hl]
 	call GBPalWhiteOutWithDelay3
 	xor a
-	ld [hWY], a
+	ldh [hWY], a
 	inc a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	call LoadFontTilePatterns
 	callba DisplayTownMap
 	ld hl, wd730
 	res 6, [hl]
 	ld de, TextScriptEnd
 	push de
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [H_LOADEDROMBANK]
 	push af
 	jp CloseTextDisplay
 

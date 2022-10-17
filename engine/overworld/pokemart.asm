@@ -70,7 +70,7 @@ DisplayPokemartDialogue_: ; 6c20 (1:6c20)
 	jr c,.unsellableItem
 	ld a,PRICEDITEMLISTMENU
 	ld [wListMenuID],a
-	ld [$ff8e],a ; halve prices when selling
+	ldh [$ff8e],a ; halve prices when selling
 	call DisplayChooseQuantityMenu
 	inc a
 	jr z,.sellMenuLoop ; if the player closed the choose quantity menu with the B button
@@ -138,7 +138,7 @@ DisplayPokemartDialogue_: ; 6c20 (1:6c20)
 	ld a,$63
 	ld [wcf97],a
 	xor a
-	ld [$ff8e],a
+	ldh [$ff8e],a
 	call DisplayChooseQuantityMenu
 	inc a
 	jr z,.buyMenuLoop ; if the player closed the choose quantity menu with the B button

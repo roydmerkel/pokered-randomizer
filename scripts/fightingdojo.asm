@@ -32,7 +32,7 @@ FightingDojoScript1: ; 5cd83 (17:4d83)
 	bit 1, a
 	ret nz
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld [wcf0d], a
 	ld a, [W_YCOORD]
 	cp $3
@@ -45,12 +45,12 @@ FightingDojoScript1: ; 5cd83 (17:4d83)
 	ld a, $1
 	ld [wd528], a
 	ld a, $1
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	ld a, $8
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $1
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	ret
 
@@ -64,9 +64,9 @@ FightingDojoScript3: ; 5cdc6 (17:4dc6)
 	ld a, $1
 	ld [wd528], a
 	ld a, $1
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	ld a, $8
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
 
 .asm_5cde4
@@ -76,7 +76,7 @@ FightingDojoScript3: ; 5cdc6 (17:4dc6)
 	or $3e
 	ld [wd7b1], a
 	ld a, $8
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	xor a
 	ld [wJoyIgnore], a

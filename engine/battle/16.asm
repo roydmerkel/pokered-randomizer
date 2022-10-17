@@ -101,16 +101,16 @@ PrintSendOutMonMessage: ; 58e59 (16:4e59)
 	ld hl, GoText
 	jr z, .printText
 	xor a
-	ld [H_MULTIPLICAND], a
+	ldh [H_MULTIPLICAND], a
 	ld hl, wEnemyMonHP
 	ld a, [hli]
 	ld [wcce3], a
-	ld [H_MULTIPLICAND + 1], a
+	ldh [H_MULTIPLICAND + 1], a
 	ld a, [hl]
 	ld [wcce4], a
-	ld [H_MULTIPLICAND + 2], a
+	ldh [H_MULTIPLICAND + 2], a
 	ld a, 25
-	ld [H_MULTIPLIER], a
+	ldh [H_MULTIPLIER], a
 	call Multiply
 	ld hl, wEnemyMonMaxHP
 	ld a, [hli]
@@ -121,9 +121,9 @@ PrintSendOutMonMessage: ; 58e59 (16:4e59)
 	rr b
 	ld a, b
 	ld b, $4
-	ld [H_DIVISOR], a ; enemy mon max HP divided by 4
+	ldh [H_DIVISOR], a ; enemy mon max HP divided by 4
 	call Divide
-	ld a, [H_QUOTIENT + 3] ; a = (enemy mon current HP * 25) / (enemy max HP / 4); this approximates the current percentage of max HP
+	ldh a, [H_QUOTIENT + 3] ; a = (enemy mon current HP * 25) / (enemy max HP / 4); this approximates the current percentage of max HP
 	ld hl, GoText ; 70% or greater
 	cp 70
 	jr nc, .printText
@@ -179,14 +179,14 @@ PlayerMon2Text: ; 58ed7 (16:4ed7)
 	dec hl
 	ld a, [de]
 	sub b
-	ld [$ff98], a
+	ldh [$ff98], a
 	dec de
 	ld b, [hl]
 	ld a, [de]
 	sbc b
-	ld [$ff97], a
+	ldh [$ff97], a
 	ld a, $19
-	ld [H_POWEROFTEN], a
+	ldh [H_POWEROFTEN], a
 	call Multiply
 	ld hl, wEnemyMonMaxHP
 	ld a, [hli]
@@ -197,11 +197,11 @@ PlayerMon2Text: ; 58ed7 (16:4ed7)
 	rr b
 	ld a, b
 	ld b, $4
-	ld [H_POWEROFTEN], a
+	ldh [H_POWEROFTEN], a
 	call Divide
 	pop bc
 	pop de
-	ld a, [$ff98]
+	ldh a, [$ff98]
 	ld hl, EnoughText
 	and a
 	ret z

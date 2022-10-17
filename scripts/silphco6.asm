@@ -29,7 +29,7 @@ SilphCo6Coords1: ; 1a1e3 (6:61e3)
 	db $ff
 
 SilphCo6Script_1a1e6: ; 1a1e6 (6:61e6)
-	ld a, [$ffe0]
+	ldh a, [$ffe0]
 	and a
 	ret z
 	ld hl, wd82e

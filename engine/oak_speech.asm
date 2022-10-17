@@ -208,18 +208,18 @@ IntroFadePalettes: ; 6282 (1:6282)
 
 MovePicLeft: ; 6288 (1:6288)
 	ld a,119
-	ldh [$FF4B],a
+	ldh [rWX],a
 	call DelayFrame
 
 	ld a,$E4
 	ldh [rBGP],a
 .next
 	call DelayFrame
-	ldh a,[$FF4B]
+	ldh a,[rWX]
 	sub 8
 	cp $FF
 	ret z
-	ldh [$FF4B],a
+	ldh [rWX],a
 	jr .next
 
 Predef3B: ; 62a1 (1:62a1)

@@ -1,27 +1,27 @@
 Func_708ca: ; 708ca (1c:48ca)
 	ld a, $e4
-	ld [rOBP1], a ; $ff49
+	ldh [rOBP1], a ; $ff49
 	call Func_7092a
 	hlCoord 12, 0
 	ld bc, $707
 	call ClearScreenArea
 	call Delay3
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	ld a, $91
 	ld [wHPBarMaxHP], a
 	ld a, $1
-	ld [H_WHOSETURN], a ; $fff3
+	ldh [H_WHOSETURN], a ; $fff3
 	callab Func_79793
 	ld d, $80
 	call Func_704f3
 .asm_708f6
 	ld c, $a
 	call DelayFrames
-	ld a, [rOBP1] ; $ff49
+	ldh a, [rOBP1] ; $ff49
 	sla a
 	sla a
-	ld [rOBP1], a ; $ff49
+	ldh [rOBP1], a ; $ff49
 	jr nz, .asm_708f6
 	call ClearSprites
 	call Func_7092a
@@ -29,17 +29,17 @@ Func_708ca: ; 708ca (1c:48ca)
 .asm_7090d
 	ld c, $a
 	call DelayFrames
-	ld a, [rOBP1] ; $ff49
+	ldh a, [rOBP1] ; $ff49
 	srl b
 	rra
 	srl b
 	rra
-	ld [rOBP1], a ; $ff49
+	ldh [rOBP1], a ; $ff49
 	ld a, b
 	and a
 	jr nz, .asm_7090d
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	call Delay3
 	jp ClearSprites
 
@@ -84,15 +84,15 @@ Func_7092a: ; 7092a (1c:492a)
 
 BattleTransition: ; 7096d (1c:496d)
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	call Delay3
 	xor a
-	ld [hWY], a
+	ldh [hWY], a
 	dec a
 	ld [wUpdateSpritesEnabled], a
 	call DelayFrame
 	ld hl, wSpriteStateData1 + 2
-	ld a, [H_DOWNARROWBLINKCNT2]
+	ldh a, [H_DOWNARROWBLINKCNT2]
 	ld c, a
 	ld b, $0
 	ld de, $10
@@ -270,9 +270,9 @@ BattleTransitionTile: ; 70a59 (1c:4a59)
 
 BattleTransition_BlackScreen: ; 70a69 (1c:4a69)
 	ld a, $ff
-	ld [rBGP], a ; $ff47
-	ld [rOBP0], a ; $ff48
-	ld [rOBP1], a ; $ff49
+	ldh [rBGP], a ; $ff47
+	ldh [rOBP0], a ; $ff48
+	ldh [rOBP1], a ; $ff49
 	ret
 
 ; for non-dungeon trainer battles
@@ -435,7 +435,7 @@ BattleTransition_FlashScreen_: ; 70b5d (1c:4b5d)
 	ld a, [hli]
 	cp $1
 	jr z, .done
-	ld [rBGP], a
+	ldh [rBGP], a
 	ld c, $2
 	call DelayFrames
 	jr .loop
@@ -454,7 +454,7 @@ BattleTransition_Shrink: ; 70b7f (1c:4b7f)
 .loop
 	push bc
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	hlCoord 0, 7
 	deCoord 0, 8
 	ld bc, $ffd8
@@ -472,7 +472,7 @@ BattleTransition_Shrink: ; 70b7f (1c:4b7f)
 	ld bc, $2
 	call BattleTransition_CopyTiles2
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	ld c, $6
 	call DelayFrames
 	pop bc
@@ -486,7 +486,7 @@ BattleTransition_Shrink: ; 70b7f (1c:4b7f)
 BattleTransition_Split: ; 70bca (1c:4bca)
 	ld c, $9
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 .loop
 	push bc
 	hlCoord 0, 16
@@ -601,7 +601,7 @@ BattleTransition_VerticalStripes: ; 70c7e (1c:4c7e)
 	ld hl, wTileMap
 	deCoord 1, 17
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 .loop
 	push bc
 	push hl
@@ -640,7 +640,7 @@ BattleTransition_HorizontalStripes: ; 70cb4 (1c:4cb4)
 	ld hl, wTileMap
 	deCoord 19, 1
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 .loop
 	push bc
 	push hl
@@ -687,7 +687,7 @@ BattleTransition_FlashScreen: ; 70cfd (1c:4cfd)
 	ld b, $3
 	call BattleTransition_FlashScreen_
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	ret
 
 BattleTransition_Circle_Sub1: ; 70d06 (1c:4d06)
@@ -706,10 +706,10 @@ BattleTransition_Circle_Sub1: ; 70d06 (1c:4d06)
 
 BattleTransition_TransferDelay3: ; 70d19 (1c:4d19)
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	call Delay3
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	ret
 
 ; used for low level wild non-dungeon battles

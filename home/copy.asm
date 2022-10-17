@@ -1,14 +1,14 @@
 FarCopyData::
 ; Copy bc bytes from a:hl to de.
 	ld [wBuffer], a
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [H_LOADEDROMBANK]
 	push af
 	ld a, [wBuffer]
-	ld [H_LOADEDROMBANK], a
+	ldh [H_LOADEDROMBANK], a
 	ld [MBC1RomBank], a
 	call CopyData
 	pop af
-	ld [H_LOADEDROMBANK], a
+	ldh [H_LOADEDROMBANK], a
 	ld [MBC1RomBank], a
 	ret
 
@@ -26,15 +26,15 @@ CopyData::
 FarCopyData2::
 ; Identical to FarCopyData, but uses $ff8b
 ; as temp space instead of wBuffer.
-	ld [$ff8b],a
-	ld a,[H_LOADEDROMBANK]
+	ldh [$ff8b],a
+	ldh a,[H_LOADEDROMBANK]
 	push af
-	ld a,[$ff8b]
-	ld [H_LOADEDROMBANK],a
+	ldh a,[$ff8b]
+	ldh [H_LOADEDROMBANK],a
 	ld [MBC1RomBank],a
 	call CopyData
 	pop af
-	ld [H_LOADEDROMBANK],a
+	ldh [H_LOADEDROMBANK],a
 	ld [MBC1RomBank],a
 	ret
 

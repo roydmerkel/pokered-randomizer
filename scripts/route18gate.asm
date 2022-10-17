@@ -19,10 +19,10 @@ Route18GateScript0: ; 4988f (12:588f)
 	call ArePlayerCoordsInArray
 	ret nc
 	ld a, $2
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	call DisplayTextID
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld a, [wWhichTrade]
 	cp $1
 	jr z, .asm_498c6 ; 0x498a9 $1b
@@ -59,7 +59,7 @@ Route18GateScript1: ; 498d5 (12:58d5)
 
 Route18GateScript2: ; 498df (12:58df)
 	ld a, $1
-	ld [H_SPRITEHEIGHT], a
+	ldh [H_SPRITEHEIGHT], a
 	call DisplayTextID
 	ld a, $1
 	ld [wSimulatedJoypadStatesIndex], a

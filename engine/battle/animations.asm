@@ -163,7 +163,7 @@ DrawFrameBlock: ; 78000 (1e:4000)
 
 PlayAnimation: ; 780f1 (1e:40f1)
 	xor a
-	ld [$FF8B],a
+	ldh [$FF8B],a
 	ld [W_SUBANIMTRANSFORM],a
 	ld a,[W_ANIMATIONID] ; get animation number
 	dec a
@@ -241,15 +241,15 @@ PlayAnimation: ; 780f1 (1e:40f1)
 	ld l,c
 	ld h,b
 	push hl
-	ld a,[rOBP0]
+	ldh a,[rOBP0]
 	push af
 	ld a,[wcc79]
-	ld [rOBP0],a
+	ldh [rOBP0],a
 	call LoadAnimationTileset
 	call LoadSubanimation
 	call PlaySubanimation
 	pop af
-	ld [rOBP0],a
+	ldh [rOBP0],a
 .nextAnimationCommand
 	pop hl
 	jr .animationLoop
@@ -316,7 +316,7 @@ LoadSubanimation: ; 7817c (1e:417c)
 ; sets the transform to the subanimation type if it's the enemy's turn
 GetSubanimationTransform1: ; 781c2 (1e:41c2)
 	ld b,a
-	ld a,[H_WHOSETURN]
+	ldh a,[H_WHOSETURN]
 	and a
 	ld a,b
 	ret nz
@@ -327,7 +327,7 @@ GetSubanimationTransform1: ; 781c2 (1e:41c2)
 ; sets the transform to 2 (i.e. horizontal and vertical flip) if it's the player's turn
 ; sets the transform to 0 (i.e. no transform) if it's the enemy's turn
 GetSubanimationTransform2: ; 781ca (1e:41ca)
-	ld a,[H_WHOSETURN]
+	ldh a,[H_WHOSETURN]
 	and a
 	ld a,2 << 5
 	ret z
@@ -432,7 +432,7 @@ MoveAnimation: ; 78d5e (1e:4d5e)
 
 ShareMoveAnimations: ; 78da6 (1e:4da6)
 ; some moves just reuse animations from status conditions
-	ld a,[H_WHOSETURN]
+	ldh a,[H_WHOSETURN]
 	and a
 	ret z
 
@@ -506,18 +506,18 @@ Func_78e01: ; 78e01 (1e:4e01)
 	push bc
 	push bc
 .asm_78e03
-	ld a, [rWX] ; $ff4b
+	ldh a, [rWX] ; $ff4b
 	inc a
-	ld [rWX], a ; $ff4b
+	ldh [rWX], a ; $ff4b
 	ld c, $2
 	call DelayFrames
 	dec b
 	jr nz, .asm_78e03
 	pop bc
 .asm_78e11
-	ld a, [rWX] ; $ff4b
+	ldh a, [rWX] ; $ff4b
 	dec a
-	ld [rWX], a ; $ff4b
+	ldh [rWX], a ; $ff4b
 	ld c, $2
 	call DelayFrames
 	dec b
@@ -543,16 +543,16 @@ Func_78e23: ; 78e23 (1e:4e23)
 	ld b, $f0
 .asm_78e3f
 	ld a, b
-	ld [rOBP0], a ; $ff48
+	ldh [rOBP0], a ; $ff48
 	ld a, $6c
-	ld [rOBP1], a ; $ff49
+	ldh [rOBP1], a ; $ff49
 	ret
 .asm_78e47
 	ld a, $e4
 	ld [wcc79], a
-	ld [rOBP0], a ; $ff48
+	ldh [rOBP0], a ; $ff48
 	ld a, $6c
-	ld [rOBP1], a ; $ff49
+	ldh [rOBP1], a ; $ff49
 	ret
 
 PlaySubanimation: ; 78e53 (1e:4e53)
@@ -754,9 +754,9 @@ DoBallTossSpecialEffects: ; 78f3e (1e:4f3e)
 	cp a,3 ; is it a Master Ball or Ultra Ball?
 	jr nc,.skipFlashingEffect
 .flashingEffect ; do a flashing effect if it's Master Ball or Ultra Ball
-	ld a,[rOBP0]
+	ldh a,[rOBP0]
 	xor a,%00111100 ; complement colors 1 and 2
-	ld [rOBP0],a
+	ldh [rOBP0],a
 .skipFlashingEffect
 	ld a,[W_SUBANIMCOUNTER]
 	cp a,11 ; is it the beginning of the subanimation?
@@ -793,7 +793,7 @@ DoBallTossSpecialEffects: ; 78f3e (1e:4f3e)
 	dec b
 	jr nz,.loop
 	ld a,%00001000
-	ld [$ff10],a ; Channel 1 sweep register
+	ldh [$ff10],a ; Channel 1 sweep register
 	ret
 .isTrainerBattle ; if it's a trainer battle, shorten the animation by one frame
 	ld a,[W_SUBANIMCOUNTER]
@@ -983,9 +983,9 @@ Func_7907c ; 507C
 	ld c,5
 	call DelayFrames
 	pop bc
-	ld a,[$ffae] ; background scroll X
+	ldh a,[$ffae] ; background scroll X
 	sub a,8 ; scroll to the left
-	ld [$ffae],a
+	ldh [$ffae],a
 	pop de
 	jr .loop
 
@@ -1101,16 +1101,16 @@ AnimationDelay10: ; 79150 (1e:5150)
 ; calls a function with the turn flipped from player to enemy or vice versa
 ; input - hl - address of function to call
 CallWithTurnFlipped: ; 79155 (1e:5155)
-	ld a,[H_WHOSETURN]
+	ldh a,[H_WHOSETURN]
 	push af
 	xor a,1
-	ld [H_WHOSETURN],a
+	ldh [H_WHOSETURN],a
 	ld de,.returnAddress
 	push de
 	jp [hl]
 .returnAddress
 	pop af
-	ld [H_WHOSETURN],a
+	ldh [H_WHOSETURN],a
 	ret
 
 ; flashes the screen for an extended period (48 frames)
@@ -1128,7 +1128,7 @@ AnimationFlashScreenLong: ; 79165 (1e:5165)
 	ld a,[hli]
 	cp a,$01 ; is it the end of the palettes?
 	jr z,.endOfPalettes
-	ld [rBGP],a
+	ldh [rBGP],a
 	call FlashScreenLongDelay
 	jr .innerLoop
 .endOfPalettes
@@ -1187,18 +1187,18 @@ FlashScreenLongDelay: ; 791a8 (1e:51a8)
 	jp DelayFrames
 
 AnimationFlashScreen: ; 791be (1e:51be)
-	ld a,[rBGP]
+	ldh a,[rBGP]
 	push af ; save initial palette
 	ld a,%00011011 ; 0, 1, 2, 3 (inverted colors)
-	ld [rBGP],a
+	ldh [rBGP],a
 	ld c,2
 	call DelayFrames
 	xor a ; white out background
-	ld [rBGP],a
+	ldh [rBGP],a
 	ld c,2
 	call DelayFrames
 	pop af
-	ld [rBGP],a ; restore initial palette
+	ldh [rBGP],a ; restore initial palette
 	ret
 
 AnimationDarkScreenPalette: ; 791d6 (1e:51d6)
@@ -1243,7 +1243,7 @@ Func_791fc: ; 791fc (1e:51fc)
 	jr z, .asm_79204
 	ld a, c
 .asm_79204
-	ld [rBGP], a ; $ff47
+	ldh [rBGP], a ; $ff47
 	ret
 
 	ld b, $5
@@ -1314,7 +1314,7 @@ Func_79246: ; 79246 (1e:5246)
 AnimationSlideMonUp: ; 7927a (1e:527a)
 ; Slides the mon's sprite upwards.
 	ld c, $7
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	ld hl, wTileMap + $79
 	ld de, wTileMap + $65
@@ -1374,7 +1374,7 @@ Func_792bf: ; 792bf (1e:52bf)
 	pop bc
 	dec b
 	jr nz, .asm_792c4
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	ld hl, wTileMap + $dd
 	jr z, .asm_792e2
@@ -1535,7 +1535,7 @@ AnimationShowEnemyMonPic: ; 793ab (1e:53ab)
 AnimationShakeBackAndForth: ; 793b1 (1e:53b1)
 ; Shakes the mon's sprite back and forth rapidly. This is used in Double Team.
 ; The mon's sprite disappears after this animation.
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	ld hl, wTileMap + $64
 	ld de, wTileMap + $66
@@ -1583,7 +1583,7 @@ AnimationMoveMonHorizontally: ; 793f9 (1e:53f9)
 ; Shifts the mon's sprite horizontally to a fixed location. Used by lots of
 ; animations like Tackle/Body Slam.
 	call AnimationHideMonPic
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	hlCoord 2, 5
 	jr z, .asm_79407
@@ -1599,7 +1599,7 @@ AnimationMoveMonHorizontally: ; 793f9 (1e:53f9)
 
 AnimationResetMonPosition: ; 79415 (1e:5415)
 ; Resets the mon's sprites to be located at the normal coordinates.
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	ld a, $66
 	jr z, .asm_7941e
@@ -1611,7 +1611,7 @@ AnimationResetMonPosition: ; 79415 (1e:5415)
 AnimationSpiralBallsInward: ; 79424 (1e:5424)
 ; Creates an effect that looks like energy balls sprialing into the
 ; player mon's sprite.  Used in Focus Energy, for example.
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	jr z, .asm_79435
 	ld a, $d8
@@ -1695,7 +1695,7 @@ AnimationSquishMonPic: ; 794a1 (1e:54a1)
 	ld c, $4
 .asm_794a3
 	push bc
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	jr z, .asm_794b1
 	hlCoord 16, 0
@@ -1748,7 +1748,7 @@ Func_794d4: ; 794d4 (1e:54d4)
 AnimationShootBallsUpward: ; 794f9 (1e:54f9)
 ; Shoots one pillar of "energy" balls upwards. Used in Teleport/Sky Attack
 ; animations.
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	jr z, .asm_79503
 	ld bc, $80
@@ -1815,7 +1815,7 @@ Func_79517: ; 79517 (1e:5517)
 
 AnimationShootManyBallsUpward: ; 79566 (1e:5566)
 ; Shoots several pillars of "energy" balls upward.
-	ld a, [H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	ld hl, UpwardBallsAnimXCoordinatesPlayerTurn
 	ld a, $50 ; y coordinate for "energy" ball pillar
@@ -1904,7 +1904,7 @@ AnimationSlideMonDownAndHide: ; 795c9 (1e:55c9)
 	jp Func_79652
 
 Func_795f8: ; 795f8 (1e:55f8)
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	jr z, .asm_79602
 	hlCoord 12, 0
@@ -1919,7 +1919,7 @@ Func_795f8: ; 795f8 (1e:55f8)
 .asm_7960a
 	ld c, $8
 .asm_7960c
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	jr z, .asm_79616
 	call Func_7963c
@@ -1970,7 +1970,7 @@ AnimationSlideMonHalfLeft: ; 79645 (1e:5645)
 	jp Delay3
 
 Func_79652: ; 79652 (1e:5652)
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	ld hl, vBackPic
 	jr z, .asm_7965d
@@ -1986,9 +1986,9 @@ AnimationWavyScreen: ; 79666 (1e:5666)
 	call Func_79e0d
 	call Delay3
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	ld a, $90
-	ld [hWY], a
+	ldh [hWY], a
 	ld d, $80
 	ld e, $8f
 	ld c, $ff
@@ -1997,7 +1997,7 @@ AnimationWavyScreen: ; 79666 (1e:5666)
 	push hl
 .asm_79680
 	call Func_796ae
-	ld a, [$ff44]
+	ldh a, [rLY]
 	cp e
 	jr nz, .asm_79680
 	pop hl
@@ -2010,11 +2010,11 @@ AnimationWavyScreen: ; 79666 (1e:5666)
 	dec c
 	jr nz, .asm_7967f
 	xor a
-	ld [hWY], a
+	ldh [hWY], a
 	call SaveScreenTilesToBuffer2
 	call ClearScreen
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	call Delay3
 	call LoadScreenTilesFromBuffer2
 	ld hl, vBGMap1
@@ -2022,11 +2022,11 @@ AnimationWavyScreen: ; 79666 (1e:5666)
 	ret
 
 Func_796ae: ; 796ae (1e:56ae)
-	ld a, [$ff41]
+	ldh a, [$ff41]
 	and $3
 	jr nz, Func_796ae
 	ld a, [hl]
-	ld [$ff43], a
+	ldh [$ff43], a
 	inc hl
 	ld a, [hl]
 	cp d
@@ -2047,7 +2047,7 @@ AnimationSubstitute: ; 796e0 (1e:56e0)
 	xor a
 	ld bc, $0310
 	call FillMemory
-	ld a, [$fff3]
+	ldh a, [$fff3]
 	and a
 	jr z, .asm_79715 ; 0x796ed $26
 	ld hl, SlowbroSprite ; facing down sprite
@@ -2086,7 +2086,7 @@ CopySlowbroSpriteData: ; 7973f (1e:573f)
 	jp FarCopyData2
 
 Func_79747: ; 79747 (1e:5747)
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	ld hl, wccf7
 	ld a, [W_PLAYERBATTSTATUS2] ; W_PLAYERBATTSTATUS2
@@ -2135,7 +2135,7 @@ AnimationTransformMon: ; 79787 (1e:5787)
 	ld [wHPBarMaxHP], a
 
 Func_79793: ; 79793 (1e:5793)
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	jr z, .asm_797b0
 	ld a, [wHPBarMaxHP]
@@ -2168,11 +2168,11 @@ Func_79793: ; 79793 (1e:5793)
 AnimationHideEnemyMonPic: ; 797d8 (1e:57d8)
 ; Hides the enemy mon's sprite
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	ld hl, AnimationHideMonPic ; $5801
 	call CallWithTurnFlipped
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	jp Delay3
 
 Func_797e8: ; 797e8 (1e:57e8)
@@ -2194,7 +2194,7 @@ Func_797e8: ; 797e8 (1e:57e8)
 
 AnimationHideMonPic: ; 79801 (1e:5801)
 ; Hides the mon's sprite.
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	jr z, .asm_7980a
 	ld a, $c
@@ -2219,7 +2219,7 @@ Func_7980c: ; 7980c (1e:580c)
 
 Func_79820: ; 79820 (1e:5820)
 	push de
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	jr nz, .asm_7982a
 	ld a, $65
@@ -2298,7 +2298,7 @@ Func_7986f: ; 7986f (1e:586f)
 	ld b,a
 	call IsCryMove
 	jr nc,.NotCryMove
-	ld a,[H_WHOSETURN]
+	ldh a,[H_WHOSETURN]
 	and a
 	jr nz,.next
 	ld a,[wBattleMonSpecies] ; get number of current monster
@@ -2519,13 +2519,13 @@ MoveSoundTable: ; 798bc (1e:58bc)
 	db RBSFX_08_4b,$00,$80
 
 Func_79aae: ; 79aae (1e:5aae)
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	ld a, $31
 	jr z, .asm_79ab6
 	xor a
 .asm_79ab6
-	ld [H_DOWNARROWBLINKCNT1], a ; $ff8b
+	ldh [H_DOWNARROWBLINKCNT1], a ; $ff8b
 	jr asm_79acb
 
 Func_79aba: ; 79aba (1e:5aba)
@@ -2539,14 +2539,14 @@ Func_79aba: ; 79aba (1e:5aba)
 	ld de, Unknown_79b1b ; $5b1b
 asm_79acb: ; 79acb (1e:5acb)
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 
 Func_79ace: ; 79ace (1e:5ace)
 	push hl
 .asm_79acf
 	push bc
 	push hl
-	ld a, [H_DOWNARROWBLINKCNT1] ; $ff8b
+	ldh a, [H_DOWNARROWBLINKCNT1] ; $ff8b
 	ld b, a
 .asm_79ad4
 	ld a, [de]
@@ -2562,7 +2562,7 @@ Func_79ace: ; 79ace (1e:5ace)
 	dec b
 	jr nz, .asm_79acf
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	pop hl
 	ret
 
@@ -2617,16 +2617,16 @@ Unknown_79c50: ; 79c50 (1e:5c50)
 AnimationLeavesFalling: ; 79c74 (1e:5c74)
 ; Makes leaves float down from the top of the screen. This is used
 ; in Razor Leaf's animation.
-	ld a, [$ff48]
+	ldh a, [rOBP0]
 	push af
 	ld a, [wcc79]
-	ld [$ff48], a
+	ldh [rOBP0], a
 	ld d, $37
-	ld a, $3
+	ld a, 3
 	ld [W_SUBANIMTRANSFORM], a
 	call Func_79c97
 	pop af
-	ld [$ff48], a
+	ldh [rOBP0], a
 	ret
 
 AnimationPetalsFalling: ; 79c8a (1e:5c8a)
@@ -2776,15 +2776,15 @@ AnimationShakeEnemyHUD: ; 79d77 (1e:5d77)
 	ld bc, 7 * 7
 	call CopyVideoData
 	xor a
-	ld [$ffae], a
+	ldh [$ffae], a
 	ld hl, vBGMap0
 	call Func_79e0d
 	ld a, $90
-	ld [hWY], a
+	ldh [hWY], a
 	ld hl, vBGMap0 + $320
 	call Func_79e0d
 	ld a, $38
-	ld [hWY], a
+	ldh [hWY], a
 	call Func_792fd
 	ld hl, vBGMap0
 	call Func_79e0d
@@ -2795,11 +2795,11 @@ AnimationShakeEnemyHUD: ; 79d77 (1e:5d77)
 	call AnimationShowMonPic
 	call ClearSprites
 	ld a, $90
-	ld [hWY], a
+	ldh [hWY], a
 	ld hl, vBGMap1
 	call Func_79e0d
 	xor a
-	ld [hWY], a
+	ldh [hWY], a
 	call SaveScreenTilesToBuffer1
 	ld hl, vBGMap0
 	call Func_79e0d
@@ -2812,7 +2812,7 @@ AnimationShakeEnemyHUD: ; 79d77 (1e:5d77)
 Func_79dda: ; 79dda (1e:5dda)
 	call GetPredefRegisters
 	ld a, c
-	ld [H_DOWNARROWBLINKCNT1], a ; $ff8b
+	ldh [H_DOWNARROWBLINKCNT1], a ; $ff8b
 	ld a, b
 	push hl
 	call Func_79842
@@ -2820,30 +2820,30 @@ Func_79dda: ; 79dda (1e:5dda)
 	jp Func_79ace
 
 Func_79de9: ; 79de9 (1e:5de9)
-	ld a, [$ffae]
+	ldh a, [$ffae]
 	ld [wTrainerSpriteOffset], a
 .asm_79dee
 	ld a, [wTrainerSpriteOffset]
 	add d
-	ld [$ffae], a
+	ldh [$ffae], a
 	ld c, $2
 	call DelayFrames
 	ld a, [wTrainerSpriteOffset]
 	sub d
-	ld [$ffae], a
+	ldh [$ffae], a
 	ld c, $2
 	call DelayFrames
 	dec e
 	jr nz, .asm_79dee
 	ld a, [wTrainerSpriteOffset]
-	ld [$ffae], a
+	ldh [$ffae], a
 	ret
 
 Func_79e0d: ; 79e0d (1e:5e0d)
 	ld a, h
-	ld [$ffbd], a
+	ldh [$ffbd], a
 	ld a, l
-	ld [H_AUTOBGTRANSFERDEST], a
+	ldh [H_AUTOBGTRANSFERDEST], a
 	jp Delay3
 
 TossBallAnimation: ; 79e16 (1e:5e16)

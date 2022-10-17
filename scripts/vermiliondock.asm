@@ -63,7 +63,7 @@ VermilionDock_1db9b: ; 1db9b (7:5b9b)
 	xor a
 	ldh [$ffba], a
 	ld [wWhichTrade], a
-	ldh [$ff49], a
+	ldh [rOBP1], a
 	ld a, 88
 	ld [wTrainerEngageDistance], a
 	ld hl, wMapViewVRAMPointer
@@ -105,7 +105,7 @@ VermilionDock_1db9b: ; 1db9b (7:5b9b)
 	dec e
 	jr nz, .asm_1dbfa ; 0x1dc22 $d6
 	xor a
-	ldh [$ff4a], a
+	ldh [rWY], a
 	ldh [hWY], a
 	call VermilionDock_1dc94
 	ld a, $90
@@ -167,13 +167,13 @@ VermilionDock_1dc7c: ; 1dc7c (7:5c7c)
 	ld h, $0
 	ld l, $80
 .asm_1dc86
-	ldh a, [$ff44]
+	ldh a, [rLY]
 	cp l
 	jr nz, .asm_1dc86 ; 0x1dc89 $fb
 	ld a, h
 	ldh [$ff43], a
 .asm_1dc8e
-	ldh a, [$ff44]
+	ldh a, [rLY]
 	cp h
 	jr z, .asm_1dc8e ; 0x1dc91 $fb
 	ret

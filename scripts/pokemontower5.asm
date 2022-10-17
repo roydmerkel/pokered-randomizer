@@ -27,7 +27,7 @@ PokemonTower5Script0: ; 6094b (18:494b)
 	set 7, [hl]
 	ret nz
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld a, $f0
 	ld [wJoyIgnore], a
 	ld hl, wd72e
@@ -38,7 +38,7 @@ PokemonTower5Script0: ; 6094b (18:494b)
 	call Delay3
 	call GBFadeInFromWhite
 	ld a, $7
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	call DisplayTextID
 	xor a
 	ld [wJoyIgnore], a

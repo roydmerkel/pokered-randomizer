@@ -139,7 +139,7 @@ DisplayNamingScreen: ; 6596 (1:6596)
 	pop af
 	ld [wCurrentMenuItem], a ; wCurrentMenuItem
 	call JoypadLowSensitivity
-	ld a, [hJoyPressed]
+	ldh a, [hJoyPressed]
 	and a
 	jr z, .asm_65ff
 	ld hl, .unknownPointerTable_665e ; $665e
@@ -339,7 +339,7 @@ ED_Tile: ; 6767 (1:6767)
 
 PrintAlphabet: ; 676f (1:676f)
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	ld a, [wHPBarOldHP]
 	and a
 	ld de, LowerCaseAlphabet ; $679e
@@ -364,7 +364,7 @@ PrintAlphabet: ; 676f (1:676f)
 	jr nz, .asm_6784
 	call PlaceString
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	jp Delay3
 
 LowerCaseAlphabet: ; 679e (1:679e)

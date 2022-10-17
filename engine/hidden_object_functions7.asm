@@ -132,14 +132,14 @@ CinnabarGymQuiz: ; 1ea25 (7:6a25)
 	ld a, [wWhichTrade] ; wWhichTrade
 	push af
 	and $f
-	ld [$ffdb], a
+	ldh [$ffdb], a
 	pop af
 	and $f0
 	swap a
-	ld [$ffdc], a
+	ldh [$ffdc], a
 	ld hl, CinnabarGymQuizIntroText
 	call PrintText
-	ld a, [$ffdb]
+	ldh a, [$ffdb]
 	dec a
 	add a
 	ld d, $0
@@ -197,18 +197,18 @@ CinnabarGymQuiz_1ea8a: ; 1ea8a (7:6a8a)
 
 CinnabarGymQuiz_1ea92: ; 1ea92 (7:6a92)
 	call YesNoChoice
-	ld a, [$ffdc]
+	ldh a, [$ffdc]
 	ld c, a
 	ld a, [wCurrentMenuItem] ; wCurrentMenuItem
 	cp c
 	jr nz, .asm_1eab8
 	ld hl, wd126
 	set 5, [hl]
-	ld a, [$ffdb]
-	ld [$ffe0], a
+	ldh a, [$ffdb]
+	ldh [$ffe0], a
 	ld hl, CinnabarGymQuizCorrectText
 	call PrintText
-	ld a, [$ffe0]
+	ldh a, [$ffe0]
 	ld c, a
 	ld b, $1
 	call CinnabarGymQuiz_1ea8a
@@ -220,7 +220,7 @@ CinnabarGymQuiz_1ea92: ; 1ea92 (7:6a92)
 	call WaitForSoundToFinish
 	ld hl, CinnabarGymQuizIncorrectText
 	call PrintText
-	ld a, [$ffdb]
+	ldh a, [$ffdb]
 	add $2
 	ld c, a
 	ld b, $2
@@ -229,7 +229,7 @@ CinnabarGymQuiz_1ea92: ; 1ea92 (7:6a92)
 	ld a, c
 	and a
 	ret nz
-	ld a, [$ffdb]
+	ldh a, [$ffdb]
 	add $2
 	ld [wda38], a
 	ret
@@ -239,7 +239,7 @@ CinnabarGymQuizCorrectText: ; 1eae3 (7:6ae3)
 	TX_FAR _CinnabarGymQuizCorrectText
 	db $06,$08
 
-	ld a, [$ffe0]
+	ldh a, [$ffe0]
 	ld c, a
 	ld b, $2
 	call CinnabarGymQuiz_1ea8a
@@ -258,9 +258,9 @@ CinnabarGymQuizIncorrectText: ; 1eb05 (7:6b05)
 
 CinnabarGymQuiz_1eb0a: ; 1eb0a (7:6b0a)
 	ld a, $6
-	ld [$ffdb], a
+	ldh [$ffdb], a
 .asm_1eb0e
-	ld a, [$ffdb]
+	ldh a, [$ffdb]
 	dec a
 	add a
 	add a
@@ -275,8 +275,8 @@ CinnabarGymQuiz_1eb0a: ; 1eb0a (7:6b0a)
 	ld a, [hl]
 	ld [wd12f], a
 	push bc
-	ld a, [$ffdb]
-	ld [$ffe0], a
+	ldh a, [$ffdb]
+	ldh [$ffe0], a
 	ld c, a
 	ld b, $2
 	call CinnabarGymQuiz_1ea8a

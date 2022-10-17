@@ -1,6 +1,6 @@
 MistEffect_: ; 33f2b (c:7f2b)
 	ld hl, W_PLAYERBATTSTATUS2
-	ld a, [$fff3]
+	ldh a, [$fff3]
 	and a
 	jr z, .asm_33f36
 	ld hl, W_ENEMYBATTSTATUS2
@@ -29,7 +29,7 @@ OneHitKOEffect_: ; 33f57 (c:7f57)
 	ld [wCriticalHitOrOHKO], a
 	ld hl, wBattleMonSpeed + 1
 	ld de, wEnemyMonSpeed + 1
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	jr z, .asm_33f72
 	ld hl, wEnemyMonSpeed + 1

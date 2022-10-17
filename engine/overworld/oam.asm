@@ -13,12 +13,12 @@ PrepareOAMData:
 
 .asm_4b1e
 	xor a
-	ld [$ff90], a
+	ldh [$ff90], a
 .asm_4b21
-	ld [$ff8f], a
+	ldh [$ff8f], a
 
 	ld d, wSpriteStateData1 / $100
-	ld a, [$ff8f]
+	ldh a, [$ff8f]
 	ld e, a
 	ld a, [de] ; c1x0
 	and a
@@ -53,7 +53,7 @@ PrepareOAMData:
 	ld e, a
 	ld a, [de] ; c2x7
 	and $80
-	ld [$ff94], a ; temp store sprite priority
+	ldh [$ff94], a ; temp store sprite priority
 	pop de
 
 	ld h, 0
@@ -72,16 +72,16 @@ PrepareOAMData:
 
 	call Func_4bd1
 
-	ld a, [$ff90]
+	ldh a, [$ff90]
 	ld e, a
 	ld d, wOAMBuffer / $100
 .tile
-	ld a, [$ff92]            ; temp for sprite Y position
+	ldh a, [$ff92]            ; temp for sprite Y position
 	add $10                  ; Y=16 is top of screen (Y=0 is invisible)
 	add [hl]                 ; add Y offset from table
 	ld [de], a               ; write new sprite OAM Y position
 	inc hl
-	ld a, [$ff91]            ; temp for sprite X position
+	ldh a, [$ff91]            ; temp for sprite X position
 	add $8                   ; X=8 is left of screen (X=0 is invisible)
 	add [hl]                 ; add X offset from table
 	inc e
@@ -119,7 +119,7 @@ PrepareOAMData:
 	ld a, [hl]
 	bit 1, a ; sprite priority
 	jr z, .fg
-	ld a, [$ff94] ; facing priority
+	ldh a, [$ff94] ; facing priority
 	or [hl]
 .fg
 	inc hl
@@ -129,16 +129,16 @@ PrepareOAMData:
 	jr z, .tile
 
 	ld a, e
-	ld [$ff90], a
+	ldh [$ff90], a
 
 .asm_4bad
-	ld a, [$ff8f]
+	ldh a, [$ff8f]
 	add $10
 	cp $100 % $100
 	jp nz, .asm_4b21
 
 	; Clear unused OAM.
-	ld a, [$ff90]
+	ldh a, [$ff90]
 	ld l, a
 	ld h, wOAMBuffer / $100
 	ld de, $4
@@ -159,20 +159,20 @@ Func_4bd1: ; 4bd1 (1:4bd1)
 	inc e
 	inc e
 	ld a, [de] ; c1x4
-	ld [$ff92], a
+	ldh [$ff92], a
 	inc e
 	inc e
 	ld a, [de] ; c1x6
-	ld [$ff91], a
+	ldh [$ff91], a
 	ld a, $4
 	add e
 	ld e, a
-	ld a, [$ff92]
+	ldh a, [$ff92]
 	add $4
 	and $f0
 	ld [de], a ; c1xa (y)
 	inc e
-	ld a, [$ff91]
+	ldh a, [$ff91]
 	and $f0
 	ld [de], a  ; c1xb (x)
 	ret

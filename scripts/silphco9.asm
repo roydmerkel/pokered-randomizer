@@ -62,7 +62,7 @@ SilphCo9Script_5d837: ; 5d837 (17:5837)
 	ld a, [hl]
 	ld c, a
 	xor a
-	ld [$ffe0], a
+	ldh [$ffe0], a
 	pop hl
 .asm_5d843
 	ld a, [hli]
@@ -87,12 +87,12 @@ SilphCo9Script_5d837: ; 5d837 (17:5837)
 	ret
 .asm_5d85f
 	xor a
-	ld [$ffe0], a
+	ldh [$ffe0], a
 	ret
 
 SilphCo9Script_5d863: ; 5d863 (17:5863)
 	ld hl, wd834
-	ld a, [$ffe0]
+	ldh a, [$ffe0]
 	and a
 	ret z
 	cp $1

@@ -1,5 +1,5 @@
 HealEffect_: ; 3b9ec (e:79ec)
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	ld de, wBattleMonHP ; wd015
 	ld hl, wBattleMonMaxHP ; wd023
@@ -26,7 +26,7 @@ HealEffect_: ; 3b9ec (e:79ec)
 	ld c, $32
 	call DelayFrames
 	ld hl, wBattleMonStatus ; wBattleMonStatus
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	jr z, .asm_3ba25
 	ld hl, wEnemyMonStatus ; wcfe9
@@ -83,7 +83,7 @@ HealEffect_: ; 3b9ec (e:79ec)
 .asm_3ba6f
 	ld hl, Func_3fba8 ; $7ba8
 	call BankswitchEtoF
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	hlCoord 10, 9
 	ld a, $1
@@ -121,7 +121,7 @@ TransformEffect_: ; 3bab1 (e:7ab1)
 	ld de, wEnemyMonSpecies
 	ld bc, W_ENEMYBATTSTATUS3 ; W_ENEMYBATTSTATUS3
 	ld a, [W_ENEMYBATTSTATUS1] ; W_ENEMYBATTSTATUS1
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	jr nz, .asm_3bad1
 	ld hl, wEnemyMonSpecies
@@ -136,7 +136,7 @@ TransformEffect_: ; 3bab1 (e:7ab1)
 	push de
 	push bc
 	ld hl, W_PLAYERBATTSTATUS2 ; W_PLAYERBATTSTATUS2
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	jr z, .asm_3bae4
 	ld hl, W_ENEMYBATTSTATUS2 ; W_ENEMYBATTSTATUS2
@@ -178,7 +178,7 @@ TransformEffect_: ; 3bab1 (e:7ab1)
 	inc bc
 	inc bc
 	call CopyData
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	jr z, .asm_3bb32
 	ld a, [de]
@@ -236,7 +236,7 @@ TransformEffect_: ; 3bab1 (e:7ab1)
 	jp PrintText
 
 Func_3bb7d: ; 3bb7d (e:7b7d)
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	jr z, .asm_3bb86
 	push hl
@@ -258,7 +258,7 @@ TransformedText: ; 3bb92 (e:7b92)
 ReflectLightScreenEffect_: ; 3bb97 (e:7b97)
 	ld hl, W_PLAYERBATTSTATUS3 ; W_PLAYERBATTSTATUS3
 	ld de, W_PLAYERMOVEEFFECT ; wcfd3
-	ld a, [H_WHOSETURN] ; $fff3
+	ldh a, [H_WHOSETURN] ; $fff3
 	and a
 	jr z, .asm_3bba8
 	ld hl, W_ENEMYBATTSTATUS3 ; W_ENEMYBATTSTATUS3
