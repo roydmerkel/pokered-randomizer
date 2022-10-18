@@ -1,7 +1,7 @@
 PickupItem:
 	call EnableAutoTextBoxDrawing
 
-	ldh a, [H_DOWNARROWBLINKCNT2] ; $ff8c
+	ldh a, [hSpriteIndexOrTextID] ; $ff8c
 	ld b, a
 	ld hl, W_MISSABLEOBJECTLIST
 .missableObjectsListLoop
@@ -18,7 +18,7 @@ PickupItem:
 	ldh [$ffdb], a
 
 	ld hl, W_MAPSPRITEEXTRADATA
-	ldh a, [H_DOWNARROWBLINKCNT2] ; $ff8c
+	ldh a, [hSpriteIndexOrTextID] ; $ff8c
 	dec a
 	add a
 	ld d, 0

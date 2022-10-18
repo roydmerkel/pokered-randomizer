@@ -175,7 +175,7 @@ Func_13870: ; 13870 (4:7870)
 .asm_13905
 	ld [wd0db], a
 	ld a, $d2
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndexOrTextID], a ; $ff8c
 	call EnableAutoTextBoxDrawing
 	call DisplayTextID
 .CantEncounter

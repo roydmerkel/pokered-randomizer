@@ -63,7 +63,7 @@ Func_1a44c: ; 1a44c (6:644c)
 	call FillMemory
 	ld [hl], $ff
 	ld a, [wSpriteIndex]
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndex], a ; $ff8c
 	ld de, wNPCMovementDirections2
 	call MoveSprite
 	ld a, $1
@@ -276,7 +276,7 @@ FreezeEnemyTrainerSprite: ; 1a5e7 (6:65e7)
 	jr .loop
 .notRival
 	ld a, [wSpriteIndex]
-	ldh [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	jp SetSpriteMovementBytesToFF
 
 RivalIDs: ; 1a605 (6:6605)

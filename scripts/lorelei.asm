@@ -75,7 +75,7 @@ LoreleiScript0: ; 761e2 (1d:61e2)
 	jr z, asm_761c6
 .asm_76206
 	ld a, $2
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndexOrTextID], a ; $ff8c
 	call DisplayTextID
 	ld a, D_UP
 	ld [wSimulatedJoypadStatesEnd], a
@@ -110,7 +110,7 @@ LoreleiScript2: ; 7623f (1d:623f)
 	cp $ff
 	jp z, LoreleiScript_761b6
 	ld a, $1
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndexOrTextID], a ; $ff8c
 	jp DisplayTextID
 
 LoreleiTextPointers: ; 76251 (1d:6251)

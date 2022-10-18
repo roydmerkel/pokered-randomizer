@@ -787,7 +787,7 @@ LoadMonFrontSprite:: ; 1665 (0:1665)
 LoadUncompressedSpriteData:: ; 1672 (0:1672)
 	push de
 	and $f
-	ldh [H_SPRITEWIDTH], a ; each byte contains 8 pixels (in 1bpp), so tiles=bytes for width
+	ldh [hSpriteWidth], a ; each byte contains 8 pixels (in 1bpp), so tiles=bytes for width
 	ld b, a
 	ld a, $7
 	sub b      ; 7-w
@@ -798,7 +798,7 @@ LoadUncompressedSpriteData:: ; 1672 (0:1672)
 	add a
 	add a
 	sub b      ; 7*((8-w)/2) ; skip for horizontal center (in tiles)
-	ldh [H_SPRITEOFFSET], a
+	ldh [hSpriteOffset], a
 	ld a, c
 	swap a
 	and $f
@@ -806,16 +806,16 @@ LoadUncompressedSpriteData:: ; 1672 (0:1672)
 	add a
 	add a
 	add a     ; 8*tiles is height in bytes
-	ldh [H_SPRITEHEIGHT], a ; $ff8c
+	ldh [hSpriteHeight], a ; $ff8c
 	ld a, $7
 	sub b      ; 7-h         ; skip for vertical center (in tiles, relative to current column)
 	ld b, a
-	ldh a, [H_SPRITEOFFSET]
+	ldh a, [hSpriteOffset]
 	add b     ; 7*((8-w)/2) + 7-h ; combined overall offset (in tiles)
 	add a
 	add a
 	add a     ; 8*(7*((8-w)/2) + 7-h) ; combined overall offset (in bytes)
-	ldh [H_SPRITEOFFSET], a
+	ldh [hSpriteOffset], a
 	xor a
 	ld [$4000], a
 	ld hl, S_SPRITEBUFFER0
@@ -834,15 +834,15 @@ LoadUncompressedSpriteData:: ; 1672 (0:1672)
 ; copies and aligns the sprite data properly inside the sprite buffer
 ; sprite buffers are 7*7 tiles in size, the loaded sprite is centered within this area
 AlignSpriteDataCentered:: ; 16c2 (0:16c2)
-	ldh a, [H_SPRITEOFFSET]
+	ldh a, [hSpriteOffset]
 	ld b, $0
 	ld c, a
 	add hl, bc
-	ldh a, [H_SPRITEWIDTH] ; $ff8b
+	ldh a, [hSpriteWidth] ; $ff8b
 .columnLoop
 	push af
 	push hl
-	ldh a, [H_SPRITEHEIGHT] ; $ff8c
+	ldh a, [hSpriteHeight] ; $ff8c
 	ld c, a
 .columnInnerLoop
 	ld a, [de]
@@ -881,7 +881,7 @@ InterlaceMergeSpriteBuffers:: ; 16ea (0:16ea)
 	ld de, S_SPRITEBUFFER1 + (SPRITEBUFFERSIZE - 1) ; source 2: end of buffer 1
 	ld bc, S_SPRITEBUFFER0 + (SPRITEBUFFERSIZE - 1) ; source 1: end of buffer 0
 	ld a, SPRITEBUFFERSIZE/2 ; $c4
-	ldh [H_SPRITEINTERLACECOUNTER], a ; $ff8b
+	ldh [hSpriteInterlaceCounter], a ; $ff8b
 .interlaceLoop
 	ld a, [de]
 	dec de
@@ -895,9 +895,9 @@ InterlaceMergeSpriteBuffers:: ; 16ea (0:16ea)
 	ld a, [bc]
 	dec bc
 	ld [hld], a   ; write byte of source 1
-	ldh a, [H_SPRITEINTERLACECOUNTER] ; $ff8b
+	ldh a, [hSpriteInterlaceCounter] ; $ff8b
 	dec a
-	ldh [H_SPRITEINTERLACECOUNTER], a ; $ff8b
+	ldh [hSpriteInterlaceCounter], a ; $ff8b
 	jr nz, .interlaceLoop
 	ld a, [W_SPRITEFLIPPED]
 	and a
@@ -2755,7 +2755,7 @@ SetSpriteFacingDirectionAndDelay:: ; 34a6 (0:34a6)
 
 SetSpriteFacingDirection:: ; 34ae (0:34ae)
 	ld a, $9
-	ldh [H_SPRITEDATAOFFSET], a
+	ldh [hSpriteDataOffset], a
 	call GetPointerWithinSpriteStateData1
 	ldh a, [$ff8d]
 	ld [hl], a
@@ -2810,14 +2810,14 @@ CheckCoords:: ; 34c7 (0:34c7)
 ; tests if a boulder's coordinates are in a specified array
 ; INPUT:
 ; hl = address of array
-; [H_SPRITEINDEX] = index of boulder sprite
+; [hSpriteIndex] = index of boulder sprite
 ; OUTPUT:
 ; [wWhichTrade] = if there is match, the matching array index
 ; sets carry if the coordinates are in the array, clears carry if not
 CheckBoulderCoords:: ; 34e4 (0:34e4)
 	push hl
 	ld hl, wSpriteStateData2 + $04
-	ldh a, [H_SPRITEINDEX]
+	ldh a, [hSpriteIndex]
 	swap a
 	ld d, $0
 	ld e, a
@@ -2839,9 +2839,9 @@ GetPointerWithinSpriteStateData2:: ; 3500 (0:3500)
 	ld h, $c2
 
 _GetPointerWithinSpriteStateData:
-	ldh a, [H_SPRITEDATAOFFSET]
+	ldh a, [hSpriteDataOffset]
 	ld b, a
-	ldh a, [H_SPRITEINDEX]
+	ldh a, [hSpriteIndex]
 	swap a
 	add b
 	ld l, a
@@ -2859,7 +2859,7 @@ DecodeRLEList:: ; 350c (0:350c)
 	ld a, [de]
 	cp $ff
 	jr z, .endOfList
-	ldh [H_DOWNARROWBLINKCNT1], a ; store byte value to be written
+	ldh [hRLEByteValue], a ; store byte value to be written
 	inc de
 	ld a, [de]
 	ld b, $0
@@ -2867,7 +2867,7 @@ DecodeRLEList:: ; 350c (0:350c)
 	ld a, [wRLEByteCount]
 	add c
 	ld [wRLEByteCount], a     ; update total number of written bytes
-	ldh a, [H_DOWNARROWBLINKCNT1] ; $ff8b
+	ldh a, [hRLEByteValue] ; $ff8b
 	call FillMemory              ; write a c-times to output
 	inc de
 	jr .listLoop
@@ -2878,18 +2878,18 @@ DecodeRLEList:: ; 350c (0:350c)
 	inc a                        ; include sentinel in counting
 	ret
 
-; sets movement byte 1 for sprite [$FF8C] to $FE and byte 2 to [$FF8D]
+; sets movement byte 1 for sprite [hSpriteIndex] to $FE and byte 2 to [hSpriteMovementByte2]
 SetSpriteMovementBytesToFE:: ; 3533 (0:3533)
 	push hl
 	call GetSpriteMovementByte1Pointer
 	ld [hl], $fe
 	call GetSpriteMovementByte2Pointer
-	ldh a, [$ff8d]
+	ldh a, [hSpriteMovementByte2]
 	ld [hl], a
 	pop hl
 	ret
 
-; sets both movement bytes for sprite [$FF8C] to $FF
+; sets both movement bytes for sprite [hSpriteIndex] to $FF
 SetSpriteMovementBytesToFF:: ; 3541 (0:3541)
 	push hl
 	call GetSpriteMovementByte1Pointer
@@ -2899,10 +2899,10 @@ SetSpriteMovementBytesToFF:: ; 3541 (0:3541)
 	pop hl
 	ret
 
-; returns the sprite movement byte 1 pointer for sprite [$FF8C] in hl
+; returns the sprite movement byte 1 pointer for sprite [hSpriteIndex] in hl
 GetSpriteMovementByte1Pointer:: ; 354e (0:354e)
 	ld h,$C2
-	ldh a,[H_SPRITEINDEX] ; the sprite to move
+	ldh a,[hSpriteIndex] ; the sprite to move
 	swap a
 	add a,6
 	ld l,a
@@ -3439,11 +3439,11 @@ GetItemPrice:: ; 37df (0:37df)
 	jr nz, .asm_3802
 	dec hl
 	ld a, [hld]
-	ldh [$ff8d], a
+	ldh [hItemPrice + 2], a
 	ld a, [hld]
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hItemPrice + 1], a ; $ff8c
 	ld a, [hl]
-	ldh [H_DOWNARROWBLINKCNT1], a ; $ff8b
+	ldh [hItemPrice], a ; $ff8b
 	jr .asm_381c
 .asm_3812
 	ld a, Bank(GetMachinePrice)
@@ -3451,7 +3451,7 @@ GetItemPrice:: ; 37df (0:37df)
 	ld [$2000], a
 	call GetMachinePrice
 .asm_381c
-	ld de, H_DOWNARROWBLINKCNT1 ; $ff8b
+	ld de, hItemPrice ; $ff8b
 	pop af
 	ldh [H_LOADEDROMBANK], a
 	ld [$2000], a
@@ -3526,14 +3526,14 @@ JoypadLowSensitivity:: ; 3831 (0:3831)
 	ret
 
 WaitForTextScrollButtonPress:: ; 3865 (0:3865)
-	ldh a, [H_DOWNARROWBLINKCNT1]
+	ldh a, [hDownArrowBlinkCount1]
 	push af
-	ldh a, [H_DOWNARROWBLINKCNT2]
+	ldh a, [hDownArrowBlinkCount2]
 	push af
 	xor a
-	ldh [H_DOWNARROWBLINKCNT1], a
+	ldh [hDownArrowBlinkCount1], a
 	ld a, $6
-	ldh [H_DOWNARROWBLINKCNT2], a
+	ldh [hDownArrowBlinkCount2], a
 .loop
 	push hl
 	ld a, [wTownMapSpriteBlinkingEnabled]
@@ -3550,9 +3550,9 @@ WaitForTextScrollButtonPress:: ; 3865 (0:3865)
 	and A_BUTTON | B_BUTTON
 	jr z, .loop
 	pop af
-	ldh [H_DOWNARROWBLINKCNT2], a
+	ldh [hDownArrowBlinkCount2], a
 	pop af
-	ldh [H_DOWNARROWBLINKCNT1], a
+	ldh [hDownArrowBlinkCount1], a
 	ret
 
 ; (unless in link battle) waits for A or B being pressed and outputs the scrolling sound effect
@@ -3999,14 +3999,14 @@ HandleMenuInput:: ; 3abe (0:3abe)
 	ld [wd09b],a
 
 HandleMenuInputPokemonSelection:: ; 3ac2 (0:3ac2)
-	ldh a,[H_DOWNARROWBLINKCNT1]
+	ldh a,[hDownArrowBlinkCount1]
 	push af
-	ldh a,[H_DOWNARROWBLINKCNT2]
+	ldh a,[hDownArrowBlinkCount2]
 	push af ; save existing values on stack
 	xor a
-	ldh [H_DOWNARROWBLINKCNT1],a ; blinking down arrow timing value 1
+	ldh [hDownArrowBlinkCount1],a ; blinking down arrow timing value 1
 	ld a,$06
-	ldh [H_DOWNARROWBLINKCNT2],a ; blinking down arrow timing value 2
+	ldh [hDownArrowBlinkCount2],a ; blinking down arrow timing value 2
 .loop1
 	xor a
 	ld [W_SUBANIMTRANSFORM],a ; counter for pokemon shaking animation
@@ -4035,9 +4035,9 @@ HandleMenuInputPokemonSelection:: ; 3ac2 (0:3ac2)
 .giveUpWaiting
 ; if a key wasn't pressed within the specified number of checks
 	pop af
-	ldh [H_DOWNARROWBLINKCNT2],a
+	ldh [hDownArrowBlinkCount2],a
 	pop af
-	ldh [H_DOWNARROWBLINKCNT1],a ; restore previous values
+	ldh [hDownArrowBlinkCount1],a ; restore previous values
 	xor a
 	ld [wMenuWrappingEnabled],a ; disable menu wrapping
 	ret
@@ -4099,9 +4099,9 @@ HandleMenuInputPokemonSelection:: ; 3ac2 (0:3ac2)
 	call PlaySound ; play sound
 .skipPlayingSound
 	pop af
-	ldh [H_DOWNARROWBLINKCNT2],a
+	ldh [hDownArrowBlinkCount2],a
 	pop af
-	ldh [H_DOWNARROWBLINKCNT1],a ; restore previous values
+	ldh [hDownArrowBlinkCount1],a ; restore previous values
 	xor a
 	ld [wMenuWrappingEnabled],a ; disable menu wrapping
 	ldh a,[hJoy5]
@@ -4212,7 +4212,7 @@ EraseMenuCursor:: ; 3bf9 (0:3bf9)
 
 ; This toggles a blinking down arrow at hl on and off after a delay has passed.
 ; This is often called even when no blinking is occurring.
-; The reason is that most functions that call this initialize H_DOWNARROWBLINKCNT1 to 0.
+; The reason is that most functions that call this initialize hDownArrowBlinkCount1 to 0.
 ; The effect is that if the tile at hl is initialized with a down arrow,
 ; this function will toggle that down arrow on and off, but if the tile isn't
 ; initliazed with a down arrow, this function does nothing.
@@ -4225,36 +4225,36 @@ HandleDownArrowBlinkTiming:: ; 3c04 (0:3c04)
 	cp b
 	jr nz,.downArrowOff
 .downArrowOn
-	ldh a,[H_DOWNARROWBLINKCNT1]
+	ldh a,[hDownArrowBlinkCount1]
 	dec a
-	ldh [H_DOWNARROWBLINKCNT1],a
+	ldh [hDownArrowBlinkCount1],a
 	ret nz
-	ldh a,[H_DOWNARROWBLINKCNT2]
+	ldh a,[hDownArrowBlinkCount2]
 	dec a
-	ldh [H_DOWNARROWBLINKCNT2],a
+	ldh [hDownArrowBlinkCount2],a
 	ret nz
 	ld a," "
 	ld [hl],a
 	ld a,$ff
-	ldh [H_DOWNARROWBLINKCNT1],a
+	ldh [hDownArrowBlinkCount1],a
 	ld a,$06
-	ldh [H_DOWNARROWBLINKCNT2],a
+	ldh [hDownArrowBlinkCount2],a
 	ret
 .downArrowOff
-	ldh a,[H_DOWNARROWBLINKCNT1]
+	ldh a,[hDownArrowBlinkCount1]
 	and a
 	ret z
 	dec a
-	ldh [H_DOWNARROWBLINKCNT1],a
+	ldh [hDownArrowBlinkCount1],a
 	ret nz
 	dec a
-	ldh [H_DOWNARROWBLINKCNT1],a
-	ldh a,[H_DOWNARROWBLINKCNT2]
+	ldh [hDownArrowBlinkCount1],a
+	ldh a,[hDownArrowBlinkCount2]
 	dec a
-	ldh [H_DOWNARROWBLINKCNT2],a
+	ldh [hDownArrowBlinkCount2],a
 	ret nz
 	ld a,$06
-	ldh [H_DOWNARROWBLINKCNT2],a
+	ldh [hDownArrowBlinkCount2],a
 	ld a,$ee ; down arrow
 	ld [hl],a
 	ret
@@ -4734,7 +4734,7 @@ CheckForHiddenObjectOrBookshelfOrCardKeyDoor:: ; 3eb5 (0:3eb5)
 	ret
 
 PrintPredefTextID:: ; 3ef5 (0:3ef5)
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndexOrTextID], a ; $ff8c
 	ld hl, TextPredefs
 	call SetMapTextPointer
 	ld hl, wcf11

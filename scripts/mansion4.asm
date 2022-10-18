@@ -51,7 +51,7 @@ Mansion4Script_Switches: ; 52420 (14:6420)
 	xor a
 	ldh [hJoyHeld], a
 	ld a, $9
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndexOrTextID], a ; $ff8c
 	jp DisplayTextID
 
 Mansion4ScriptPointers: ; 52430 (14:6430)

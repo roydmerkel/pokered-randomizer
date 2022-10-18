@@ -92,7 +92,7 @@ BattleTransition: ; 7096d (1c:496d)
 	ld [wUpdateSpritesEnabled], a
 	call DelayFrame
 	ld hl, wSpriteStateData1 + 2
-	ldh a, [H_DOWNARROWBLINKCNT2]
+	ldh a, [hSpriteIndexOrTextID]
 	ld c, a
 	ld b, $0
 	ld de, $10

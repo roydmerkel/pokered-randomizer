@@ -177,10 +177,10 @@ SilphCo11Script0: ; 621db (18:61db)
 	ld a, $f0
 	ld [wJoyIgnore], a
 	ld a, $3
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndexOrTextID], a ; $ff8c
 	call DisplayTextID
 	ld a, $3
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndex], a ; $ff8c
 	call SetSpriteMovementBytesToFF
 	ld de, MovementData_62216
 	call MoveSprite
@@ -198,7 +198,7 @@ MovementData_62216: ; 62216 (18:6216)
 SilphCo11Script_6221a: ; 6221a (18:621a)
 	ld [wd528], a
 	ld a, $3
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndex], a ; $ff8c
 	ld a, b
 	ldh [$ff8d], a
 	jp SetSpriteFacingDirectionAndDelay
@@ -221,7 +221,7 @@ SilphCo11Script5: ; 62227 (18:6227)
 	ld a, $f0
 	ld [wJoyIgnore], a
 	ld a, $6
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndexOrTextID], a ; $ff8c
 	call DisplayTextID
 	call GBFadeOutToBlack
 	call SilphCo11Script_6216d
@@ -239,7 +239,7 @@ SilphCo11Script3: ; 6226a (18:626a)
 	bit 0, a
 	ret nz
 	ld a, $3
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndex], a ; $ff8c
 	call SetSpriteMovementBytesToFF
 	ld a, [wcf0d]
 	cp $1
@@ -263,7 +263,7 @@ SilphCo11Script4: ; 62293 (18:6293)
 	ld hl, SilphCo10Text_62330 ; $6330
 	ld de, SilphCo10Text_62330 ; $6330
 	call SaveEndBattleTextPointers
-	ldh a, [H_DOWNARROWBLINKCNT2] ; $ff8c
+	ldh a, [hSpriteIndex] ; $ff8c
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters

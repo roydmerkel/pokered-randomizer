@@ -50,7 +50,7 @@ OaksLabScript0: ; 1cb4e (7:4b4e)
 
 OaksLabScript1: ; 1cb6e (7:4b6e)
 	ld a, $8
-	ldh [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	ld de, OakEntryMovement
 	call MoveSprite
 
@@ -85,12 +85,12 @@ OaksLabScript3: ; 1cba2 (7:4ba2)
 	ld [wSimulatedJoypadStatesIndex], a
 	call StartSimulatingJoypadStates
 	ld a, $1
-	ldh [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	xor a
 	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $5
-	ldh [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	xor a
 	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
@@ -111,7 +111,7 @@ OaksLabScript4: ; 1cbd2 (7:4bd2)
 	ld hl, wd74b
 	set 0, [hl]
 	ld a, $1
-	ldh [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	ld a, $4
 	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
@@ -156,12 +156,12 @@ OaksLabScript6: ; 1cc36 (7:4c36)
 	cp 6
 	ret nz
 	ld a, $5
-	ldh [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	xor a
 	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $1
-	ldh [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	xor a
 	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
@@ -231,7 +231,7 @@ OaksLabScript8: ; 1cc80 (7:4c80)
 	jr nz, .asm_1ccf3 ; 0x1cccd $24
 	push hl
 	ld a, $1
-	ldh [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	ld a, $4
 	ldh [$ff8b], a
 	call GetPointerWithinSpriteStateData1
@@ -256,7 +256,7 @@ OaksLabScript8: ; 1cc80 (7:4c80)
 
 .asm_1ccf3
 	ld a, $1
-	ldh [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	call MoveSprite
 
 	ld a, $9
@@ -270,7 +270,7 @@ OaksLabScript9: ; 1cd00 (7:4d00)
 	ld a, $fc
 	ld [wJoyIgnore], a
 	ld a, $1
-	ldh [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	ld a, $4
 	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
@@ -299,7 +299,7 @@ OaksLabScript9: ; 1cd00 (7:4d00)
 	ld [wd11e], a
 	call GetMonName
 	ld a, $1
-	ldh [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	ld a, $4
 	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
@@ -320,7 +320,7 @@ OaksLabScript10: ; 1cd6d (7:4d6d)
 	cp 6
 	ret nz
 	ld a, $1
-	ldh [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	xor a
 	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
@@ -344,7 +344,7 @@ OaksLabScript10: ; 1cd6d (7:4d6d)
 	predef FindPathToPlayer
 	ld de, wNPCMovementDirections2
 	ld a, $1
-	ldh [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	call MoveSprite
 
 	ld a, $b
@@ -405,7 +405,7 @@ OaksLabScript12: ; 1ce03 (7:4e03)
 	ld [wSpriteIndex], a
 	call SetSpritePosition1
 	ld a, $1
-	ldh [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	xor a
 	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
@@ -425,7 +425,7 @@ OaksLabScript13: ; 1ce32 (7:4e32)
 	call DisplayTextID
 	callba Music_RivalAlternateStart
 	ld a, $1
-	ldh [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	ld de, .RivalExitMovement
 	call MoveSprite
 	ld a, [W_XCOORD]
@@ -505,7 +505,7 @@ OaksLabScript15: ; 1ceb0 (7:4eb0)
 	call FillMemory
 	ld [hl], $ff
 	ld a, $1
-	ldh [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	ld de, wNPCMovementDirections2
 	call MoveSprite
 
@@ -515,12 +515,12 @@ OaksLabScript15: ; 1ceb0 (7:4eb0)
 
 OaksLabScript_1cefd ; 1cefd (7:4efd)
 	ld a, $1
-	ldh [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	ld a, $4
 	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $8
-	ldh [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	xor a
 	ldh [$ff8d], a
 	jp SetSpriteFacingDirectionAndDelay
@@ -563,7 +563,7 @@ OaksLabScript16: ; 1cf12 (7:4f12)
 	ldh [$ff8c], a
 	call DisplayTextID
 	ld a, $1
-	ldh [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	ld a, $c
 	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
@@ -593,7 +593,7 @@ OaksLabScript16: ; 1cf12 (7:4f12)
 	call PlaySound
 	callba Music_RivalAlternateStart
 	ld a, $1
-	ldh [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	ld de, wNPCMovementDirections2
 	call MoveSprite
 
@@ -824,14 +824,14 @@ OaksLabText39: ; 1d152 (7:5152)
 
 OaksLabScript_1d157: ; 1d157 (7:5157)
 	ld a, $5
-	ldh [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	ld a, $9
 	ldh [$ff8b], a
 	call GetPointerWithinSpriteStateData1
 	ld [hl], $0
 	; manually fixed some disassembler issues around here
 	ld a, $1
-	ldh [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	ld a, $9
 	ldh [$ff8b], a
 	call GetPointerWithinSpriteStateData1
@@ -931,7 +931,7 @@ OaksLabReceivedMonText: ; 1d227 (7:5227)
 
 OaksLabScript_1d22d: ; 1d22d (7:522d)
 	ld a, $5
-	ldh [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	ld a, $9
 	ldh [$ff8b], a
 	call GetPointerWithinSpriteStateData1

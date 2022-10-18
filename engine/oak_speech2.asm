@@ -91,9 +91,9 @@ asm_6a19: ; 6a19 (1:6a19)
 	push bc
 	ldh [$ff8d], a
 	ld a, d
-	ldh [H_DOWNARROWBLINKCNT1], a ; $ff8b
+	ldh [hSlideAmount], a ; $ff8b
 	ld a, e
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSlidingRegionSize], a ; $ff8c
 	ld c, a
 	ldh a, [$ff8d]
 	and a
@@ -130,7 +130,7 @@ asm_6a19: ; 6a19 (1:6a19)
 	ld a, 1
 	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	call Delay3
-	ldh a, [H_DOWNARROWBLINKCNT2] ; $ff8c
+	ldh a, [hSlidingRegionSize] ; $ff8c
 	ld c, a
 	ld h, d
 	ld l, e
@@ -144,9 +144,9 @@ asm_6a19: ; 6a19 (1:6a19)
 .asm_6a5f
 	ld d, h
 	ld e, l
-	ldh a, [H_DOWNARROWBLINKCNT1] ; $ff8b
+	ldh a, [hSlideAmount] ; $ff8b
 	dec a
-	ldh [H_DOWNARROWBLINKCNT1], a ; $ff8b
+	ldh [hSlideAmount], a ; $ff8b
 	jr nz, .asm_6a2f
 	pop bc
 	pop de

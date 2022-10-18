@@ -2525,7 +2525,7 @@ Func_79aae: ; 79aae (1e:5aae)
 	jr z, .asm_79ab6
 	xor a
 .asm_79ab6
-	ldh [H_DOWNARROWBLINKCNT1], a ; $ff8b
+	ldh [hBaseTileID], a ; $ff8b
 	jr asm_79acb
 
 Func_79aba: ; 79aba (1e:5aba)
@@ -2546,7 +2546,7 @@ Func_79ace: ; 79ace (1e:5ace)
 .asm_79acf
 	push bc
 	push hl
-	ldh a, [H_DOWNARROWBLINKCNT1] ; $ff8b
+	ldh a, [hBaseTileID] ; $ff8b
 	ld b, a
 .asm_79ad4
 	ld a, [de]
@@ -2812,7 +2812,7 @@ AnimationShakeEnemyHUD: ; 79d77 (1e:5d77)
 Func_79dda: ; 79dda (1e:5dda)
 	call GetPredefRegisters
 	ld a, c
-	ldh [H_DOWNARROWBLINKCNT1], a ; $ff8b
+	ldh [hBaseTileID], a ; $ff8b
 	ld a, b
 	push hl
 	call Func_79842

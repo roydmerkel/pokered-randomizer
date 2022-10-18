@@ -194,7 +194,7 @@ Route22Script_5100d: ; 5100d (14:500d)
 	ld de, Route22RivalExitMovementData2 ; $501f
 asm_51010
 	ld a, $1
-	ldh [H_SPRITEHEIGHT], a
+	ldh [hSpriteIndex], a
 	jp MoveSprite
 
 Route22RivalExitMovementData1: ; 51017 (14:5017)
@@ -238,7 +238,7 @@ Route22Script_5104e: ; 5104e (14:504e)
 	call PlaySound
 	callba Music_RivalAlternateTempo
 	ld a, $2
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndex], a ; $ff8c
 	call Route22MoveRivalSprite
 	ld a, $4
 	ld [W_ROUTE22CURSCRIPT], a
@@ -249,7 +249,7 @@ Route22Script4: ; 51087 (14:5087)
 	bit 0, a
 	ret nz
 	ld a, $2
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndex], a ; $ff8c
 	ld a, [wcf0d]
 	cp $1
 	jr nz, .asm_510a1
@@ -267,7 +267,7 @@ Route22Script4: ; 51087 (14:5087)
 	xor a
 	ld [wJoyIgnore], a
 	ld a, $2
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndexOrTextID], a ; $ff8c
 	call DisplayTextID
 	ld hl, wd72d
 	set 6, [hl]
@@ -295,7 +295,7 @@ Route22Script5: ; 510df (14:50df)
     xor a
     ld [wIsTrainerBattle], a
 	ld a, $2
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndex], a ; $ff8c
 	ld a, [wcf0d]
 	cp $1
 	jr nz, .asm_510fb
@@ -315,7 +315,7 @@ Route22Script5: ; 510df (14:50df)
 	ld hl, wd7eb
 	set 6, [hl]
 	ld a, $2
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndexOrTextID], a ; $ff8c
 	call DisplayTextID
 	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a
@@ -341,7 +341,7 @@ Route22Script_51142: ; 51142 (14:5142)
 	ld de, MovementData_5114d ; $514d
 asm_51145: ; 51145 (14:5145)
 	ld a, $2
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndex], a ; $ff8c
 	jp MoveSprite
 
 MovementData_5114c: ; 5114c (14:514c)

@@ -46,7 +46,7 @@ FuchsiaGymScript3: ; 7548a (1d:548a)
 	ld [wJoyIgnore], a
 FuchsiaGymScript3_75497: ; 75497 (1d:5497)
 	ld a, $9
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndexOrTextID], a ; $ff8c
 	call DisplayTextID
 	ld hl, wd792
 	set 1, [hl]
@@ -55,14 +55,14 @@ FuchsiaGymScript3_75497: ; 75497 (1d:5497)
 	call GiveItem
 	jr nc, .BagFull
 	ld a, $a
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndexOrTextID], a ; $ff8c
 	call DisplayTextID
 	ld hl, wd792
 	set 0, [hl]
 	jr .asm_754c0
 .BagFull
 	ld a, $b
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndexOrTextID], a ; $ff8c
 	call DisplayTextID
 .asm_754c0
 	ld hl, W_OBTAINEDBADGES

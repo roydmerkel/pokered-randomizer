@@ -41,16 +41,16 @@ ScaleFirstThreeSpriteColumnsByTwo: ; 2fe55 (b:7e55)
 
 ScaleLastSpriteColumnByTwo: ; 2fe7d (b:7e7d)
 	ld a, 4*8 - 4 ; $1c, 4 tiles minus 4 unused rows
-	ldh [H_SPRITEINTERLACECOUNTER], a ; $ff8b
+	ldh [hSpriteInterlaceCounter], a ; $ff8b
 	ld bc, -1 ; $ffff
 .columnInnerLoop
 	ld a, [de]
 	dec de
 	swap a                    ; only high nybble contains information
 	call ScalePixelsByTwo
-	ldh a, [H_SPRITEINTERLACECOUNTER] ; $ff8b
+	ldh a, [hSpriteInterlaceCounter] ; $ff8b
 	dec a
-	ldh [H_SPRITEINTERLACECOUNTER], a ; $ff8b
+	ldh [hSpriteInterlaceCounter], a ; $ff8b
 	jr nz, .columnInnerLoop
 	dec de                    ; skip last 4 rows of new column
 	dec de

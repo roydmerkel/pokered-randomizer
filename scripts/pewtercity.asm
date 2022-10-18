@@ -46,7 +46,7 @@ PewterCityScript1: ; 19280 (6:5280)
 	and a
 	ret nz
 	ld a, $3
-	ldh [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	ld a, SPRITE_FACING_UP
 	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay

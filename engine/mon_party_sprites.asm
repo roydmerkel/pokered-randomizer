@@ -297,7 +297,7 @@ Func_71868: ; 71868 (1c:5868)
 	push hl
 	push de
 	push bc
-	ldh a, [H_DOWNARROWBLINKCNT2] ; $ff8c
+	ldh a, [hPartyMonIndex] ; $ff8c
 	ld hl, wPartySpecies
 	ld e, a
 	ld d, $0
@@ -313,7 +313,7 @@ Func_71868: ; 71868 (1c:5868)
 
 Func_71882: ; 71882 (1c:5882)
 	xor a
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hPartyMonIndex], a ; $ff8c
 	ld a, [wcd5d]
 	call GetPartyMonSpriteID
 	ld [wcd5b], a
@@ -357,7 +357,7 @@ Func_718c3: ; 718c3 (1c:58c3)
 	push af
 	ld c, $10
 	ld h, wOAMBuffer / $100
-	ldh a, [H_DOWNARROWBLINKCNT2] ; $ff8c
+	ldh a, [hPartyMonIndex] ; $ff8c
 	swap a
 	ld l, a
 	add $10

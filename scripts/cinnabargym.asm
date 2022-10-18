@@ -37,7 +37,7 @@ CinnabarGymScript_75792: ; 75792 (1d:5792)
 	ret
 
 CinnabarGymScript_757a0: ; 757a0 (1d:57a0)
-	ldh a, [H_DOWNARROWBLINKCNT2] ; $ff8c
+	ldh a, [hSpriteIndexOrTextID] ; $ff8c
 	ld [wTrainerHeaderFlagBit], a
 	ret
 
@@ -189,7 +189,7 @@ CinnabarGymTextPointers: ; 7589f (1d:589f)
 	dw TM38NoRoomText
 
 CinnabarGymScript_758b7: ; 758b7 (1d:58b7)
-	ldh a, [H_DOWNARROWBLINKCNT2] ; $ff8c
+	ldh a, [hSpriteIndexOrTextID] ; $ff8c
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters

@@ -53,7 +53,7 @@ Mansion1Script_Switches: ; 44316 (11:4316)
 	xor a
 	ldh [hJoyHeld], a
 	ld a, $4
-	ldh [H_SPRITEHEIGHT], a
+	ldh [hSpriteIndexOrTextID], a
 	jp DisplayTextID
 
 Mansion1ScriptPointers: ; 44326 (11:4326)

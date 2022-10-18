@@ -1943,7 +1943,7 @@ AnimateRetreatingPlayerMon: ; 3ccfa (f:4cfa)
 	ld bc, $505
 	xor a
 	ld [wcd6c], a
-	ldh [H_DOWNARROWBLINKCNT1], a
+	ldh [hBaseTileID], a
 	predef Func_79aba
 	ld c, $4
 	call DelayFrames
@@ -1953,7 +1953,7 @@ AnimateRetreatingPlayerMon: ; 3ccfa (f:4cfa)
 	ld a, 1
 	ld [wcd6c], a
 	xor a
-	ldh [H_DOWNARROWBLINKCNT1], a
+	ldh [hBaseTileID], a
 	predef Func_79aba
 	call Delay3
 	call .clearScreenArea
@@ -7038,7 +7038,7 @@ Func_3f073: ; 3f073 (f:7073)
 	ld a, [wPredefRegisters + 1]
 	ld l, a
 	ldh a, [$ffe1]
-	ldh [H_DOWNARROWBLINKCNT1], a
+	ldh [hBaseTileID], a
 	ld b, $4c
 	ld a, [W_ISINBATTLE]
 	and a
@@ -7068,7 +7068,7 @@ Func_3f073: ; 3f073 (f:7073)
 	ld bc, -123
 .asm_3f0bf
 	add hl, bc
-	ldh a, [H_DOWNARROWBLINKCNT1]
+	ldh a, [hBaseTileID]
 	add $31
 	jr asm_3f0d0
 

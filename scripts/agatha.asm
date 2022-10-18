@@ -75,7 +75,7 @@ AgathaScript0: ; 76490 (1d:6490)
 	jr z, asm_76474
 .asm_764b4
 	ld a, $2
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndexOrTextID], a ; $ff8c
 	call DisplayTextID
 	ld a, D_UP
 	ld [wSimulatedJoypadStatesEnd], a
@@ -111,7 +111,7 @@ AgathaScript2: ; 764ed (1d:64ed)
 	cp $ff
 	jp z, AgathaScript_76464
 	ld a, $1
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndexOrTextID], a ; $ff8c
 	call DisplayTextID
 	ld a, $1
 	ld [W_GARYCURSCRIPT], a

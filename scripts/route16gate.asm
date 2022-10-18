@@ -59,7 +59,7 @@ Route16GateScript1: ; 4971d (12:571d)
 
 Route16GateScript2: ; 49727 (12:5727)
 	ld a, $1
-	ldh [H_SPRITEHEIGHT], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, $1
 	ld [wSimulatedJoypadStatesIndex], a

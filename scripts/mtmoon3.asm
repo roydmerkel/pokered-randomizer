@@ -66,7 +66,7 @@ MtMoon3Script0: ; 49d6f (12:5d6f)
 	xor a
 	ldh [hJoyHeld], a
 	ld a, $1
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndexOrTextID], a ; $ff8c
 	jp DisplayTextID
 
 MtMoon3Script_49d91: ; 49d91 (12:5d91)
@@ -92,7 +92,7 @@ MtMoon3Script3: ; 49d9a (12:5d9a)
 
 MtMoon3Script4: ; 49dba (12:5dba)
 	ld a, $1
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndex], a ; $ff8c
 	call SetSpriteMovementBytesToFF
 	ld hl, CoordsData_49dea
 	call ArePlayerCoordsInArray
@@ -106,7 +106,7 @@ MtMoon3Script4: ; 49dba (12:5dba)
 	ld de, MovementData_49df8
 .asm_49dda
 	ld a, $1
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndex], a ; $ff8c
 	call MoveSprite
 	ld a, $5
 	ld [W_MTMOON3CURSCRIPT], a
@@ -140,7 +140,7 @@ MtMoon3Script5: ; 49dfb (12:5dfb)
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld a, $a
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndexOrTextID], a ; $ff8c
 	call DisplayTextID
 	ld a, [wd7f6]
 	bit 6, a

@@ -37,7 +37,7 @@ SSAnne2Script0: ; 613be (18:53be)
 	predef ShowObject
 	call Delay3
 	ld a, $2
-	ldh [$ff8c], a
+	ldh [hSpriteIndex], a
 	call SetSpriteMovementBytesToFF
 	xor a
 	ldh [hJoyHeld], a
@@ -76,9 +76,9 @@ SSAnne2Script_61416: ; 61416 (18:5416)
 .asm_61426
 	xor a
 .asm_61427
-	ldh [$ff8d], a
+	ldh [hSpriteFacingDirection], a
 	ld a, $2
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndex], a ; $ff8c
 	jp SetSpriteFacingDirectionAndDelay
 
 SSAnne2Script1: ; 61430 (18:5430)
@@ -89,7 +89,7 @@ SSAnne2Script1: ; 61430 (18:5430)
 	xor a
 	ld [wJoyIgnore], a
 	ld a, $2
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	call Delay3
 	ld a, SONY2 + $c8
@@ -128,10 +128,10 @@ SSAnne2Script2: ; 6146d (18:546d)
 	ld a, $f0
 	ld [wJoyIgnore], a
 	ld a, $3
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, $2
-	ldh [$ff8c], a
+	ldh [hSpriteIndex], a
 	call SetSpriteMovementBytesToFF
 	ld a, [W_XCOORD]
 	cp 37
@@ -142,7 +142,7 @@ SSAnne2Script2: ; 6146d (18:546d)
 	ld de, MovementData_614b7
 .asm_6149a
 	ld a, $2
-	ldh [$ff8c], a
+	ldh [hSpriteIndex], a
 	call MoveSprite
 	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a

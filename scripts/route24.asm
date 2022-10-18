@@ -31,7 +31,7 @@ Route24Script0: ; 513d5 (14:53d5)
 	xor a
 	ldh [hJoyHeld], a
 	ld a, $1
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndexOrTextID], a ; $ff8c
 	call DisplayTextID
 	ld hl, wd7f0
 	bit 1, [hl]
@@ -70,7 +70,7 @@ Route24Script3: ; 51422 (14:5422)
 	ld hl, wd7ef
 	set 1, [hl]
 	ld a, $1
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndexOrTextID], a ; $ff8c
 	call DisplayTextID
 	xor a
 	ld [wJoyIgnore], a

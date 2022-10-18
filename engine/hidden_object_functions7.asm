@@ -75,12 +75,12 @@ asm_1e9b0: ; 1e9b0 (7:69b0)
 	call WaitForSoundToFinish
 	
 	ld a, $d3
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndexOrTextID], a ; $ff8c
 	call DisplayTextID
 	xor a
 	ld [wd528], a
 	ld a, $9c
-	ldh [H_DOWNARROWBLINKCNT1], a ; $ff8b
+	ldh [hWarpDestinationMap], a ; $ff8b
 	ld a, $3
 	ld [wDestinationWarpID], a
 	ld a, $5

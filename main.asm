@@ -3579,7 +3579,7 @@ DoBoulderDustAnimation: ; f2b5 (3:72b5)
 	call ResetBoulderPushFlags
 	set 7, [hl]
 	ld a, [wBoulderSpriteIndex]
-	ldh [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	call GetSpriteMovementByte2Pointer
 	ld [hl], $10
 	ld a, RBSFX_02_56

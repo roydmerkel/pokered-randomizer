@@ -38,7 +38,7 @@ PokemonTower5Script0: ; 6094b (18:494b)
 	call Delay3
 	call GBFadeInFromWhite
 	ld a, $7
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hSpriteIndexOrTextID], a ; $ff8c
 	call DisplayTextID
 	xor a
 	ld [wJoyIgnore], a

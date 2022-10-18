@@ -14,10 +14,10 @@ GetMachinePrice: ; 7bf86 (1e:7f86)
 	swap a
 .asm_7bf9d
 	and $f0
-	ldh [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ldh [hItemPrice + 1], a ; $ff8c
 	xor a
-	ldh [H_DOWNARROWBLINKCNT1], a ; $ff8b
-	ldh [$ff8d], a
+	ldh [hItemPrice], a ; $ff8b
+	ldh [hItemPrice + 2], a
 	ret
 
 INCLUDE "data/tm_prices.asm"

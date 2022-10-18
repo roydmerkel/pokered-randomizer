@@ -59,7 +59,7 @@ Route18GateScript1: ; 498d5 (12:58d5)
 
 Route18GateScript2: ; 498df (12:58df)
 	ld a, $1
-	ldh [H_SPRITEHEIGHT], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, $1
 	ld [wSimulatedJoypadStatesIndex], a
