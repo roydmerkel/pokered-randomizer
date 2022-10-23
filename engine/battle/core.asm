@@ -1676,29 +1676,29 @@ TryRunningFromBattle: ; 3cab9 (f:4ab9)
 	inc a
 	ld [wNumRunAttempts], a
 	ld a, [hli]
-	ldh [H_MULTIPLICAND + 1], a
+	ldh [hMultiplicand + 1], a
 	ld a, [hl]
-	ldh [H_MULTIPLICAND + 2], a
+	ldh [hMultiplicand + 2], a
 	ld a, [de]
 	ldh [$ff8d], a
 	inc de
 	ld a, [de]
 	ldh [$ff8e], a
 	call LoadScreenTilesFromBuffer1
-	ld de, H_MULTIPLICAND + 1
+	ld de, hMultiplicand + 1
 	ld hl, $ff8d
 	ld c, $2
 	call StringCmp
 	jr nc, .canEscape ; jump if player speed greater than enemy speed
 	xor a
-	ldh [H_MULTIPLICAND], a 
+	ldh [hMultiplicand], a 
 	ld a, 32
-	ldh [H_MULTIPLIER], a
+	ldh [hMultiplier], a
 	call Multiply ; multiply player speed by 32
-	ldh a, [H_PRODUCT + 2]
-	ldh [H_DIVIDEND], a
-	ldh a, [H_PRODUCT + 3]
-	ldh [H_DIVIDEND + 1], a
+	ldh a, [hProduct + 2]
+	ldh [hDividend], a
+	ldh a, [hProduct + 3]
+	ldh [hDividend + 1], a
 	ldh a, [$ff8d]
 	ld b, a
 	ldh a, [$ff8e]
@@ -1709,10 +1709,10 @@ TryRunningFromBattle: ; 3cab9 (f:4ab9)
 	rr a
 	and a
 	jr z, .canEscape ; jump if enemy speed divided by 4, mod 256 is 0
-	ldh [H_DIVISOR], a ; ((enemy speed / 4) % 256)
+	ldh [hDivisor], a ; ((enemy speed / 4) % 256)
 	ld b, $2
 	call Divide ; divide (player speed * 32) by ((enemy speed / 4) % 256)
-	ldh a, [H_QUOTIENT + 2]
+	ldh a, [hQuotient + 2]
 	and a ; is the quotient greater than 256?
 	jr nz, .canEscape ; if so, the player can escape
 	ld a, [wNumRunAttempts]
@@ -1722,15 +1722,15 @@ TryRunningFromBattle: ; 3cab9 (f:4ab9)
 	dec c
 	jr z, .compareWithRandomValue
 	ld b, 30
-	ldh a, [H_QUOTIENT + 3]
+	ldh a, [hQuotient + 3]
 	add b
-	ldh [H_QUOTIENT + 3], a
+	ldh [hQuotient + 3], a
 	jr c, .canEscape
 	jr .loop
 .compareWithRandomValue
 	call BattleRandom
 	ld b, a
-	ldh a, [H_QUOTIENT + 3]
+	ldh a, [hQuotient + 3]
 	cp b
 	jr nc, .canEscape ; if the random value was less than or equal to the quotient plus 30 times the number of attempts, the player can escape
 ; can't escape
@@ -2065,9 +2065,9 @@ DrawEnemyHUDAndHPBar: ; 3cdec (f:4dec)
 .skipPrintLevel
 	ld hl, wEnemyMonHP
 	ld a, [hli]
-	ldh [H_MULTIPLICAND + 1], a
+	ldh [hMultiplicand + 1], a
 	ld a, [hld]
-	ldh [H_MULTIPLICAND + 2], a
+	ldh [hMultiplicand + 2], a
 	or [hl] ; is current HP zero?
 	jr nz, .hpNonzero
 ; current HP is 0
@@ -2078,45 +2078,45 @@ DrawEnemyHUDAndHPBar: ; 3cdec (f:4dec)
 	jp .drawHPBar
 .hpNonzero
 	xor a
-	ldh [H_MULTIPLICAND], a
+	ldh [hMultiplicand], a
 	ld a, 48
-	ldh [H_MULTIPLIER], a
+	ldh [hMultiplier], a
 	call Multiply ; multiply current HP by 48
 	ld hl, wEnemyMonMaxHP
 	ld a, [hli]
 	ld b, a
 	ld a, [hl]
-	ldh [H_DIVISOR], a
+	ldh [hDivisor], a
 	ld a, b
 	and a ; is max HP > 255?
 	jr z, .doDivide
 ; if max HP > 255, scale both (current HP * 48) and max HP by dividing by 4 so that max HP fits in one byte
 ; (it needs to be one byte so it can be used as the divisor for the Divide function)
-	ldh a, [H_DIVISOR]
+	ldh a, [hDivisor]
 	srl b
 	rr a
 	srl b
 	rr a
-	ldh [H_DIVISOR], a
-	ldh a, [H_PRODUCT + 2]
+	ldh [hDivisor], a
+	ldh a, [hProduct + 2]
 	ld b, a
 	srl b
-	ldh a, [H_PRODUCT + 3]
+	ldh a, [hProduct + 3]
 	rr a
 	srl b
 	rr a
-	ldh [H_PRODUCT + 3], a
+	ldh [hProduct + 3], a
 	ld a, b
-	ldh [H_PRODUCT + 2], a
+	ldh [hProduct + 2], a
 .doDivide
-	ldh a, [H_PRODUCT + 2]
-	ldh [H_DIVIDEND], a
-	ldh a, [H_PRODUCT + 3]
-	ldh [H_DIVIDEND + 1], a
+	ldh a, [hProduct + 2]
+	ldh [hDividend], a
+	ldh a, [hProduct + 3]
+	ldh [hDividend + 1], a
 	ld a, $2
 	ld b, a
 	call Divide ; divide (current HP * 48) by max HP
-	ldh a, [H_QUOTIENT + 3]
+	ldh a, [hQuotient + 3]
 ; set variables for DrawHPBar
 	ld e, a
 	ld a, $6
@@ -4315,9 +4315,9 @@ GetDamageVarsForPlayerAttack: ; 3ddcf (f:5dcf)
 ; in the case of a critical hit, reset the player's attack and the enemy's defense to their base values
 	ld c, 3 ; defense stat
 	call GetEnemyMonStat
-	ldh a, [$ff97]
+	ldh a, [hProduct+2]
 	ld b, a
-	ldh a, [$ff98]
+	ldh a, [hProduct+3]
 	ld c, a
 	push bc
 	ld hl, wPartyMon1Attack
@@ -4345,9 +4345,9 @@ GetDamageVarsForPlayerAttack: ; 3ddcf (f:5dcf)
 ; in the case of a critical hit, reset the player's and enemy's specials to their base values
 	ld c, 5 ; special stat
 	call GetEnemyMonStat
-	ldh a, [$ff97]
+	ldh a, [hProduct+2]
 	ld b, a
-	ldh a, [$ff98]
+	ldh a, [hProduct+3]
 	ld c, a
 	push bc
 	ld hl, wPartyMon1Special
@@ -4432,7 +4432,7 @@ GetDamageVarsForEnemyAttack: ; 3de75 (f:5e75)
 	push bc
 	ld c, 2 ; attack stat
 	call GetEnemyMonStat
-	ld hl, $ff97
+	ld hl, hProduct+2
 	pop bc
 	jr .scaleStats
 .specialAttack
@@ -4462,7 +4462,7 @@ GetDamageVarsForEnemyAttack: ; 3de75 (f:5e75)
 	push bc
 	ld c, 5 ; special stat
 	call GetEnemyMonStat
-	ld hl, $ff97
+	ld hl, hProduct+2
 	pop bc
 ; if either the offensive or defensive stat is too large to store in a byte, scale both stats by dividing them by 4
 ; this allows values with up to 10 bits (values up to 1023) to be handled
@@ -4583,7 +4583,7 @@ CalculateDamage: ; 3df65 (f:5f65)
 .skipbp
 
 	xor a
-	ld hl, H_DIVIDEND
+	ld hl, hDividend
 	ldi [hl], a
 	ldi [hl], a
 	ld [hl], a
@@ -4634,41 +4634,41 @@ CalculateDamage: ; 3df65 (f:5f65)
 
 	ld hl, W_DAMAGE
 	ld b, [hl]
-	ldh a, [H_QUOTIENT + 3]
+	ldh a, [hQuotient + 3]
 	add b
-	ldh [H_QUOTIENT + 3], a
+	ldh [hQuotient + 3], a
 	jr nc, .asm_3dfd0
 
-	ldh a, [H_QUOTIENT + 2]
+	ldh a, [hQuotient + 2]
 	inc a
-	ldh [H_QUOTIENT + 2], a
+	ldh [hQuotient + 2], a
 	and a
 	jr z, .asm_3e004
 
 .asm_3dfd0
-	ldh a, [H_QUOTIENT]
+	ldh a, [hQuotient]
 	ld b, a
-	ldh a, [H_QUOTIENT + 1]
+	ldh a, [hQuotient + 1]
 	or a
 	jr nz, .asm_3e004
 
-	ldh a, [H_QUOTIENT + 2]
+	ldh a, [hQuotient + 2]
 	cp 998 / $100
 	jr c, .asm_3dfe8
 	cp 998 / $100 + 1
 	jr nc, .asm_3e004
-	ldh a, [H_QUOTIENT + 3]
+	ldh a, [hQuotient + 3]
 	cp 998 % $100
 	jr nc, .asm_3e004
 
 .asm_3dfe8
 	inc hl
-	ldh a, [H_QUOTIENT + 3]
+	ldh a, [hQuotient + 3]
 	ld b, [hl]
 	add b
 	ld [hld], a
 
-	ldh a, [H_QUOTIENT + 2]
+	ldh a, [hQuotient + 2]
 	ld b, [hl]
 	adc b
 	ld [hl], a
@@ -5397,25 +5397,25 @@ AdjustDamageForMoveType: ; 3e3a5 (f:63a5)
 	and a,$80
 	ld b,a
 	ld a,[hl] ; a = damage multiplier
-	ldh [H_MULTIPLIER],a
+	ldh [hMultiplier],a
 	add b
 	ld [wd05b],a
 	xor a
-	ldh [H_MULTIPLICAND],a
+	ldh [hMultiplicand],a
 	ld hl,W_DAMAGE
 	ld a,[hli]
-	ldh [H_MULTIPLICAND + 1],a
+	ldh [hMultiplicand + 1],a
 	ld a,[hld]
-	ldh [H_MULTIPLICAND + 2],a
+	ldh [hMultiplicand + 2],a
 	call Multiply
 	ld a,10
-	ldh [H_DIVISOR],a
+	ldh [hDivisor],a
 	ld b,$04
 	call Divide
-	ldh a,[H_QUOTIENT + 2]
+	ldh a,[hQuotient + 2]
 	ld [hli],a
 	ld b,a
-	ldh a,[H_QUOTIENT + 3]
+	ldh a,[hQuotient + 3]
 	ld [hl],a
 	or b ; is damage 0?
 	jr nz,.skipTypeImmunity
@@ -5614,10 +5614,10 @@ CalcHitChance: ; 3e624 (f:6624)
 	ld c,a ; c = 14 - EVASIONMOD (this "reflects" the value over 7, so that an increase in the target's evasion decreases the hit chance instead of increasing the hit chance)
 ; zero the high bytes of the multiplicand
 	xor a
-	ldh [H_MULTIPLICAND],a
-	ldh [H_MULTIPLICAND + 1],a
+	ldh [hMultiplicand],a
+	ldh [hMultiplicand + 1],a
 	ld a,[hl]
-	ldh [H_MULTIPLICAND + 2],a ; set multiplicand to move accuracy
+	ldh [hMultiplicand + 2],a ; set multiplicand to move accuracy
 	push hl
 	ld d,$02 ; loop has two iterations
 ; loop to do the calculations, the first iteration multiplies by the accuracy ratio and the second iteration multiplies by the evasion ratio
@@ -5631,28 +5631,28 @@ CalcHitChance: ; 3e624 (f:6624)
 	add hl,bc ; hl = address of stat modifier ratio
 	pop bc
 	ld a,[hli]
-	ldh [H_MULTIPLIER],a ; set multiplier to the numerator of the ratio
+	ldh [hMultiplier],a ; set multiplier to the numerator of the ratio
 	call Multiply
 	ld a,[hl]
-	ldh [H_DIVISOR],a ; set divisor to the the denominator of the ratio (the dividend is the product of the previous multiplication)
+	ldh [hDivisor],a ; set divisor to the the denominator of the ratio (the dividend is the product of the previous multiplication)
 	ld b,$04 ; number of bytes in the dividend
 	call Divide
-	ldh a,[H_QUOTIENT + 3]
+	ldh a,[hQuotient + 3]
 	ld b,a
-	ldh a,[H_QUOTIENT + 2]
+	ldh a,[hQuotient + 2]
 	or b
 	jp nz,.nextCalculation
 ; make sure the result is always at least one
-	ldh [H_QUOTIENT + 2],a
+	ldh [hQuotient + 2],a
 	ld a,$01
-	ldh [H_QUOTIENT + 3],a
+	ldh [hQuotient + 3],a
 .nextCalculation
 	ld b,c
 	dec d
 	jr nz,.loop
-	ldh a,[H_QUOTIENT + 2]
+	ldh a,[hQuotient + 2]
 	and a ; is the calculated hit chance over 0xFF?
-	ldh a,[H_QUOTIENT + 3]
+	ldh a,[hQuotient + 3]
 	jr z,.storeAccuracy
 ; if calculated hit chance over 0xFF
 	ld a,$ff ; set the hit chance to 0xFF
@@ -5672,29 +5672,29 @@ RandomizeDamage: ; 3e687 (f:6687)
 	ret c
 .DamageGreaterThanOne
 	xor a
-	ldh [H_MULTIPLICAND], a
+	ldh [hMultiplicand], a
 	dec hl
 	ld a, [hli]
-	ldh [H_MULTIPLICAND + 1], a
+	ldh [hMultiplicand + 1], a
 	ld a, [hl]
-	ldh [H_MULTIPLICAND + 2], a
+	ldh [hMultiplicand + 2], a
 ; loop until a random number greater than or equal to 217 is generated
 .loop
 	call BattleRandom
 	rrca
 	cp 217
 	jr c, .loop
-	ldh [H_MULTIPLIER], a
+	ldh [hMultiplier], a
 	call Multiply ; multiply damage by the random number, which is in the range [217, 255]
 	ld a, 255
-	ldh [H_DIVISOR], a
+	ldh [hDivisor], a
 	ld b, $4
 	call Divide ; divide the result by 255
 ; store the modified damage
-	ldh a, [H_QUOTIENT + 2]
+	ldh a, [hQuotient + 2]
 	ld hl, W_DAMAGE
 	ld [hli], a
-	ldh a, [H_QUOTIENT + 3]
+	ldh a, [hQuotient + 3]
 	ld [hl], a
 	ret
 
@@ -6654,35 +6654,35 @@ CalculateModifiedStat: ; 3eda5 (f:6da5)
 	ld b, 0
 	add hl, bc
 	xor a
-	ldh [H_MULTIPLICAND], a
+	ldh [hMultiplicand], a
 	ld a, [de]
-	ldh [H_MULTIPLICAND + 1], a
+	ldh [hMultiplicand + 1], a
 	inc de
 	ld a, [de]
-	ldh [H_MULTIPLICAND + 2], a
+	ldh [hMultiplicand + 2], a
 	ld a, [hli]
-	ldh [H_MULTIPLIER], a
+	ldh [hMultiplier], a
 	call Multiply
 	ld a, [hl]
-	ldh [H_DIVISOR], a
+	ldh [hDivisor], a
 	ld b, $4
 	call Divide
 	pop hl
-	ldh a, [H_DIVIDEND + 3]
+	ldh a, [hDividend + 3]
 	sub 999 % $100
-	ldh a, [H_DIVIDEND + 2]
+	ldh a, [hDividend + 2]
 	sbc 999 / $100
 	jp c, .storeNewStatValue
 ; cap the stat at 999
 	ld a, 999 / $100
-	ldh [H_DIVIDEND + 2], a
+	ldh [hDividend + 2], a
 	ld a, 999 % $100
-	ldh [H_DIVIDEND + 3], a
+	ldh [hDividend + 3], a
 .storeNewStatValue
-	ldh a, [H_DIVIDEND + 2]
+	ldh a, [hDividend + 2]
 	ld [hli], a
 	ld b, a
-	ldh a, [H_DIVIDEND + 3]
+	ldh a, [hDividend + 3]
 	ld [hl], a
 	or b
 	jr nz, .done
@@ -7665,34 +7665,34 @@ StatModifierUpEffect: ; 3f428 (f:7428)
 	add hl, bc
 	pop bc
 	xor a
-	ldh [H_NUMTOPRINT], a ; $ff96 (aliases: H_MULTIPLICAND)
+	ldh [hMultiplicand], a ; $ff96 (aliases: hMultiplicand)
 	ld a, [de]
-	ldh [$ff97], a
+	ldh [hMultiplicand + 1], a
 	inc de
 	ld a, [de]
-	ldh [$ff98], a
+	ldh [hMultiplicand + 2], a
 	ld a, [hli]
-	ldh [H_REMAINDER], a ; $ff99 (aliases: H_DIVISOR, H_MULTIPLIER, H_POWEROFTEN)
+	ldh [hMultiplier], a ; $ff99 (aliases: hDivisor, hMultiplier, hPowerOf10)
 	call Multiply
 	ld a, [hl]
-	ldh [H_REMAINDER], a ; $ff99 (aliases: H_DIVISOR, H_MULTIPLIER, H_POWEROFTEN)
+	ldh [hDivisor], a ; $ff99 (aliases: hDivisor, hMultiplier, hPowerOf10)
 	ld b, $4
 	call Divide
 	pop hl
-	ldh a, [$ff98]
+	ldh a, [hProduct + 3]
 	sub $e7
-	ldh a, [$ff97]
+	ldh a, [hProduct + 2]
 	sbc $3
 	jp c, Func_3f4c3
 	ld a, 999 / $100
-	ldh [$ff97], a
+	ldh [hMultiplicand + 1], a
 	ld a, 999 % $100
-	ldh [$ff98], a
+	ldh [hMultiplicand + 2], a
 
 Func_3f4c3: ; 3f4c3 (f:74c3)
-	ldh a, [$ff97]
+	ldh a, [hProduct + 2]
 	ld [hli], a
-	ldh a, [$ff98]
+	ldh a, [hProduct + 3]
 	ld [hl], a
 	pop hl
 asm_3f4ca: ; 3f4ca (f:74ca)
@@ -7893,28 +7893,28 @@ StatModifierDownEffectApply:
 	add hl, bc
 	pop bc
 	xor a
-	ldh [H_NUMTOPRINT], a ; $ff96 (aliases: H_MULTIPLICAND)
+	ldh [hMultiplicand], a ; $ff96 (aliases: hMultiplicand)
 	ld a, [de]
-	ldh [$ff97], a
+	ldh [hMultiplicand + 1], a
 	inc de
 	ld a, [de]
-	ldh [$ff98], a
+	ldh [hMultiplicand + 2], a
 	ld a, [hli]
-	ldh [H_REMAINDER], a ; $ff99 (aliases: H_DIVISOR, H_MULTIPLIER, H_POWEROFTEN)
+	ldh [hMultiplier], a ; $ff99 (aliases: hDivisor, hMultiplier, hPowerOf10)
 	call Multiply
 	ld a, [hl]
-	ldh [H_REMAINDER], a ; $ff99 (aliases: H_DIVISOR, H_MULTIPLIER, H_POWEROFTEN)
+	ldh [hDivisor], a ; $ff99 (aliases: hDivisor, hMultiplier, hPowerOf10)
 	ld b, $4
 	call Divide
 	pop hl
-	ldh a, [$ff98]
+	ldh a, [hProduct + 3]
 	ld b, a
-	ldh a, [$ff97]
+	ldh a, [hProduct + 2]
 	or b
 	jp nz, Func_3f624
-	ldh [$ff97], a
+	ldh [hMultiplicand + 1], a
 	ld a, $1
-	ldh [$ff98], a
+	ldh [hMultiplicand + 2], a
 
 Func_3f624: ; 3f624 (f:7624)
 	ldh a, [$ff97]

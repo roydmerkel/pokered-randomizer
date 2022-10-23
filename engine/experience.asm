@@ -10,15 +10,15 @@ CalcLevelFromExperience: ; 58f43 (16:4f43)
 	push hl
 	ld hl, wcfa8 ; current exp
 ; compare exp needed for level d with current exp
-	ldh a, [H_MULTIPLICAND + 2]
+	ldh a, [hExperience + 2]
 	ld c, a
 	ld a, [hld]
 	sub c
-	ldh a, [H_MULTIPLICAND + 1]
+	ldh a, [hExperience + 1]
 	ld c, a
 	ld a, [hld]
 	sbc c
-	ldh a, [H_MULTIPLICAND]
+	ldh a, [hExperience]
 	ld c, a
 	ld a, [hl]
 	sbc c
@@ -45,98 +45,98 @@ CalcExperience: ; 58f6a (16:4f6a)
 	add hl, bc
 	call CalcDSquared
 	ld a, d
-	ldh [H_MULTIPLIER], a ; $ff99
+	ldh [hMultiplier], a ; $ff99
 	call Multiply
 	ld a, [hl]
 	and $f0
 	swap a
-	ldh [H_MULTIPLIER], a ; $ff99
+	ldh [hMultiplier], a ; $ff99
 	call Multiply
 	ld a, [hli]
 	and $f
-	ldh [H_DIVISOR], a ; $ff99
+	ldh [hDivisor], a ; $ff99
 	ld b, $4
 	call Divide
-	ldh a, [H_MULTIPLICAND] ; $ff96 (aliases: H_NUMTOPRINT)
+	ldh a, [hQuotient + 1] ; $ff96 (aliases: hNumToPrint)
 	push af
-	ldh a, [H_MULTIPLICAND+1]
+	ldh a, [hQuotient + 2]
 	push af
-	ldh a, [H_MULTIPLICAND+2]
+	ldh a, [hQuotient + 3]
 	push af
 	call CalcDSquared
 	ld a, [hl]
 	and $7f
-	ldh [H_MULTIPLIER], a ; $ff99
+	ldh [hMultiplier], a ; $ff99
 	call Multiply
-	ldh a, [H_MULTIPLICAND] ; $ff96 (aliases: H_NUMTOPRINT)
+	ldh a, [hProduct + 1] ; $ff96 (aliases: hNumToPrint)
 	push af
-	ldh a, [H_MULTIPLICAND+1]
+	ldh a, [hProduct + 2]
 	push af
-	ldh a, [H_MULTIPLICAND+2]
+	ldh a, [hProduct + 3]
 	push af
 	ld a, [hli]
 	push af
 	xor a
-	ldh [H_MULTIPLICAND], a ; $ff96
-	ldh [H_MULTIPLICAND+1], a
+	ldh [hMultiplicand], a ; $ff96
+	ldh [hMultiplicand + 1], a
 	ld a, d
-	ldh [H_MULTIPLICAND+2], a
+	ldh [hMultiplicand + 2], a
 	ld a, [hli]
-	ldh [H_MULTIPLIER], a
+	ldh [hMultiplier], a
 	call Multiply
 	ld b, [hl]
-	ldh a, [H_MULTIPLICAND+2]
+	ldh a, [hProduct + 3]
 	sub b
-	ldh [H_MULTIPLICAND+2], a
+	ldh [hProduct + 3], a
 	ld b, $0
-	ldh a, [H_MULTIPLICAND+1]
+	ldh a, [hProduct + 2]
 	sbc b
-	ldh [H_MULTIPLICAND+1], a
-	ldh a, [H_MULTIPLICAND] ; $ff96
+	ldh [hProduct + 2], a
+	ldh a, [hProduct + 1] ; $ff96
 	sbc b
-	ldh [H_MULTIPLICAND], a ; $ff96
+	ldh [hProduct + 1], a ; $ff96
 	pop af
 	and $80
 	jr nz, .subtractSquaredTerm ; check sign
 	pop bc
-	ldh a, [H_MULTIPLICAND+2]
+	ldh a, [hExperience + 2]
 	add b
-	ldh [H_MULTIPLICAND+2], a
+	ldh [hExperience + 2], a
 	pop bc
-	ldh a, [H_MULTIPLICAND+1]
+	ldh a, [hExperience + 1]
 	adc b
-	ldh [H_MULTIPLICAND+1], a
+	ldh [hExperience + 1], a
 	pop bc
-	ldh a, [H_MULTIPLICAND]
+	ldh a, [hExperience]
 	adc b
-	ldh [H_MULTIPLICAND], a
+	ldh [hExperience], a
 	jr .addCubedTerm
 .subtractSquaredTerm
 	pop bc
-	ldh a, [H_MULTIPLICAND+2]
+	ldh a, [hExperience + 2]
 	sub b
-	ldh [H_MULTIPLICAND+2], a
+	ldh [hExperience + 2], a
 	pop bc
-	ldh a, [H_MULTIPLICAND+1]
+	ldh a, [hExperience + 1]
 	sbc b
-	ldh [H_MULTIPLICAND+1], a
+	ldh [hExperience + 1], a
 	pop bc
-	ldh a, [H_MULTIPLICAND]
+	ldh a, [hExperience]
 	sbc b
-	ldh [H_MULTIPLICAND], a
+	ldh [hExperience], a
 .addCubedTerm
 	pop bc
-	ldh a, [H_MULTIPLICAND+2]
+	ldh a, [hExperience + 2]
 	add b
-	ldh [H_MULTIPLICAND+2], a
+	ldh [hExperience + 2], a
 	pop bc
-	ldh a, [H_MULTIPLICAND+1]
+	ldh a, [hExperience + 1]
 	adc b
-	ldh [H_MULTIPLICAND+1], a
+	ldh [hExperience + 1], a
 	pop bc
-	ldh a, [H_MULTIPLICAND]
+	ldh a, [hExperience]
 	adc b
-	ldh [H_MULTIPLICAND], a
+	ldh [hExperience], a
 	ret
 
 .erratic
@@ -153,22 +153,22 @@ CalcExperience: ; 58f6a (16:4f6a)
     add hl, de
     add hl, de
     ld a, [hli]
-	ldh [H_MULTIPLICAND], a
+	ldh [hExperience], a
     ld a, [hli]
-	ldh [H_MULTIPLICAND+1], a
+	ldh [hExperience + 1], a
     ld a, [hli]
-	ldh [H_MULTIPLICAND+2], a
+	ldh [hExperience + 2], a
 	pop de
 	ret
 
 ; calculates d*d
 CalcDSquared: ; 59010 (16:5010)
 	xor a
-	ldh [H_MULTIPLICAND], a ; $ff96 (aliases: H_NUMTOPRINT)
-	ldh [H_MULTIPLICAND+1], a
+	ldh [hMultiplicand], a ; $ff96 (aliases: hNumToPrint)
+	ldh [hMultiplicand + 1], a
 	ld a, d
-	ldh [H_MULTIPLICAND+2], a
-	ldh [H_MULTIPLIER], a ; $ff99 (aliases: H_DIVISOR, H_REMAINDER, H_POWEROFTEN)
+	ldh [hMultiplicand + 2], a
+	ldh [hMultiplier], a ; $ff99 (aliases: hDivisor, hRemainder, hPowerOf10)
 	jp Multiply
 
 ; each entry has the following scheme:

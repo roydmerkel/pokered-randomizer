@@ -1281,17 +1281,17 @@ AIUseDireHit: ; 0x3a7c2 unused
 	jp AIPrintItemUse
 
 Func_3a7cf: ; 3a7cf (e:67cf)
-	ldh [H_DIVISOR],a
+	ldh [hDivisor],a
 	ld hl,wEnemyMonMaxHP
 	ld a,[hli]
-	ldh [H_DIVIDEND],a
+	ldh [hDividend],a
 	ld a,[hl]
-	ldh [H_DIVIDEND + 1],a
+	ldh [hDividend + 1],a
 	ld b,2
 	call Divide
-	ldh a,[H_QUOTIENT + 3]
+	ldh a,[hQuotient + 3]
 	ld c,a
-	ldh a,[H_QUOTIENT + 2]
+	ldh a,[hQuotient + 2]
 	ld b,a
 	ld hl,wEnemyMonHP + 1
 	ld a,[hld]

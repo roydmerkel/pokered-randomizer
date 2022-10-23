@@ -12,7 +12,7 @@ UpdatePlayerSprite: ; 4e31 (1:4e31)
 ; the maximum number for map tiles
 .checkIfTextBoxInFrontOfSprite
 	aCoord 8, 9
-	ldh [$ff93], a
+	ldh [hTilePlayerStandingOn], a
 	cp $60
 	jr c, .lowerLeftTileIsMapTile
 .disableSprite
@@ -65,7 +65,7 @@ UpdatePlayerSprite: ; 4e31 (1:4e31)
 	ld a, [hl]
 	inc a
 	ld [hl], a
-	cp $4
+	cp 4
 	jr nz, .asm_4eab
 	xor a
 	ld [hl], a
@@ -81,11 +81,11 @@ UpdatePlayerSprite: ; 4e31 (1:4e31)
 	add b
 	ld [wSpriteStateData1 + 2], a
 .asm_4eb6
-	ldh a, [$ff93]
+	ldh a, [hTilePlayerStandingOn]
 	ld c, a
 	ld a, [W_GRASSTILE]
 	cp c
-	ld a, $0
+	ld a, 0
 	jr nz, .asm_4ec3
 	ld a, $80
 .asm_4ec3
@@ -534,7 +534,7 @@ CheckSpriteAvailability: ; 50dc (1:50dc)
 	ld l, a
 	ld a, [W_GRASSTILE]
 	cp c
-	ld a, $0
+	ld a, 0
 	jr nz, .notInGrass
 	ld a, $80
 .notInGrass
@@ -553,7 +553,7 @@ UpdateSpriteImage: ; 5157 (1:5157)
 	ld a, [hl]         ; c1x9: facing direction
 	add b
 	ld b, a
-	ldh a, [$ff93]  ; current sprite offset
+	ldh a, [hTilePlayerStandingOn]  ; current sprite offset
 	add b
 	ld b, a
 	ldh a, [H_CURRENTSPRITEOFFSET]
@@ -776,7 +776,7 @@ Func_5236: ; 5236 (1:5236)
 	ld hl, wcf18
 	dec [hl]
 	ret nz
-	ld a, $8
+	ld a, 8
 	ld [wcf18], a
 	ld hl, wNPCMovementDirections2Index
 	inc [hl]
@@ -785,7 +785,7 @@ Func_5236: ; 5236 (1:5236)
 Func_52a6: ; 52a6 (1:52a6)
 	xor a
 	ld [wNPCMovementDirections2Index], a
-	ld a, $8
+	ld a, 8
 	ld [wcf18], a
 	jp Func_52c3
 
@@ -851,7 +851,7 @@ Func_5301: ; 5301 (1:5301)
 	ld a, [hl]
 	inc a
 	ld [hl], a
-	cp $4
+	cp 4
 	ret nz
 	xor a
 	ld [hl], a

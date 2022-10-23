@@ -224,14 +224,14 @@ ItemUseBall: ; d687 (3:5687)
 .noAilments	;$572e
 	push bc		;save RANDOM number
 	xor a
-	ldh [H_MULTIPLICAND],a
+	ldh [hMultiplicand],a
 	ld hl,wEnemyMonMaxHP
 	ld a,[hli]
-	ldh [H_MULTIPLICAND + 1],a
+	ldh [hMultiplicand + 1],a
 	ld a,[hl]
-	ldh [H_MULTIPLICAND + 2],a
+	ldh [hMultiplicand + 2],a
 	ld a,255
-	ldh [H_MULTIPLIER],a
+	ldh [hMultiplier],a
 	call Multiply	; MaxHP * 255
 	ld a,[wcf91]
 	cp a,GREAT_BALL
@@ -239,7 +239,7 @@ ItemUseBall: ; d687 (3:5687)
 	jr nz,.next7
 	ld a,8
 .next7	;$574d
-	ldh [H_DIVISOR],a
+	ldh [hDivisor],a
 	ld b,4		; number of bytes in dividend
 	call Divide
 	ld hl,wEnemyMonHP
@@ -258,39 +258,39 @@ ItemUseBall: ; d687 (3:5687)
 	jr nz,.next8
 	inc a
 .next8	;$5766
-	ldh [H_DIVISOR],a
+	ldh [hDivisor],a
 	ld b,4
 	call Divide	; ((MaxHP * 255) / BallFactor) / (CurHP / 4)
-	ldh a,[H_QUOTIENT + 2]
+	ldh a,[hQuotient + 2]
 	and a
 	jr z,.next9
 	ld a,255
-	ldh [H_QUOTIENT + 3],a
+	ldh [hQuotient + 3],a
 .next9	;$5776
 	pop bc
 	ld a,[wEnemyMonCatchRate]	;enemy: Catch Rate
 	cp b
 	jr c,.next10
-	ldh a,[H_QUOTIENT + 2]
+	ldh a,[hQuotient + 2]
 	and a
 	jr nz,.BallSuccess ; if ((MaxHP * 255) / BallFactor) / (CurHP / 4) > 0x255, automatic success
 	call Random
 	ld b,a
-	ldh a,[H_QUOTIENT + 3]
+	ldh a,[hQuotient + 3]
 	cp b
 	jr c,.next10
 .BallSuccess	;$578b
 	jr .BallSuccess2
 .next10	;$578d
-	ldh a,[H_QUOTIENT + 3]
+	ldh a,[hQuotient + 3]
 	ld [wd11e],a
 	xor a
-	ldh [H_MULTIPLICAND],a
-	ldh [H_MULTIPLICAND + 1],a
+	ldh [hMultiplicand],a
+	ldh [hMultiplicand + 1],a
 	ld a,[wEnemyMonCatchRate]	;enemy: Catch Rate
-	ldh [H_MULTIPLICAND + 2],a
+	ldh [hMultiplicand + 2],a
 	ld a,100
-	ldh [H_MULTIPLIER],a
+	ldh [hMultiplier],a
 	call Multiply	; CatchRate * 100
 	ld a,[wcf91]
 	ld b,255
@@ -304,18 +304,18 @@ ItemUseBall: ; d687 (3:5687)
 	jr z,.next11
 .next11	;$57b8
 	ld a,b
-	ldh [H_DIVISOR],a
+	ldh [hDivisor],a
 	ld b,4
 	call Divide
-	ldh a,[H_QUOTIENT + 2]
+	ldh a,[hQuotient + 2]
 	and a
 	ld b,$63
 	jr nz,.next12
 	ld a,[wd11e]
-	ldh [H_MULTIPLIER],a
+	ldh [hMultiplier],a
 	call Multiply
 	ld a,255
-	ldh [H_DIVISOR],a
+	ldh [hDivisor],a
 	ld b,4
 	call Divide
 	ld a,[wEnemyMonStatus]	;status ailments
@@ -326,11 +326,11 @@ ItemUseBall: ; d687 (3:5687)
 	jr z,.next14
 	ld b,10
 .next14	;$57e6
-	ldh a,[H_QUOTIENT + 3]
+	ldh a,[hQuotient + 3]
 	add b
-	ldh [H_QUOTIENT + 3],a
+	ldh [hQuotient + 3],a
 .next13	;$57eb
-	ldh a,[H_QUOTIENT + 3]
+	ldh a,[hQuotient + 3]
 	cp a,10
 	ld b,$20
 	jr c,.next12
@@ -924,18 +924,18 @@ ItemUseMedicine: ; dabb (3:5abb)
 	call AddNTimes
 	ld a,[hli]
 	ld [wHPBarMaxHP + 1],a
-	ldh [H_DIVIDEND],a
+	ldh [hDividend],a
 	ld a,[hl]
 	ld [wHPBarMaxHP],a
-	ldh [H_DIVIDEND + 1],a
+	ldh [hDividend + 1],a
 	ld a,5
-	ldh [H_DIVISOR],a
+	ldh [hDivisor],a
 	ld b,2 ; number of bytes
 	call Divide ; get 1/5 of max HP of pokemon that used Softboiled
 	ld bc,wPartyMon1HP - wPartyMon1MaxHP
 	add hl,bc ; hl now points to LSB of current HP of pokemon that used Softboiled
 ; subtract 1/5 of max HP from current HP of pokemon that used Softboiled
-	ldh a,[H_QUOTIENT + 3]
+	ldh a,[hQuotient + 3]
 	push af
 	ld b,a
 	ld a,[hl]
@@ -943,7 +943,7 @@ ItemUseMedicine: ; dabb (3:5abb)
 	sub b
 	ld [hld],a
 	ld [wHPBarNewHP],a
-	ldh a,[H_QUOTIENT + 2]
+	ldh a,[hQuotient + 2]
 	ld b,a
 	ld a,[hl]
 	ld [wHPBarOldHP+1],a
@@ -2392,13 +2392,13 @@ RestoreBonusPP: ; e606 (3:6606)
 AddBonusPP: ; e642 (3:6642)
 	push bc
 	ld a,[de] ; normal max PP of move
-	ldh [H_DIVIDEND + 3],a
+	ldh [hDividend + 3],a
 	xor a
-	ldh [H_DIVIDEND],a
-	ldh [H_DIVIDEND + 1],a
-	ldh [H_DIVIDEND + 2],a
+	ldh [hDividend],a
+	ldh [hDividend + 1],a
+	ldh [hDividend + 2],a
 	ld a,5
-	ldh [H_DIVISOR],a
+	ldh [hDivisor],a
 	ld b,4
 	call Divide
 	ld a,[hl] ; move PP
@@ -2409,7 +2409,7 @@ AddBonusPP: ; e642 (3:6642)
 	srl a
 	ld c,a ; c = number of PP Ups used
 .loop
-	ldh a,[H_QUOTIENT + 3]
+	ldh a,[hQuotient + 3]
 	cp a,8 ; is the amount greater than or equal to 8?
 	jr c,.addAmount
 	ld a,7 ; cap the amount at 7
@@ -2751,13 +2751,13 @@ Func_e7a4: ; e7a4 (3:67a4)
 	ld d, a
 	callab CalcExperience
 	pop de
-	ldh a, [H_NUMTOPRINT] ; $ff96 (aliases: H_MULTIPLICAND)
+	ldh a, [hExperience] ; $ff96 (aliases: hMultiplicand)
 	ld [de], a
 	inc de
-	ldh a, [$ff97]
+	ldh a, [hExperience + 1]
 	ld [de], a
 	inc de
-	ldh a, [$ff98]
+	ldh a, [hExperience + 2]
 	ld [de], a
 	inc de
 	xor a

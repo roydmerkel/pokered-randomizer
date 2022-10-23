@@ -239,21 +239,21 @@ StartMenu_Pokemon: ; 130a9 (4:70a9)
 	ld bc,wPartyMon2 - wPartyMon1
 	call AddNTimes
 	ld a,[hli]
-	ldh [H_DIVIDEND],a
+	ldh [hDividend],a
 	ld a,[hl]
-	ldh [H_DIVIDEND + 1],a
+	ldh [hDividend + 1],a
 	ld a,5
-	ldh [H_DIVISOR],a
+	ldh [hDivisor],a
 	ld b,2 ; number of bytes
 	call Divide
 	ld bc,wPartyMon1HP - wPartyMon1MaxHP
 	add hl,bc
 	ld a,[hld]
 	ld b,a
-	ldh a,[H_QUOTIENT + 3]
+	ldh a,[hQuotient + 3]
 	sub b
 	ld b,[hl]
-	ldh a,[H_QUOTIENT + 2]
+	ldh a,[hQuotient + 2]
 	sbc b
 	jp nc,.notHealthyEnough
 	ld a,[wcc2b]
@@ -780,10 +780,10 @@ SwitchPartyMon_Stats: ; 13653 (4:7653)
 	inc d
 .asm_13696
 	ld a, [hl]
-	ldh [H_DIVIDEND], a ; $ff95 (aliases: H_PRODUCT, H_PASTLEADINGZEROES, H_QUOTIENT)
+	ldh [hSwapTemp], a ; $ff95 (aliases: hProduct, hPastLeadingZeros, hQuotient)
 	ld a, [de]
 	ld [hl], a
-	ldh a, [H_DIVIDEND] ; $ff95 (aliases: H_PRODUCT, H_PASTLEADINGZEROES, H_QUOTIENT)
+	ldh a, [hSwapTemp] ; $ff95 (aliases: hProduct, hPastLeadingZeros, hQuotient)
 	ld [de], a
 	ld hl, wPartyMons
 	ld bc, wPartyMon2 - wPartyMon1

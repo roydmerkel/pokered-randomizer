@@ -19,7 +19,7 @@ PrintBeginningBattleText: ; 58d99 (16:4d99)
 	jr .wildBattle
 .trainerBattle
 	call .playSFX
-	ld c, $14
+	ld c, 20
 	call DelayFrames
 	ld hl, TrainerWantsToFightText
 .wildBattle
@@ -101,16 +101,16 @@ PrintSendOutMonMessage: ; 58e59 (16:4e59)
 	ld hl, GoText
 	jr z, .printText
 	xor a
-	ldh [H_MULTIPLICAND], a
+	ldh [hMultiplicand], a
 	ld hl, wEnemyMonHP
 	ld a, [hli]
 	ld [wcce3], a
-	ldh [H_MULTIPLICAND + 1], a
+	ldh [hMultiplicand + 1], a
 	ld a, [hl]
 	ld [wcce4], a
-	ldh [H_MULTIPLICAND + 2], a
+	ldh [hMultiplicand + 2], a
 	ld a, 25
-	ldh [H_MULTIPLIER], a
+	ldh [hMultiplier], a
 	call Multiply
 	ld hl, wEnemyMonMaxHP
 	ld a, [hli]
@@ -120,10 +120,10 @@ PrintSendOutMonMessage: ; 58e59 (16:4e59)
 	srl a
 	rr b
 	ld a, b
-	ld b, $4
-	ldh [H_DIVISOR], a ; enemy mon max HP divided by 4
+	ld b, 4
+	ldh [hDivisor], a ; enemy mon max HP divided by 4
 	call Divide
-	ldh a, [H_QUOTIENT + 3] ; a = (enemy mon current HP * 25) / (enemy max HP / 4); this approximates the current percentage of max HP
+	ldh a, [hQuotient + 3] ; a = (enemy mon current HP * 25) / (enemy max HP / 4); this approximates the current percentage of max HP
 	ld hl, GoText ; 70% or greater
 	cp 70
 	jr nc, .printText
@@ -179,14 +179,14 @@ PlayerMon2Text: ; 58ed7 (16:4ed7)
 	dec hl
 	ld a, [de]
 	sub b
-	ldh [$ff98], a
+	ldh [hMultiplicand + 2], a
 	dec de
 	ld b, [hl]
 	ld a, [de]
 	sbc b
-	ldh [$ff97], a
-	ld a, $19
-	ldh [H_POWEROFTEN], a
+	ldh [hMultiplicand + 1], a
+	ld a, 25
+	ldh [hMultiplier], a
 	call Multiply
 	ld hl, wEnemyMonMaxHP
 	ld a, [hli]
@@ -196,20 +196,20 @@ PlayerMon2Text: ; 58ed7 (16:4ed7)
 	srl a
 	rr b
 	ld a, b
-	ld b, $4
-	ldh [H_POWEROFTEN], a
+	ld b, 4
+	ldh [hDivisor], a
 	call Divide
 	pop bc
 	pop de
-	ldh a, [$ff98]
+	ldh a, [hQuotient + 3]
 	ld hl, EnoughText
 	and a
 	ret z
 	ld hl, ComeBackText
-	cp $1e
+	cp 30
 	ret c
 	ld hl, OKExclamationText
-	cp $46
+	cp 70
 	ret c
 	ld hl, GoodText
 	ret

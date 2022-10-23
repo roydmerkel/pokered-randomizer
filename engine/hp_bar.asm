@@ -6,7 +6,7 @@ HPBarLength: ; f9dc (3:79dc)
 GetHPBarLength: ; f9df (3:79df)
 	push hl
 	xor a
-	ld hl, H_MULTIPLICAND
+	ld hl, hMultiplicand
 	ld [hli], a
 	ld a, b
 	ld [hli], a
@@ -21,22 +21,22 @@ GetHPBarLength: ; f9df (3:79df)
 	rr e
 	srl d
 	rr e
-	ldh a, [H_MULTIPLICAND+1]
+	ldh a, [hMultiplicand+1]
 	ld b, a
-	ldh a, [H_MULTIPLICAND+2]
+	ldh a, [hMultiplicand+2]
 	srl b              ; divide multiplication result as well
 	rr a
 	srl b
 	rr a
-	ldh [H_MULTIPLICAND+2], a
+	ldh [hMultiplicand+2], a
 	ld a, b
-	ldh [H_MULTIPLICAND+1], a
+	ldh [hMultiplicand+1], a
 .maxHPSmaller256
 	ld a, e
-	ldh [H_DIVISOR], a
+	ldh [hDivisor], a
 	ld b, $4
 	call Divide
-	ldh a, [H_MULTIPLICAND+2]
+	ldh a, [hMultiplicand+2]
 	ld e, a            ; e = bc * 48 / de (num of pixels of HP bar)
 	pop hl
 	and a
@@ -143,7 +143,7 @@ UpdateHPBar_AnimateHPBar: ; fab1 (3:7ab1)
 	push de
 	ld d, $6
 	call DrawHPBar
-	ld c, $2
+	ld c, 2
 	call DelayFrames
 	pop de
 	ld a, [wHPBarDelta] ; +1 or -1

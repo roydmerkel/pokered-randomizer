@@ -55,15 +55,15 @@ GainExperience: ; 5524f (15:524f)
 	jr .gainStatExpLoop
 .asm_552a1
 	xor a
-	ldh [H_MULTIPLICAND], a
-	ldh [H_MULTIPLICAND + 1], a
+	ldh [hMultiplicand], a
+	ldh [hMultiplicand + 1], a
 	ld a, [wEnemyMonBaseExp]
-	ldh [H_MULTIPLICAND + 2], a
+	ldh [hMultiplicand + 2], a
 	ld a, [wEnemyMonLevel]
-	ldh [H_MULTIPLIER], a
+	ldh [hMultiplier], a
 	call Multiply
 	ld a, 7
-	ldh [H_DIVISOR], a
+	ldh [hDivisor], a
 	ld b, 4
 	call Divide
 	ld hl, -((wPartyMon1HPExp + 1) - wPartyMon1OTID + 4 * 2)
@@ -91,12 +91,12 @@ GainExperience: ; 5524f (15:524f)
 	inc hl
 ; add the gained exp to the party mon's exp
 	ld b, [hl]
-	ldh a, [H_QUOTIENT + 3]
+	ldh a, [hQuotient + 3]
 	ld [wcf4c], a
 	add b
 	ld [hld], a
 	ld b, [hl]
-	ldh a, [H_QUOTIENT + 2]
+	ldh a, [hQuotient + 2]
 	ld [wcf4b], a
 	adc b
 	ld [hl], a
@@ -311,14 +311,14 @@ DivideExpDataByNumMonsGainingExp: ; 5546c (15:546c)
 	ld c, $7
 .divideLoop
 	xor a
-	ldh [H_DIVIDEND], a
+	ldh [hDividend], a
 	ld a, [hl]
-	ldh [H_DIVIDEND + 1], a
+	ldh [hDividend + 1], a
 	ld a, [wd11e]
-	ldh [H_DIVISOR], a
+	ldh [hDivisor], a
 	ld b, $2
 	call Divide ; divide value by number of mons gaining exp
-	ldh a, [H_QUOTIENT + 3]
+	ldh a, [hQuotient + 3]
 	ld [hli], a
 	dec c
 	jr nz, .divideLoop
@@ -326,17 +326,17 @@ DivideExpDataByNumMonsGainingExp: ; 5546c (15:546c)
 
 ; multiplies exp by 1.5
 BoostExp: ; 5549f (15:549f)
-	ldh a, [H_QUOTIENT + 2]
+	ldh a, [hQuotient + 2]
 	ld b, a
-	ldh a, [H_QUOTIENT + 3]
+	ldh a, [hQuotient + 3]
 	ld c, a
 	srl b
 	rr c
 	add c
-	ldh [H_QUOTIENT + 3], a
-	ldh a, [H_QUOTIENT + 2]
+	ldh [hQuotient + 3], a
+	ldh a, [hQuotient + 2]
 	adc b
-	ldh [H_QUOTIENT + 2], a
+	ldh [hQuotient + 2], a
 	ret
 
 GainedText: ; 554b2 (15:54b2)

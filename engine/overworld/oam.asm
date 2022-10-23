@@ -13,12 +13,12 @@ PrepareOAMData:
 
 .asm_4b1e
 	xor a
-	ldh [$ff90], a
+	ldh [hOAMBufferOffset], a
 .asm_4b21
-	ldh [$ff8f], a
+	ldh [hSpriteOffset2], a
 
 	ld d, wSpriteStateData1 / $100
-	ldh a, [$ff8f]
+	ldh a, [hSpriteOffset2]
 	ld e, a
 	ld a, [de] ; c1x0
 	and a
@@ -53,7 +53,7 @@ PrepareOAMData:
 	ld e, a
 	ld a, [de] ; c2x7
 	and $80
-	ldh [$ff94], a ; temp store sprite priority
+	ldh [hSpritePriority], a ; temp store sprite priority
 	pop de
 
 	ld h, 0
@@ -72,16 +72,16 @@ PrepareOAMData:
 
 	call Func_4bd1
 
-	ldh a, [$ff90]
+	ldh a, [hOAMBufferOffset]
 	ld e, a
 	ld d, wOAMBuffer / $100
 .tile
-	ldh a, [$ff92]            ; temp for sprite Y position
+	ldh a, [hSpriteScreenY]            ; temp for sprite Y position
 	add $10                  ; Y=16 is top of screen (Y=0 is invisible)
 	add [hl]                 ; add Y offset from table
 	ld [de], a               ; write new sprite OAM Y position
 	inc hl
-	ldh a, [$ff91]            ; temp for sprite X position
+	ldh a, [hSpriteScreenX]            ; temp for sprite X position
 	add $8                   ; X=8 is left of screen (X=0 is invisible)
 	add [hl]                 ; add X offset from table
 	inc e
@@ -119,7 +119,7 @@ PrepareOAMData:
 	ld a, [hl]
 	bit 1, a ; sprite priority
 	jr z, .fg
-	ldh a, [$ff94] ; facing priority
+	ldh a, [hSpritePriority] ; facing priority
 	or [hl]
 .fg
 	inc hl
@@ -129,16 +129,16 @@ PrepareOAMData:
 	jr z, .tile
 
 	ld a, e
-	ldh [$ff90], a
+	ldh [hOAMBufferOffset], a
 
 .asm_4bad
-	ldh a, [$ff8f]
+	ldh a, [hSpriteOffset2]
 	add $10
 	cp $100 % $100
 	jp nz, .asm_4b21
 
 	; Clear unused OAM.
-	ldh a, [$ff90]
+	ldh a, [hOAMBufferOffset]
 	ld l, a
 	ld h, wOAMBuffer / $100
 	ld de, $4
@@ -159,20 +159,20 @@ Func_4bd1: ; 4bd1 (1:4bd1)
 	inc e
 	inc e
 	ld a, [de] ; c1x4
-	ldh [$ff92], a
+	ldh [hSpriteScreenY], a
 	inc e
 	inc e
 	ld a, [de] ; c1x6
-	ldh [$ff91], a
-	ld a, $4
+	ldh [hSpriteScreenX], a
+	ld a, 4
 	add e
 	ld e, a
-	ldh a, [$ff92]
-	add $4
+	ldh a, [hSpriteScreenY]
+	add 4
 	and $f0
 	ld [de], a ; c1xa (y)
 	inc e
-	ldh a, [$ff91]
+	ldh a, [hSpriteScreenX]
 	and $f0
 	ld [de], a  ; c1xb (x)
 	ret

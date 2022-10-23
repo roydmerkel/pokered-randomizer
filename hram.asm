@@ -76,23 +76,122 @@ hLoadSpriteTemp2 EQU $FF8E
 
 
 hEnemySpeed EQU $FF8D
+
+
+
+hSpriteOffset2 EQU $FF8F
+hOAMBufferOffset EQU $FF90
+hSpriteScreenX EQU $FF91
+hSpriteScreenY EQU $FF92
+
+
+hFF8F EQU $FF8F
+hFF90 EQU $FF90
+hFF91 EQU $FF91
+hFF92 EQU $FF92
+
+
+hTilePlayerStandingOn EQU $FF93
+
+hSpritePriority EQU $FF94
+
+
 ; Multiplcation and division variables are meant
 ; to overlap for back-to-back usage. Big endian.
 
-H_MULTIPLICAND EQU $FF96 ; 3 bytes
-H_MULTIPLIER   EQU $FF99 ; 1 byte
-H_PRODUCT      EQU $FF95 ; 4 bytes
 
-H_DIVIDEND     EQU $FF95 ; 4 bytes
-H_DIVISOR      EQU $FF99 ; 1 byte
-H_QUOTIENT     EQU $FF95 ; 4 bytes
-H_REMAINDER    EQU $FF99 ; 1 byte
+hMultiplicand EQU $FF96 ; 3 bytes
+hMultiplier   EQU $FF99 ; 1 byte
+
+hMultiplyBuffer EQU $FF9B ; 4 bytes
+
+hProduct      EQU $FF95 ; 4 bytes
+
+hDividend     EQU $FF95 ; 4 bytes
+hDivisor      EQU $FF99 ; 1 byte
+hDivideBuffer EQU $FF9A ; 5 bytes
+
+hQuotient     EQU $FF95 ; 4 bytes
+hRemainder    EQU $FF99 ; 1 byte
 
 ; PrintNumber (big endian).
-H_PASTLEADINGZEROES EQU $FF95 ; last char printed
-H_NUMTOPRINT        EQU $FF96 ; 3 bytes
-H_POWEROFTEN        EQU $FF99 ; 3 bytes
-H_SAVEDNUMTOPRINT   EQU $FF9C ; 3 bytes
+hPastLeadingZeros EQU $FF95 ; last char printed
+hNumToPrint        EQU $FF96 ; 3 bytes
+hPowerOf10        EQU $FF99 ; 3 bytes
+hSavedNumToPrint   EQU $FF9C ; 3 bytes
+
+
+hNPCMovementDirections2Index EQU $FF95
+hNPCSpriteOffset EQU $FF95
+; distance in steps between NPC and player
+hNPCPlayerYDistance EQU $FF95
+
+hNPCPlayerXDistance EQU $FF96
+
+hFindPathNumSteps EQU $FF97
+; bit 0: set when the end of the path's Y coordinate matches the target's
+; bit 1: set when the end of the path's X coordinate matches the target's
+; When both bits are set, the end of the path is at the target's position
+; (i.e. the path has been found).
+hFindPathFlags EQU $FF98
+hFindPathYProgress EQU $FF99
+hFindPathXProgress EQU $FF9A
+; 0 = from player to NPC
+; 1 = from NPC to player
+hNPCPlayerRelativePosPerspective EQU $FF9B
+
+; bit 0:
+; 0 = target is to the south or aligned
+; 1 = target is to the north
+; bit 1:
+; 0 = target is to the east or aligned
+; 1 = target is to the west
+hNPCPlayerRelativePosFlags EQU $FF9D
+
+
+hSwapItemID EQU $FF95
+hSwapItemQuantity EQU $FF96
+
+hSignCoordPointer EQU $FF95
+
+
+
+
+
+
+hMutateWY EQU $FF96
+hMutateWX EQU $FF97
+
+
+; temp value used when swapping bytes or words
+hSwapTemp EQU $FF95
+hExperience EQU $FF96 ; bytes
+
+
+
+hMoney EQU $FF9F ; 3 byes FFA0 FFA1
+
+; some code zeroes this for no reason when writing a coin amount
+hUnusedCoinsByte EQU $FF9F
+hCoins EQU $FFA0 ; 2 bytes FFA1
+
+
+hDivideBCDDivisor EQU $FFA2
+hDivideBCDQuotient EQU $FFA2 ; 3 bytes A3 A4
+
+hDivideBCDBuffer EQU $FFA5 ; 3 bytes A6 A7
+
+
+
+
+hSerialReceivedNewData EQU $FFA9
+; $01 = using external clock
+; $02 = using internal clock
+; $ff = establishing connection
+hSerialConnectionStatus EQU $FFAA
+hSerialIgnoringInitialData EQU $FFAB
+hSerialSendData EQU $FFAC
+hSerialReceiveData EQU $FFAD
 
 ; these values are copied to SCX, SCY, and WY during V-blank
 hSCX EQU $FFAE

@@ -3703,10 +3703,10 @@ CalcStats:: ; 3936 (0:3936)
 .statsLoop
 	inc c
 	call CalcStat
-	ldh a, [H_MULTIPLICAND+1]
+	ldh a, [hMultiplicand+1]
 	ld [de], a
 	inc de
-	ldh a, [H_MULTIPLICAND+2]
+	ldh a, [hMultiplicand+2]
 	ld [de], a
 	inc de
 	ld a, c
@@ -3739,14 +3739,14 @@ CalcStat:: ; 394a (0:394a)
 	add hl, bc          ; skip to corresponding stat exp value
 .statExpLoop            ; calculates ceil(Sqrt(stat exp)) in b
 	xor a
-	ldh [H_MULTIPLICAND], a
-	ldh [H_MULTIPLICAND+1], a
+	ldh [hMultiplicand], a
+	ldh [hMultiplicand+1], a
 	inc b               ; increment current stat exp bonus
 	ld a, b
 	cp $ff
 	jr z, .statExpDone
-	ldh [H_MULTIPLICAND+2], a
-	ldh [H_MULTIPLIER], a
+	ldh [hMultiplicand+2], a
+	ldh [hMultiplier], a
 	call Multiply
 	ld a, [hld]
 	ld d, a
@@ -3834,22 +3834,22 @@ CalcStat:: ; 394a (0:394a)
 	jr nc, .noCarry2
 	inc d                     ; da = (Base + IV) * 2 + ceil(Sqrt(stat exp)) / 4
 .noCarry2
-	ldh [H_MULTIPLICAND+2], a
+	ldh [hMultiplicand+2], a
 	ld a, d
-	ldh [H_MULTIPLICAND+1], a
+	ldh [hMultiplicand+1], a
 	xor a
-	ldh [H_MULTIPLICAND], a
+	ldh [hMultiplicand], a
 	ld a, [W_CURENEMYLVL] ; W_CURENEMYLVL
-	ldh [H_MULTIPLIER], a
+	ldh [hMultiplier], a
 	call Multiply            ; ((Base + IV) * 2 + ceil(Sqrt(stat exp)) / 4) * Level
-	ldh a, [H_MULTIPLICAND]
-	ldh [H_DIVIDEND], a
-	ldh a, [H_MULTIPLICAND+1]
-	ldh [H_DIVIDEND+1], a
-	ldh a, [H_MULTIPLICAND+2]
-	ldh [H_DIVIDEND+2], a
+	ldh a, [hMultiplicand]
+	ldh [hDividend], a
+	ldh a, [hMultiplicand+1]
+	ldh [hDividend+1], a
+	ldh a, [hMultiplicand+2]
+	ldh [hDividend+2], a
 	ld a, $64
-	ldh [H_DIVISOR], a
+	ldh [hDivisor], a
 	ld a, $3
 	ld b, a
 	call Divide             ; (((Base + IV) * 2 + ceil(Sqrt(stat exp)) / 4) * Level) / 100
@@ -3859,38 +3859,38 @@ CalcStat:: ; 394a (0:394a)
 	jr nz, .notHPStat
 	ld a, [W_CURENEMYLVL] ; W_CURENEMYLVL
 	ld b, a
-	ldh a, [H_MULTIPLICAND+2]
+	ldh a, [hMultiplicand+2]
 	add b
-	ldh [H_MULTIPLICAND+2], a
+	ldh [hMultiplicand+2], a
 	jr nc, .noCarry3
-	ldh a, [H_MULTIPLICAND+1]
+	ldh a, [hMultiplicand+1]
 	inc a
-	ldh [H_MULTIPLICAND+1], a ; HP: (((Base + IV) * 2 + ceil(Sqrt(stat exp)) / 4) * Level) / 100 + Level
+	ldh [hMultiplicand+1], a ; HP: (((Base + IV) * 2 + ceil(Sqrt(stat exp)) / 4) * Level) / 100 + Level
 .noCarry3
 	ld a, $a
 .notHPStat
 	ld b, a
-	ldh a, [H_MULTIPLICAND+2]
+	ldh a, [hMultiplicand+2]
 	add b
-	ldh [H_MULTIPLICAND+2], a
+	ldh [hMultiplicand+2], a
 	jr nc, .noCarry4
-	ldh a, [H_MULTIPLICAND+1]
+	ldh a, [hMultiplicand+1]
 	inc a                    ; non-HP: (((Base + IV) * 2 + ceil(Sqrt(stat exp)) / 4) * Level) / 100 + 5
-	ldh [H_MULTIPLICAND+1], a ; HP: (((Base + IV) * 2 + ceil(Sqrt(stat exp)) / 4) * Level) / 100 + Level + 10
+	ldh [hMultiplicand+1], a ; HP: (((Base + IV) * 2 + ceil(Sqrt(stat exp)) / 4) * Level) / 100 + Level + 10
 .noCarry4
-	ldh a, [H_MULTIPLICAND+1] ; check for overflow (>999)
+	ldh a, [hMultiplicand+1] ; check for overflow (>999)
 	cp $4
 	jr nc, .overflow
 	cp $3
 	jr c, .noOverflow
-	ldh a, [H_MULTIPLICAND+2]
+	ldh a, [hMultiplicand+2]
 	cp $e8
 	jr c, .noOverflow
 .overflow
 	ld a, $3                 ; overflow: cap at 999
-	ldh [H_MULTIPLICAND+1], a
+	ldh [hMultiplicand+1], a
 	ld a, $e7
-	ldh [H_MULTIPLICAND+2], a
+	ldh [hMultiplicand+2], a
 .noOverflow
 	pop bc
 	pop de
@@ -4301,9 +4301,9 @@ LEFT_ALIGN     EQU 6
 
 	push bc
 	xor a
-	ldh [H_PASTLEADINGZEROES], a
-	ldh [H_NUMTOPRINT], a
-	ldh [H_NUMTOPRINT + 1], a
+	ldh [hPastLeadingZeros], a
+	ldh [hNumToPrint], a
+	ldh [hNumToPrint + 1], a
 	ld a, b
 	and $f
 	cp 1
@@ -4312,26 +4312,26 @@ LEFT_ALIGN     EQU 6
 	jr z, .word
 .long
 	ld a, [de]
-	ldh [H_NUMTOPRINT], a
+	ldh [hNumToPrint], a
 	inc de
 	ld a, [de]
-	ldh [H_NUMTOPRINT + 1], a
+	ldh [hNumToPrint + 1], a
 	inc de
 	ld a, [de]
-	ldh [H_NUMTOPRINT + 2], a
+	ldh [hNumToPrint + 2], a
 	jr .start
 
 .word
 	ld a, [de]
-	ldh [H_NUMTOPRINT + 1], a
+	ldh [hNumToPrint + 1], a
 	inc de
 	ld a, [de]
-	ldh [H_NUMTOPRINT + 2], a
+	ldh [hNumToPrint + 2], a
 	jr .start
 
 .byte
 	ld a, [de]
-	ldh [H_NUMTOPRINT + 2], a
+	ldh [hNumToPrint + 2], a
 
 .start
 	push de
@@ -4360,16 +4360,16 @@ if (\1) / $10000
 	ld a, \1 / $10000 % $100
 else	xor a
 endc
-	ldh [H_POWEROFTEN + 0], a
+	ldh [hPowerOf10 + 0], a
 
 if (\1) / $100
 	ld a, \1 / $100   % $100
 else	xor a
 endc
-	ldh [H_POWEROFTEN + 1], a
+	ldh [hPowerOf10 + 1], a
 
 	ld a, \1 / $1     % $100
-	ldh [H_POWEROFTEN + 2], a
+	ldh [hPowerOf10 + 2], a
 
 	call .PrintDigit
 	call .NextDigit
@@ -4383,7 +4383,7 @@ endm
 
 .tens
 	ld c, 0
-	ldh a, [H_NUMTOPRINT + 2]
+	ldh a, [hNumToPrint + 2]
 .mod
 	cp 10
 	jr c, .ok
@@ -4393,9 +4393,9 @@ endm
 .ok
 
 	ld b, a
-	ldh a, [H_PASTLEADINGZEROES]
+	ldh a, [hPastLeadingZeros]
 	or c
-	ldh [H_PASTLEADINGZEROES], a
+	ldh [hPastLeadingZeros], a
 	jr nz, .past
 	call .PrintLeadingZero
 	jr .next
@@ -4420,74 +4420,74 @@ endm
 ; Print the quotient, and keep the modulus.
 	ld c, 0
 .loop
-	ldh a, [H_POWEROFTEN]
+	ldh a, [hPowerOf10]
 	ld b, a
-	ldh a, [H_NUMTOPRINT]
-	ldh [H_SAVEDNUMTOPRINT], a
+	ldh a, [hNumToPrint]
+	ldh [hSavedNumToPrint], a
 	cp b
 	jr c, .underflow0
 	sub b
-	ldh [H_NUMTOPRINT], a
-	ldh a, [H_POWEROFTEN + 1]
+	ldh [hNumToPrint], a
+	ldh a, [hPowerOf10 + 1]
 	ld b, a
-	ldh a, [H_NUMTOPRINT + 1]
-	ldh [H_SAVEDNUMTOPRINT + 1], a
+	ldh a, [hNumToPrint + 1]
+	ldh [hSavedNumToPrint + 1], a
 	cp b
 	jr nc, .noborrow1
 
-	ldh a, [H_NUMTOPRINT]
+	ldh a, [hNumToPrint]
 	or 0
 	jr z, .underflow1
 	dec a
-	ldh [H_NUMTOPRINT], a
-	ldh a, [H_NUMTOPRINT + 1]
+	ldh [hNumToPrint], a
+	ldh a, [hNumToPrint + 1]
 .noborrow1
 
 	sub b
-	ldh [H_NUMTOPRINT + 1], a
-	ldh a, [H_POWEROFTEN + 2]
+	ldh [hNumToPrint + 1], a
+	ldh a, [hPowerOf10 + 2]
 	ld b, a
-	ldh a, [H_NUMTOPRINT + 2]
-	ldh [H_SAVEDNUMTOPRINT + 2], a
+	ldh a, [hNumToPrint + 2]
+	ldh [hSavedNumToPrint + 2], a
 	cp b
 	jr nc, .noborrow2
 
-	ldh a, [H_NUMTOPRINT + 1]
+	ldh a, [hNumToPrint + 1]
 	and a
 	jr nz, .borrowed
 
-	ldh a, [H_NUMTOPRINT]
+	ldh a, [hNumToPrint]
 	and a
 	jr z, .underflow2
 	dec a
-	ldh [H_NUMTOPRINT], a
+	ldh [hNumToPrint], a
 	xor a
 .borrowed
 
 	dec a
-	ldh [H_NUMTOPRINT + 1], a
-	ldh a, [H_NUMTOPRINT + 2]
+	ldh [hNumToPrint + 1], a
+	ldh a, [hNumToPrint + 2]
 .noborrow2
 	sub b
-	ldh [H_NUMTOPRINT + 2], a
+	ldh [hNumToPrint + 2], a
 	inc c
 	jr .loop
 
 .underflow2
-	ldh a, [H_SAVEDNUMTOPRINT + 1]
-	ldh [H_NUMTOPRINT + 1], a
+	ldh a, [hSavedNumToPrint + 1]
+	ldh [hNumToPrint + 1], a
 .underflow1
-	ldh a, [H_SAVEDNUMTOPRINT]
-	ldh [H_NUMTOPRINT], a
+	ldh a, [hSavedNumToPrint]
+	ldh [hNumToPrint], a
 .underflow0
-	ldh a, [H_PASTLEADINGZEROES]
+	ldh a, [hPastLeadingZeros]
 	or c
 	jr z, .PrintLeadingZero
 
 	ld a, "0"
 	add c
 	ld [hl], a
-	ldh [H_PASTLEADINGZEROES], a
+	ldh [hPastLeadingZeros], a
 	ret
 
 .PrintLeadingZero:
@@ -4504,7 +4504,7 @@ endm
 	jr nz, .inc
 	bit LEFT_ALIGN, d
 	jr z, .inc
-	ldh a, [H_PASTLEADINGZEROES]
+	ldh a, [hPastLeadingZeros]
 	and a
 	ret z
 .inc

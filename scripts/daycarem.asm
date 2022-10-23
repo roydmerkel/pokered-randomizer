@@ -45,7 +45,7 @@ DayCareMText1: ; 56254 (15:6254)
 	call GetPartyMonName
 	ld hl, DayCareMText_56419
 	call PrintText
-	ld a, $1
+	ld a, 1
 	ld [W_DAYCARE_IN_USE], a
 	ld a, $3
 	ld [wcf95], a
@@ -72,11 +72,11 @@ DayCareMScript_562e1: ; 562e1 (15:62e1)
 	ld d, MAX_LEVEL
 	callab CalcExperience
 	ld hl, wDayCareMonExp
-	ldh a, [H_NUMTOPRINT]
+	ldh a, [hExperience]
 	ld [hli], a
-	ldh a, [$ff97]
+	ldh a, [hExperience + 1]
 	ld [hli], a
-	ldh a, [$ff98]
+	ldh a, [hExperience + 2]
 	ld [hl], a
 	ld d, MAX_LEVEL
 
@@ -115,7 +115,7 @@ DayCareMScript_562e1: ; 562e1 (15:62e1)
 	ld a, [wTrainerEngageDistance]
 	inc a
 	ld b, a
-	ld c, $2
+	ld c, 2
 .asm_56357
 	push hl
 	push de
@@ -137,11 +137,11 @@ DayCareMScript_562e1: ; 562e1 (15:62e1)
 	and a
 	jp nz, .asm_56403
 	ld hl, wTrainerFacingDirection
-	ldh [$ff9f], a
+	ldh [hMoney], a
 	ld a, [hli]
-	ldh [$ffa0], a
+	ldh [hMoney + 1], a
 	ld a, [hl]
-	ldh [$ffa1], a
+	ldh [hMoney + 2], a
 	call HasEnoughMoney
 	jr nc, .asm_56396
 	ld hl, DayCareMText_56454
