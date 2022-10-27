@@ -101,7 +101,7 @@ HM04NoRoomText: ; 7515e (1d:515e)
 FuchsiaHouse2Text5: ; 75163 (1d:5163)
 FuchsiaHouse2Text4: ; 75163 (1d:5163)
 	db $08 ; asm
-	ldh a, [$8c]
+	ldh a, [hSpriteIndex]
 	cp $4
 	ld hl, FuchsiaHouse2Text_7517b
 	jr nz, .asm_4c9a2 ; 0x7516b

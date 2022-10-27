@@ -45,9 +45,9 @@ FightingDojoScript1: ; 5cd83 (17:4d83)
 	ld a, $1
 	ld [wd528], a
 	ld a, $1
-	ldh [$ff8c], a
+	ldh [hSpriteIndex], a
 	ld a, $8
-	ldh [$ff8d], a
+	ldh [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $1
 	ldh [hSpriteIndexOrTextID], a
@@ -64,9 +64,9 @@ FightingDojoScript3: ; 5cdc6 (17:4dc6)
 	ld a, $1
 	ld [wd528], a
 	ld a, $1
-	ldh [$ff8c], a
+	ldh [hSpriteIndex], a
 	ld a, $8
-	ldh [$ff8d], a
+	ldh [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 
 .asm_5cde4

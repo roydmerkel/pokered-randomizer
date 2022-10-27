@@ -51,7 +51,7 @@ CinnabarGymScript0: ; 757ae (1d:57ae)
 	ld a, [wda38]
 	and a
 	ret z
-	ldh [$ff8c], a
+	ldh [hSpriteIndex], a
 	cp $4
 	jr nz, .asm_757c3 ; 0x757b7 $a
 	ld a, $4

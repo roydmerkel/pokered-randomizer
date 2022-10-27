@@ -23,7 +23,7 @@ BillsHouseScript1: ; 1e783 (7:6783)
 	ld de, MovementData_1e7a0
 .asm_1e78f
 	ld a, $1
-	ldh [$ff8c], a
+	ldh [hSpriteIndex], a
 	call MoveSprite
 	ld a, $2
 	ld [W_BILLSHOUSECURSCRIPT], a
@@ -73,7 +73,7 @@ BillsHouseScript3: ; 1e7c5 (7:67c5)
 	ld c, 8
 	call DelayFrames
 	ld a, $2
-	ldh [$ff8c], a
+	ldh [hSpriteIndex], a
 	ld de, MovementData_1e807
 	call MoveSprite
 	ld a, $4

@@ -160,7 +160,7 @@ VermilionGymText1: ; 5cb1d (17:4b1d)
 	ld hl, ReceivedThunderbadgeText
 	ld de, ReceivedThunderbadgeText
 	call SaveEndBattleTextPointers
-	ldh a, [$8c]
+	ldh a, [hSpriteIndex]
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters

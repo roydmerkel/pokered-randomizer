@@ -43,9 +43,9 @@ PokemonTower2Script0: ; 6050f (18:450f)
 .asm_60544
 	ld [wd528], a
 	ld a, $1
-	ldh [$ff8c], a
+	ldh [hSpriteIndex], a
 	ld a, b
-	ldh [$ff8d], a
+	ldh [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $1
 	ldh [hSpriteIndexOrTextID], a
@@ -80,7 +80,7 @@ PokemonTower2Script1: ; 60563 (18:4563)
 	ld de, MovementData_605a9
 .asm_60589
 	ld a, $1
-	ldh [$ff8c], a
+	ldh [hSpriteIndex], a
 	call MoveSprite
 	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a

@@ -89,13 +89,13 @@ asm_6a19: ; 6a19 (1:6a19)
 	push hl
 	push de
 	push bc
-	ldh [$ff8d], a
+	ldh [hSlideDirection], a
 	ld a, d
 	ldh [hSlideAmount], a ; $ff8b
 	ld a, e
 	ldh [hSlidingRegionSize], a ; $ff8c
 	ld c, a
-	ldh a, [$ff8d]
+	ldh a, [hSlideDirection]
 	and a
 	jr nz, .asm_6a2d
 	ld d, 0
@@ -106,7 +106,7 @@ asm_6a19: ; 6a19 (1:6a19)
 .asm_6a2f
 	xor a
 	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
-	ldh a, [$ff8d]
+	ldh a, [hSlideDirection]
 	and a
 	jr nz, .asm_6a3c
 	ld a, [hli]
@@ -120,7 +120,7 @@ asm_6a19: ; 6a19 (1:6a19)
 .asm_6a3f
 	dec c
 	jr nz, .asm_6a2f
-	ldh a, [$ff8d]
+	ldh a, [hSlideDirection]
 	and a
 	jr z, .asm_6a4a
 	xor a
@@ -134,7 +134,7 @@ asm_6a19: ; 6a19 (1:6a19)
 	ld c, a
 	ld h, d
 	ld l, e
-	ldh a, [$ff8d]
+	ldh a, [hSlideDirection]
 	and a
 	jr nz, .asm_6a5e
 	inc hl

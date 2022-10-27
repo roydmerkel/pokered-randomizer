@@ -83,10 +83,10 @@ HallofFameRoomScript1: ; 5a52b (16:652b)
 	ld a, $1
 	ld [wd528], a
 	ld a, $1
-	ldh [$ff8c], a
+	ldh [hSpriteIndex], a
 	call SetSpriteMovementBytesToFF
 	ld a, $8
-	ldh [$ff8d], a
+	ldh [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 	call Delay3
 	xor a

@@ -65,9 +65,9 @@ PalletTownScript1: ; 18eb2 (6:4eb2)
 
 PalletTownScript2: ; 18ed2 (6:4ed2)
 	ld a, 1
-	ldh [$FF8C], a
+	ldh [hSpriteIndex], a
 	ld a, 4
-	ldh [$FF8D], a
+	ldh [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 	call Delay3
 	ld a, 1
@@ -83,7 +83,7 @@ PalletTownScript2: ; 18ed2 (6:4ed2)
 	predef FindPathToPlayer ; load Oak’s movement into wNPCMovementDirections2
 	ld de, wNPCMovementDirections2
 	ld a, 1 ; oak
-	ldh [$FF8C], a
+	ldh [hSpriteIndex], a
 	call MoveSprite
 	ld a, $FF
 	ld [wJoyIgnore], a

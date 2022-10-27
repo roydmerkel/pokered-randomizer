@@ -200,7 +200,7 @@ SilphCo11Script_6221a: ; 6221a (18:621a)
 	ld a, $3
 	ldh [hSpriteIndex], a ; $ff8c
 	ld a, b
-	ldh [$ff8d], a
+	ldh [hSpriteFacingDirection], a
 	jp SetSpriteFacingDirectionAndDelay
 
 SilphCo11Script5: ; 62227 (18:6227)

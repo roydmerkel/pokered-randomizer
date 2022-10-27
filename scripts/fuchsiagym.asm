@@ -170,7 +170,7 @@ FuchsiaGymText1: ; 75534 (1d:5534)
 	ld hl, UnnamedText_75586
 	ld de, UnnamedText_75586
 	call SaveEndBattleTextPointers
-	ldh a, [$8c]
+	ldh a, [hSpriteIndex]
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters

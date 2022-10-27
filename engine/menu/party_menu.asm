@@ -19,83 +19,83 @@
 ; f8: leveled up
 DrawPartyMenu_: ; 12cd2 (4:6cd2)
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED],a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	call ClearScreen
 	call UpdateSprites ; move sprites
 	callba Func_71791 ; load pokemon icon graphics
 
 RedrawPartyMenu_: ; 12ce3 (4:6ce3)
-	ld a,[wd07d]
-	cp a,$04
-	jp z,.printMessage
+	ld a, [wd07d]
+	cp a, $04
+	jp z, .printMessage
 	call ErasePartyMenuCursors
 	callba SendBlkPacket_PartyMenu ; loads some data to wcf2e
 	hlCoord 3, 0
-	ld de,wPartySpecies
+	ld de, wPartySpecies
 	xor a
-	ld c,a
-	ldh [$FF8C],a ; loop counter
-	ld [wcf2d],a
+	ld c, a
+	ldh [hPartyMonIndex], a ; loop counter
+	ld [wcf2d], a
 .loop
-	ld a,[de]
-	cp a,$FF ; reached the terminator?
-	jp z,.afterDrawingMonEntries
+	ld a, [de]
+	cp a, $FF ; reached the terminator?
+	jp z, .afterDrawingMonEntries
 	push bc
 	push de
 	push hl
-	ld a,c
+	ld a, c
 	push hl
-	ld hl,wPartyMonNicks
+	ld hl, wPartyMonNicks
 	call GetPartyMonName
 	pop hl
 	call PlaceString ; print the pokemon's name
 	callba Func_71868 ; place the appropriate pokemon icon
-	ldh a,[$FF8C] ; loop counter
-	ld [wWhichPokemon],a
+	ldh a, [hPartyMonIndex] ; loop counter
+	ld [wWhichPokemon], a
 	inc a
-	ldh [$FF8C],a
+	ldh [hPartyMonIndex], a
 	call LoadMonData
 	pop hl
 	push hl
-	ld a,[wMenuItemToSwap]
+	ld a, [wMenuItemToSwap]
 	and a ; is the player swapping pokemon positions?
-	jr z,.skipUnfilledRightArrow
+	jr z, .skipUnfilledRightArrow
 ; if the player is swapping pokemon positions
 	dec a
-	ld b,a
-	ld a,[wWhichPokemon]
+	ld b, a
+	ld a, [wWhichPokemon]
 	cp b ; is the player swapping the current pokemon in the list?
-	jr nz,.skipUnfilledRightArrow
+	jr nz, .skipUnfilledRightArrow
 ; the player is swapping the current pokemon in the list
 	dec hl
 	dec hl
 	dec hl
-	ld a,$EC ; unfilled right arrow menu cursor
-	ld [hli],a ; place the cursor
+	ld a, $EC ; unfilled right arrow menu cursor
+	ld [hli], a ; place the cursor
 	inc hl
 	inc hl
 .skipUnfilledRightArrow
-	ld a,[wd07d] ; menu type
-	cp a,$03
-	jr z,.teachMoveMenu
-	cp a,$05
-	jr z,.evolutionStoneMenu
+	ld a, [wd07d] ; menu type
+	cp a, $03
+	jr z, .teachMoveMenu
+	cp a, $05
+	jr z, .evolutionStoneMenu
 	push hl
-	ld bc,14 ; 14 columns to the right
-	add hl,bc
-	ld de,wcf9c
+	ld bc, 14 ; 14 columns to the right
+	add hl, bc
+	ld de, wcf9c
 	call PrintStatusCondition
 	pop hl
 	push hl
-	ld bc,20 + 1 ; down 1 row and right 1 column
-	ldh a,[$FFF6]
-	set 0,a
-	ldh [$FFF6],a
-	add hl,bc
+	ld bc, 20 + 1 ; down 1 row and right 1 column
+	ldh a, [$FFF6]
+	set 0, a
+	ldh [$FFF6], a
+	add hl, bc
 	predef Func_128f6 ; draw HP bar and prints current / max HP
-	ldh a,[$FFF6]
-	res 0,a
-	ldh [$FFF6],a
+	ldh a, [$FFF6]
+	res 0, a
+	ldh [$FFF6], a
 	call SetPartyMenuHealthBarColor ; color the HP bar (on SGB)
 	pop hl
 	jr .printLevel
@@ -103,26 +103,26 @@ RedrawPartyMenu_: ; 12ce3 (4:6ce3)
 	push hl
 	predef CanLearnTM ; check if the pokemon can learn the move
 	pop hl
-	ld de,.ableToLearnMoveText
-	ld a,c
+	ld de, .ableToLearnMoveText
+	ld a, c
 	and a
-	jr nz,.placeMoveLearnabilityString
-	ld de,.notAbleToLearnMoveText
+	jr nz, .placeMoveLearnabilityString
+	ld de, .notAbleToLearnMoveText
 .placeMoveLearnabilityString
-	ld bc,20 + 9 ; down 1 row and right 9 columns
+	ld bc, 20 + 9 ; down 1 row and right 9 columns
 	push hl
-	add hl,bc
+	add hl, bc
 	call PlaceString
 	pop hl
 .printLevel
-	ld bc,10 ; move 10 columns to the right
-	add hl,bc
+	ld bc, 10 ; move 10 columns to the right
+	add hl, bc
 	call PrintLevel
 	pop hl
 	pop de
 	inc de
-	ld bc,2 * 20
-	add hl,bc
+	ld bc, 2 * 20
+	add hl, bc
 	pop bc
 	inc c
 	jp .loop
@@ -132,54 +132,54 @@ RedrawPartyMenu_: ; 12ce3 (4:6ce3)
 	db "NOT ABLE@"
 .evolutionStoneMenu
 	push hl
-	ld hl,EvosMovesPointerTable
-	ld b,0
-	ld a,[wcf98] ; pokemon ID
+	ld hl, EvosMovesPointerTable
+	ld b, 0
+	ld a, [wcf98] ; pokemon ID
 	dec a
 	add a
 	rl b
-	ld c,a
-	add hl,bc
-	ld de,wcd6d
-	ld a,BANK(EvosMovesPointerTable)
-	ld bc,2
+	ld c, a
+	add hl, bc
+	ld de, wcd6d
+	ld a, BANK(EvosMovesPointerTable)
+	ld bc, 2
 	call FarCopyData
-	ld hl,wcd6d
-	ld a,[hli]
-	ld h,[hl]
-	ld l,a
-	ld de,wcd6d
-	ld a,BANK(EvosMovesPointerTable)
-	ld bc,13
+	ld hl, wcd6d
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld de, wcd6d
+	ld a, BANK(EvosMovesPointerTable)
+	ld bc, 13
 	call FarCopyData
-	ld hl,wcd6d
-	ld de,.notAbleToEvolveText
+	ld hl, wcd6d
+	ld de, .notAbleToEvolveText
 ; loop through the pokemon's evolution entries
 .checkEvolutionsLoop
-	ld a,[hli]
+	ld a, [hli]
 	and a ; reached terminator?
-	jr z,.placeEvolutionStoneString ; if so, place the "NOT ABLE" string
+	jr z, .placeEvolutionStoneString ; if so, place the "NOT ABLE" string
 	inc hl
 	inc hl
-	cp a,EV_ITEM
-	jr nz,.checkEvolutionsLoop
+	cp a, EV_ITEM
+	jr nz, .checkEvolutionsLoop
 ; if it's a stone evolution entry
 	dec hl
 	dec hl
-	ld b,[hl]
-	ld a,[wd156] ; evolution stone item ID
+	ld b, [hl]
+	ld a, [wd156] ; evolution stone item ID
 	inc hl
 	inc hl
 	inc hl
 	cp b ; does the player's stone match this evolution entry's stone?
-	jr nz,.checkEvolutionsLoop
+	jr nz, .checkEvolutionsLoop
 ; if it does match
-	ld de,.ableToEvolveText
+	ld de, .ableToEvolveText
 .placeEvolutionStoneString
-	ld bc,20 + 9 ; down 1 row and right 9 columns
+	ld bc, 20 + 9 ; down 1 row and right 9 columns
 	pop hl
 	push hl
-	add hl,bc
+	add hl, bc
 	call PlaceString
 	pop hl
 	jr .printLevel
@@ -188,47 +188,47 @@ RedrawPartyMenu_: ; 12ce3 (4:6ce3)
 .notAbleToEvolveText
 	db "NOT ABLE@"
 .afterDrawingMonEntries
-	ld b,$0A
+	ld b, $0A
 	call GoPAL_SET
 .printMessage
-	ld hl,wd730
-	ld a,[hl]
+	ld hl, wd730
+	ld a, [hl]
 	push af
 	push hl
-	set 6,[hl] ; turn off letter printing delay
-	ld a,[wd07d] ; message ID
-	cp a,$F0
-	jr nc,.printItemUseMessage
+	set 6, [hl] ; turn off letter printing delay
+	ld a, [wd07d] ; message ID
+	cp a, $F0
+	jr nc, .printItemUseMessage
 	add a
-	ld hl,PartyMenuMessagePointers
-	ld b,0
-	ld c,a
-	add hl,bc
-	ld a,[hli]
-	ld h,[hl]
-	ld l,a
+	ld hl, PartyMenuMessagePointers
+	ld b, 0
+	ld c, a
+	add hl, bc
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
 	call PrintText
 .done
 	pop hl
 	pop af
-	ld [hl],a
-	ld a,1
-	ldh [H_AUTOBGTRANSFERENABLED],a
+	ld [hl], a
+	ld a, 1
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	call Delay3
 	jp GBPalNormal
 .printItemUseMessage
-	and a,$0F
-	ld hl,PartyMenuItemUseMessagePointers
+	and a, $0F
+	ld hl, PartyMenuItemUseMessagePointers
 	add a
-	ld c,a
-	ld b,0
-	add hl,bc
-	ld a,[hli]
-	ld h,[hl]
-	ld l,a
+	ld c, a
+	ld b, 0
+	add hl, bc
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
 	push hl
-	ld a,[wcf06]
-	ld hl,wPartyMonNicks
+	ld a, [wcf06]
+	ld hl, wPartyMonNicks
 	call GetPartyMonName
 	pop hl
 	call PrintText
@@ -315,7 +315,7 @@ SetPartyMenuHealthBarColor: ; 12ec7 (4:6ec7)
 	ld hl, wcf1f
 	ld a, [wcf2d]
 	ld c, a
-	ld b, $0
+	ld b, 0
 	add hl, bc
 	call GetHealthBarColor
 	ld b, $fc

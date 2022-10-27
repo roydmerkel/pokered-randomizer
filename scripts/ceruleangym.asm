@@ -130,7 +130,7 @@ CeruleanGymText1: ; 5c771 (17:4771)
 	ld hl, CeruleanGymText_5c7d8
 	ld de, CeruleanGymText_5c7d8
 	call SaveEndBattleTextPointers
-	ldh a, [$8c]
+	ldh a, [hSpriteIndex]
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters

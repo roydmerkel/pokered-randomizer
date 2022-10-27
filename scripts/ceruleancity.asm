@@ -82,9 +82,9 @@ CeruleanCityScript0: ; 194c8 (6:54c8)
 	cp 20
 	jr z, .asm_19535 ; 0x19526 $d
 	ld a, $1
-	ldh [$ff8c], a
+	ldh [hSpriteIndex], a
 	ld a, $5
-	ldh [$ff8b], a
+	ldh [hSpriteDataOffset], a
 	call GetPointerWithinSpriteStateData2
 	ld [hl], 25
 .asm_19535
@@ -93,30 +93,30 @@ CeruleanCityScript0: ; 194c8 (6:54c8)
 	predef ShowObject
 	ld de, CeruleanCityMovement1
 	ld a, $1
-	ldh [$ff8c], a
+	ldh [hSpriteIndex], a
 	call MoveSprite
 	ld a, $1
 	ld [W_CERULEANCITYCURSCRIPT], a
 	ret
 
 CeruleanCityCoords1: ; 1954f (6:554f)
-	db $07,$1e
-	db $09,$1e
+	db $07, $1e
+	db $09, $1e
 	db $ff
 
 CeruleanCityCoords2: ; 19554 (6:5554)
-	db $06,$14
-	db $06,$15
+	db $06, $14
+	db $06, $15
 	db $ff
 
 CeruleanCityMovement1: ; 19559 (6:5559)
-	db $00,$00,$00,$FF
+	db $00, $00, $00, $FF
 
 CeruleanCityScript_1955d: ; 1955d (6:555d)
-	ld a,1
-	ldh [$ff8c],a
+	ld a, 1
+	ldh [hSpriteIndex], a
 	xor a
-	ldh [$ff8d],a
+	ldh [hSpriteFacingDirection], a
 	jp SetSpriteFacingDirectionAndDelay ; face object
 
 CeruleanCityScript1: ; 19567 (6:5567)
@@ -181,7 +181,7 @@ CeruleanCityScript2: ; 195b1 (6:55b1)
 	call PlaySound
 	callba Music_RivalAlternateStart
 	ld a, $1
-	ldh [$ff8c], a
+	ldh [hSpriteIndex], a
 	call SetSpriteMovementBytesToFF
 	ld a, [W_XCOORD]
 	cp 20
@@ -192,17 +192,17 @@ CeruleanCityScript2: ; 195b1 (6:55b1)
 	ld de, CeruleanCityMovement3
 .asm_195f3
 	ld a, $1
-	ldh [$ff8c], a
+	ldh [hSpriteIndex], a
 	call MoveSprite
 	ld a, $3
 	ld [W_CERULEANCITYCURSCRIPT], a
 	ret
 
 CeruleanCityMovement3: ; 19600 (6:5600)
-	db $80,$00,$00,$00,$00,$00,$00,$FF
+	db $80, $00, $00, $00, $00, $00, $00, $FF
 
 CeruleanCityMovement4: ; 19608 (6:5608)
-	db $c0,$00,$00,$00,$00,$00,$00,$FF
+	db $c0, $00, $00, $00, $00, $00, $00, $FF
 
 CeruleanCityScript3: ; 19610 (6:5610)
 	ld a, [wd730]

@@ -87,12 +87,12 @@ OaksLabScript3: ; 1cba2 (7:4ba2)
 	ld a, $1
 	ldh [hSpriteIndex], a
 	xor a
-	ldh [$ff8d], a
+	ldh [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $5
 	ldh [hSpriteIndex], a
 	xor a
-	ldh [$ff8d], a
+	ldh [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 
 	ld a, $4
@@ -113,7 +113,7 @@ OaksLabScript4: ; 1cbd2 (7:4bd2)
 	ld a, $1
 	ldh [hSpriteIndex], a
 	ld a, $4
-	ldh [$ff8d], a
+	ldh [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 	call UpdateSprites
 	ld hl, W_FLAGS_D733
@@ -158,12 +158,12 @@ OaksLabScript6: ; 1cc36 (7:4c36)
 	ld a, $5
 	ldh [hSpriteIndex], a
 	xor a
-	ldh [$ff8d], a
+	ldh [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $1
 	ldh [hSpriteIndex], a
 	xor a
-	ldh [$ff8d], a
+	ldh [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 	call UpdateSprites
 	ld a, $c
@@ -233,7 +233,7 @@ OaksLabScript8: ; 1cc80 (7:4c80)
 	ld a, $1
 	ldh [hSpriteIndex], a
 	ld a, $4
-	ldh [$ff8b], a
+	ldh [hSpriteDataOffset], a
 	call GetPointerWithinSpriteStateData1
 	push hl
 	ld [hl], $4c
@@ -272,7 +272,7 @@ OaksLabScript9: ; 1cd00 (7:4d00)
 	ld a, $1
 	ldh [hSpriteIndex], a
 	ld a, $4
-	ldh [$ff8d], a
+	ldh [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $d
 	ldh [hSpriteIndexOrTextID], a
@@ -301,7 +301,7 @@ OaksLabScript9: ; 1cd00 (7:4d00)
 	ld a, $1
 	ldh [hSpriteIndex], a
 	ld a, $4
-	ldh [$ff8d], a
+	ldh [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $e
 	ldh [hSpriteIndexOrTextID], a
@@ -322,7 +322,7 @@ OaksLabScript10: ; 1cd6d (7:4d6d)
 	ld a, $1
 	ldh [hSpriteIndex], a
 	xor a
-	ldh [$ff8d], a
+	ldh [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $8
 	ld [wd528], a
@@ -407,7 +407,7 @@ OaksLabScript12: ; 1ce03 (7:4e03)
 	ld a, $1
 	ldh [hSpriteIndex], a
 	xor a
-	ldh [$ff8d], a
+	ldh [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 	predef HealParty
 	ld hl, wd74b
@@ -517,12 +517,12 @@ OaksLabScript_1cefd ; 1cefd (7:4efd)
 	ld a, $1
 	ldh [hSpriteIndex], a
 	ld a, $4
-	ldh [$ff8d], a
+	ldh [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $8
 	ldh [hSpriteIndex], a
 	xor a
-	ldh [$ff8d], a
+	ldh [hSpriteFacingDirection], a
 	jp SetSpriteFacingDirectionAndDelay
 
 OaksLabScript16: ; 1cf12 (7:4f12)
@@ -565,7 +565,7 @@ OaksLabScript16: ; 1cf12 (7:4f12)
 	ld a, $1
 	ldh [hSpriteIndex], a
 	ld a, $c
-	ldh [$ff8d], a
+	ldh [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 	call Delay3
 	ld a, $1b
@@ -826,14 +826,14 @@ OaksLabScript_1d157: ; 1d157 (7:5157)
 	ld a, $5
 	ldh [hSpriteIndex], a
 	ld a, $9
-	ldh [$ff8b], a
+	ldh [hSpriteDataOffset], a
 	call GetPointerWithinSpriteStateData1
 	ld [hl], $0
 	; manually fixed some disassembler issues around here
 	ld a, $1
 	ldh [hSpriteIndex], a
 	ld a, $9
-	ldh [$ff8b], a
+	ldh [hSpriteDataOffset], a
 	call GetPointerWithinSpriteStateData1
 	ld [hl], $c
 	ld hl, wd730
@@ -933,7 +933,7 @@ OaksLabScript_1d22d: ; 1d22d (7:522d)
 	ld a, $5
 	ldh [hSpriteIndex], a
 	ld a, $9
-	ldh [$ff8b], a
+	ldh [hSpriteDataOffset], a
 	call GetPointerWithinSpriteStateData1
 	ld [hl], $0
 	ld hl, OaksLabLastMonText

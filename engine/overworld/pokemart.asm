@@ -1,212 +1,212 @@
 DisplayPokemartDialogue_: ; 6c20 (1:6c20)
-	ld a,[wListScrollOffset]
-	ld [wd07e],a
+	ld a, [wListScrollOffset]
+	ld [wd07e], a
 	call UpdateSprites ; move sprites
 	xor a
-	ld [wcf0a],a ; flag that is set if something is sold or bought
+	ld [wcf0a], a ; flag that is set if something is sold or bought
 .loop
 	xor a
-	ld [wListScrollOffset],a
-	ld [wCurrentMenuItem],a
-	ld [wPlayerMonNumber],a
+	ld [wListScrollOffset], a
+	ld [wCurrentMenuItem], a
+	ld [wPlayerMonNumber], a
 	inc a
-	ld [wcf93],a
-	ld a,$13
-	ld [wd125],a
+	ld [wcf93], a
+	ld a, $13
+	ld [wd125], a
 	call DisplayTextBoxID ; draw money text box
-	ld a,$15
-	ld [wd125],a
+	ld a, $15
+	ld [wd125], a
 	call DisplayTextBoxID ; do buy/sell/quit menu
-	ld hl,wd128 ; pointer to this pokemart's inventory
-	ld a,[hli]
-	ld l,[hl]
-	ld h,a ; hl = address of inventory
-	ld a,[wd12e]
-	cp a,$02
-	jp z,.done
-	ld a,[wd12d] ; ID of the chosen menu item
+	ld hl, wd128 ; pointer to this pokemart's inventory
+	ld a, [hli]
+	ld l, [hl]
+	ld h, a ; hl = address of inventory
+	ld a, [wd12e]
+	cp a, $02
+	jp z, .done
+	ld a, [wd12d] ; ID of the chosen menu item
 	and a ; buying?
-	jp z,.buyMenu
+	jp z, .buyMenu
 	dec a ; selling?
-	jp z,.sellMenu
+	jp z, .sellMenu
 	dec a ; quitting?
-	jp z,.done
+	jp z, .done
 .sellMenu
 	xor a
-	ld [wcf93],a
-	ld a,$02
-	ld [wd11b],a
+	ld [wcf93], a
+	ld a, $02
+	ld [wd11b], a
 	callab Func_39bd5
-	ld a,[wNumBagItems]
+	ld a, [wNumBagItems]
 	and a
-	jp z,.bagEmpty
-	ld hl,PokemonSellingGreetingText
+	jp z, .bagEmpty
+	ld hl, PokemonSellingGreetingText
 	call PrintText
 	call SaveScreenTilesToBuffer1 ; save screen
 .sellMenuLoop
 	call LoadScreenTilesFromBuffer1 ; restore saved screen
-	ld a,$13
-	ld [wd125],a
+	ld a, $13
+	ld [wd125], a
 	call DisplayTextBoxID ; draw money text box
-	ld hl,wNumBagItems
-	ld a,l
-	ld [wcf8b],a
-	ld a,h
-	ld [wcf8c],a
+	ld hl, wNumBagItems
+	ld a, l
+	ld [wcf8b], a
+	ld a, h
+	ld [wcf8c], a
 	xor a
-	ld [wcf93],a
-	ld [wCurrentMenuItem],a
-	ld a,ITEMLISTMENU
-	ld [wListMenuID],a
+	ld [wcf93], a
+	ld [wCurrentMenuItem], a
+	ld a, ITEMLISTMENU
+	ld [wListMenuID], a
 	call DisplayListMenuID
-	jp c,.returnToMainPokemartMenu ; if the player closed the menu
+	jp c, .returnToMainPokemartMenu ; if the player closed the menu
 .confirmItemSale ; if the player is trying to sell a specific item
 	call IsKeyItem ; check if item is unsellable
-	ld a,[wd124]
+	ld a, [wd124]
 	and a
-	jr nz,.unsellableItem
-	ld a,[wcf91]
+	jr nz, .unsellableItem
+	ld a, [wcf91]
 	call IsItemHM
-	jr c,.unsellableItem
-	ld a,PRICEDITEMLISTMENU
-	ld [wListMenuID],a
-	ldh [$ff8e],a ; halve prices when selling
+	jr c, .unsellableItem
+	ld a, PRICEDITEMLISTMENU
+	ld [wListMenuID], a
+	ldh [hHalveItemPrices], a ; halve prices when selling
 	call DisplayChooseQuantityMenu
 	inc a
-	jr z,.sellMenuLoop ; if the player closed the choose quantity menu with the B button
-	ld hl,PokemartTellSellPriceText
-	ld bc,$0e01
+	jr z, .sellMenuLoop ; if the player closed the choose quantity menu with the B button
+	ld hl, PokemartTellSellPriceText
+	ld bc, $0e01
 	call PrintText
 	hlCoord 14, 7
-	ld bc,$080f
-	ld a,$14
-	ld [wd125],a
+	ld bc, $080f
+	ld a, $14
+	ld [wd125], a
 	call DisplayTextBoxID ; yes/no menu
-	ld a,[wd12e]
-	cp a,$02
-	jr z,.sellMenuLoop ; if the player pressed the B button
-	ld a,[wd12d] ; ID of the chosen menu item
+	ld a, [wd12e]
+	cp a, $02
+	jr z, .sellMenuLoop ; if the player pressed the B button
+	ld a, [wd12d] ; ID of the chosen menu item
 	dec a
-	jr z,.sellMenuLoop ; if the player chose No
+	jr z, .sellMenuLoop ; if the player chose No
 .sellItem
-	ld a,[wcf0a] ; flag that is set if something is sold or bought
+	ld a, [wcf0a] ; flag that is set if something is sold or bought
 	and a
-	jr nz,.skipSettingFlag1
+	jr nz, .skipSettingFlag1
 	inc a
-	ld [wcf0a],a
+	ld [wcf0a], a
 .skipSettingFlag1
 	call AddAmountSoldToMoney
-	ld hl,wNumBagItems
+	ld hl, wNumBagItems
 	call RemoveItemFromInventory
 	jp .sellMenuLoop
 .unsellableItem
-	ld hl,PokemartUnsellableItemText
+	ld hl, PokemartUnsellableItemText
 	call PrintText
 	jp .returnToMainPokemartMenu
 .bagEmpty
-	ld hl,PokemartItemBagEmptyText
+	ld hl, PokemartItemBagEmptyText
 	call PrintText
 	call SaveScreenTilesToBuffer1 ; save screen
 	jp .returnToMainPokemartMenu
 .buyMenu
-	ld a,$01
-	ld [wcf93],a
-	ld a,$03
-	ld [wd11b],a
+	ld a, 1
+	ld [wcf93], a
+	ld a, $03
+	ld [wd11b], a
 	callab Func_39bd5
-	ld hl,PokemartBuyingGreetingText
+	ld hl, PokemartBuyingGreetingText
 	call PrintText
 	call SaveScreenTilesToBuffer1 ; save screen
 .buyMenuLoop
 	call LoadScreenTilesFromBuffer1 ; restore saved screen
-	ld a,$13
-	ld [wd125],a
+	ld a, $13
+	ld [wd125], a
 	call DisplayTextBoxID ; draw money text box
-	ld hl,wStringBuffer2 + 11
-	ld a,l
-	ld [wcf8b],a
-	ld a,h
-	ld [wcf8c],a
+	ld hl, wStringBuffer2 + 11
+	ld a, l
+	ld [wcf8b], a
+	ld a, h
+	ld [wcf8c], a
 	xor a
-	ld [wCurrentMenuItem],a
+	ld [wCurrentMenuItem], a
 	inc a
-	ld [wcf93],a
+	ld [wcf93], a
 	inc a ; a = 2 (PRICEDITEMLISTMENU)
-	ld [wListMenuID],a
+	ld [wListMenuID], a
 	call DisplayListMenuID
-	jr c,.returnToMainPokemartMenu ; if the player closed the menu
-	ld a,$63
-	ld [wcf97],a
+	jr c, .returnToMainPokemartMenu ; if the player closed the menu
+	ld a, 99
+	ld [wcf97], a
 	xor a
-	ldh [$ff8e],a
+	ldh [hHalveItemPrices], a
 	call DisplayChooseQuantityMenu
 	inc a
-	jr z,.buyMenuLoop ; if the player closed the choose quantity menu with the B button
-	ld a,[wcf91] ; item ID
-	ld [wd11e],a ; store item ID for GetItemName
+	jr z, .buyMenuLoop ; if the player closed the choose quantity menu with the B button
+	ld a, [wcf91] ; item ID
+	ld [wd11e], a ; store item ID for GetItemName
 	call GetItemName
 	call CopyStringToCF4B ; copy name to wcf4b
-	ld hl,PokemartTellBuyPriceText
+	ld hl, PokemartTellBuyPriceText
 	call PrintText
 	hlCoord 14, 7
-	ld bc,$080f
-	ld a,$14
-	ld [wd125],a
+	ld bc, $080f
+	ld a, $14
+	ld [wd125], a
 	call DisplayTextBoxID ; yes/no menu
-	ld a,[wd12e]
-	cp a,$02
-	jp z,.buyMenuLoop ; if the player pressed the B button
-	ld a,[wd12d] ; ID of the chosen menu item
+	ld a, [wd12e]
+	cp a, $02
+	jp z, .buyMenuLoop ; if the player pressed the B button
+	ld a, [wd12d] ; ID of the chosen menu item
 	dec a
-	jr z,.buyMenuLoop ; if the player chose No
+	jr z, .buyMenuLoop ; if the player chose No
 .buyItem
 	call .isThereEnoughMoney
-	jr c,.notEnoughMoney
-	ld hl,wNumBagItems
+	jr c, .notEnoughMoney
+	ld hl, wNumBagItems
 	call AddItemToInventory
-	jr nc,.bagFull
+	jr nc, .bagFull
 	call SubtractAmountPaidFromMoney
-	ld a,[wcf0a] ; flag that is set if something is sold or bought
+	ld a, [wcf0a] ; flag that is set if something is sold or bought
 	and a
-	jr nz,.skipSettingFlag2
-	ld a,$01
-	ld [wcf0a],a
+	jr nz, .skipSettingFlag2
+	ld a, 1
+	ld [wcf0a], a
 .skipSettingFlag2
-	ld a,RBSFX_02_5a
+	ld a, RBSFX_02_5a
 	call PlaySoundWaitForCurrent
 	call WaitForSoundToFinish
-	ld hl,PokemartBoughtItemText
+	ld hl, PokemartBoughtItemText
 	call PrintText
 	jp .buyMenuLoop
 .returnToMainPokemartMenu
 	call LoadScreenTilesFromBuffer1
-	ld a,$13
-	ld [wd125],a
+	ld a, $13
+	ld [wd125], a
 	call DisplayTextBoxID ; draw money text box
-	ld hl,PokemartAnythingElseText
+	ld hl, PokemartAnythingElseText
 	call PrintText
 	jp .loop
 .isThereEnoughMoney
-	ld de,wPlayerMoney
-	ld hl,$ff9f ; item price
-	ld c,3 ; length of money in bytes
+	ld de, wPlayerMoney
+	ld hl, $ff9f ; item price
+	ld c, 3 ; length of money in bytes
 	jp StringCmp
 .notEnoughMoney
-	ld hl,PokemartNotEnoughMoneyText
+	ld hl, PokemartNotEnoughMoneyText
 	call PrintText
 	jr .returnToMainPokemartMenu
 .bagFull
-	ld hl,PokemartItemBagFullText
+	ld hl, PokemartItemBagFullText
 	call PrintText
 	jr .returnToMainPokemartMenu
 .done
-	ld hl,PokemartThankYouText
+	ld hl, PokemartThankYouText
 	call PrintText
-	ld a,$01
-	ld [wUpdateSpritesEnabled],a
+	ld a, 1
+	ld [wUpdateSpritesEnabled], a
 	call UpdateSprites ; move sprites
-	ld a,[wd07e]
-	ld [wListScrollOffset],a
+	ld a, [wd07e]
+	ld [wListScrollOffset], a
 	ret
 
 PokemartBuyingGreetingText: ; 6e0c (1:6e0c)

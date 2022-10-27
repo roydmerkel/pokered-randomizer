@@ -106,7 +106,7 @@ GaryScript3: ; 75fbb (1d:5fbb)
 	ldh [hSpriteIndexOrTextID], a
 	call GaryScript_760c8
 	ld a, $1
-	ldh [$ff8c], a
+	ldh [hSpriteIndex], a
 	call SetSpriteMovementBytesToFF
 	ld a, $4
 	ld [W_GARYCURSCRIPT], a
@@ -118,11 +118,11 @@ GaryScript4: ; 75fe4 (1d:5fe4)
 	ldh [hSpriteIndexOrTextID], a
 	call GaryScript_760c8
 	ld a, $2
-	ldh [$ff8c], a
+	ldh [hSpriteIndex], a
 	call SetSpriteMovementBytesToFF
 	ld de, MovementData_76014
 	ld a, $2
-	ldh [$ff8c], a
+	ldh [hSpriteIndex], a
 	call MoveSprite
 	ld a, HS_CHAMPIONS_ROOM_OAK
 	ld [wcc4d], a
@@ -141,14 +141,14 @@ GaryScript5: ; 7601a (1d:601a)
 	ld a, $2
 	ld [wd528], a
 	ld a, $1
-	ldh [$ff8c], a
+	ldh [hSpriteIndex], a
 	ld a, $8
-	ldh [$ff8d], a
+	ldh [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $2
-	ldh [$ff8c], a
+	ldh [hSpriteIndex], a
 	xor a
-	ldh [$ff8d], a
+	ldh [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay ; face object
 	ld a, $3
 	ldh [hSpriteIndexOrTextID], a
@@ -159,9 +159,9 @@ GaryScript5: ; 7601a (1d:601a)
 
 GaryScript6: ; 76047 (1d:6047)
 	ld a, $2
-	ldh [$ff8c], a
+	ldh [hSpriteIndex], a
 	ld a, $c
-	ldh [$ff8d], a
+	ldh [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay ; face object
 	ld a, $4
 	ldh [hSpriteIndexOrTextID], a
@@ -172,16 +172,16 @@ GaryScript6: ; 76047 (1d:6047)
 
 GaryScript7: ; 7605f (1d:605f)
 	ld a, $2
-	ldh [$ff8c], a
+	ldh [hSpriteIndex], a
 	xor a
-	ldh [$ff8d], a
+	ldh [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay ; face object
 	ld a, $5
 	ldh [hSpriteIndexOrTextID], a
 	call GaryScript_760c8
 	ld de, MovementData_76080
 	ld a, $2
-	ldh [$ff8c], a
+	ldh [hSpriteIndex], a
 	call MoveSprite
 	ld a, $8
 	ld [W_GARYCURSCRIPT], a

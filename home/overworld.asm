@@ -894,9 +894,9 @@ LoadTileBlockMap:: ; 09fc (0:09fc)
 ; a 3-byte border at the edges of the map is kept so that there is space for map connections
 	ld hl, wOverworldMap
 	ld a, [W_CURMAPWIDTH]
-	ldh [$ff8c], a
+	ldh [hMapWidth], a
 	add a, $06 ; border (east and west)
-	ldh [$ff8b], a ; map width + border
+	ldh [hMapStride], a ; map width + border
 	ld b, 0
 	ld c, a
 ; make space for north border (next 3 lines)
@@ -913,7 +913,7 @@ LoadTileBlockMap:: ; 09fc (0:09fc)
 	ld b, a
 .rowLoop ; copy one row each iteration
 	push hl
-	ldh a, [$ff8c] ; map width (without border)
+	ldh a, [hMapWidth] ; map width (without border)
 	ld c, a
 .rowInnerLoop
 	ld a, [de]
@@ -923,7 +923,7 @@ LoadTileBlockMap:: ; 09fc (0:09fc)
 	jr nz, .rowInnerLoop
 ; add the map width plus the border to the base address of the current row to get the next row's address
 	pop hl
-	ldh a, [$ff8b] ; map width + border
+	ldh a, [hMapStride] ; map width + border
 	add l
 	ld l, a
 	jr nc, .noCarry
@@ -945,9 +945,9 @@ LoadTileBlockMap:: ; 09fc (0:09fc)
 	ld a, [wd375]
 	ld d, a
 	ld a, [wd376]
-	ldh [$ff8b], a
+	ldh [hNorthSouthConnectionStripWidth], a
 	ld a, [wd377]
-	ldh [$ff8c], a
+	ldh [hNorthSouthConnectedMapWidth], a
 	call LoadNorthSouthConnectionsTileMap
 .southConnection
 	ld a, [W_MAPCONN2PTR]
@@ -963,9 +963,9 @@ LoadTileBlockMap:: ; 09fc (0:09fc)
 	ld a, [wd380]
 	ld d, a
 	ld a, [wd381]
-	ldh [$ff8b], a
+	ldh [hNorthSouthConnectionStripWidth], a
 	ld a, [wd382]
-	ldh [$ff8c], a
+	ldh [hNorthSouthConnectedMapWidth], a
 	call LoadNorthSouthConnectionsTileMap
 .westConnection
 	ld a, [W_MAPCONN3PTR]
@@ -983,7 +983,7 @@ LoadTileBlockMap:: ; 09fc (0:09fc)
 	ld a, [wd38c]
 	ld b, a
 	ld a, [wd38d]
-	ldh [$ff8b], a
+	ldh [hEastWestConnectedMapWidth], a
 	call LoadEastWestConnectionsTileMap
 .eastConnection
 	ld a, [W_MAPCONN4PTR]
@@ -1001,7 +1001,7 @@ LoadTileBlockMap:: ; 09fc (0:09fc)
 	ld a, [wd397]
 	ld b, a
 	ld a, [wd398]
-	ldh [$ff8b], a
+	ldh [hEastWestConnectedMapWidth], a
 	call LoadEastWestConnectionsTileMap
 .done
 	ret
@@ -1011,7 +1011,7 @@ LoadNorthSouthConnectionsTileMap:: ; 0ade (0:0ade)
 .loop
 	push de
 	push hl
-	ldh a, [$ff8b] ; width of connection
+	ldh a, [hNorthSouthConnectionStripWidth] ; width of connection
 	ld b, a
 .innerLoop
 	ld a, [hli]
@@ -1021,7 +1021,7 @@ LoadNorthSouthConnectionsTileMap:: ; 0ade (0:0ade)
 	jr nz, .innerLoop
 	pop hl
 	pop de
-	ldh a, [$ff8c] ; width of connected map
+	ldh a, [hNorthSouthConnectedMapWidth] ; width of connected map
 	add l
 	ld l, a
 	jr nc, .noCarry1
@@ -1050,7 +1050,7 @@ LoadEastWestConnectionsTileMap:: ; 0b02 (0:0b02)
 	jr nz, .innerLoop
 	pop de
 	pop hl
-	ldh a, [$ff8b] ; width of connected map
+	ldh a, [hEastWestConnectedMapWidth] ; width of connected map
 	add l
 	ld l, a
 	jr nc, .noCarry1

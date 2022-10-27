@@ -19,7 +19,7 @@ Route18GateScript0: ; 4988f (12:588f)
 	call ArePlayerCoordsInArray
 	ret nc
 	ld a, $2
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	xor a
 	ldh [hJoyHeld], a

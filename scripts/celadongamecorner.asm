@@ -410,7 +410,7 @@ CeladonGameCornerText11: ; 48e9d (12:4e9d)
 	ld hl, CeladonGameCornerText_48ed3
 	ld de, CeladonGameCornerText_48ed3
 	call SaveEndBattleTextPointers
-	ldh a, [$8c]
+	ldh a, [hSpriteIndex]
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters

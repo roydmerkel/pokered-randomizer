@@ -214,7 +214,7 @@ SilphCo7Script4: ; 51cc8 (14:5cc8)
 	ld a, $9
 	ldh [hSpriteIndex], a ; $ff8c
 	ld a, $4
-	ldh [$ff8d], a
+	ldh [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $f
 	ldh [hSpriteIndexOrTextID], a ; $ff8c

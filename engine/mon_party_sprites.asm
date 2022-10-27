@@ -13,7 +13,7 @@ AnimatePartyMon: ; 716ff (1c:56ff)
 	ld hl, wcf1f
 	ld a, [wCurrentMenuItem]
 	ld c, a
-	ld b, $0
+	ld b, 0
 	add hl, bc
 	ld a, [hl]
 
@@ -82,7 +82,7 @@ GetAnimationSpeed: ; 7170a (1c:570a)
 	jr .incTimer
 
 PartyMonSpeeds: ; 71769 (1c:5769)
-	db $05,$10,$20
+	db 5, 16, 32
 
 Func_7176c: ; 7176c (1c:576c)
 	ld hl, MonPartySpritePointers ; $57c0
@@ -300,7 +300,7 @@ Func_71868: ; 71868 (1c:5868)
 	ldh a, [hPartyMonIndex] ; $ff8c
 	ld hl, wPartySpecies
 	ld e, a
-	ld d, $0
+	ld d, 0
 	add hl, de
 	ld a, [hl]
 	call GetPartyMonSpriteID
@@ -337,7 +337,7 @@ Func_718ac: ; 718ac (1c:58ac)
 	push hl
 	add a
 	ld c, a
-	ld b, $0
+	ld b, 0
 	ld hl, MonPartySpritePointers
 	add hl, bc
 	add hl, bc
@@ -384,7 +384,7 @@ GetPartyMonSpriteID: ; 718e9 (1c:58e9)
 	srl a
 	ld hl, MonPartyData ; $590d
 	ld e, a
-	ld d, $0
+	ld d, 0
 	add hl, de
 	ld a, [hl]
 	bit 0, c

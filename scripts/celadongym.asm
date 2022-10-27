@@ -181,7 +181,7 @@ CeladonGymText1: ; 48a11 (12:4a11)
 	ld hl, CeladonGymText_48a63
 	ld de, CeladonGymText_48a63
 	call SaveEndBattleTextPointers
-	ldh a, [$8c]
+	ldh a, [hSpriteIndex]
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters

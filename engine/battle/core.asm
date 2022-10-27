@@ -1395,7 +1395,7 @@ SevenSpacesText: ; 3c8d7 (f:48d7)
 ; if a is 8, the slide is to the right, else it is to the left
 ; bug: when this is called, [H_AUTOBGTRANSFERENABLED] is non-zero, so there is screen tearing
 SlideTrainerPicOffScreen: ; 3c8df (f:48df)
-	ldh [$FF8B], a
+	ldh [hSlideAmount], a
 	ld c, a
 .slideStepLoop ; each iteration, the trainer pic is slid one tile left/right
 	push bc
@@ -1403,10 +1403,10 @@ SlideTrainerPicOffScreen: ; 3c8df (f:48df)
 	ld b, 7 ; number of rows
 .rowLoop
 	push hl
-	ldh a, [$FF8B]
+	ldh a, [hSlideAmount]
 	ld c, a
 .columnLoop
-	ldh a, [$FF8B]
+	ldh a, [hSlideAmount]
 	cp 8
 	jr z, .slideRight
 .slideLeft ; slide player sprite off screen
