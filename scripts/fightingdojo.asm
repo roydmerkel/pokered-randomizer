@@ -35,10 +35,10 @@ FightingDojoScript1: ; 5cd83 (17:4d83)
 	ldh [hJoyHeld], a
 	ld [wcf0d], a
 	ld a, [W_YCOORD]
-	cp $3
+	cp 3
 	ret nz
 	ld a, [W_XCOORD]
-	cp $4
+	cp 4
 	ret nz
 	ld a, $1
 	ld [wcf0d], a
@@ -50,7 +50,7 @@ FightingDojoScript1: ; 5cd83 (17:4d83)
 	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $1
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ret
 
@@ -76,7 +76,7 @@ FightingDojoScript3: ; 5cdc6 (17:4dc6)
 	or $3e
 	ld [wd7b1], a
 	ld a, $8
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	xor a
 	ld [wJoyIgnore], a
@@ -148,7 +148,7 @@ FightingDojoText1: ; 5ce44 (17:4e44)
 	ld hl, FightingDojoText_5ce93
 	ld de, FightingDojoText_5ce93
 	call SaveEndBattleTextPointers
-	ldh a, [$8c]
+	ldh a, [hSpriteIndexOrTextID]
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters

@@ -1,202 +1,202 @@
 ; Draws a "frame block". Frame blocks are blocks of tiles that are put
 ; together to form frames in battle animations.
 DrawFrameBlock: ; 78000 (1e:4000)
-	ld l,c
-	ld h,b
-	ld a,[hli]
-	ld [W_NUMFBTILES],a
-	ld a,[W_FBDESTADDR + 1]
-	ld e,a
-	ld a,[W_FBDESTADDR]
-	ld d,a
+	ld l, c
+	ld h, b
+	ld a, [hli]
+	ld [W_NUMFBTILES], a
+	ld a, [W_FBDESTADDR + 1]
+	ld e, a
+	ld a, [W_FBDESTADDR]
+	ld d, a
 	xor a
-	ld [W_FBTILECOUNTER],a ; loop counter
+	ld [W_FBTILECOUNTER], a ; loop counter
 .loop
-	ld a,[W_FBTILECOUNTER]
+	ld a, [W_FBTILECOUNTER]
 	inc a
-	ld [W_FBTILECOUNTER],a
-	ld a,[W_SUBANIMTRANSFORM]
+	ld [W_FBTILECOUNTER], a
+	ld a, [W_SUBANIMTRANSFORM]
 	dec a
-	jr z,.flipHorizontalAndVertical   ; 1
+	jr z, .flipHorizontalAndVertical   ; 1
 	dec a
-	jp z,.flipHorizontalTranslateDown ; 2
+	jp z, .flipHorizontalTranslateDown ; 2
 	dec a
-	jr z,.flipBaseCoords              ; 3
+	jr z, .flipBaseCoords              ; 3
 .noTransformation
-	ld a,[W_BASECOORDY]
+	ld a, [W_BASECOORDY]
 	add [hl]
-	ld [de],a ; store Y
+	ld [de], a ; store Y
 	inc hl
 	inc de
-	ld a,[W_BASECOORDX]
+	ld a, [W_BASECOORDX]
 	jr .finishCopying
 .flipBaseCoords
-	ld a,[W_BASECOORDY]
-	ld b,a
-	ld a,136
+	ld a, [W_BASECOORDY]
+	ld b, a
+	ld a, 136
 	sub b ; flip Y base coordinate
 	add [hl] ; Y offset
-	ld [de],a ; store Y
+	ld [de], a ; store Y
 	inc hl
 	inc de
-	ld a,[W_BASECOORDX]
-	ld b,a
-	ld a,168
+	ld a, [W_BASECOORDX]
+	ld b, a
+	ld a, 168
 	sub b ; flip X base coordinate
 .finishCopying ; finish copying values to OAM (when [W_SUBANIMTRANSFORM] not 1 or 2)
 	add [hl] ; X offset
-	ld [de],a ; store X
+	ld [de], a ; store X
 	inc hl
 	inc de
-	ld a,[hli]
-	add a,$31 ; base tile ID for battle animations
-	ld [de],a ; store tile ID
+	ld a, [hli]
+	add a, $31 ; base tile ID for battle animations
+	ld [de], a ; store tile ID
 	inc de
-	ld a,[hli]
-	ld [de],a ; store flags
+	ld a, [hli]
+	ld [de], a ; store flags
 	inc de
 	jp .nextTile
 .flipHorizontalAndVertical
-	ld a,[W_BASECOORDY]
+	ld a, [W_BASECOORDY]
 	add [hl] ; Y offset
-	ld b,a
-	ld a,136
+	ld b, a
+	ld a, 136
 	sub b ; flip Y coordinate
-	ld [de],a ; store Y
+	ld [de], a ; store Y
 	inc hl
 	inc de
-	ld a,[W_BASECOORDX]
+	ld a, [W_BASECOORDX]
 	add [hl] ; X offset
-	ld b,a
-	ld a,168
+	ld b, a
+	ld a, 168
 	sub b ; flip X coordinate
-	ld [de],a ; store X
+	ld [de], a ; store X
 	inc hl
 	inc de
-	ld a,[hli]
-	add a,$31 ; base tile ID for battle animations
-	ld [de],a ; store tile ID
+	ld a, [hli]
+	add a, $31 ; base tile ID for battle animations
+	ld [de], a ; store tile ID
 	inc de
 ; toggle horizontal and vertical flip
-	ld a,[hli] ; flags
+	ld a, [hli] ; flags
 	and a
-	ld b,OAM_VFLIP | OAM_HFLIP
-	jr z,.storeFlags1
-	cp a,OAM_HFLIP
-	ld b,OAM_VFLIP
-	jr z,.storeFlags1
-	cp a,OAM_VFLIP
-	ld b,OAM_HFLIP
-	jr z,.storeFlags1
-	ld b,0
+	ld b, OAM_VFLIP | OAM_HFLIP
+	jr z, .storeFlags1
+	cp a, OAM_HFLIP
+	ld b, OAM_VFLIP
+	jr z, .storeFlags1
+	cp a, OAM_VFLIP
+	ld b, OAM_HFLIP
+	jr z, .storeFlags1
+	ld b, 0
 .storeFlags1
-	ld a,b
-	ld [de],a
+	ld a, b
+	ld [de], a
 	inc de
 	jp .nextTile
 .flipHorizontalTranslateDown
-	ld a,[W_BASECOORDY]
+	ld a, [W_BASECOORDY]
 	add [hl]
-	add a,40 ; translate Y coordinate downwards
-	ld [de],a ; store Y
+	add a, 40 ; translate Y coordinate downwards
+	ld [de], a ; store Y
 	inc hl
 	inc de
-	ld a,[W_BASECOORDX]
+	ld a, [W_BASECOORDX]
 	add [hl]
-	ld b,a
-	ld a,168
+	ld b, a
+	ld a, 168
 	sub b ; flip X coordinate
-	ld [de],a ; store X
+	ld [de], a ; store X
 	inc hl
 	inc de
-	ld a,[hli]
-	add a,$31 ; base tile ID for battle animations
-	ld [de],a ; store tile ID
+	ld a, [hli]
+	add a, $31 ; base tile ID for battle animations
+	ld [de], a ; store tile ID
 	inc de
-	ld a,[hli]
-	bit 5,a ; is horizontal flip enabled?
-	jr nz,.disableHorizontalFlip
+	ld a, [hli]
+	bit 5, a ; is horizontal flip enabled?
+	jr nz, .disableHorizontalFlip
 .enableHorizontalFlip
-	set 5,a
+	set 5, a
 	jr .storeFlags2
 .disableHorizontalFlip
-	res 5,a
+	res 5, a
 .storeFlags2
-	ld [de],a
+	ld [de], a
 	inc de
 .nextTile
-	ld a,[W_FBTILECOUNTER]
-	ld c,a
-	ld a,[W_NUMFBTILES]
+	ld a, [W_FBTILECOUNTER]
+	ld c, a
+	ld a, [W_NUMFBTILES]
 	cp c
-	jp nz,.loop ; go back up if there are more tiles to draw
+	jp nz, .loop ; go back up if there are more tiles to draw
 .afterDrawingTiles
-	ld a,[W_FBMODE]
-	cp a,2
-	jr z,.advanceFrameBlockDestAddr; skip delay and don't clean OAM buffer
-	ld a,[W_SUBANIMFRAMEDELAY]
-	ld c,a
+	ld a, [W_FBMODE]
+	cp a, 2
+	jr z, .advanceFrameBlockDestAddr; skip delay and don't clean OAM buffer
+	ld a, [W_SUBANIMFRAMEDELAY]
+	ld c, a
 	call DelayFrames
-	ld a,[W_FBMODE]
-	cp a,3
-	jr z,.advanceFrameBlockDestAddr ; skip cleaning OAM buffer
-	cp a,4
-	jr z,.done ; skip cleaning OAM buffer and don't advance the frame block destination address
-	ld a,[W_ANIMATIONID]
-	cp a,GROWL
-	jr z,.resetFrameBlockDestAddr
+	ld a, [W_FBMODE]
+	cp a, 3
+	jr z, .advanceFrameBlockDestAddr ; skip cleaning OAM buffer
+	cp a, 4
+	jr z, .done ; skip cleaning OAM buffer and don't advance the frame block destination address
+	ld a, [W_ANIMATIONID]
+	cp a, GROWL
+	jr z, .resetFrameBlockDestAddr
 	call AnimationCleanOAM
 .resetFrameBlockDestAddr
-	ld hl,wOAMBuffer ; OAM buffer
-	ld a,l
-	ld [W_FBDESTADDR + 1],a
-	ld a,h
-	ld [W_FBDESTADDR],a ; set destination address to beginning of OAM buffer
+	ld hl, wOAMBuffer ; OAM buffer
+	ld a, l
+	ld [W_FBDESTADDR + 1], a
+	ld a, h
+	ld [W_FBDESTADDR], a ; set destination address to beginning of OAM buffer
 	ret
 .advanceFrameBlockDestAddr
-	ld a,e
-	ld [W_FBDESTADDR + 1],a
-	ld a,d
-	ld [W_FBDESTADDR],a
+	ld a, e
+	ld [W_FBDESTADDR + 1], a
+	ld a, d
+	ld [W_FBDESTADDR], a
 .done
 	ret
 
 PlayAnimation: ; 780f1 (1e:40f1)
 	xor a
-	ldh [$FF8B],a
-	ld [W_SUBANIMTRANSFORM],a
-	ld a,[W_ANIMATIONID] ; get animation number
+	ldh [hROMBankTemp], a
+	ld [W_SUBANIMTRANSFORM], a
+	ld a, [W_ANIMATIONID] ; get animation number
 	dec a
-	ld l,a
-	ld h,0
-	add hl,hl
-	ld de,AttackAnimationPointers  ; $607d ; animation command stream pointers
-	add hl,de
-	ld a,[hli]
-	ld h,[hl]
-	ld l,a
+	ld l, a
+	ld h, 0
+	add hl, hl
+	ld de, AttackAnimationPointers  ; $607d ; animation command stream pointers
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
 .animationLoop
-	ld a,[hli]
-	cp a,$FF
-	jr z,.AnimationOver
-	cp a,$C0 ; is this subanimation or a special effect?
-	jr c,.playSubanimation
+	ld a, [hli]
+	cp a, $FF
+	jr z, .AnimationOver
+	cp a, $C0 ; is this subanimation or a special effect?
+	jr c, .playSubanimation
 .doSpecialEffect
-	ld c,a
-	ld de,SpecialEffectPointers
+	ld c, a
+	ld de, SpecialEffectPointers
 .searchSpecialEffectTableLoop
-	ld a,[de]
+	ld a, [de]
 	cp c
-	jr z,.foundMatch
+	jr z, .foundMatch
 	inc de
 	inc de
 	inc de
 	jr .searchSpecialEffectTableLoop
 .foundMatch
-	ld a,[hli]
-	cp a,$FF ; is there a sound to play?
-	jr z,.skipPlayingSound
-	ld [wAnimSoundID],a ; store sound
+	ld a, [hli]
+	cp a, $FF ; is there a sound to play?
+	jr z, .skipPlayingSound
+	ld [wAnimSoundID], a ; store sound
 	push hl
 	push de
 	call Func_7986f
@@ -206,50 +206,50 @@ PlayAnimation: ; 780f1 (1e:40f1)
 .skipPlayingSound
 	push hl
 	inc de
-	ld a,[de]
-	ld l,a
+	ld a, [de]
+	ld l, a
 	inc de
-	ld a,[de]
-	ld h,a
-	ld de,.nextAnimationCommand
+	ld a, [de]
+	ld h, a
+	ld de, .nextAnimationCommand
 	push de
 	jp [hl] ; jump to special effect function
 .playSubanimation
-	ld c,a
-	and a,%00111111
-	ld [W_SUBANIMFRAMEDELAY],a
+	ld c, a
+	and a, %00111111
+	ld [W_SUBANIMFRAMEDELAY], a
 	xor a
 	sla c
 	rla
 	sla c
 	rla
-	ld [wd09f],a ; tile select
-	ld a,[hli] ; sound
-	ld [wAnimSoundID],a ; store sound
-	ld a,[hli] ; subanimation ID
-	ld c,l
-	ld b,h
-	ld l,a
-	ld h,0
-	add hl,hl
-	ld de,SubanimationPointers
-	add hl,de
-	ld a,l
-	ld [W_SUBANIMADDRPTR],a
-	ld a,h
-	ld [W_SUBANIMADDRPTR + 1],a
-	ld l,c
-	ld h,b
+	ld [wd09f], a ; tile select
+	ld a, [hli] ; sound
+	ld [wAnimSoundID], a ; store sound
+	ld a, [hli] ; subanimation ID
+	ld c, l
+	ld b, h
+	ld l, a
+	ld h, 0
+	add hl, hl
+	ld de, SubanimationPointers
+	add hl, de
+	ld a, l
+	ld [W_SUBANIMADDRPTR], a
+	ld a, h
+	ld [W_SUBANIMADDRPTR + 1], a
+	ld l, c
+	ld h, b
 	push hl
-	ldh a,[rOBP0]
+	ldh a, [rOBP0]
 	push af
-	ld a,[wcc79]
-	ldh [rOBP0],a
+	ld a, [wcc79]
+	ldh [rOBP0], a
 	call LoadAnimationTileset
 	call LoadSubanimation
 	call PlaySubanimation
 	pop af
-	ldh [rOBP0],a
+	ldh [rOBP0], a
 .nextAnimationCommand
 	pop hl
 	jr .animationLoop
@@ -265,22 +265,22 @@ AnimPlaySFX:
     pop de
     
 LoadSubanimation: ; 7817c (1e:417c)
-	ld a,[W_SUBANIMADDRPTR + 1]
-	ld h,a
-	ld a,[W_SUBANIMADDRPTR]
-	ld l,a
-	ld a,[hli]
-	ld e,a
-	ld a,[hl]
-	ld d,a ; de = address of subanimation
-	ld a,[de]
-	ld b,a
-	and a,31
-	ld [W_SUBANIMCOUNTER],a ; number of frame blocks
-	ld a,b
-	and a,%11100000
-	cp a,5 << 5 ; is subanimation type 5?
-	jr nz,.isNotType5
+	ld a, [W_SUBANIMADDRPTR + 1]
+	ld h, a
+	ld a, [W_SUBANIMADDRPTR]
+	ld l, a
+	ld a, [hli]
+	ld e, a
+	ld a, [hl]
+	ld d, a ; de = address of subanimation
+	ld a, [de]
+	ld b, a
+	and a, 31
+	ld [W_SUBANIMCOUNTER], a ; number of frame blocks
+	ld a, b
+	and a, %11100000
+	cp a, 5 << 5 ; is subanimation type 5?
+	jr nz, .isNotType5
 .isType5
 	call GetSubanimationTransform2
 	jr .saveTransformation
@@ -290,35 +290,35 @@ LoadSubanimation: ; 7817c (1e:417c)
 ; place the upper 3 bits of a into bits 0-2 of a before storing
 	srl a
 	swap a
-	ld [W_SUBANIMTRANSFORM],a
-	cp a,4 ; is the animation reversed?
-	ld hl,0
-	jr nz,.storeSubentryAddr
+	ld [W_SUBANIMTRANSFORM], a
+	cp a, 4 ; is the animation reversed?
+	ld hl, 0
+	jr nz, .storeSubentryAddr
 ; if the animation is reversed, then place the initial subentry address at the end of the list of subentries
-	ld a,[W_SUBANIMCOUNTER]
+	ld a, [W_SUBANIMCOUNTER]
 	dec a
-	ld bc,3
+	ld bc, 3
 .loop
-	add hl,bc
+	add hl, bc
 	dec a
-	jr nz,.loop
+	jr nz, .loop
 .storeSubentryAddr
 	inc de
-	add hl,de
-	ld a,l
-	ld [W_SUBANIMSUBENTRYADDR],a
-	ld a,h
-	ld [W_SUBANIMSUBENTRYADDR + 1],a
+	add hl, de
+	ld a, l
+	ld [W_SUBANIMSUBENTRYADDR], a
+	ld a, h
+	ld [W_SUBANIMSUBENTRYADDR + 1], a
 	ret
 
 ; called if the subanimation type is not 5
 ; sets the transform to 0 (i.e. no transform) if it's the player's turn
 ; sets the transform to the subanimation type if it's the enemy's turn
 GetSubanimationTransform1: ; 781c2 (1e:41c2)
-	ld b,a
-	ldh a,[H_WHOSETURN]
+	ld b, a
+	ldh a, [H_WHOSETURN]
 	and a
-	ld a,b
+	ld a, b
 	ret nz
 	xor a
 	ret
@@ -327,32 +327,32 @@ GetSubanimationTransform1: ; 781c2 (1e:41c2)
 ; sets the transform to 2 (i.e. horizontal and vertical flip) if it's the player's turn
 ; sets the transform to 0 (i.e. no transform) if it's the enemy's turn
 GetSubanimationTransform2: ; 781ca (1e:41ca)
-	ldh a,[H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
-	ld a,2 << 5
+	ld a, 2 << 5
 	ret z
 	xor a
 	ret
 
 ; loads tile patterns for battle animations
 LoadAnimationTileset: ; 781d2 (1e:41d2)
-	ld a,[wd09f] ; tileset select
+	ld a, [wd09f] ; tileset select
 	add a
 	add a
-	ld hl,AnimationTilesetPointers
-	ld e,a
-	ld d,0
-	add hl,de
-	ld a,[hli]
-	ld [wd07d],a ; number of tiles
-	ld a,[hli]
-	ld e,a
-	ld a,[hl]
-	ld d,a ; de = address of tileset
-	ld hl,vSprites + $310
+	ld hl, AnimationTilesetPointers
+	ld e, a
+	ld d, 0
+	add hl, de
+	ld a, [hli]
+	ld [wd07d], a ; number of tiles
+	ld a, [hli]
+	ld e, a
+	ld a, [hl]
+	ld d, a ; de = address of tileset
+	ld hl, vSprites + $310
 	ld b, BANK(AnimationTileset1) ; ROM bank
-	ld a,[wd07d]
-	ld c,a ; number of tiles
+	ld a, [wd07d]
+	ld c, a ; number of tiles
 	jp CopyVideoData ; load tileset
 
 AnimationTilesetPointers: ; 781f2 (1e:41f2)
@@ -392,38 +392,38 @@ MoveAnimation: ; 78d5e (1e:4d5e)
 	push af
 	call WaitForSoundToFinish
 	call Func_78e23
-	ld a,[W_ANIMATIONID]
+	ld a, [W_ANIMATIONID]
 	and a
-	jr z,.AnimationFinished
+	jr z, .AnimationFinished
 
 	; if throwing a Poké Ball, skip the regular animation code
-	cp a,TOSS_ANIM
-	jr nz,.MoveAnimation
-	ld de,.AnimationFinished
+	cp a, TOSS_ANIM
+	jr nz, .MoveAnimation
+	ld de, .AnimationFinished
 	push de
 	jp TossBallAnimation
 
 .MoveAnimation
 	; check if battle animations are disabled in the options
-	ld a,[W_OPTIONS]
-	bit 7,a
-	jr nz,.AnimationsDisabled
+	ld a, [W_OPTIONS]
+	bit 7, a
+	jr nz, .AnimationsDisabled
 	call ShareMoveAnimations
 	call PlayAnimation
 	jr .next4
 .AnimationsDisabled
-	ld c,30
+	ld c, 30
 	call DelayFrames
 .next4
 	call Func_78dbd ; reload pic and flash the pic in and out (to show damage)
 .AnimationFinished
 	call WaitForSoundToFinish
 	xor a
-	ld [W_SUBANIMSUBENTRYADDR],a
-	ld [wd09b],a
-	ld [W_SUBANIMTRANSFORM],a
+	ld [W_SUBANIMSUBENTRYADDR], a
+	ld [wd09b], a
+	ld [W_SUBANIMTRANSFORM], a
 	dec a
-	ld [wAnimSoundID],a
+	ld [wAnimSoundID], a
 	pop af
 	pop bc
 	pop de
@@ -432,40 +432,40 @@ MoveAnimation: ; 78d5e (1e:4d5e)
 
 ShareMoveAnimations: ; 78da6 (1e:4da6)
 ; some moves just reuse animations from status conditions
-	ldh a,[H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	and a
 	ret z
 
 	; opponent’s turn
 
-	ld a,[W_ANIMATIONID]
+	ld a, [W_ANIMATIONID]
 
-	cp a,AMNESIA
-	ld b,CONF_ANIM
-	jr z,.Replace
+	cp a, AMNESIA
+	ld b, CONF_ANIM
+	jr z, .Replace
 
-	cp a,REST
-	ld b,SLP_ANIM
+	cp a, REST
+	ld b, SLP_ANIM
 	ret nz
 
 .Replace
-	ld a,b
-	ld [W_ANIMATIONID],a
+	ld a, b
+	ld [W_ANIMATIONID], a
 	ret
 
 Func_78dbd: ; 78dbd (1e:4dbd)
-	ld a,[wcc5b]
+	ld a, [wcc5b]
 	and a
 	ret z
 	dec a
 	add a
-	ld c,a
-	ld b,0
-	ld hl,PointerTable_78dcf
-	add hl,bc
-	ld a,[hli]
-	ld h,[hl]
-	ld l,a
+	ld c, a
+	ld b, 0
+	ld hl, PointerTable_78dcf
+	add hl, bc
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
 	jp [hl]
 
 PointerTable_78dcf: ; 78dcf (1e:4dcf)
@@ -556,69 +556,69 @@ Func_78e23: ; 78e23 (1e:4e23)
 	ret
 
 PlaySubanimation: ; 78e53 (1e:4e53)
-	ld a,[wAnimSoundID]
-	cp a,$FF
-	jr z,.skipPlayingSound
+	ld a, [wAnimSoundID]
+	cp a, $FF
+	jr z, .skipPlayingSound
 	call Func_7986f
 	call nc, AnimPlaySFX ; play sound effect
 .skipPlayingSound
-	ld hl,wOAMBuffer ; base address of OAM buffer
-	ld a,l
-	ld [W_FBDESTADDR + 1],a
-	ld a,h
-	ld [W_FBDESTADDR],a
-	ld a,[W_SUBANIMSUBENTRYADDR + 1]
-	ld h,a
-	ld a,[W_SUBANIMSUBENTRYADDR]
-	ld l,a
+	ld hl, wOAMBuffer ; base address of OAM buffer
+	ld a, l
+	ld [W_FBDESTADDR + 1], a
+	ld a, h
+	ld [W_FBDESTADDR], a
+	ld a, [W_SUBANIMSUBENTRYADDR + 1]
+	ld h, a
+	ld a, [W_SUBANIMSUBENTRYADDR]
+	ld l, a
 .loop
 	push hl
-	ld c,[hl] ; frame block ID
-	ld b,0
-	ld hl,FrameBlockPointers
-	add hl,bc
-	add hl,bc
-	ld a,[hli]
-	ld c,a
-	ld a,[hli]
-	ld b,a
+	ld c, [hl] ; frame block ID
+	ld b, 0
+	ld hl, FrameBlockPointers
+	add hl, bc
+	add hl, bc
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
 	pop hl
 	inc hl
 	push hl
-	ld e,[hl] ; base coordinate ID
-	ld d,0
-	ld hl,FrameBlockBaseCoords  ; $7c85 ; base coordinate table
-	add hl,de
-	add hl,de
-	ld a,[hli]
-	ld [W_BASECOORDY],a
-	ld a,[hl]
-	ld [W_BASECOORDX],a
+	ld e, [hl] ; base coordinate ID
+	ld d, 0
+	ld hl, FrameBlockBaseCoords  ; $7c85 ; base coordinate table
+	add hl, de
+	add hl, de
+	ld a, [hli]
+	ld [W_BASECOORDY], a
+	ld a, [hl]
+	ld [W_BASECOORDX], a
 	pop hl
 	inc hl
-	ld a,[hl] ; frame block mode
-	ld [W_FBMODE],a
+	ld a, [hl] ; frame block mode
+	ld [W_FBMODE], a
 	call DrawFrameBlock
 	call DoSpecialEffectByAnimationId ; run animation-specific function (if there is one)
-	ld a,[W_SUBANIMCOUNTER]
+	ld a, [W_SUBANIMCOUNTER]
 	dec a
-	ld [W_SUBANIMCOUNTER],a
+	ld [W_SUBANIMCOUNTER], a
 	ret z
-	ld a,[W_SUBANIMSUBENTRYADDR + 1]
-	ld h,a
-	ld a,[W_SUBANIMSUBENTRYADDR]
-	ld l,a
-	ld a,[W_SUBANIMTRANSFORM]
-	cp a,4 ; is the animation reversed?
-	ld bc,3
-	jr nz,.nextSubanimationSubentry
-	ld bc,-3
+	ld a, [W_SUBANIMSUBENTRYADDR + 1]
+	ld h, a
+	ld a, [W_SUBANIMSUBENTRYADDR]
+	ld l, a
+	ld a, [W_SUBANIMTRANSFORM]
+	cp a, 4 ; is the animation reversed?
+	ld bc, 3
+	jr nz, .nextSubanimationSubentry
+	ld bc, -3
 .nextSubanimationSubentry
-	add hl,bc
-	ld a,h
-	ld [W_SUBANIMSUBENTRYADDR + 1],a
-	ld a,l
-	ld [W_SUBANIMSUBENTRYADDR],a
+	add hl, bc
+	ld a, h
+	ld [W_SUBANIMSUBENTRYADDR + 1], a
+	ld a, l
+	ld [W_SUBANIMSUBENTRYADDR], a
 	jp .loop
 
 AnimationCleanOAM: ; 78ec8 (1e:4ec8)
@@ -640,16 +640,16 @@ DoSpecialEffectByAnimationId: ; 78ed7 (1e:4ed7)
 	push hl
 	push de
 	push bc
-	ld a,[W_ANIMATIONID]
-	ld hl,AnimationIdSpecialEffects
-	ld de,3
+	ld a, [W_ANIMATIONID]
+	ld hl, AnimationIdSpecialEffects
+	ld de, 3
 	call IsInArray
-	jr nc,.done
+	jr nc, .done
 	inc hl
-	ld a,[hli]
-	ld h,[hl]
-	ld l,a
-	ld de,.done
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld de, .done
 	push de
 	jp [hl]
 .done
@@ -750,193 +750,193 @@ AnimationIdSpecialEffects: ; 78ef5 (1e:4ef5)
 	db $FF ; terminator
 
 DoBallTossSpecialEffects: ; 78f3e (1e:4f3e)
-	ld a,[wcf91]
-	cp a,3 ; is it a Master Ball or Ultra Ball?
-	jr nc,.skipFlashingEffect
+	ld a, [wcf91]
+	cp a, 3 ; is it a Master Ball or Ultra Ball?
+	jr nc, .skipFlashingEffect
 .flashingEffect ; do a flashing effect if it's Master Ball or Ultra Ball
-	ldh a,[rOBP0]
-	xor a,%00111100 ; complement colors 1 and 2
-	ldh [rOBP0],a
+	ldh a, [rOBP0]
+	xor a, %00111100 ; complement colors 1 and 2
+	ldh [rOBP0], a
 .skipFlashingEffect
-	ld a,[W_SUBANIMCOUNTER]
-	cp a,11 ; is it the beginning of the subanimation?
-	jr nz,.skipPlayingSound
+	ld a, [W_SUBANIMCOUNTER]
+	cp a, 11 ; is it the beginning of the subanimation?
+	jr nz, .skipPlayingSound
 ; if it is the beginning of the subanimation, play a sound
-	ld a,RBSFX_08_41
+	ld a, RBSFX_08_41
 	call PlaySound ; play sound
 .skipPlayingSound
-	ld a,[W_ISINBATTLE]
-	cp a,02 ; is it a trainer battle?
-	jr z,.isTrainerBattle
-	ld a,[wd11e]
-	cp a,$10 ; is the enemy pokemon the Ghost Marowak?
+	ld a, [W_ISINBATTLE]
+	cp a, 02 ; is it a trainer battle?
+	jr z, .isTrainerBattle
+	ld a, [wd11e]
+	cp a, $10 ; is the enemy pokemon the Ghost Marowak?
 	ret nz
 ; if the enemy pokemon is the Ghost Marowak, make it dodge during the last 3 frames
-	ld a,[W_SUBANIMCOUNTER]
-	cp a,3
-	jr z,.moveGhostMarowakLeft
-	cp a,2
-	jr z,.moveGhostMarowakLeft
-	cp a,1
+	ld a, [W_SUBANIMCOUNTER]
+	cp a, 3
+	jr z, .moveGhostMarowakLeft
+	cp a, 2
+	jr z, .moveGhostMarowakLeft
+	cp a, 1
 	ret nz
 .moveGhostMarowakLeft
 	hlCoord 17, 0
-	ld de,20
-	ld bc,$0707 ; 7 rows and 7 columns
+	ld de, 20
+	ld bc, $0707 ; 7 rows and 7 columns
 .loop
 	push hl
 	push bc
 	call Func_79862 ; move row of tiles left
 	pop bc
 	pop hl
-	add hl,de
+	add hl, de
 	dec b
-	jr nz,.loop
-	ld a,%00001000
-	ldh [rNR10],a ; Channel 1 sweep register
+	jr nz, .loop
+	ld a, %00001000
+	ldh [rNR10], a ; Channel 1 sweep register
 	ret
 .isTrainerBattle ; if it's a trainer battle, shorten the animation by one frame
-	ld a,[W_SUBANIMCOUNTER]
-	cp a,3
+	ld a, [W_SUBANIMCOUNTER]
+	cp a, 3
 	ret nz
 	dec a
-	ld [W_SUBANIMCOUNTER],a
+	ld [W_SUBANIMCOUNTER], a
 	ret
 
 DoBallShakeSpecialEffects: ; 78f96 (1e:4f96)
-	ld a,[W_SUBANIMCOUNTER]
-	cp a,4 ; is it the beginning of a shake?
-	jr nz,.skipPlayingSound
+	ld a, [W_SUBANIMCOUNTER]
+	cp a, 4 ; is it the beginning of a shake?
+	jr nz, .skipPlayingSound
 ; if it is the beginning of a shake, play a sound and wait 2/3 of a second
-	ld a,RBSFX_02_3c
+	ld a, RBSFX_02_3c
 	call PlaySound ; play sound
-	ld c,40
+	ld c, 40
 	call DelayFrames
 .skipPlayingSound
-	ld a,[W_SUBANIMCOUNTER]
+	ld a, [W_SUBANIMCOUNTER]
 	dec a
 	ret nz
 ; if it's the end of the ball shaking subanimation, check if more shakes are left and restart the subanimation
-	ld a,[wWhichTrade] ; number of shakes
+	ld a, [wWhichTrade] ; number of shakes
 	dec a ; decrement number of shakes
-	ld [wWhichTrade],a
+	ld [wWhichTrade], a
 	ret z
 ; if there are shakes left, restart the subanimation
-	ld a,[W_SUBANIMSUBENTRYADDR]
-	ld l,a
-	ld a,[W_SUBANIMSUBENTRYADDR + 1]
-	ld h,a
-	ld de,-(4 * 3) ; 4 subentries and 3 bytes per subentry
-	add hl,de
-	ld a,l
-	ld [W_SUBANIMSUBENTRYADDR],a
-	ld a,h
-	ld [W_SUBANIMSUBENTRYADDR + 1],a
-	ld a,5 ; number of subentries in the ball shaking subanimation plus one
-	ld [W_SUBANIMCOUNTER],a
+	ld a, [W_SUBANIMSUBENTRYADDR]
+	ld l, a
+	ld a, [W_SUBANIMSUBENTRYADDR + 1]
+	ld h, a
+	ld de, -(4 * 3) ; 4 subentries and 3 bytes per subentry
+	add hl, de
+	ld a, l
+	ld [W_SUBANIMSUBENTRYADDR], a
+	ld a, h
+	ld [W_SUBANIMSUBENTRYADDR + 1], a
+	ld a, 5 ; number of subentries in the ball shaking subanimation plus one
+	ld [W_SUBANIMCOUNTER], a
 	ret
 
 ; plays a sound after the second frame of the poof animation
 DoPoofSpecialEffects: ; 78fce (1e:4fce)
-	ld a,[W_SUBANIMCOUNTER]
-	cp a,5
+	ld a, [W_SUBANIMCOUNTER]
+	cp a, 5
 	ret nz
-	ld a,RBSFX_08_42
+	ld a, RBSFX_08_42
 	jp PlaySound
 
 DoRockSlideSpecialEffects: ; 78fd9 (1e:4fd9)
-	ld a,[W_SUBANIMCOUNTER]
-	cp a,12
+	ld a, [W_SUBANIMCOUNTER]
+	cp a, 12
 	ret nc
-	cp a,8
-	jr nc,.shakeScreen
-	cp a,1
-	jp z,AnimationFlashScreen ; if it's the end of the subanimation, flash the screen
+	cp a, 8
+	jr nc, .shakeScreen
+	cp a, 1
+	jp z, AnimationFlashScreen ; if it's the end of the subanimation, flash the screen
 	ret
 ; if the subaninmation counter is between 8 and 11, shake the screen horizontally and vertically
 .shakeScreen
-	ld b,1
+	ld b, 1
 	predef Func_48125 ; shake horizontally
-	ld b,1
+	ld b, 1
 	predef_jump Func_480ff ; shake vertically
 
 FlashScreenEveryEightFrameBlocks: ; 78ff7 (1e:4ff7)
-	ld a,[W_SUBANIMCOUNTER]
-	and a,7 ; is the subanimation counter exactly 8?
-	call z,AnimationFlashScreen ; if so, flash the screen
+	ld a, [W_SUBANIMCOUNTER]
+	and a, 7 ; is the subanimation counter exactly 8?
+	call z, AnimationFlashScreen ; if so, flash the screen
 	ret
 
 ; flashes the screen if the subanimation counter is divisible by 4
 FlashScreenEveryFourFrameBlocks: ; 79000 (1e:5000)
-	ld a,[W_SUBANIMCOUNTER]
-	and a,3
-	call z,AnimationFlashScreen
+	ld a, [W_SUBANIMCOUNTER]
+	and a, 3
+	call z, AnimationFlashScreen
 	ret
 
 ; used for Explosion and Selfdestruct
 DoExplodeSpecialEffects: ; 79009 (1e:5009)
-	ld a,[W_SUBANIMCOUNTER]
-	cp a,1 ; is it the end of the subanimation?
-	jr nz,FlashScreenEveryFourFrameBlocks
+	ld a, [W_SUBANIMCOUNTER]
+	cp a, 1 ; is it the end of the subanimation?
+	jr nz, FlashScreenEveryFourFrameBlocks
 ; if it's the end of the subanimation, make the attacking pokemon disappear
 	hlCoord 1, 5
 	jp AnimationHideMonPic ; make pokemon disappear
 
 ; flashes the screen when subanimation counter is 1 modulo 4
 DoBlizzardSpecialEffects: ; 79016 (1e:5016)
-	ld a,[W_SUBANIMCOUNTER]
-	cp a,13
-	jp z,AnimationFlashScreen
-	cp a,9
-	jp z,AnimationFlashScreen
-	cp a,5
-	jp z,AnimationFlashScreen
-	cp a,1
-	jp z,AnimationFlashScreen
+	ld a, [W_SUBANIMCOUNTER]
+	cp a, 13
+	jp z, AnimationFlashScreen
+	cp a, 9
+	jp z, AnimationFlashScreen
+	cp a, 5
+	jp z, AnimationFlashScreen
+	cp a, 1
+	jp z, AnimationFlashScreen
 	ret
 
 ; flashes the screen at 3 points in the subanimation
 ; XXX is this unused?
 Func_7902e: ; 7902e (1e:502e)
-	ld a,[W_SUBANIMCOUNTER]
-	cp a,14
-	jp z,AnimationFlashScreen
-	cp a,9
-	jp z,AnimationFlashScreen
-	cp a,2
-	jp z,AnimationFlashScreen
+	ld a, [W_SUBANIMCOUNTER]
+	cp a, 14
+	jp z, AnimationFlashScreen
+	cp a, 9
+	jp z, AnimationFlashScreen
+	cp a, 2
+	jp z, AnimationFlashScreen
 	ret
 
 ; function to make the pokemon disappear at the beginning of the animation
 ; XXX probably a trade-related animation
 Func_79041: ; 79041 (1e:5041)
-	ld a,[W_SUBANIMCOUNTER]
-	cp a,6
+	ld a, [W_SUBANIMCOUNTER]
+	cp a, 6
 	ret nz
-	ld a,$2F
+	ld a, $2F
 	jp Func_7980c ; make pokemon disappear
 
 ; function to make a shaking pokeball jump up at the end of the animation
 ; XXX probably a trade-related animation
 Func_7904c: ; 7904c (1e:504c)
-	ld a,[W_SUBANIMCOUNTER]
-	cp a,1
+	ld a, [W_SUBANIMCOUNTER]
+	cp a, 1
 	ret nz
 ; if it's the end of the animation, make the ball jump up
-	ld de,BallMoveDistances1
+	ld de, BallMoveDistances1
 .loop
-	ld hl,wOAMBuffer ; OAM buffer
-	ld bc,4
+	ld hl, wOAMBuffer ; OAM buffer
+	ld bc, 4
 .innerLoop
-	ld a,[de]
-	cp a,$ff
-	jr z,.done
+	ld a, [de]
+	cp a, $ff
+	jr z, .done
 	add [hl] ; add to Y value of OAM entry
-	ld [hl],a
-	add hl,bc
-	ld a,l
-	cp a,4 * 4 ; there are 4 entries, each 4 bytes
-	jr nz,.innerLoop
+	ld [hl], a
+	add hl, bc
+	ld a, l
+	cp a, 4 * 4 ; there are 4 entries, each 4 bytes
+	jr nz, .innerLoop
 	inc de
 	push bc
 	call Delay3
@@ -944,72 +944,72 @@ Func_7904c: ; 7904c (1e:504c)
 	jr .loop
 .done
 	call AnimationCleanOAM
-	ld a,RBSFX_02_44
+	ld a, RBSFX_02_44
 	jp PlaySound ; play sound
 
 BallMoveDistances1: ; 79078 (1e:5078)
-	db -12,-12,-8
+	db -12, -12, -8
 	db $ff ; terminator
 
 ; function to make the pokeball jump up
 ; XXX probably a trade-related animation
 Func_7907c ; 507C
-	ld de,BallMoveDistances2
+	ld de, BallMoveDistances2
 .loop
-	ld hl,wOAMBuffer ; OAM buffer
-	ld bc,4
+	ld hl, wOAMBuffer ; OAM buffer
+	ld bc, 4
 .innerLoop
-	ld a,[de]
-	cp a,$ff
-	jp z,ClearScreen
+	ld a, [de]
+	cp a, $ff
+	jp z, ClearScreen
 	add [hl]
-	ld [hl],a
-	add hl,bc
-	ld a,l
-	cp a,4 * 4 ; there are 4 entries, each 4 bytes
-	jr nz,.innerLoop
+	ld [hl], a
+	add hl, bc
+	ld a, l
+	cp a, 4 * 4 ; there are 4 entries, each 4 bytes
+	jr nz, .innerLoop
 	inc de
 	push de
-	ld a,[de]
-	cp a,12
-	jr z,.playSound
-	cp a,$ff
-	jr nz,.skipPlayingSound
+	ld a, [de]
+	cp a, 12
+	jr z, .playSound
+	cp a, $ff
+	jr nz, .skipPlayingSound
 .playSound ; play sound if next move distance is 12 or this is the last one
-	ld a,RBSFX_08_58
+	ld a, RBSFX_08_58
 	call PlaySound
 .skipPlayingSound
 	push bc
-	ld c,5
+	ld c, 5
 	call DelayFrames
 	pop bc
-	ldh a,[$ffae] ; background scroll X
-	sub a,8 ; scroll to the left
-	ldh [$ffae],a
+	ldh a, [$ffae] ; background scroll X
+	sub a, 8 ; scroll to the left
+	ldh [$ffae], a
 	pop de
 	jr .loop
 
 BallMoveDistances2: ; 790b3 (1e:50b3)
-	db 11,12,-12,-7,7,12,-8,8
+	db 11, 12, -12, -7, 7, 12, -8, 8
 	db $ff ; terminator
 
 ; this function copies the current musical note graphic
 ; so that there are two musical notes flying towards the defending pokemon
 DoGrowlSpecialEffects: ; 790bc (1e:50bc)
-	ld hl,wOAMBuffer ; OAM buffer
-	ld de,wOAMBuffer + $10
-	ld bc,$10
+	ld hl, wOAMBuffer ; OAM buffer
+	ld de, wOAMBuffer + $10
+	ld bc, $10
 	call CopyData ; copy the musical note graphic
-	ld a,[W_SUBANIMCOUNTER]
+	ld a, [W_SUBANIMCOUNTER]
 	dec a
-	call z,AnimationCleanOAM ; clean up at the end of the subanimation
+	call z, AnimationCleanOAM ; clean up at the end of the subanimation
 	ret
 
 ; this is associated with Tail Whip, but Tail Whip doesn't use any subanimations
 Func_790d0: ; 790d0 (1e:50d0)
-	ld a,1
-	ld [W_SUBANIMCOUNTER],a
-	ld c,20
+	ld a, 1
+	ld [W_SUBANIMCOUNTER], a
+	ld c, 20
 	jp DelayFrames
 
 ; Format: Special Effect ID (1 byte), Address (2 bytes)
@@ -1095,48 +1095,48 @@ SpecialEffectPointers: ; 790da (1e:50da)
 	db $FF
 
 AnimationDelay10: ; 79150 (1e:5150)
-	ld c,10
+	ld c, 10
 	jp DelayFrames
 
 ; calls a function with the turn flipped from player to enemy or vice versa
 ; input - hl - address of function to call
 CallWithTurnFlipped: ; 79155 (1e:5155)
-	ldh a,[H_WHOSETURN]
+	ldh a, [H_WHOSETURN]
 	push af
-	xor a,1
-	ldh [H_WHOSETURN],a
-	ld de,.returnAddress
+	xor a, 1
+	ldh [H_WHOSETURN], a
+	ld de, .returnAddress
 	push de
 	jp [hl]
 .returnAddress
 	pop af
-	ldh [H_WHOSETURN],a
+	ldh [H_WHOSETURN], a
 	ret
 
 ; flashes the screen for an extended period (48 frames)
 AnimationFlashScreenLong: ; 79165 (1e:5165)
-	ld a,3 ; cycle through the palettes 3 times
-	ld [wd08a],a
-	ld a,[wOnSGB] ; running on SGB?
+	ld a, 3 ; cycle through the palettes 3 times
+	ld [wd08a], a
+	ld a, [wOnSGB] ; running on SGB?
 	and a
-	ld hl,FlashScreenLongMonochrome
-	jr z,.loop
-	ld hl,FlashScreenLongSGB
+	ld hl, FlashScreenLongMonochrome
+	jr z, .loop
+	ld hl, FlashScreenLongSGB
 .loop
 	push hl
 .innerLoop
-	ld a,[hli]
-	cp a,$01 ; is it the end of the palettes?
-	jr z,.endOfPalettes
-	ldh [rBGP],a
+	ld a, [hli]
+	cp a, $01 ; is it the end of the palettes?
+	jr z, .endOfPalettes
+	ldh [rBGP], a
 	call FlashScreenLongDelay
 	jr .innerLoop
 .endOfPalettes
-	ld a,[wd08a]
+	ld a, [wd08a]
 	dec a
-	ld [wd08a],a
+	ld [wd08a], a
 	pop hl
-	jr nz,.loop
+	jr nz, .loop
 	ret
 
 ; BG palettes
@@ -1174,31 +1174,31 @@ FlashScreenLongSGB: ; 7919b (1e:519b)
 ; causes a delay of 2 frames for the first cycle
 ; causes a delay of 1 frame for the second and third cycles
 FlashScreenLongDelay: ; 791a8 (1e:51a8)
-	ld a,[wd08a]
-	cp a,4 ; never true since [wd08a] starts at 3
-	ld c,4
-	jr z,.delayFrames
-	cp a,3
-	ld c,2
-	jr z,.delayFrames
-	cp a,2 ; nothing is done with this
-	ld c,1
+	ld a, [wd08a]
+	cp a, 4 ; never true since [wd08a] starts at 3
+	ld c, 4
+	jr z, .delayFrames
+	cp a, 3
+	ld c, 2
+	jr z, .delayFrames
+	cp a, 2 ; nothing is done with this
+	ld c, 1
 .delayFrames
 	jp DelayFrames
 
 AnimationFlashScreen: ; 791be (1e:51be)
-	ldh a,[rBGP]
+	ldh a, [rBGP]
 	push af ; save initial palette
-	ld a,%00011011 ; 0, 1, 2, 3 (inverted colors)
-	ldh [rBGP],a
-	ld c,2
+	ld a, %00011011 ; 0, 1, 2, 3 (inverted colors)
+	ldh [rBGP], a
+	ld c, 2
 	call DelayFrames
 	xor a ; white out background
-	ldh [rBGP],a
-	ld c,2
+	ldh [rBGP], a
+	ld c, 2
 	call DelayFrames
 	pop af
-	ldh [rBGP],a ; restore initial palette
+	ldh [rBGP], a ; restore initial palette
 	ret
 
 AnimationDarkScreenPalette: ; 791d6 (1e:51d6)
@@ -2288,23 +2288,23 @@ Func_79869: ; 79869 (1e:5869)
 	ret
 
 Func_7986f: ; 7986f (1e:586f)
-	ld hl,MoveSoundTable
-	ld e,a
-	ld d,0
-	add hl,de
-	add hl,de
-	add hl,de
-	ld a,[hli]
-	ld b,a
+	ld hl, MoveSoundTable
+	ld e, a
+	ld d, 0
+	add hl, de
+	add hl, de
+	add hl, de
+	ld a, [hli]
+	ld b, a
 	call IsCryMove
-	jr nc,.NotCryMove
-	ldh a,[H_WHOSETURN]
+	jr nc, .NotCryMove
+	ldh a, [H_WHOSETURN]
 	and a
-	jr nz,.next
-	ld a,[wBattleMonSpecies] ; get number of current monster
+	jr nz, .next
+	ld a, [wBattleMonSpecies] ; get number of current monster
 	jr .Continue
 .next
-	ld a,[wEnemyMonSpecies]
+	ld a, [wEnemyMonSpecies]
 .Continue
     push af
     ld a, 1
@@ -2318,32 +2318,33 @@ Func_7986f: ; 7986f (1e:586f)
     ret
 	;push hl
 	;call GetCryData
-	;ld b,a
+	;ld b, a
 	;pop hl
-	;ld a,[wFrequencyModifier]
+	;ld a, [wFrequencyModifier]
 	;add [hl]
-	;ld [wFrequencyModifier],a
+	;ld [wFrequencyModifier], a
 	;inc hl
-	;ld a,[wTempoModifier]
+	;ld a, [wTempoModifier]
 	;add [hl]
-	;ld [wTempoModifier],a
+	;ld [wTempoModifier], a
+	;jr .done
 .NotCryMove
-	ld a,[hli]
-	ld [wFrequencyModifier],a
-	ld a,[hli]
-	ld [wTempoModifier],a
+	ld a, [hli]
+	ld [wFrequencyModifier], a
+	ld a, [hli]
+	ld [wTempoModifier], a
 .done
     xor a ; just in case c got set somewhere
-	ld a,b
+	ld a, b
 	ret
 
 IsCryMove: ; 798ad (1e:58ad)
 ; set carry if the move animation involves playing a monster cry
-	ld a,[W_ANIMATIONID]
-	cp a,GROWL
-	jr z,.CryMove
-	cp a,ROAR
-	jr z,.CryMove
+	ld a, [W_ANIMATIONID]
+	cp a, GROWL
+	jr z, .CryMove
+	cp a, ROAR
+	jr z, .CryMove
 	and a ; clear carry
 	ret
 .CryMove
@@ -2351,172 +2352,172 @@ IsCryMove: ; 798ad (1e:58ad)
 	ret
 
 MoveSoundTable: ; 798bc (1e:58bc)
-	db RBSFX_08_4a,$00,$80
-	db RBSFX_08_4c,$10,$80
-	db RBSFX_08_5d,$00,$80
-	db RBSFX_08_4b,$01,$80
-	db RBSFX_08_4d,$00,$40
-	db RBSFX_08_77,$00,$ff
-	db RBSFX_08_4d,$10,$60
-	db RBSFX_08_4d,$20,$80
-	db RBSFX_08_4d,$00,$a0
-	db RBSFX_08_50,$00,$80
-	db RBSFX_08_4f,$20,$40
-	db RBSFX_08_4f,$00,$80
-	db RBSFX_08_4e,$00,$a0
-	db RBSFX_08_51,$10,$c0
-	db RBSFX_08_51,$00,$a0
-	db RBSFX_08_52,$00,$c0
-	db RBSFX_08_52,$10,$a0
-	db RBSFX_08_53,$00,$e0
-	db RBSFX_08_51,$20,$c0
-	db RBSFX_08_54,$00,$80
-	db RBSFX_08_62,$00,$80
-	db RBSFX_08_55,$01,$80
-	db RBSFX_08_60,$00,$80
-	db RBSFX_08_57,$f0,$40
-	db RBSFX_08_5a,$00,$80
-	db RBSFX_08_57,$00,$80
-	db RBSFX_08_61,$10,$80
-	db RBSFX_08_5b,$01,$a0
-	db RBSFX_08_58,$00,$80
-	db RBSFX_08_5e,$00,$60
-	db RBSFX_08_5e,$01,$40
-	db RBSFX_08_5f,$00,$a0
-	db RBSFX_08_5a,$10,$a0
-	db RBSFX_08_60,$00,$c0
-	db RBSFX_08_54,$10,$60
-	db RBSFX_08_5a,$00,$a0
-	db RBSFX_08_62,$11,$c0
-	db RBSFX_08_5a,$20,$c0
-	db RBSFX_08_61,$00,$80
-	db RBSFX_08_5b,$00,$80
-	db RBSFX_08_5b,$20,$c0
-	db RBSFX_08_59,$00,$80
-	db RBSFX_08_71,$ff,$40
-	db RBSFX_08_5e,$00,$80
-	db RBSFX_08_4b,$00,$c0
-	db RBSFX_08_4b,$00,$40
-	db RBSFX_08_75,$00,$80
-	db RBSFX_08_67,$40,$60
-	db RBSFX_08_67,$00,$80
-	db RBSFX_08_67,$ff,$40
-	db RBSFX_08_6a,$80,$c0
-	db RBSFX_08_59,$10,$a0
-	db RBSFX_08_59,$21,$e0
-	db RBSFX_08_69,$00,$80
-	db RBSFX_08_64,$20,$60
-	db RBSFX_08_6a,$00,$80
-	db RBSFX_08_6c,$00,$80
-	db RBSFX_08_68,$40,$80
-	db RBSFX_08_69,$f0,$e0
-	db RBSFX_08_6d,$00,$80
-	db RBSFX_08_6a,$f0,$60
-	db RBSFX_08_68,$00,$80
-	db RBSFX_08_76,$00,$80
-	db RBSFX_08_47,$01,$a0
-	db RBSFX_08_53,$f0,$20
-	db RBSFX_08_63,$01,$c0
-	db RBSFX_08_63,$00,$80
-	db RBSFX_08_5a,$00,$e0
-	db RBSFX_08_66,$01,$60
-	db RBSFX_08_66,$20,$40
-	db RBSFX_08_64,$00,$80
-	db RBSFX_08_64,$40,$c0
-	db RBSFX_08_5b,$03,$60
-	db RBSFX_08_65,$11,$e0
-	db RBSFX_08_52,$20,$e0
-	db RBSFX_08_6e,$00,$80
-	db RBSFX_08_5c,$00,$80
-	db RBSFX_08_5c,$11,$a0
-	db RBSFX_08_5c,$01,$c0
-	db RBSFX_08_53,$14,$c0
-	db RBSFX_08_5b,$02,$a0
-	db RBSFX_08_69,$f0,$80
-	db RBSFX_08_69,$20,$c0
-	db RBSFX_08_6f,$00,$20
-	db RBSFX_08_6f,$20,$80
-	db RBSFX_08_6e,$12,$60
-	db RBSFX_08_66,$00,$80
-	db RBSFX_08_54,$01,$e0
-	db RBSFX_08_69,$0f,$e0
-	db RBSFX_08_69,$11,$20
-	db RBSFX_08_50,$10,$40
-	db RBSFX_08_4f,$10,$c0
-	db RBSFX_08_54,$00,$20
-	db RBSFX_08_70,$00,$80
-	db RBSFX_08_75,$11,$18
-	db RBSFX_08_49,$20,$c0
-	db RBSFX_08_48,$20,$c0
-	db RBSFX_08_65,$00,$10
-	db RBSFX_08_66,$f0,$20
-	db RBSFX_08_73,$f0,$c0
-	db RBSFX_08_51,$f0,$e0
-	db RBSFX_08_49,$f0,$40
-	db RBSFX_08_71,$00,$80
-	db RBSFX_08_73,$80,$40
-	db RBSFX_08_73,$00,$80
-	db RBSFX_08_54,$11,$20
-	db RBSFX_08_54,$22,$10
-	db RBSFX_08_5b,$f1,$ff
-	db RBSFX_08_53,$f1,$ff
-	db RBSFX_08_54,$33,$30
-	db RBSFX_08_72,$40,$c0
-	db RBSFX_08_4e,$20,$20
-	db RBSFX_08_4e,$f0,$10
-	db RBSFX_08_4f,$f8,$10
-	db RBSFX_08_51,$f0,$10
-	db RBSFX_08_65,$00,$80
-	db RBSFX_08_58,$00,$c0
-	db RBSFX_08_72,$c0,$ff
-	db RBSFX_08_49,$f2,$20
-	db RBSFX_08_74,$00,$80
-	db RBSFX_08_74,$00,$40
-	db RBSFX_08_49,$00,$40
-	db RBSFX_08_51,$10,$ff
-	db RBSFX_08_6a,$20,$20
-	db RBSFX_08_72,$00,$80
-	db RBSFX_08_69,$1f,$20
-	db RBSFX_08_65,$2f,$80
-	db RBSFX_08_4f,$1f,$ff
-	db RBSFX_08_6b,$1f,$60
-	db RBSFX_08_66,$1e,$20
-	db RBSFX_08_66,$1f,$18
-	db RBSFX_08_54,$0f,$80
-	db RBSFX_08_49,$f8,$10
-	db RBSFX_08_48,$18,$20
-	db RBSFX_08_72,$08,$40
-	db RBSFX_08_57,$01,$e0
-	db RBSFX_08_51,$09,$ff
-	db RBSFX_08_75,$42,$01
-	db RBSFX_08_5c,$00,$ff
-	db RBSFX_08_72,$08,$e0
-	db RBSFX_08_64,$00,$80
-	db RBSFX_08_49,$88,$10
-	db RBSFX_08_65,$48,$ff
-	db RBSFX_08_48,$ff,$ff
-	db RBSFX_08_64,$ff,$10
-	db RBSFX_08_48,$ff,$04
-	db RBSFX_08_5c,$01,$ff
-	db RBSFX_08_53,$f8,$ff
-	db RBSFX_08_4c,$f0,$f0
-	db RBSFX_08_4f,$08,$10
-	db RBSFX_08_4d,$f0,$ff
-	db RBSFX_08_5a,$f0,$ff
-	db RBSFX_08_74,$10,$ff
-	db RBSFX_08_4e,$f0,$20
-	db RBSFX_08_6b,$f0,$60
-	db RBSFX_08_61,$12,$10
-	db RBSFX_08_76,$f0,$20
-	db RBSFX_08_5e,$12,$ff
-	db RBSFX_08_71,$80,$04
-	db RBSFX_08_73,$f0,$10
-	db RBSFX_08_69,$f8,$ff
-	db RBSFX_08_66,$f0,$ff
-	db RBSFX_08_51,$01,$ff
-	db RBSFX_08_6c,$d8,$04
-	db RBSFX_08_4b,$00,$80
-	db RBSFX_08_4b,$00,$80
+	db RBSFX_08_4a, $00, $80
+	db RBSFX_08_4c, $10, $80
+	db RBSFX_08_5d, $00, $80
+	db RBSFX_08_4b, $01, $80
+	db RBSFX_08_4d, $00, $40
+	db RBSFX_08_77, $00, $ff
+	db RBSFX_08_4d, $10, $60
+	db RBSFX_08_4d, $20, $80
+	db RBSFX_08_4d, $00, $a0
+	db RBSFX_08_50, $00, $80
+	db RBSFX_08_4f, $20, $40
+	db RBSFX_08_4f, $00, $80
+	db RBSFX_08_4e, $00, $a0
+	db RBSFX_08_51, $10, $c0
+	db RBSFX_08_51, $00, $a0
+	db RBSFX_08_52, $00, $c0
+	db RBSFX_08_52, $10, $a0
+	db RBSFX_08_53, $00, $e0
+	db RBSFX_08_51, $20, $c0
+	db RBSFX_08_54, $00, $80
+	db RBSFX_08_62, $00, $80
+	db RBSFX_08_55, $01, $80
+	db RBSFX_08_60, $00, $80
+	db RBSFX_08_57, $f0, $40
+	db RBSFX_08_5a, $00, $80
+	db RBSFX_08_57, $00, $80
+	db RBSFX_08_61, $10, $80
+	db RBSFX_08_5b, $01, $a0
+	db RBSFX_08_58, $00, $80
+	db RBSFX_08_5e, $00, $60
+	db RBSFX_08_5e, $01, $40
+	db RBSFX_08_5f, $00, $a0
+	db RBSFX_08_5a, $10, $a0
+	db RBSFX_08_60, $00, $c0
+	db RBSFX_08_54, $10, $60
+	db RBSFX_08_5a, $00, $a0
+	db RBSFX_08_62, $11, $c0
+	db RBSFX_08_5a, $20, $c0
+	db RBSFX_08_61, $00, $80
+	db RBSFX_08_5b, $00, $80
+	db RBSFX_08_5b, $20, $c0
+	db RBSFX_08_59, $00, $80
+	db RBSFX_08_71, $ff, $40
+	db RBSFX_08_5e, $00, $80
+	db RBSFX_08_4b, $00, $c0
+	db RBSFX_08_4b, $00, $40
+	db RBSFX_08_75, $00, $80
+	db RBSFX_08_67, $40, $60
+	db RBSFX_08_67, $00, $80
+	db RBSFX_08_67, $ff, $40
+	db RBSFX_08_6a, $80, $c0
+	db RBSFX_08_59, $10, $a0
+	db RBSFX_08_59, $21, $e0
+	db RBSFX_08_69, $00, $80
+	db RBSFX_08_64, $20, $60
+	db RBSFX_08_6a, $00, $80
+	db RBSFX_08_6c, $00, $80
+	db RBSFX_08_68, $40, $80
+	db RBSFX_08_69, $f0, $e0
+	db RBSFX_08_6d, $00, $80
+	db RBSFX_08_6a, $f0, $60
+	db RBSFX_08_68, $00, $80
+	db RBSFX_08_76, $00, $80
+	db RBSFX_08_47, $01, $a0
+	db RBSFX_08_53, $f0, $20
+	db RBSFX_08_63, $01, $c0
+	db RBSFX_08_63, $00, $80
+	db RBSFX_08_5a, $00, $e0
+	db RBSFX_08_66, $01, $60
+	db RBSFX_08_66, $20, $40
+	db RBSFX_08_64, $00, $80
+	db RBSFX_08_64, $40, $c0
+	db RBSFX_08_5b, $03, $60
+	db RBSFX_08_65, $11, $e0
+	db RBSFX_08_52, $20, $e0
+	db RBSFX_08_6e, $00, $80
+	db RBSFX_08_5c, $00, $80
+	db RBSFX_08_5c, $11, $a0
+	db RBSFX_08_5c, $01, $c0
+	db RBSFX_08_53, $14, $c0
+	db RBSFX_08_5b, $02, $a0
+	db RBSFX_08_69, $f0, $80
+	db RBSFX_08_69, $20, $c0
+	db RBSFX_08_6f, $00, $20
+	db RBSFX_08_6f, $20, $80
+	db RBSFX_08_6e, $12, $60
+	db RBSFX_08_66, $00, $80
+	db RBSFX_08_54, $01, $e0
+	db RBSFX_08_69, $0f, $e0
+	db RBSFX_08_69, $11, $20
+	db RBSFX_08_50, $10, $40
+	db RBSFX_08_4f, $10, $c0
+	db RBSFX_08_54, $00, $20
+	db RBSFX_08_70, $00, $80
+	db RBSFX_08_75, $11, $18
+	db RBSFX_08_49, $20, $c0
+	db RBSFX_08_48, $20, $c0
+	db RBSFX_08_65, $00, $10
+	db RBSFX_08_66, $f0, $20
+	db RBSFX_08_73, $f0, $c0
+	db RBSFX_08_51, $f0, $e0
+	db RBSFX_08_49, $f0, $40
+	db RBSFX_08_71, $00, $80
+	db RBSFX_08_73, $80, $40
+	db RBSFX_08_73, $00, $80
+	db RBSFX_08_54, $11, $20
+	db RBSFX_08_54, $22, $10
+	db RBSFX_08_5b, $f1, $ff
+	db RBSFX_08_53, $f1, $ff
+	db RBSFX_08_54, $33, $30
+	db RBSFX_08_72, $40, $c0
+	db RBSFX_08_4e, $20, $20
+	db RBSFX_08_4e, $f0, $10
+	db RBSFX_08_4f, $f8, $10
+	db RBSFX_08_51, $f0, $10
+	db RBSFX_08_65, $00, $80
+	db RBSFX_08_58, $00, $c0
+	db RBSFX_08_72, $c0, $ff
+	db RBSFX_08_49, $f2, $20
+	db RBSFX_08_74, $00, $80
+	db RBSFX_08_74, $00, $40
+	db RBSFX_08_49, $00, $40
+	db RBSFX_08_51, $10, $ff
+	db RBSFX_08_6a, $20, $20
+	db RBSFX_08_72, $00, $80
+	db RBSFX_08_69, $1f, $20
+	db RBSFX_08_65, $2f, $80
+	db RBSFX_08_4f, $1f, $ff
+	db RBSFX_08_6b, $1f, $60
+	db RBSFX_08_66, $1e, $20
+	db RBSFX_08_66, $1f, $18
+	db RBSFX_08_54, $0f, $80
+	db RBSFX_08_49, $f8, $10
+	db RBSFX_08_48, $18, $20
+	db RBSFX_08_72, $08, $40
+	db RBSFX_08_57, $01, $e0
+	db RBSFX_08_51, $09, $ff
+	db RBSFX_08_75, $42, $01
+	db RBSFX_08_5c, $00, $ff
+	db RBSFX_08_72, $08, $e0
+	db RBSFX_08_64, $00, $80
+	db RBSFX_08_49, $88, $10
+	db RBSFX_08_65, $48, $ff
+	db RBSFX_08_48, $ff, $ff
+	db RBSFX_08_64, $ff, $10
+	db RBSFX_08_48, $ff, $04
+	db RBSFX_08_5c, $01, $ff
+	db RBSFX_08_53, $f8, $ff
+	db RBSFX_08_4c, $f0, $f0
+	db RBSFX_08_4f, $08, $10
+	db RBSFX_08_4d, $f0, $ff
+	db RBSFX_08_5a, $f0, $ff
+	db RBSFX_08_74, $10, $ff
+	db RBSFX_08_4e, $f0, $20
+	db RBSFX_08_6b, $f0, $60
+	db RBSFX_08_61, $12, $10
+	db RBSFX_08_76, $f0, $20
+	db RBSFX_08_5e, $12, $ff
+	db RBSFX_08_71, $80, $04
+	db RBSFX_08_73, $f0, $10
+	db RBSFX_08_69, $f8, $ff
+	db RBSFX_08_66, $f0, $ff
+	db RBSFX_08_51, $01, $ff
+	db RBSFX_08_6c, $d8, $04
+	db RBSFX_08_4b, $00, $80
+	db RBSFX_08_4b, $00, $80
 
 Func_79aae: ; 79aae (1e:5aae)
 	ldh a, [H_WHOSETURN] ; $fff3
@@ -2585,34 +2586,34 @@ PointerTable_79aea: ; 79aea (1e:5aea)
 	db $3C
 
 Unknown_79b02: ; 79b02 (1e:5b02)
-	db $31,$38,$46,$54,$5B,$32,$39,$47,$55,$5C,$34,$3B,$49,$57,$5E,$36,$3D,$4B,$59,$60,$37,$3E,$4C,$5A,$61
+	db $31, $38, $46, $54, $5B, $32, $39, $47, $55, $5C, $34, $3B, $49, $57, $5E, $36, $3D, $4B, $59, $60, $37, $3E, $4C, $5A, $61
 
 Unknown_79b1b: ; 79b1b (1e:5b1b)
-	db $31,$46,$5B,$34,$49,$5E,$37,$4C,$61
+	db $31, $46, $5B, $34, $49, $5E, $37, $4C, $61
 
 Unknown_79b24: ; 79b24 (1e:5b24)
-	db $00,$07,$0E,$15,$1C,$23,$2A,$01,$08,$0F,$16,$1D,$24,$2B,$02,$09,$10,$17,$1E,$25,$2C,$03,$0A,$11,$18,$1F,$26,$2D,$04,$0B,$12,$19,$20,$27,$2E,$05,$0C,$13,$1A,$21,$28,$2F,$06,$0D,$14,$1B,$22,$29,$30
+	db $00, $07, $0E, $15, $1C, $23, $2A, $01, $08, $0F, $16, $1D, $24, $2B, $02, $09, $10, $17, $1E, $25, $2C, $03, $0A, $11, $18, $1F, $26, $2D, $04, $0B, $12, $19, $20, $27, $2E, $05, $0C, $13, $1A, $21, $28, $2F, $06, $0D, $14, $1B, $22, $29, $30
 
 Unknown_79b55: ; 79b55 (1e:5b55)
-	db $00,$07,$0E,$15,$1C,$23,$2A,$01,$08,$0F,$16,$1D,$24,$2B,$03,$0A,$11,$18,$1F,$26,$2D,$04,$0B,$12,$19,$20,$27,$2E,$05,$0C,$13,$1A,$21,$28,$2F
+	db $00, $07, $0E, $15, $1C, $23, $2A, $01, $08, $0F, $16, $1D, $24, $2B, $03, $0A, $11, $18, $1F, $26, $2D, $04, $0B, $12, $19, $20, $27, $2E, $05, $0C, $13, $1A, $21, $28, $2F
 
 Unknown_79b78: ; 79b78 (1e:5b78)
-	db $00,$07,$0E,$15,$1C,$23,$2A,$02,$09,$10,$17,$1E,$25,$2C,$04,$0B,$12,$19,$20,$27,$2E
+	db $00, $07, $0E, $15, $1C, $23, $2A, $02, $09, $10, $17, $1E, $25, $2C, $04, $0B, $12, $19, $20, $27, $2E
 
 Unknown_79b8d: ; 79b8d (1e:5b8d)
-	db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$19,$00,$02,$06,$0B,$10,$14,$1A,$00,$00,$07,$0C,$11,$15,$1B,$00,$03,$08,$0D,$12,$16,$1C,$00,$04,$09,$0E,$13,$17,$1D,$1F,$05,$0A,$0F,$01,$18,$1E,$20
+	db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $19, $00, $02, $06, $0B, $10, $14, $1A, $00, $00, $07, $0C, $11, $15, $1B, $00, $03, $08, $0D, $12, $16, $1C, $00, $04, $09, $0E, $13, $17, $1D, $1F, $05, $0A, $0F, $01, $18, $1E, $20
 
 Unknown_79bbe: ; 79bbe (1e:5bbe)
-	db $00,$00,$00,$30,$00,$37,$00,$00,$00,$2B,$31,$34,$38,$3D,$21,$26,$2C,$01,$35,$39,$3E,$22,$27,$2D,$32,$36,$01,$00,$23,$28,$2E,$33,$01,$3A,$00,$24,$29,$2F,$01,$01,$3B,$00,$25,$2A,$01,$01,$01,$3C,$00
+	db $00, $00, $00, $30, $00, $37, $00, $00, $00, $2B, $31, $34, $38, $3D, $21, $26, $2C, $01, $35, $39, $3E, $22, $27, $2D, $32, $36, $01, $00, $23, $28, $2E, $33, $01, $3A, $00, $24, $29, $2F, $01, $01, $3B, $00, $25, $2A, $01, $01, $01, $3C, $00
 
 Unknown_79bef: ; 79bef (1e:5bef)
-	db $00,$00,$00,$00,$00,$00,$00,$00,$00,$47,$4D,$00,$00,$00,$00,$00,$48,$4E,$52,$56,$5B,$3F,$43,$49,$4F,$53,$57,$5C,$40,$44,$4A,$50,$54,$58,$00,$41,$45,$4B,$51,$4C,$59,$5D,$42,$46,$4C,$4C,$55,$5A,$5E
+	db $00, $00, $00, $00, $00, $00, $00, $00, $00, $47, $4D, $00, $00, $00, $00, $00, $48, $4E, $52, $56, $5B, $3F, $43, $49, $4F, $53, $57, $5C, $40, $44, $4A, $50, $54, $58, $00, $41, $45, $4B, $51, $4C, $59, $5D, $42, $46, $4C, $4C, $55, $5A, $5E
 
 Unknown_79c20: ; 79c20 (1e:5c20)
-	db $31,$32,$32,$32,$32,$33,$34,$35,$36,$36,$37,$38,$34,$39,$3A,$3A,$3B,$38,$3C,$3D,$3E,$3E,$3F,$40,$41,$42,$43,$43,$44,$45,$46,$47,$43,$48,$49,$4A,$41,$43,$4B,$4C,$4D,$4E,$4F,$50,$50,$50,$51,$52
+	db $31, $32, $32, $32, $32, $33, $34, $35, $36, $36, $37, $38, $34, $39, $3A, $3A, $3B, $38, $3C, $3D, $3E, $3E, $3F, $40, $41, $42, $43, $43, $44, $45, $46, $47, $43, $48, $49, $4A, $41, $43, $4B, $4C, $4D, $4E, $4F, $50, $50, $50, $51, $52
 
 Unknown_79c50: ; 79c50 (1e:5c50)
-	db $43,$55,$56,$53,$53,$53,$53,$53,$53,$53,$53,$53,$43,$57,$58,$54,$54,$54,$54,$54,$54,$54,$54,$54,$43,$59,$5A,$43,$43,$43,$43,$43,$43,$43,$43,$43
+	db $43, $55, $56, $53, $53, $53, $53, $53, $53, $53, $53, $53, $43, $57, $58, $54, $54, $54, $54, $54, $54, $54, $54, $54, $43, $59, $5A, $43, $43, $43, $43, $43, $43, $43, $43, $43
 
 AnimationLeavesFalling: ; 79c74 (1e:5c74)
 ; Makes leaves float down from the top of the screen. This is used
@@ -2719,7 +2720,7 @@ Func_79cdb: ; 79cdb (1e:5cdb)
 	ret
 
 Unknown_79d0d: ; 79d0d (1e:5d0d)
-	db $00,$01,$03,$05,$07,$09,$0B,$0D,$0F
+	db 0, 1, 3, 5, 7, 9, 11, 13, 15
 
 Func_79d16: ; 79d16 (1e:5d16)
 	ld a, [wd08a]
@@ -2752,7 +2753,7 @@ Func_79d2a: ; 79d2a (1e:5d2a)
 	ret
 
 Unknown_79d3e: ; 79d3e (1e:5d3e)
-	db $38,$40,$50,$60,$70,$88,$90,$56,$67,$4A,$77,$84,$98,$32,$22,$5C,$6C,$7D,$8E,$99
+	db $38, $40, $50, $60, $70, $88, $90, $56, $67, $4A, $77, $84, $98, $32, $22, $5C, $6C, $7D, $8E, $99
 
 Func_79d52: ; 79d52 (1e:5d52)
 	ld hl, wTrainerSpriteOffset
@@ -2768,7 +2769,7 @@ Func_79d52: ; 79d52 (1e:5d52)
 	ret
 
 Unknown_79d63: ; 79d63 (1e:5d63)
-	db $00,$84,$06,$81,$02,$88,$01,$83,$05,$89,$09,$80,$07,$87,$03,$82,$04,$85,$08,$86
+	db $00, $84, $06, $81, $02, $88, $01, $83, $05, $89, $09, $80, $07, $87, $03, $82, $04, $85, $08, $86
 
 AnimationShakeEnemyHUD: ; 79d77 (1e:5d77)
 	ld de, vBackPic
@@ -2847,60 +2848,60 @@ Func_79e0d: ; 79e0d (1e:5e0d)
 	jp Delay3
 
 TossBallAnimation: ; 79e16 (1e:5e16)
-	ld a,[W_ISINBATTLE]
-	cp a,2
-	jr z,.BlockBall ; if in trainer battle, play different animation
-	ld a,[wd11e]
-	ld b,a
+	ld a, [W_ISINBATTLE]
+	cp a, 2
+	jr z, .BlockBall ; if in trainer battle, play different animation
+	ld a, [wd11e]
+	ld b, a
 
 	; upper nybble: how many animations (from PokeBallAnimations) to play
 	; this will be 4 for successful capture, 6 for breakout
-	and a,$F0
+	and a, $F0
 	swap a
-	ld c,a
+	ld c, a
 
 	; lower nybble: number of shakes
 	; store these for later
-	ld a,b
-	and a,$F
-	ld [wWhichTrade],a
+	ld a, b
+	and a, $F
+	ld [wWhichTrade], a
 
-	ld hl,.PokeBallAnimations
+	ld hl, .PokeBallAnimations
 	; choose which toss animation to use
-	ld a,[wcf91]
-	cp a,POKE_BALL
-	ld b,TOSS_ANIM
-	jr z,.done
-	cp a,GREAT_BALL
-	ld b,GREATTOSS_ANIM
-	jr z,.done
-	ld b,ULTRATOSS_ANIM
+	ld a, [wcf91]
+	cp a, POKE_BALL
+	ld b, TOSS_ANIM
+	jr z, .done
+	cp a, GREAT_BALL
+	ld b, GREATTOSS_ANIM
+	jr z, .done
+	ld b, ULTRATOSS_ANIM
 .done
-	ld a,b
+	ld a, b
 .PlayNextAnimation
-	ld [W_ANIMATIONID],a
+	ld [W_ANIMATIONID], a
 	push bc
 	push hl
 	call PlayAnimation
 	pop hl
-	ld a,[hli]
+	ld a, [hli]
 	pop bc
 	dec c
-	jr nz,.PlayNextAnimation
+	jr nz, .PlayNextAnimation
 	ret
 
 .PokeBallAnimations: ; 79e50 (1e:5e50)
 ; sequence of animations that make up the Poké Ball toss
-	db POOF_ANIM,HIDEPIC_ANIM,SHAKE_ANIM,POOF_ANIM,SHOWPIC_ANIM
+	db POOF_ANIM, HIDEPIC_ANIM, SHAKE_ANIM, POOF_ANIM, SHOWPIC_ANIM
 
 .BlockBall ; 5E55
-	ld a,TOSS_ANIM
-	ld [W_ANIMATIONID],a
+	ld a, TOSS_ANIM
+	ld [W_ANIMATIONID], a
 	call PlayAnimation
-	ld a,RBSFX_08_43
+	ld a, RBSFX_08_43
 	call PlaySound ; play sound effect
-	ld a,BLOCKBALL_ANIM
-	ld [W_ANIMATIONID],a
+	ld a, BLOCKBALL_ANIM
+	ld [W_ANIMATIONID], a
 	jp PlayAnimation
 
 Func_79e6a: ; 79e6a (1e:5e6a)

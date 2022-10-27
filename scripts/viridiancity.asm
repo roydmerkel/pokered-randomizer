@@ -26,10 +26,10 @@ ViridianCityScript_1900b: ; 1900b (6:500b)
 	ret
 .asm_1901e
 	ld a, [W_YCOORD]
-	cp $8
+	cp 8
 	ret nz
 	ld a, [W_XCOORD]
-	cp $20
+	cp 32
 	ret nz
 	ld a, $e
 	ldh [hSpriteIndexOrTextID], a
@@ -46,10 +46,10 @@ ViridianCityScript_1903d: ; 1903d (6:503d)
 	bit 5, a
 	jr nz, .gotpokedex
 	ld a, [W_YCOORD]
-	cp $9
+	cp 9
 	ret nz
 	ld a, [W_XCOORD]
-	cp $13
+	cp 19
 	ret nz
 	ld a, $5
 	ldh [hSpriteIndexOrTextID], a
@@ -287,7 +287,7 @@ ViridianCityText7: ; 191df (6:51df)
 	db $08 ; asm
 	ld hl, ViridianCityText_1920a
 	call PrintText
-	ld c, $2
+	ld c, 2
 	call DelayFrames
 	call YesNoChoice
 	ld a, [wCurrentMenuItem]

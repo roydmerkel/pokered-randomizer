@@ -128,19 +128,19 @@ OaksLabScript5: ; 1cbfd (7:4bfd)
 	ld a, $fc
 	ld [wJoyIgnore], a
 	ld a, $11
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	call Delay3
 	ld a, $12
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	call Delay3
 	ld a, $13
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	call Delay3
 	ld a, $14
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld hl, wd74b
 	set 1, [hl]
@@ -167,7 +167,7 @@ OaksLabScript6: ; 1cc36 (7:4c36)
 	call SetSpriteFacingDirectionAndDelay
 	call UpdateSprites
 	ld a, $c
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, $1
 	ld [wSimulatedJoypadStatesIndex], a
@@ -275,7 +275,7 @@ OaksLabScript9: ; 1cd00 (7:4d00)
 	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $d
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, [wTrainerEngageDistance]
 	cp $2
@@ -304,7 +304,7 @@ OaksLabScript9: ; 1cd00 (7:4d00)
 	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $e
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld hl, wd74b
 	set 2, [hl]
@@ -330,7 +330,7 @@ OaksLabScript10: ; 1cd6d (7:4d6d)
 	ld a, MUSIC_MEET_RIVAL
 	call PlayMusic ; play music
 	ld a, $f
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, $1
 	ldh [$ff9b], a
@@ -421,7 +421,7 @@ OaksLabScript13: ; 1ce32 (7:4e32)
 	ld c, 20
 	call DelayFrames
 	ld a, $10
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	callba Music_RivalAlternateStart
 	ld a, $1
@@ -490,7 +490,7 @@ OaksLabScript15: ; 1ceb0 (7:4eb0)
 	call PlaySound
 	callba Music_RivalAlternateStart
 	ld a, $15
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	call OaksLabScript_1d02b
 	ld a, HS_OAKS_LAB_RIVAL
@@ -535,21 +535,21 @@ OaksLabScript16: ; 1cf12 (7:4f12)
 	ld [wJoyIgnore], a
 	call OaksLabScript_1cefd
 	ld a, $16
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	call DelayFrame
 	call OaksLabScript_1cefd
 	ld a, $17
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	call DelayFrame
 	call OaksLabScript_1cefd
 	ld a, $18
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	call DelayFrame
 	ld a, $19
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	call Delay3
 	ld a, HS_POKEDEX_1
@@ -560,7 +560,7 @@ OaksLabScript16: ; 1cf12 (7:4f12)
 	predef HideObject
 	call OaksLabScript_1cefd
 	ld a, $1a
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, $1
 	ldh [hSpriteIndex], a
@@ -569,7 +569,7 @@ OaksLabScript16: ; 1cf12 (7:4f12)
 	call SetSpriteFacingDirectionAndDelay
 	call Delay3
 	ld a, $1b
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld hl, wd74b
 	set 5, [hl]

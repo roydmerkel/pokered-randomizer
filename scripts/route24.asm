@@ -173,7 +173,7 @@ Route24Text1: ; 514a4 (14:54a4)
 	ld hl, Route24Text_5152b
 	ld de, Route24Text_5152b
 	call SaveEndBattleTextPointers
-	ldh a, [$ff8c]
+	ldh a, [hSpriteIndexOrTextID]
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters

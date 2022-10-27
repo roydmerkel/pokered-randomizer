@@ -1056,43 +1056,43 @@ Func_28cb:: ; 28cb (0:28cb)
 	jp PlaySound
 
 ; this function is used to display sign messages, sprite dialog, etc.
-; INPUT: [$ff8c] = sprite ID or text ID
+; INPUT: [hSpriteIndexOrTextID] = sprite ID or text ID
 DisplayTextID:: ; 2920 (0:2920)
-	ldh a,[H_LOADEDROMBANK]
+	ldh a, [H_LOADEDROMBANK]
 	push af
 	callba DisplayTextIDInit ; initialization
-	ld hl,wcf11
-	bit 0,[hl]
-	res 0,[hl]
-	jr nz,.skipSwitchToMapBank
-	ld a,[W_CURMAP]
+	ld hl, wcf11
+	bit 0, [hl]
+	res 0, [hl]
+	jr nz, .skipSwitchToMapBank
+	ld a, [W_CURMAP]
 	call SwitchToMapRomBank
 .skipSwitchToMapBank
-	ld a,30 ; half a second
-	ldh [H_FRAMECOUNTER],a ; used as joypad poll timer
-	ld hl,W_MAPTEXTPTR
-	ld a,[hli]
-	ld h,[hl]
-	ld l,a ; hl = map text pointer
-	ld d,$00
-	ldh a,[$ff8c] ; text ID
-	ld [wSpriteIndex],a
+	ld a, 30 ; half a second
+	ldh [H_FRAMECOUNTER], a ; used as joypad poll timer
+	ld hl, W_MAPTEXTPTR
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a ; hl = map text pointer
+	ld d, $00
+	ldh a, [hSpriteIndexOrTextID] ; text ID
+	ld [wSpriteIndex], a
 	and a
-	jp z,DisplayStartMenu
-	cp a,$d3
-	jp z,DisplaySafariGameOverText
-	cp a,$d0
-	jp z,DisplayPokemonFaintedText
-	cp a,$d1
-	jp z,DisplayPlayerBlackedOutText
-	cp a,$d2
-	jp z,DisplayRepelWoreOffText
-	ld a,[W_NUMSPRITES]
-	ld e,a
-	ldh a,[$ff8c] ; sprite ID
+	jp z, DisplayStartMenu
+	cp a, $d3
+	jp z, DisplaySafariGameOverText
+	cp a, $d0
+	jp z, DisplayPokemonFaintedText
+	cp a, $d1
+	jp z, DisplayPlayerBlackedOutText
+	cp a, $d2
+	jp z, DisplayRepelWoreOffText
+	ld a, [W_NUMSPRITES]
+	ld e, a
+	ldh a, [hSpriteIndexOrTextID] ; sprite ID
 	cp e
-	jr z,.spriteHandling
-	jr nc,.skipSpriteHandling
+	jr z, .spriteHandling
+	jr nc, .skipSpriteHandling
 .spriteHandling
 ; get the text ID of the sprite
 	push hl
@@ -1101,123 +1101,123 @@ DisplayTextID:: ; 2920 (0:2920)
 	callba UpdateSpriteFacingOffsetAndDelayMovement ; update the graphics of the sprite the player is talking to (to face the right direction)
 	pop bc
 	pop de
-	ld hl,W_MAPSPRITEDATA ; NPC text entries
-	ldh a,[$ff8c]
+	ld hl, W_MAPSPRITEDATA ; NPC text entries
+	ldh a, [hSpriteIndexOrTextID]
 	dec a
 	add a
 	add l
-	ld l,a
-	jr nc,.noCarry
+	ld l, a
+	jr nc, .noCarry
 	inc h
 .noCarry
 	inc hl
-	ld a,[hl] ; a = text ID of the sprite
+	ld a, [hl] ; a = text ID of the sprite
 	pop hl
 .skipSpriteHandling
 ; look up the address of the text in the map's text entries
 	dec a
-	ld e,a
+	ld e, a
 	sla e
-	add hl,de
-	ld a,[hli]
-	ld h,[hl]
-	ld l,a ; hl = address of the text
-	ld a,[hl] ; a = first byte of text
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a ; hl = address of the text
+	ld a, [hl] ; a = first byte of text
 ; check first byte of text for special cases
-	cp a,$fe   ; Pokemart NPC
-	jp z,DisplayPokemartDialogue
-	cp a,$ff   ; Pokemon Center NPC
-	jp z,DisplayPokemonCenterDialogue
-	cp a,$fc   ; Item Storage PC
-	jp z,FuncTX_ItemStoragePC
-	cp a,$fd   ; Bill's PC
-	jp z,FuncTX_BillsPC
-	cp a,$f9   ; Pokemon Center PC
-	jp z,FuncTX_PokemonCenterPC
-	cp a,$f5   ; Vending Machine
-	jr nz,.notVendingMachine
+	cp a, $fe   ; Pokemart NPC
+	jp z, DisplayPokemartDialogue
+	cp a, $ff   ; Pokemon Center NPC
+	jp z, DisplayPokemonCenterDialogue
+	cp a, $fc   ; Item Storage PC
+	jp z, FuncTX_ItemStoragePC
+	cp a, $fd   ; Bill's PC
+	jp z, FuncTX_BillsPC
+	cp a, $f9   ; Pokemon Center PC
+	jp z, FuncTX_PokemonCenterPC
+	cp a, $f5   ; Vending Machine
+	jr nz, .notVendingMachine
 	callba VendingMachineMenu 	; jump banks to vending machine routine
 	jr AfterDisplayingTextID
 .notVendingMachine
-	cp a,$f7   ; slot machine
-	jp z,FuncTX_SlotMachine
-	cp a,$f6   ; cable connection NPC in Pokemon Center
-	jr nz,.notSpecialCase
+	cp a, $f7   ; slot machine
+	jp z, FuncTX_SlotMachine
+	cp a, $f6   ; cable connection NPC in Pokemon Center
+	jr nz, .notSpecialCase
 	callab CableClubNPC
 	jr AfterDisplayingTextID
 .notSpecialCase
 	call Func_3c59 ; display the text
-	ld a,[wDoNotWaitForButtonPressAfterDisplayingText]
+	ld a, [wDoNotWaitForButtonPressAfterDisplayingText]
 	and a
-	jr nz,HoldTextDisplayOpen
+	jr nz, HoldTextDisplayOpen
 
 AfterDisplayingTextID:: ; 29d6 (0:29d6)
-	ld a,[wcc47]
+	ld a, [wcc47]
 	and a
-	jr nz,HoldTextDisplayOpen
+	jr nz, HoldTextDisplayOpen
 	call WaitForTextScrollButtonPress ; wait for a button press after displaying all the text
 
 ; loop to hold the dialogue box open as long as the player keeps holding down the A button
 HoldTextDisplayOpen:: ; 29df (0:29df)
 	call Joypad
-	ldh a,[hJoyHeld]
-	bit 0,a ; is the A button being pressed?
-	jr nz,HoldTextDisplayOpen
+	ldh a, [hJoyHeld]
+	bit 0, a ; is the A button being pressed?
+	jr nz, HoldTextDisplayOpen
 
 CloseTextDisplay:: ; 29e8 (0:29e8)
-	ld a,[W_CURMAP]
+	ld a, [W_CURMAP]
 	call SwitchToMapRomBank
-	ld a,$90
-	ldh [hWY],a ; move the window off the screen
+	ld a, $90
+	ldh [hWY], a ; move the window off the screen
 	call DelayFrame
 	call LoadGBPal
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED],a ; disable continuous WRAM to VRAM transfer each V-blank
+	ldh [H_AUTOBGTRANSFERENABLED], a ; disable continuous WRAM to VRAM transfer each V-blank
 ; loop to make sprites face the directions they originally faced before the dialogue
-	ld hl,wSpriteStateData2 + $19
-	ld c,$0f
-	ld de,$0010
+	ld hl, wSpriteStateData2 + $19
+	ld c, $0f
+	ld de, $10
 .restoreSpriteFacingDirectionLoop
-	ld a,[hl]
+	ld a, [hl]
 	dec h
-	ld [hl],a
+	ld [hl], a
 	inc h
-	add hl,de
+	add hl, de
 	dec c
-	jr nz,.restoreSpriteFacingDirectionLoop
-	ld a,BANK(InitMapSprites)
-	ldh [H_LOADEDROMBANK],a
-	ld [$2000],a
+	jr nz, .restoreSpriteFacingDirectionLoop
+	ld a, BANK(InitMapSprites)
+	ldh [H_LOADEDROMBANK], a
+	ld [$2000], a
 	call InitMapSprites ; reload sprite tile pattern data (since it was partially overwritten by text tile patterns)
-	ld hl,wcfc4
-	res 0,[hl]
-	ld a,[wd732]
-	bit 3,a ; used fly warp
-	call z,LoadPlayerSpriteGraphics
+	ld hl, wcfc4
+	res 0, [hl]
+	ld a, [wd732]
+	bit 3, a ; used fly warp
+	call z, LoadPlayerSpriteGraphics
 	call LoadCurrentMapView
 	pop af
-	ldh [H_LOADEDROMBANK],a
-	ld [$2000],a
+	ldh [H_LOADEDROMBANK], a
+	ld [$2000], a
 	jp UpdateSprites
 
 DisplayPokemartDialogue:: ; 2a2e (0:2a2e)
 	push hl
-	ld hl,PokemartGreetingText
+	ld hl, PokemartGreetingText
 	call PrintText
 	pop hl
 	inc hl
 	call LoadItemList
-	ld a,$02
-	ld [wListMenuID],a ; selects between subtypes of menus
-	ldh a,[H_LOADEDROMBANK]
+	ld a, $02
+	ld [wListMenuID], a ; selects between subtypes of menus
+	ldh a, [H_LOADEDROMBANK]
 	push af
-	ld a,Bank(DisplayPokemartDialogue_)
-	ldh [H_LOADEDROMBANK],a
-	ld [$2000],a
+	ld a, Bank(DisplayPokemartDialogue_)
+	ldh [H_LOADEDROMBANK], a
+	ld [$2000], a
 	call DisplayPokemartDialogue_
 	pop af
-	ldh [H_LOADEDROMBANK],a
-	ld [$2000],a
+	ldh [H_LOADEDROMBANK], a
+	ld [$2000], a
 	jp AfterDisplayingTextID
 
 PokemartGreetingText:: ; 2a55 (0:2a55)
@@ -1225,36 +1225,36 @@ PokemartGreetingText:: ; 2a55 (0:2a55)
 	db "@"
 
 LoadItemList:: ; 2a5a (0:2a5a)
-	ld a,$01
-	ld [wUpdateSpritesEnabled],a
-	ld a,h
-	ld [wd128],a
-	ld a,l
-	ld [wd129],a
-	ld de,wStringBuffer2 + 11
+	ld a, 1
+	ld [wUpdateSpritesEnabled], a
+	ld a, h
+	ld [wd128], a
+	ld a, l
+	ld [wd129], a
+	ld de, wStringBuffer2 + 11
 .loop
-	ld a,[hli]
-	ld [de],a
+	ld a, [hli]
+	ld [de], a
 	inc de
-	cp a,$ff
-	jr nz,.loop
+	cp a, $ff
+	jr nz, .loop
 	ret
 
 DisplayPokemonCenterDialogue:: ; 2a72 (0:2a72)
 	xor a
-	ldh [$ff8b],a
-	ldh [$ff8c],a
-	ldh [$ff8d],a
+	ldh [$ff8b], a
+	ldh [$ff8c], a
+	ldh [$ff8d], a
 	inc hl
-	ldh a,[H_LOADEDROMBANK]
+	ldh a, [H_LOADEDROMBANK]
 	push af
-	ld a,Bank(DisplayPokemonCenterDialogue_)
-	ldh [H_LOADEDROMBANK],a
-	ld [$2000],a
+	ld a, Bank(DisplayPokemonCenterDialogue_)
+	ldh [H_LOADEDROMBANK], a
+	ld [$2000], a
 	call DisplayPokemonCenterDialogue_
 	pop af
-	ldh [H_LOADEDROMBANK],a
-	ld [$2000],a
+	ldh [H_LOADEDROMBANK], a
+	ld [$2000], a
 	jp AfterDisplayingTextID
 
 DisplaySafariGameOverText:: ; 2a90 (0:2a90)
@@ -1262,19 +1262,19 @@ DisplaySafariGameOverText:: ; 2a90 (0:2a90)
 	jp AfterDisplayingTextID
 
 DisplayPokemonFaintedText:: ; 2a9b (0:2a9b)
-	ld b,BANK(DisplayPokemonFaintedText_)
-	ld hl,DisplayPokemonFaintedText_
+	ld b, BANK(DisplayPokemonFaintedText_)
+	ld hl, DisplayPokemonFaintedText_
 	call Bankswitch
 	jp AfterDisplayingTextID
 
 DisplayPlayerBlackedOutText:: ; 2aa9 (0:2aa9)
-	ld b,BANK(DisplayPlayerBlackedOutText_)
-	ld hl,DisplayPlayerBlackedOutText_
+	ld b, BANK(DisplayPlayerBlackedOutText_)
+	ld hl, DisplayPlayerBlackedOutText_
 	call Bankswitch
 	jp HoldTextDisplayOpen
 
 DisplayRepelWoreOffText:: ; 2abf (0:2abf)
-	ld hl,RepelWoreOffText
+	ld hl, RepelWoreOffText
 	call PrintText
 	jp AfterDisplayingTextID
 
@@ -2713,8 +2713,8 @@ FuncTX_BillsPC:: ; 346a (0:346a)
 FuncTX_SlotMachine:: ; 3474 (0:3474)
 ; XXX find a better name for this function
 ; special_F7
-	ld b,BANK(CeladonPrizeMenu)
-	ld hl,CeladonPrizeMenu
+	ld b, BANK(CeladonPrizeMenu)
+	ld hl, CeladonPrizeMenu
 bankswitchAndContinue:: ; 3479 (0:3479)
 	call Bankswitch
 	jp HoldTextDisplayOpen        ; continue to main text-engine function
@@ -2738,7 +2738,7 @@ IsItemInBag:: ; 3493 (0:3493)
 ; else reset zero flag
 ; related to Pokémon Tower and ghosts
 	predef IsItemInBag_ 
-	ld a,b
+	ld a, b
 	and a
 	ret
 
@@ -2774,32 +2774,32 @@ SetSpriteImageIndexAfterSettingFacingDirection:: ; 34b9 (0:34b9)
 ; [wWhichTrade] = if there is match, the matching array index
 ; sets carry if the coordinates are in the array, clears carry if not
 ArePlayerCoordsInArray:: ; 34bf (0:34bf)
-	ld a,[W_YCOORD]
-	ld b,a
-	ld a,[W_XCOORD]
-	ld c,a
+	ld a, [W_YCOORD]
+	ld b, a
+	ld a, [W_XCOORD]
+	ld c, a
 	; fallthrough
 
 CheckCoords:: ; 34c7 (0:34c7)
 	xor a
-	ld [wWhichTrade],a
+	ld [wWhichTrade], a
 .loop
-	ld a,[hli]
-	cp a,$ff ; reached terminator?
-	jr z,.notInArray
+	ld a, [hli]
+	cp a, $ff ; reached terminator?
+	jr z, .notInArray
 	push hl
-	ld hl,wWhichTrade
+	ld hl, wWhichTrade
 	inc [hl]
 	pop hl
 .compareYCoord
 	cp b
-	jr z,.compareXCoord
+	jr z, .compareXCoord
 	inc hl
 	jr .loop
 .compareXCoord
-	ld a,[hli]
+	ld a, [hli]
 	cp c
-	jr nz,.loop
+	jr nz, .loop
 .inArray
 	scf
 	ret
@@ -2893,31 +2893,31 @@ SetSpriteMovementBytesToFE:: ; 3533 (0:3533)
 SetSpriteMovementBytesToFF:: ; 3541 (0:3541)
 	push hl
 	call GetSpriteMovementByte1Pointer
-	ld [hl],$FF
+	ld [hl], $FF
 	call GetSpriteMovementByte2Pointer
-	ld [hl],$FF ; prevent person from walking?
+	ld [hl], $FF ; prevent person from walking?
 	pop hl
 	ret
 
 ; returns the sprite movement byte 1 pointer for sprite [hSpriteIndex] in hl
 GetSpriteMovementByte1Pointer:: ; 354e (0:354e)
-	ld h,$C2
-	ldh a,[hSpriteIndex] ; the sprite to move
+	ld h, $C2
+	ldh a, [hSpriteIndex] ; the sprite to move
 	swap a
-	add a,6
-	ld l,a
+	add a, 6
+	ld l, a
 	ret
 
 ; returns the sprite movement byte 2 pointer for sprite [$FF8C] in hl
 GetSpriteMovementByte2Pointer:: ; 3558 (0:3558)
 	push de
-	ld hl,W_MAPSPRITEDATA
-	ldh a,[$FF8C] ; the sprite to move
+	ld hl, W_MAPSPRITEDATA
+	ldh a, [$FF8C] ; the sprite to move
 	dec a
 	add a
-	ld d,0
-	ld e,a
-	add hl,de
+	ld d, 0
+	ld e, a
+	add hl, de
 	pop de
 	ret
 
@@ -3667,15 +3667,15 @@ PrintLetterDelay:: ; 38d3 (0:38d3)
 ; In other words, the source data is from hl up to but not including bc,
 ; and the destination is de.
 CopyDataUntil:: ; 3913 (0:3913)
-	ld a,[hli]
-	ld [de],a
+	ld a, [hli]
+	ld [de], a
 	inc de
-	ld a,h
+	ld a, h
 	cp b
-	jr nz,CopyDataUntil
-	ld a,l
+	jr nz, CopyDataUntil
+	ld a, l
 	cp c
-	jr nz,CopyDataUntil
+	jr nz, CopyDataUntil
 	ret
 
 ; Function to remove a pokemon from the party or the current box.
@@ -3750,11 +3750,11 @@ CalcStat:: ; 394a (0:394a)
 	call Multiply
 	ld a, [hld]
 	ld d, a
-	ldh a, [$ff98]
+	ldh a, [hProduct + 3]
 	sub d
 	ld a, [hli]
 	ld d, a
-	ldh a, [$ff97]
+	ldh a, [hProduct + 2]
 	sbc d               ; test if (current stat exp bonus)^2 < stat exp
 	jr c, .statExpLoop
 .statExpDone
@@ -3855,7 +3855,7 @@ CalcStat:: ; 394a (0:394a)
 	call Divide             ; (((Base + IV) * 2 + ceil(Sqrt(stat exp)) / 4) * Level) / 100
 	ld a, c
 	cp $1
-	ld a, $5
+	ld a, 5
 	jr nz, .notHPStat
 	ld a, [W_CURENEMYLVL] ; W_CURENEMYLVL
 	ld b, a
@@ -3867,7 +3867,7 @@ CalcStat:: ; 394a (0:394a)
 	inc a
 	ldh [hMultiplicand+1], a ; HP: (((Base + IV) * 2 + ceil(Sqrt(stat exp)) / 4) * Level) / 100 + Level
 .noCarry3
-	ld a, $a
+	ld a, 10
 .notHPStat
 	ld b, a
 	ldh a, [hMultiplicand+2]

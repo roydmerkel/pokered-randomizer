@@ -28,7 +28,7 @@ CeruleanCityScript4: ; 194a7 (6:54a7)
 	ld hl, wd75b
 	set 7, [hl]
 	ld a, $2
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	xor a
 	ld [wJoyIgnore], a
@@ -55,7 +55,7 @@ CeruleanCityScript0: ; 194c8 (6:54c8)
 	ld [wSpriteStateData1 + $29], a
 	call Delay3
 	ld a, $2
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	jp DisplayTextID
 .asm_194f7
 	ld a, [wd75a]
@@ -126,7 +126,7 @@ CeruleanCityScript1: ; 19567 (6:5567)
 	xor a
 	ld [wJoyIgnore], a
 	ld a, $1
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld hl, wd72d
 	set 6, [hl]
@@ -174,7 +174,7 @@ CeruleanCityScript2: ; 195b1 (6:55b1)
 	ld hl, wd75a
 	set 0, [hl]
 	ld a, $1
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a
@@ -284,7 +284,7 @@ CeruleanCityText2: ; 1967c (6:567c)
 	ld hl, CeruleanCityText_196ee
 	ld de, CeruleanCityText_196ee
 	call SaveEndBattleTextPointers
-	ldh a, [$ff8c]
+	ldh a, [hSpriteIndexOrTextID]
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters

@@ -18,7 +18,7 @@ SafariZoneEntranceScriptPointers: ; 751d9 (1d:51d9)
 	call ArePlayerCoordsInArray
 	ret nc
 	ld a, $3
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, $ff
 	ld [wJoyIgnore], a
@@ -43,8 +43,8 @@ SafariZoneEntranceScriptPointers: ; 751d9 (1d:51d9)
 	ret
 
 .CoordsData_75221: ; 75221 (1d:5221)
-	db $02,$03
-	db $02,$04
+	db $02, $03
+	db $02, $04
 	db $FF
 
 .SafariZoneEntranceScript1
@@ -56,7 +56,7 @@ SafariZoneEntranceScriptPointers: ; 751d9 (1d:51d9)
 	ld [wJoyIgnore], a
 	call UpdateSprites
 	ld a, $4
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, $ff
 	ld [wJoyIgnore], a
@@ -83,7 +83,7 @@ SafariZoneEntranceScriptPointers: ; 751d9 (1d:51d9)
 	ld a, $f0
 	ld [wJoyIgnore], a
 	ld a, $6
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	xor a
 	ld [W_NUMSAFARIBALLS], a
@@ -95,7 +95,7 @@ SafariZoneEntranceScriptPointers: ; 751d9 (1d:51d9)
 	jr .asm_75286 ; 0x7527d $7
 .asm_7527f
 	ld a, $5
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 .asm_75286
 	ret
@@ -119,10 +119,10 @@ SafariZoneEntranceScriptPointers: ; 751d9 (1d:51d9)
 
 SafariZoneEntranceAutoWalk:
 	push af
-	ld b,0
-	ld a,c
-	ld [wSimulatedJoypadStatesIndex],a
-	ld hl,wSimulatedJoypadStatesEnd
+	ld b, 0
+	ld a, c
+	ld [wSimulatedJoypadStatesIndex], a
+	ld hl, wSimulatedJoypadStatesEnd
 	pop af
 	call FillMemory
 	jp StartSimulatingJoypadStates
@@ -148,65 +148,65 @@ SafariZoneEntranceTextPointers: ; 752b9 (1d:52b9)
 	TX_FAR SafariZoneEntranceText_9e6e4 ; 0x9e6e4
 	db $8
 	ld a, $13
-	ld [wd125],a
+	ld [wd125], a
 	call DisplayTextBoxID
 	call YesNoChoice
-	ld a,[wCurrentMenuItem]
+	ld a, [wCurrentMenuItem]
 	and a
-	jp nz,.PleaseComeAgain
+	jp nz, .PleaseComeAgain
 	xor a
-	ldh [$ff9f],a
-	ld a,$05
-	ldh [$ffa0],a
-	ld a,$00
-	ldh [$ffa1],a
+	ldh [$ff9f], a
+	ld a, $05
+	ldh [$ffa0], a
+	ld a, $00
+	ldh [$ffa1], a
 	call HasEnoughMoney
-	jr nc,.success
-	ld hl,.NotEnoughMoneyText
+	jr nc, .success
+	ld hl, .NotEnoughMoneyText
 	call PrintText
 	jr .CantPayWalkDown
 
 .success
 	xor a
-	ld [wSubtrahend],a
-	ld a,$05
-	ld [wSubtrahend+1],a
-	ld a,$00
-	ld [wSubtrahend+2],a
-	ld hl,wTrainerFacingDirection
-	ld de,wPlayerMoney + 2
-	ld c,3
+	ld [wSubtrahend], a
+	ld a, $05
+	ld [wSubtrahend+1], a
+	ld a, $00
+	ld [wSubtrahend+2], a
+	ld hl, wTrainerFacingDirection
+	ld de, wPlayerMoney + 2
+	ld c, 3
 	predef SubBCDPredef
-	ld a,$13
-	ld [wd125],a
+	ld a, $13
+	ld [wd125], a
 	call DisplayTextBoxID
-	ld hl,.MakePaymentText
+	ld hl, .MakePaymentText
 	call PrintText
-	ld a,30
-	ld [W_NUMSAFARIBALLS],a
-	ld a,502 / $100
-	ld [wSafariSteps],a
+	ld a, 30
+	ld [W_NUMSAFARIBALLS], a
+	ld a, 502 / $100
+	ld [wSafariSteps], a
 	ld a, 502 % $100
-	ld [wSafariSteps + 1],a
-	ld a,$40
-	ld c,3
+	ld [wSafariSteps + 1], a
+	ld a, $40
+	ld c, 3
 	call SafariZoneEntranceAutoWalk
-	ld hl,wd790
-	set 7,[hl]
-	res 6,[hl]
-	ld a,3
-	ld [W_SAFARIZONEENTRANCECURSCRIPT],a
+	ld hl, wd790
+	set 7, [hl]
+	res 6, [hl]
+	ld a, 3
+	ld [W_SAFARIZONEENTRANCECURSCRIPT], a
 	jr .done
 
 .PleaseComeAgain
-	ld hl,.PleaseComeAgainText
+	ld hl, .PleaseComeAgainText
 	call PrintText
 .CantPayWalkDown
-	ld a,$80
-	ld c,1
+	ld a, $80
+	ld c, 1
 	call SafariZoneEntranceAutoWalk
-	ld a,4
-	ld [W_SAFARIZONEENTRANCECURSCRIPT],a
+	ld a, 4
+	ld [W_SAFARIZONEENTRANCECURSCRIPT], a
 .done
 	jp TextScriptEnd
 
@@ -228,7 +228,7 @@ SafariZoneEntranceTextPointers: ; 752b9 (1d:52b9)
 	TX_FAR SafariZoneEntranceText_9e814 ; 0x9e814
 	db $8
 	call YesNoChoice
-	ld a,[wCurrentMenuItem]
+	ld a, [wCurrentMenuItem]
 	and a
 	jr nz, .asm_7539c ; 0x7537b $1f
 	ld hl, .SafariZoneEntranceText_753bb
@@ -273,14 +273,14 @@ SafariZoneEntranceTextPointers: ; 752b9 (1d:52b9)
 
 .SafariZoneEntranceText2
 	db $08 ; asm
-	ld hl,.FirstTimeQuestionText
+	ld hl, .FirstTimeQuestionText
 	call PrintText
 	call YesNoChoice
-	ld a,[wCurrentMenuItem]
+	ld a, [wCurrentMenuItem]
 	and a
-	ld hl,.RegularText
-	jr nz,.Explanation
-	ld hl,.ExplanationText
+	ld hl, .RegularText
+	jr nz, .Explanation
+	ld hl, .ExplanationText
 .Explanation
 	call PrintText
 	jp TextScriptEnd

@@ -65,13 +65,13 @@ CeladonGameCornerScript1: ; 48c19 (12:4c19)
 	call SetSpriteMovementBytesToFF
 	ld de, MovementData_48c5a
 	ld a, [W_YCOORD]
-	cp $6
+	cp 6
 	jr nz, .asm_48c43
 	ld de, MovementData_48c63
 	jr .asm_48c4d
 .asm_48c43
 	ld a, [W_XCOORD]
-	cp $8
+	cp 8
 	jr nz, .asm_48c4d
 	ld de, MovementData_48c63
 .asm_48c4d
@@ -468,13 +468,13 @@ CeladonGameCornerScript_48f1e: ; 48f1e (12:4f1e)
 	ld hl, wd730
 	set 6, [hl]
 	hlCoord 11, 0
-	ld b, $5
-	ld c, $7
+	ld b, 5
+	ld c, 7
 	call TextBoxBorder
 	call UpdateSprites
 	hlCoord 12, 1
-	ld b, $4
-	ld c, $7
+	ld b, 4
+	ld c, 7
 	call ClearScreenArea
 	hlCoord 12, 2
 	ld de, GameCornerMoneyText

@@ -42,14 +42,14 @@ Route23Script0: ; 51219 (14:5219)
 	dec c
 	cp b
 	jr nz, .asm_51224 ; 0x5122b $f7
-	cp $23
+	cp 35
 	jr nz, .asm_51237 ; 0x5122f $6
 	ld a, [W_XCOORD]
-	cp $e
+	cp 14
 	ret nc
 .asm_51237
 	ld a, e
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	ld a, c
 	ld [wWhichTrade], a
 	ld b, $2
@@ -71,7 +71,7 @@ Route23Script_5125d: ; 5125d (14:525d)
 	ld hl, BadgeTextPointers ; $5276
 	ld a, [wWhichTrade] ; wWhichTrade
 	ld c, a
-	ld b, $0
+	ld b, 0
 	add hl, bc
 	add hl, bc
 	ld a, [hli]

@@ -31,7 +31,7 @@ PewterCityScript_1925e: ; 1925e (6:525e)
 	ld a, $f0
 	ld [wJoyIgnore], a
 	ld a, $5
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	jp DisplayTextID
 
 CoordsData_19277: ; 19277 (6:5277)
@@ -57,7 +57,7 @@ PewterCityScript1: ; 19280 (6:5280)
 	ld hl, wFlags_0xcd60
 	set 4, [hl]
 	ld a, $d
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, $3c
 	ldh [$ffeb], a
@@ -121,15 +121,15 @@ PewterCityScript4: ; 19305 (6:5305)
 	ld hl, wFlags_0xcd60
 	set 4, [hl]
 	ld a, $e
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, $3c
 	ldh [$ffeb], a
 	ld a, $40
 	ldh [$ffec], a
-	ld a, $16
+	ld a, 22
 	ldh [$ffed], a
-	ld a, $10
+	ld a, 16
 	ldh [$ffee], a
 	ld a, $5
 	ld [wSpriteIndex], a

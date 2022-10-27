@@ -123,7 +123,7 @@ Route22Script1: ; 50f62 (14:4f62)
 	xor a
 	ld [wJoyIgnore], a
 	ld a, $1
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld hl, wd72d
 	set 6, [hl]
@@ -168,7 +168,7 @@ Route22Script2: ; 50fb5 (14:4fb5)
 	ld hl, wd7eb
 	set 5, [hl]
 	ld a, $1
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a

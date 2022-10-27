@@ -87,7 +87,7 @@ VermilionCityScript2: ; 19833 (6:5833)
 	ld a, $40
 	ld [wSimulatedJoypadStatesEnd], a
 	ld [wccd4], a
-	ld a, $2
+	ld a, 2
 	ld [wSimulatedJoypadStatesIndex], a
 	call StartSimulatingJoypadStates
 	ld a, $3
@@ -109,7 +109,7 @@ VermilionCityScript1: ; 1985f (6:585f)
 	ld a, [wSimulatedJoypadStatesIndex]
 	and a
 	ret nz
-	ld c, $a
+	ld c, 10
 	call DelayFrames
 	ld a, $0
 	ld [W_VERMILIONCITYCURSCRIPT], a

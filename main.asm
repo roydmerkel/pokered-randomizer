@@ -991,81 +991,81 @@ SafariZoneRestHouses:
 ; function that performs initialization for DisplayTextID
 DisplayTextIDInit: ; 7096 (1:7096)
 	xor a
-	ld [wListMenuID],a
-	ld a,[wAutoTextBoxDrawingControl]
-	bit 0,a
-	jr nz,.skipDrawingTextBoxBorder
-	ldh a,[$ff8c] ; text ID (or sprite ID)
+	ld [wListMenuID], a
+	ld a, [wAutoTextBoxDrawingControl]
+	bit 0, a
+	jr nz, .skipDrawingTextBoxBorder
+	ldh a, [hSpriteIndexOrTextID] ; text ID (or sprite ID)
 	and a
-	jr nz,.notStartMenu
+	jr nz, .notStartMenu
 ; if text ID is 0 (i.e. the start menu)
 ; Note that the start menu text border is also drawn in the function directly
 ; below this, so this seems unnecessary.
-	ld a,[wd74b]
-	bit 5,a ; does the player have the pokedex?
+	ld a, [wd74b]
+	bit 5, a ; does the player have the pokedex?
 ; start menu with pokedex
 	hlCoord 10, 0
-	ld b,$0e
-	ld c,$08
-	jr nz,.drawTextBoxBorder
+	ld b, $0e
+	ld c, $08
+	jr nz, .drawTextBoxBorder
 ; start menu without pokedex
 	hlCoord 10, 0
-	ld b,$0c
-	ld c,$08
+	ld b, $0c
+	ld c, $08
 	jr .drawTextBoxBorder
 ; if text ID is not 0 (i.e. not the start menu) then do a standard dialogue text box
 .notStartMenu
 	hlCoord 0, 12
-	ld b,$04
-	ld c,$12
+	ld b, $04
+	ld c, $12
 .drawTextBoxBorder
 	call TextBoxBorder
 .skipDrawingTextBoxBorder
-	ld hl,wcfc4
-	set 0,[hl]
-	ld hl,wFlags_0xcd60
-	bit 4,[hl]
-	res 4,[hl]
-	jr nz,.skipMovingSprites
+	ld hl, wcfc4
+	set 0, [hl]
+	ld hl, wFlags_0xcd60
+	bit 4, [hl]
+	res 4, [hl]
+	jr nz, .skipMovingSprites
 	call UpdateSprites ; move sprites
 .skipMovingSprites
 ; loop to copy C1X9 (direction the sprite is facing) to C2X9 for each sprite
 ; this is done because when you talk to an NPC, they turn to look your way
 ; the original direction they were facing must be restored after the dialogue is over
-	ld hl,wSpriteStateData1 + $19
-	ld c,$0f
-	ld de,$0010
+	ld hl, wSpriteStateData1 + $19
+	ld c, $0f
+	ld de, $0010
 .spriteFacingDirectionCopyLoop
-	ld a,[hl]
+	ld a, [hl]
 	inc h
-	ld [hl],a
+	ld [hl], a
 	dec h
-	add hl,de
+	add hl, de
 	dec c
-	jr nz,.spriteFacingDirectionCopyLoop
+	jr nz, .spriteFacingDirectionCopyLoop
 ; loop to force all the sprites in the middle of animation to stand still
 ; (so that they don't like they're frozen mid-step during the dialogue)
-	ld hl,wSpriteStateData1 + 2
-	ld de,$0010
-	ld c,e
+	ld hl, wSpriteStateData1 + 2
+	ld de, $0010
+	ld c, e
 .spriteStandStillLoop
-	ld a,[hl]
-	cp a,$ff ; is the sprite visible?
-	jr z,.nextSprite
+	ld a, [hl]
+	cp a, $ff ; is the sprite visible?
+	jr z, .nextSprite
 ; if it is visible
-	and a,$fc
-	ld [hl],a
+	and a, $fc
+	ld [hl], a
 .nextSprite
-	add hl,de
+	add hl, de
 	dec c
-	jr nz,.spriteStandStillLoop
-	ld b,$9c ; window background address
+	jr nz, .spriteStandStillLoop
+	ld b, $9c ; window background address
 	call CopyScreenTileBufferToVRAM ; transfer background in WRAM to VRAM
 	xor a
-	ldh [hWY],a ; put the window on the screen
+	ldh [hWY], a ; put the window on the screen
 	call LoadFontTilePatterns
-	ld a,$01
-	ldh [H_AUTOBGTRANSFERENABLED],a ; enable continuous WRAM to VRAM transfer each V-blank
+	ld a, $01
+	ldh [H_AUTOBGTRANSFERENABLED], a ; enable continuous WRAM to VRAM transfer each V-blank
 	ret
 
 ; function that displays the start menu
@@ -2063,7 +2063,7 @@ IsPlayerStandingOnWarp: ; c35f (3:435f)
 	ld a, [hli] ; target warp
 	ld [wDestinationWarpID], a
 	ld a, [hl] ; target map
-	ldh [$ff8b], a
+	ldh [hWarpDestinationMap], a
 	ld hl, wd736
 	set 2, [hl] ; standing on warp flag
 	ret
@@ -2286,8 +2286,8 @@ PrintSafariZoneSteps: ; c52f (3:452f)
 	cp UNKNOWN_DUNGEON_2
 	ret nc
 	ld hl, wTileMap
-	ld b, $3
-	ld c, $7
+	ld b, 3
+	ld c, 7
 	call TextBoxBorder
 	hlCoord 1, 1
 	ld de, wSafariSteps ; wd70d
@@ -2300,7 +2300,7 @@ PrintSafariZoneSteps: ; c52f (3:452f)
 	ld de, SafariBallText
 	call PlaceString
 	ld a, [W_NUMSAFARIBALLS] ; W_NUMSAFARIBALLS
-	cp $a
+	cp 10
 	jr nc, .asm_c56d
 	hlCoord 5, 3
 	ld a, $7f
@@ -2577,7 +2577,7 @@ ApplyOutOfBattlePoisonDamage: ; c69c (3:469c)
 	ld [wJoyIgnore], a
 	call EnableAutoTextBoxDrawing
 	ld a, $d0
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	pop de
 	pop hl
@@ -2626,7 +2626,7 @@ ApplyOutOfBattlePoisonDamage: ; c69c (3:469c)
 .blackOut
 	call EnableAutoTextBoxDrawing
 	ld a, $d1
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld hl, wd72e
 	set 5, [hl]
@@ -2712,7 +2712,7 @@ LoadTilesetHeader: ; c754 (3:4754)
 	jr c, .asm_c797
 	ld a, [W_CURMAPTILESET]
 	ld b, a
-	ldh a, [$ff8b]
+	ldh a, [hPreviousTileset]
 	cp b
 	jr z, .done
 .asm_c797
@@ -3493,15 +3493,15 @@ TryPushingBoulder: ; f225 (3:7225)
 	bit 1, a ; has boulder dust animation from previous push played yet?
 	ret nz
 	xor a
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call IsSpriteInFrontOfPlayer
-	ldh a, [$ff8c]
+	ldh a, [hSpriteIndexOrTextID]
 	ld [wBoulderSpriteIndex], a
 	and a
 	jp z, ResetBoulderPushFlags
 	ld hl, wSpriteStateData1 + 1
 	ld d, $0
-	ldh a, [$ff8c]
+	ldh a, [hSpriteIndexOrTextID]
 	swap a
 	ld e, a
 	add hl, de
@@ -3706,7 +3706,7 @@ _AddPartyMon: ; f2e5 (3:72e5)
 	ld [hl], b         ; write IVs
 	ld bc, $fff4
 	add hl, bc
-	ld a, $1
+	ld a, 1
 	ld c, a
 	xor a
 	ld b, a
@@ -3789,10 +3789,10 @@ _AddPartyMon: ; f2e5 (3:72e5)
 	ldh a, [hExperience] ; write experience
 	ld [de], a
 	inc de
-	ldh a, [hExperience+1]
+	ldh a, [hExperience + 1]
 	ld [de], a
 	inc de
-	ldh a, [hExperience+2]
+	ldh a, [hExperience + 2]
 	ld [de], a
 	xor a
 	ld b, $a
@@ -3946,7 +3946,7 @@ Func_f51e: ; f51e (3:751e)
 	inc a
 	ld [hl], a           ; increment number of mons in party/box
 	ld c, a
-	ld b, $0
+	ld b, 0
 	add hl, bc
 	ld a, [wcf95]
 	cp $2

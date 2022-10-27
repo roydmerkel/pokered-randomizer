@@ -19,15 +19,15 @@ CinnabarIslandScript0: ; 1ca38 (7:4a38)
 	call IsItemInBag
 	ret nz
 	ld a, [W_YCOORD]
-	cp $4
+	cp 4
 	ret nz
 	ld a, [W_XCOORD]
-	cp $12
+	cp 18
 	ret nz
 	ld a, $8
 	ld [wd528], a
 	ld a, $8
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	xor a
 	ldh [hJoyHeld], a

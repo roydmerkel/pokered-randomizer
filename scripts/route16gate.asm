@@ -19,7 +19,7 @@ Route16GateScript0: ; 496d7 (12:56d7)
 	call ArePlayerCoordsInArray
 	ret nc
 	ld a, $3
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	xor a
 	ldh [hJoyHeld], a

@@ -83,7 +83,7 @@ CinnabarGymScript1: ; 757dc (1d:57dc)
 	ld [wJoyIgnore], a
 	ld a, [wda38]
 	ld [wTrainerHeaderFlagBit], a
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	jp DisplayTextID
 
 CinnabarGymScript_757f1: ; 757f1 (1d:57f1)
@@ -138,7 +138,7 @@ CinnabarGymScript3: ; 7584a (1d:584a)
 	ld [wJoyIgnore], a
 CinnabarGymScript3_75857: ; 75857 (1d:5857)
 	ld a, $a
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld hl, wd79a
 	set 1, [hl]
@@ -147,14 +147,14 @@ CinnabarGymScript3_75857: ; 75857 (1d:5857)
 	call GiveItem
 	jr nc, .BagFull
 	ld a, $b
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld hl, wd79a
 	set 0, [hl]
 	jr .asm_75880 ; 0x75877 $7
 .BagFull
 	ld a, $c
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 .asm_75880
 	ld hl, W_OBTAINEDBADGES

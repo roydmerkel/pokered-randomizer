@@ -1,47 +1,47 @@
 FarCopyData3::
 ; Copy bc bytes from a:de to hl.
-	ldh [$ff8b],a
-	ldh a,[H_LOADEDROMBANK]
+	ldh [hROMBankTemp], a
+	ldh a, [H_LOADEDROMBANK]
 	push af
-	ldh a,[$ff8b]
-	ldh [H_LOADEDROMBANK],a
-	ld [MBC1RomBank],a
+	ldh a, [hROMBankTemp]
+	ldh [H_LOADEDROMBANK], a
+	ld [MBC1RomBank], a
 	push hl
 	push de
 	push de
-	ld d,h
-	ld e,l
+	ld d, h
+	ld e, l
 	pop hl
 	call CopyData
 	pop de
 	pop hl
 	pop af
-	ldh [H_LOADEDROMBANK],a
-	ld [MBC1RomBank],a
+	ldh [H_LOADEDROMBANK], a
+	ld [MBC1RomBank], a
 	ret
 
 FarCopyDataDouble::
 ; Expand bc bytes of 1bpp image data
 ; from a:hl to 2bpp data at de.
-	ldh [$ff8b],a
-	ldh a,[H_LOADEDROMBANK]
+	ldh [hROMBankTemp], a
+	ldh a, [H_LOADEDROMBANK]
 	push af
-	ldh a,[$ff8b]
-	ldh [H_LOADEDROMBANK],a
-	ld [MBC1RomBank],a
+	ldh a, [hROMBankTemp]
+	ldh [H_LOADEDROMBANK], a
+	ld [MBC1RomBank], a
 .loop
-	ld a,[hli]
-	ld [de],a
+	ld a, [hli]
+	ld [de], a
 	inc de
-	ld [de],a
+	ld [de], a
 	inc de
 	dec bc
-	ld a,c
+	ld a, c
 	or b
-	jr nz,.loop
+	jr nz, .loop
 	pop af
-	ldh [H_LOADEDROMBANK],a
-	ld [MBC1RomBank],a
+	ldh [H_LOADEDROMBANK], a
+	ld [MBC1RomBank], a
 	ret
 
 CopyVideoData::
@@ -55,7 +55,7 @@ CopyVideoData::
 	ldh [H_AUTOBGTRANSFERENABLED], a
 
 	ldh a, [H_LOADEDROMBANK]
-	ldh [$ff8b], a
+	ldh [hROMBankTemp], a
 
 	ld a, b
 	ldh [H_LOADEDROMBANK], a
@@ -79,7 +79,7 @@ CopyVideoData::
 .done
 	ldh [H_VBCOPYSIZE], a
 	call DelayFrame
-	ldh a, [$ff8b]
+	ldh a, [hROMBankTemp]
 	ldh [H_LOADEDROMBANK], a
 	ld [MBC1RomBank], a
 	pop af
@@ -104,7 +104,7 @@ CopyVideoDataDouble::
 	xor a ; disable auto-transfer while copying
 	ldh [H_AUTOBGTRANSFERENABLED], a
 	ldh a, [H_LOADEDROMBANK]
-	ldh [$ff8b], a
+	ldh [hROMBankTemp], a
 
 	ld a, b
 	ldh [H_LOADEDROMBANK], a
@@ -128,7 +128,7 @@ CopyVideoDataDouble::
 .done
 	ldh [H_VBCOPYDOUBLESIZE], a
 	call DelayFrame
-	ldh a, [$ff8b]
+	ldh a, [hROMBankTemp]
 	ldh [H_LOADEDROMBANK], a
 	ld [MBC1RomBank], a
 	pop af

@@ -13,19 +13,19 @@ Museum1FScriptPointers: ; 5c109 (17:4109)
 
 Museum1FScript0: ; 5c10d (17:410d)
 	ld a, [W_YCOORD]
-	cp $4
+	cp 4
 	ret nz
 	ld a, [W_XCOORD]
-	cp $9
+	cp 9
 	jr z, .asm_5c120 ; 0x5c118 $6
 	ld a, [W_XCOORD]
-	cp $a
+	cp 10
 	ret nz
 .asm_5c120
 	xor a
 	ldh [hJoyHeld], a
 	ld a, $1
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	jp DisplayTextID
 
 Museum1FScript1: ; 5c12a (17:412a)
@@ -41,17 +41,17 @@ Museum1FTextPointers: ; 5c12b (17:412b)
 Museum1FText1: ; 5c135 (17:4135)
 	db $8
 	ld a, [W_YCOORD]
-	cp $4
+	cp 4
 	jr nz, .asm_8774b
 	ld a, [W_XCOORD]
-	cp $d
+	cp 13
 	jp z, Museum1FScript_5c1f9
 	jr .asm_b8709
 .asm_8774b
 	cp $3
 	jr nz, .asm_d49e7
 	ld a, [W_XCOORD]
-	cp $c
+	cp 12
 	jp z, Museum1FScript_5c1f9
 .asm_d49e7
 	ld a, [wd754]

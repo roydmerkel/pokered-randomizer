@@ -62,15 +62,15 @@ BillsHouseScript3: ; 1e7c5 (7:67c5)
 	ldh [$ffeb], a
 	ld a, $40
 	ldh [$ffec], a
-	ld a, $6
+	ld a, 6
 	ldh [$ffed], a
-	ld a, $5
+	ld a, 5
 	ldh [$ffee], a
 	call SetSpritePosition1
 	ld a, HS_BILL_1
 	ld [wcc4d], a
 	predef ShowObject
-	ld c, $8
+	ld c, 8
 	call DelayFrames
 	ld a, $2
 	ldh [$ff8c], a
@@ -99,7 +99,7 @@ BillsHouseScript4: ; 1e80d (7:680d)
 
 BillsHouseScript5: ; 1e827 (7:6827)
 	ld a, $4
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, $0
 	ld [W_BILLSHOUSECURSCRIPT], a

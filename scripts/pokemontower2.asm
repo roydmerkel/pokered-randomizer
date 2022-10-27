@@ -48,7 +48,7 @@ PokemonTower2Script0: ; 6050f (18:450f)
 	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $1
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	xor a
 	ldh [hJoyHeld], a
@@ -71,7 +71,7 @@ PokemonTower2Script1: ; 60563 (18:4563)
 	ld hl, wd764
 	set 7, [hl]
 	ld a, $1
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld de, MovementData_605b2
 	ld a, [wd764]

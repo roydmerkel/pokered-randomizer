@@ -160,7 +160,7 @@ PokemonTower6Text7: ; 60c02 (18:4c02)
 	ld a, MAROWAK
 	call PlayCry
 	call WaitForSoundToFinish
-	ld c, $1e
+	ld c, 30
 	call DelayFrames
 	ld hl, PokemonTower2Text_60c24
 	call PrintText

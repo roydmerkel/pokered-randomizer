@@ -76,11 +76,11 @@ GainExperience: ; 5524f (15:524f)
 	ld b, [hl]
 	ld a, [wPlayerID + 1]
 	cp b
-	ld a, $0
+	ld a, 0
 	jr z, .next
 .tradedMon
 	call BoostExp ; traded mon exp boost
-	ld a, $1
+	ld a, 1
 .next
 	ld [wcf4d], a
 	ld a, [W_ISINBATTLE]

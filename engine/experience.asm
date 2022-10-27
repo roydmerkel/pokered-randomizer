@@ -40,7 +40,7 @@ CalcExperience: ; 58f6a (16:4f6a)
 	add a
 	add a
 	ld c, a
-	ld b, $0
+	ld b, 0
 	ld hl, GrowthRateTable
 	add hl, bc
 	call CalcDSquared

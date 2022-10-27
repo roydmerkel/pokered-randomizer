@@ -94,7 +94,7 @@ HallofFameRoomScript1: ; 5a52b (16:652b)
 	inc a
 	ld [wd528], a
 	ld a, $1
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, $ff
 	ld [wJoyIgnore], a

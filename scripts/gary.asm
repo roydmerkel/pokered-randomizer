@@ -55,7 +55,7 @@ GaryScript2: ; 75f6a (1d:5f6a)
 	ld hl, W_OPTIONS
 	res 7, [hl]
 	ld a, $1
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	call Delay3
 	ld hl, wd72d
@@ -103,7 +103,7 @@ GaryScript3: ; 75fbb (1d:5fbb)
 	ld a, $f0
 	ld [wJoyIgnore], a
 	ld a, $1
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call GaryScript_760c8
 	ld a, $1
 	ldh [$ff8c], a
@@ -115,7 +115,7 @@ GaryScript3: ; 75fbb (1d:5fbb)
 GaryScript4: ; 75fe4 (1d:5fe4)
 	callba Music_Cities1AlternateTempo
 	ld a, $2
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call GaryScript_760c8
 	ld a, $2
 	ldh [$ff8c], a
@@ -151,7 +151,7 @@ GaryScript5: ; 7601a (1d:601a)
 	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay ; face object
 	ld a, $3
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call GaryScript_760c8
 	ld a, $6
 	ld [W_GARYCURSCRIPT], a
@@ -164,7 +164,7 @@ GaryScript6: ; 76047 (1d:6047)
 	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay ; face object
 	ld a, $4
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call GaryScript_760c8
 	ld a, $7
 	ld [W_GARYCURSCRIPT], a
@@ -177,7 +177,7 @@ GaryScript7: ; 7605f (1d:605f)
 	ldh [$ff8d], a
 	call SetSpriteFacingDirectionAndDelay ; face object
 	ld a, $5
-	ldh [$ff8c], a
+	ldh [hSpriteIndexOrTextID], a
 	call GaryScript_760c8
 	ld de, MovementData_76080
 	ld a, $2
