@@ -2207,24 +2207,24 @@ LoadMapHeader:: ; 107c (0:107c)
 	ld a, [hli]
 	ld [de], a ; store movement byte 1 at C2X6
 	ld a, [hli]
-	ldh [$ff8d], a ; save movement byte 2
+	ldh [hLoadSpriteTemp1], a ; save movement byte 2
 	ld a, [hli]
-	ldh [$ff8e], a ; save text ID and flags byte
+	ldh [hLoadSpriteTemp2], a ; save text ID and flags byte
 	push bc
 	push hl
 	ld b, $00
 	ld hl, W_MAPSPRITEDATA
 	add hl, bc
-	ldh a, [$ff8d]
+	ldh a, [hLoadSpriteTemp1]
 	ld [hli], a ; store movement byte 2 in byte 0 of sprite entry
-	ldh a, [$ff8e]
+	ldh a, [hLoadSpriteTemp2]
 	ld [hl], a ; this appears pointless, since the value is overwritten immediately after
-	ldh a, [$ff8e]
-	ldh [$ff8d], a
+	ldh a, [hLoadSpriteTemp2]
+	ldh [hLoadSpriteTemp1], a
 	and a, $3f
 	ld [hl], a ; store text ID in byte 1 of sprite entry
 	pop hl
-	ldh a, [$ff8d]
+	ldh a, [hLoadSpriteTemp1]
 	bit 6, a
 	jr nz, .trainerSprite
 	bit 7, a
@@ -2232,25 +2232,25 @@ LoadMapHeader:: ; 107c (0:107c)
 	jr .regularSprite
 .trainerSprite
 	ld a, [hli]
-	ldh [$ff8d], a ; save trainer class
+	ldh [hLoadSpriteTemp1], a ; save trainer class
 	ld a, [hli]
-	ldh [$ff8e], a ; save trainer number (within class)
+	ldh [hLoadSpriteTemp2], a ; save trainer number (within class)
 	push hl
 	ld hl, W_MAPSPRITEEXTRADATA
 	add hl, bc
-	ldh a, [$ff8d]
+	ldh a, [hLoadSpriteTemp1]
 	ld [hli], a ; store trainer class in byte 0 of the entry
-	ldh a, [$ff8e]
+	ldh a, [hLoadSpriteTemp2]
 	ld [hl], a ; store trainer number in byte 1 of the entry
 	pop hl
 	jr .nextSprite
 .itemBallSprite
 	ld a, [hli]
-	ldh [$ff8d], a ; save item number
+	ldh [hLoadSpriteTemp1], a ; save item number
 	push hl
 	ld hl, W_MAPSPRITEEXTRADATA
 	add hl, bc
-	ldh a, [$ff8d]
+	ldh a, [hLoadSpriteTemp1]
 	ld [hli], a ; store item number in byte 0 of the entry
 	xor a
 	ld [hl], a ; zero byte 1, since it is not used

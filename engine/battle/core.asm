@@ -1680,14 +1680,14 @@ TryRunningFromBattle: ; 3cab9 (f:4ab9)
 	ld a, [hl]
 	ldh [hMultiplicand + 2], a
 	ld a, [de]
-	ldh [$ff8d], a
+	ldh [hEnemySpeed], a
 	inc de
 	ld a, [de]
-	ldh [$ff8e], a
+	ldh [hEnemySpeed + 1], a
 	call LoadScreenTilesFromBuffer1
 	ld de, hMultiplicand + 1
-	ld hl, $ff8d
-	ld c, $2
+	ld hl, hEnemySpeed
+	ld c, 2
 	call StringCmp
 	jr nc, .canEscape ; jump if player speed greater than enemy speed
 	xor a
@@ -1699,9 +1699,9 @@ TryRunningFromBattle: ; 3cab9 (f:4ab9)
 	ldh [hDividend], a
 	ldh a, [hProduct + 3]
 	ldh [hDividend + 1], a
-	ldh a, [$ff8d]
+	ldh a, [hEnemySpeed]
 	ld b, a
-	ldh a, [$ff8e]
+	ldh a, [hEnemySpeed + 1]
 ; divide enemy speed by 4
 	srl b
 	rr a
