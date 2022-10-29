@@ -95,27 +95,27 @@ PayDayEffect_ ; 2feb8 (b:7eb8)
 	ld a, [wEnemyMonLevel]
 .asm_2fec8
 	add a
-	ldh [$ff98], a
+	ldh [hDividend + 3], a
 	xor a
-	ldh [$ff95], a
-	ldh [$ff96], a
-	ldh [$ff97], a
-	ld a, $64
-	ldh [$ff99], a
+	ldh [hDividend], a
+	ldh [hDividend + 1], a
+	ldh [hDividend + 2], a
+	ld a, 100
+	ldh [hDivisor], a
 	ld b, $4
 	call Divide
-	ldh a, [$ff98]
+	ldh a, [hQuotient + 3]
 	ld [hli], a
-	ldh a, [$ff99]
-	ldh [$ff98], a
-	ld a, $a
-	ldh [$ff99], a
+	ldh a, [hRemainder]
+	ldh [hDividend + 3], a
+	ld a, 10
+	ldh [hDivisor], a
 	ld b, $4
 	call Divide
-	ldh a, [$ff98]
+	ldh a, [hQuotient + 3]
 	swap a
 	ld b, a
-	ldh a, [$ff99]
+	ldh a, [hRemainder]
 	add b
 	ld [hl], a
 	ld de, wTotalPayDayMoney + 2

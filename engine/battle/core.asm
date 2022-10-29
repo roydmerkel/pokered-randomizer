@@ -4315,9 +4315,9 @@ GetDamageVarsForPlayerAttack: ; 3ddcf (f:5dcf)
 ; in the case of a critical hit, reset the player's attack and the enemy's defense to their base values
 	ld c, 3 ; defense stat
 	call GetEnemyMonStat
-	ldh a, [hProduct+2]
+	ldh a, [hProduct + 2]
 	ld b, a
-	ldh a, [hProduct+3]
+	ldh a, [hProduct + 3]
 	ld c, a
 	push bc
 	ld hl, wPartyMon1Attack
@@ -4345,9 +4345,9 @@ GetDamageVarsForPlayerAttack: ; 3ddcf (f:5dcf)
 ; in the case of a critical hit, reset the player's and enemy's specials to their base values
 	ld c, 5 ; special stat
 	call GetEnemyMonStat
-	ldh a, [hProduct+2]
+	ldh a, [hProduct + 2]
 	ld b, a
-	ldh a, [hProduct+3]
+	ldh a, [hProduct + 3]
 	ld c, a
 	push bc
 	ld hl, wPartyMon1Special
@@ -4432,7 +4432,7 @@ GetDamageVarsForEnemyAttack: ; 3de75 (f:5e75)
 	push bc
 	ld c, 2 ; attack stat
 	call GetEnemyMonStat
-	ld hl, hProduct+2
+	ld hl, hProduct + 2
 	pop bc
 	jr .scaleStats
 .specialAttack
@@ -4462,7 +4462,7 @@ GetDamageVarsForEnemyAttack: ; 3de75 (f:5e75)
 	push bc
 	ld c, 5 ; special stat
 	call GetEnemyMonStat
-	ld hl, hProduct+2
+	ld hl, hProduct + 2
 	pop bc
 ; if either the offensive or defensive stat is too large to store in a byte, scale both stats by dividing them by 4
 ; this allows values with up to 10 bits (values up to 1023) to be handled
@@ -7400,7 +7400,7 @@ PoisonEffect: ; 3f24f (f:724f)
 	cp POISON_EFFECT
 	ret nz
 .asm_3f2d7
-	ld c, $32
+	ld c, 50
 	call DelayFrames
 	jp PrintDidntAffectText
 
@@ -7917,9 +7917,9 @@ StatModifierDownEffectApply:
 	ldh [hMultiplicand + 2], a
 
 Func_3f624: ; 3f624 (f:7624)
-	ldh a, [$ff97]
+	ldh a, [hProduct + 2]
 	ld [hli], a
-	ldh a, [$ff98]
+	ldh a, [hProduct + 3]
 	ld [hl], a
 	pop de
 	pop hl
@@ -8094,7 +8094,7 @@ SwitchAndTeleportEffect: ; 3f739 (f:7739)
 	srl b
 	cp b
 	jr nc, .asm_3f76e
-	ld c, $32
+	ld c, 50
 	call DelayFrames
 	ld a, [W_PLAYERMOVENUM]
 	cp TELEPORT
@@ -8109,7 +8109,7 @@ SwitchAndTeleportEffect: ; 3f739 (f:7739)
 	ld a, [W_PLAYERMOVENUM]
 	jr .asm_3f7e4
 .asm_3f77e
-	ld c, $32
+	ld c, 50
 	call DelayFrames
 	ld hl, IsUnaffectedText
 	ld a, [W_PLAYERMOVENUM]
@@ -8136,7 +8136,7 @@ SwitchAndTeleportEffect: ; 3f739 (f:7739)
 	srl b
 	cp b
 	jr nc, .asm_3f7c1
-	ld c, $32
+	ld c, 50
 	call DelayFrames
 	ld a, [W_ENEMYMOVENUM]
 	cp TELEPORT
@@ -8151,7 +8151,7 @@ SwitchAndTeleportEffect: ; 3f739 (f:7739)
 	ld a, [W_ENEMYMOVENUM]
 	jr .asm_3f7e4
 .asm_3f7d1
-	ld c, $32
+	ld c, 50
 	call DelayFrames
 	ld hl, IsUnaffectedText
 	ld a, [W_ENEMYMOVENUM]
@@ -8161,7 +8161,7 @@ SwitchAndTeleportEffect: ; 3f739 (f:7739)
 .asm_3f7e4
 	push af
 	call Func_3fbb9
-	ld c, $14
+	ld c, 20
 	call DelayFrames
 	pop af
 	ld hl, RanFromBattleText
@@ -8430,7 +8430,7 @@ BecameConfusedText: ; 3f9a1 (f:79a1)
 Func_3f9a6: ; 3f9a6 (f:79a6)
 	cp CONFUSION_SIDE_EFFECT
 	ret z
-	ld c, $32
+	ld c, 50
 	call DelayFrames
 	jp Func_3fb4e
 
@@ -8477,7 +8477,7 @@ RageEffect: ; 3f9df (f:79df)
 	ret
 
 MimicEffect: ; 3f9ed (f:79ed)
-	ld c, $32
+	ld c, 50
 	call DelayFrames
 	call MoveHitTest
 	ld a, [W_MOVEMISSED]

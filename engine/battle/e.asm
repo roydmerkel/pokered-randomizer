@@ -155,7 +155,7 @@ AIEnemyTrainerChooseMoves: ; 39719 (e:5719)
 	dec a
 	add a
 	ld c, a
-	ld b, $0
+	ld b, 0
 	add hl, bc    ; skip to pointer
 	ld a, [hli]   ; read pointer into hl
 	ld h, [hl]
@@ -245,7 +245,7 @@ AIMoveChoiceModification1: ; 397ab (e:57ab)
 	push de
 	push bc
 	ld hl, StatusAilmentMoveEffects
-	ld de, $0001
+	ld de, 1
 	call IsInArray
 	pop bc
 	pop de
@@ -371,9 +371,9 @@ ReadMove: ; 39884 (e:5884)
 	push bc
 	dec a
 	call LoadHLMoves
-	ld bc,6
+	ld bc, 6
 	call AddNTimes
-	ld de,W_ENEMYMOVENUM
+	ld de, W_ENEMYMOVENUM
 	call CopyData
 	pop bc
 	pop de
@@ -700,43 +700,43 @@ Func_39c37: ; 39c37 (e:5c37)
 ReadTrainer: ; 39c53 (e:5c53)
 
 ; don't change any moves in a link battle
-	ld a,[W_ISLINKBATTLE]
+	ld a, [W_ISLINKBATTLE]
 	and a
 	ret nz
 
 ; set [wEnemyPartyCount] to 0, [wEnemyPartyMons] to FF
 ; XXX first is total enemy pokemon?
 ; XXX second is species of first pokemon?
-	ld hl,wEnemyPartyCount
+	ld hl, wEnemyPartyCount
 	xor a
-	ld [hli],a
+	ld [hli], a
 	dec a
-	ld [hl],a
+	ld [hl], a
 
 ; get the pointer to trainer data for this class
-	ld a,[W_CUROPPONENT]
+	ld a, [W_CUROPPONENT]
 	sub $C9 ; convert value from pokemon to trainer
-	add a,a
-	ld hl,TrainerDataPointers
-	ld c,a
-	ld b,0
-	add hl,bc ; hl points to trainer class
-	ld a,[hli]
-	ld h,[hl]
-	ld l,a
-	ld a,[W_TRAINERNO]
-	ld b,a
+	add a, a
+	ld hl, TrainerDataPointers
+	ld c, a
+	ld b, 0
+	add hl, bc ; hl points to trainer class
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, [W_TRAINERNO]
+	ld b, a
 ; At this point b contains the trainer number,
 ; and hl points to the trainer class.
 ; Our next task is to iterate through the trainers,
 ; decrementing b each time, until we get to the right one.
 .outer
 	dec b
-	jr z,.IterateTrainer
+	jr z, .IterateTrainer
 .inner
-	ld a,[hli]
+	ld a, [hli]
 	and a
-	jr nz,.inner
+	jr nz, .inner
 	jr .outer
 
 ; if the first byte of trainer data is FF,
@@ -745,17 +745,17 @@ ReadTrainer: ; 39c53 (e:5c53)
 ; - if [W_LONEATTACKNO] != 0, one pokemon on the team has a special move
 ; else the first byte is the level of every pokemon on the team
 .IterateTrainer
-	ld a,[hli]
+	ld a, [hli]
 	cp $FF ; is the trainer special?
-	jr z,.SpecialTrainer ; if so, check for special moves
-	ld [W_CURENEMYLVL],a
+	jr z, .SpecialTrainer ; if so, check for special moves
+	ld [W_CURENEMYLVL], a
 .LoopTrainerData
-	ld a,[hli]
+	ld a, [hli]
 	and a ; have we reached the end of the trainer data?
-	jr z,.FinishUp
-	ld [wcf91],a ; write species somewhere (XXX why?)
-	ld a,1
-	ld [wcc49],a
+	jr z, .FinishUp
+	ld [wcf91], a ; write species somewhere (XXX why?)
+	ld a, 1
+	ld [wcc49], a
 	push hl
 	call AddPartyMon
 	pop hl
@@ -765,101 +765,101 @@ ReadTrainer: ; 39c53 (e:5c53)
 ; - each pokemon has a specific level
 ;      (as opposed to the whole team being of the same level)
 ; - if [W_LONEATTACKNO] != 0, one pokemon on the team has a special move
-	ld a,[hli]
+	ld a, [hli]
 	and a ; have we reached the end of the trainer data?
-	jr z,.AddLoneMove
-	ld [W_CURENEMYLVL],a
-	ld a,[hli]
-	ld [wcf91],a
-	ld a,1
-	ld [wcc49],a
+	jr z, .AddLoneMove
+	ld [W_CURENEMYLVL], a
+	ld a, [hli]
+	ld [wcf91], a
+	ld a, 1
+	ld [wcc49], a
 	push hl
 	call AddPartyMon
 	pop hl
 	jr .SpecialTrainer
 .AddLoneMove
 ; does the trainer have a single monster with a different move
-	ld a,[W_LONEATTACKNO] ; Brock is 01, Misty is 02, Erika is 04, etc
+	ld a, [W_LONEATTACKNO] ; Brock is 01, Misty is 02, Erika is 04, etc
 	and a
-	jr z,.AddTeamMove
+	jr z, .AddTeamMove
 	dec a
-	add a,a
-	ld c,a
-	ld b,0
-	ld hl,LoneMoves
-	add hl,bc
-	ld a,[hli]
-	ld d,[hl]
-	ld hl,wEnemyMon1Moves + 2
-	ld bc,wEnemyMon2 - wEnemyMon1
+	add a, a
+	ld c, a
+	ld b, 0
+	ld hl, LoneMoves
+	add hl, bc
+	ld a, [hli]
+	ld d, [hl]
+	ld hl, wEnemyMon1Moves + 2
+	ld bc, wEnemyMon2 - wEnemyMon1
 	call AddNTimes
-	ld [hl],d
+	ld [hl], d
 	jr .FinishUp
 .AddTeamMove
 ; check if our trainer's team has special moves
 
 ; get trainer class number
-	ld a,[W_CUROPPONENT]
+	ld a, [W_CUROPPONENT]
 	sub $C8
-	ld b,a
-	ld hl,TeamMoves
+	ld b, a
+	ld hl, TeamMoves
 
 ; iterate through entries in TeamMoves, checking each for our trainer class
 .IterateTeamMoves
-	ld a,[hli]
+	ld a, [hli]
 	cp b
-	jr z,.GiveTeamMoves ; is there a match?
+	jr z, .GiveTeamMoves ; is there a match?
 	inc hl ; if not, go to the next entry
 	inc a
-	jr nz,.IterateTeamMoves
+	jr nz, .IterateTeamMoves
 
 	; no matches found. is this trainer champion rival?
-	ld a,b
+	ld a, b
 	cp SONY3
-	jr z,.ChampionRival
+	jr z, .ChampionRival
 	jr .FinishUp ; nope
 .GiveTeamMoves
-	ld a,[hl]
-	ld [wEnemyMon5Moves + 2],a
+	ld a, [hl]
+	ld [wEnemyMon5Moves + 2], a
 	jr .FinishUp
 .ChampionRival ; give moves to his team
 
 ; pidgeot
-	ld a,SKY_ATTACK
-	ld [wEnemyMon1Moves + 2],a
+	ld a, SKY_ATTACK
+	ld [wEnemyMon1Moves + 2], a
 
 ; starter
-	ld a,[W_RIVALSTARTER]
+	ld a, [W_RIVALSTARTER]
 	cp STARTER3
-	ld b,MEGA_DRAIN
-	jr z,.GiveStarterMove
+	ld b, MEGA_DRAIN
+	jr z, .GiveStarterMove
 	cp STARTER1
-	ld b,FIRE_BLAST
-	jr z,.GiveStarterMove
-	ld b,BLIZZARD ; must be squirtle
+	ld b, FIRE_BLAST
+	jr z, .GiveStarterMove
+	ld b, BLIZZARD ; must be squirtle
 .GiveStarterMove
-	ld a,b
-	ld [wEnemyMon6Moves + 2],a
+	ld a, b
+	ld [wEnemyMon6Moves + 2], a
 .FinishUp ; XXX this needs documenting
 	xor a       ; clear D079-D07B
-	ld de,wd079
-	ld [de],a
+	ld de, wd079
+	ld [de], a
 	inc de
-	ld [de],a
+	ld [de], a
 	inc de
-	ld [de],a
-	ld a,[W_CURENEMYLVL]
-	ld b,a
+	ld [de], a
+	ld a, [W_CURENEMYLVL]
+	ld b, a
 .LastLoop
-	ld hl,wd047
-	ld c,2
+	ld hl, wd047
+	ld c, 2
 	push bc
 	predef AddBCDPredef
 	pop bc
 	inc de
 	inc de
 	dec b
-	jr nz,.LastLoop
+	jr nz, .LastLoop
 	ret
 
 INCLUDE "data/trainer_moves.asm"
@@ -869,33 +869,33 @@ INCLUDE "data/trainer_parties.asm"
 TrainerAI: ; 3a52e (e:652e)
 ;XXX called at 34964, 3c342, 3c398
 	and a
-	ld a,[W_ISINBATTLE]
+	ld a, [W_ISINBATTLE]
 	dec a
 	ret z ; if not a trainer, we're done here
-	ld a,[W_ISLINKBATTLE]
+	ld a, [W_ISLINKBATTLE]
 	cp 4
 	ret z
-	ld a,[W_TRAINERCLASS] ; what trainer class is this?
+	ld a, [W_TRAINERCLASS] ; what trainer class is this?
 	dec a
-	ld c,a
-	ld b,0
-	ld hl,TrainerAIPointers
-	add hl,bc
-	add hl,bc
-	add hl,bc
-	ld a,[wAICount]
+	ld c, a
+	ld b, 0
+	ld hl, TrainerAIPointers
+	add hl, bc
+	add hl, bc
+	add hl, bc
+	ld a, [wAICount]
 	and a
 	ret z ; if no AI uses left, we're done here
 	inc hl
 	inc a
-	jr nz,.getpointer
+	jr nz, .getpointer
 	dec hl
-	ld a,[hli]
-	ld [wAICount],a
+	ld a, [hli]
+	ld [wAICount], a
 .getpointer
-	ld a,[hli]
-	ld h,[hl]
-	ld l,a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
 	call Random
 	jp [hl]
 
@@ -973,17 +973,17 @@ CooltrainerMAI: ; 3a5fb (e:65fb)
 
 CooltrainerFAI: ; 3a601 (e:6601)
 	cp $40
-	ld a,$A
+	ld a, 10
 	call Func_3a7cf
-	jp c,AIUseHyperPotion
-	ld a,5
+	jp c, AIUseHyperPotion
+	ld a, 5
 	call Func_3a7cf
 	ret nc
 	jp Func_3a72a
 
 BrockAI: ; 3a614 (e:6614)
 ; if his active monster has a status condition, use a full heal
-	ld a,[wEnemyMonStatus]
+	ld a, [wEnemyMonStatus]
 	and a
 	ret z
 	jp AIUseFullHeal
@@ -1001,7 +1001,7 @@ LtSurgeAI: ; 3a622 (e:6622)
 ErikaAI: ; 3a628 (e:6628)
 	cp $80
 	ret nc
-	ld a,$A
+	ld a, 10
 	call Func_3a7cf
 	ret nc
 	jp AIUseSuperPotion
@@ -1019,7 +1019,7 @@ BlaineAI: ; 3a63a (e:663a)
 SabrinaAI: ; 3a640 (e:6640)
 	cp $40
 	ret nc
-	ld a,$A
+	ld a, 10
 	call Func_3a7cf
 	ret nc
 	jp AIUseHyperPotion
@@ -1027,7 +1027,7 @@ SabrinaAI: ; 3a640 (e:6640)
 Sony2AI: ; 3a64c (e:664c)
 	cp $20
 	ret nc
-	ld a,5
+	ld a, 5
 	call Func_3a7cf
 	ret nc
 	jp AIUsePotion
@@ -1035,7 +1035,7 @@ Sony2AI: ; 3a64c (e:664c)
 Sony3AI: ; 3a658 (e:6658)
 	cp $20
 	ret nc
-	ld a,5
+	ld a, 5
 	call Func_3a7cf
 	ret nc
 	jp AIUseFullRestore
@@ -1043,7 +1043,7 @@ Sony3AI: ; 3a658 (e:6658)
 LoreleiAI: ; 3a664 (e:6664)
 	cp $80
 	ret nc
-	ld a,5
+	ld a, 5
 	call Func_3a7cf
 	ret nc
 	jp AIUseSuperPotion
@@ -1055,10 +1055,10 @@ BrunoAI: ; 3a670 (e:6670)
 
 AgathaAI: ; 3a676 (e:6676)
 	cp $14
-	jp c,Func_3a72a
+	jp c, Func_3a72a
 	cp $80
 	ret nc
-	ld a,4
+	ld a, 4
 	call Func_3a7cf
 	ret nc
 	jp AIUseSuperPotion
@@ -1066,7 +1066,7 @@ AgathaAI: ; 3a676 (e:6676)
 LanceAI: ; 3a687 (e:6687)
 	cp $80
 	ret nc
-	ld a,5
+	ld a, 5
 	call Func_3a7cf
 	ret nc
 	jp AIUseHyperPotion
@@ -1078,132 +1078,132 @@ GenericAI: ; 3a693 (e:6693)
 ; end of individual trainer AI routines
 
 DecrementAICount: ; 3a695 (e:6695)
-	ld hl,wAICount
+	ld hl, wAICount
 	dec [hl]
 	scf
 	ret
 
 Func_3a69b: ; 3a69b (e:669b)
-	ld a,RBSFX_02_3e
+	ld a, RBSFX_02_3e
 	jp PlaySoundWaitForCurrent
 
 AIUseFullRestore: ; 3a6a0 (e:66a0)
 	call AICureStatus
-	ld a,FULL_RESTORE
-	ld [wcf05],a
-	ld de,wHPBarOldHP
-	ld hl,wEnemyMonHP + 1
-	ld a,[hld]
-	ld [de],a
+	ld a, FULL_RESTORE
+	ld [wcf05], a
+	ld de, wHPBarOldHP
+	ld hl, wEnemyMonHP + 1
+	ld a, [hld]
+	ld [de], a
 	inc de
-	ld a,[hl]
-	ld [de],a
+	ld a, [hl]
+	ld [de], a
 	inc de
-	ld hl,wEnemyMonMaxHP + 1
-	ld a,[hld]
-	ld [de],a
+	ld hl, wEnemyMonMaxHP + 1
+	ld a, [hld]
+	ld [de], a
 	inc de
-	ld [wHPBarMaxHP],a
-	ld [wEnemyMonHP + 1],a
-	ld a,[hl]
-	ld [de],a
-	ld [wHPBarMaxHP+1],a
-	ld [wEnemyMonHP],a
+	ld [wHPBarMaxHP], a
+	ld [wEnemyMonHP + 1], a
+	ld a, [hl]
+	ld [de], a
+	ld [wHPBarMaxHP+1], a
+	ld [wEnemyMonHP], a
 	jr Func_3a718
 
 AIUsePotion: ; 3a6ca (e:66ca)
 ; enemy trainer heals his monster with a potion
-	ld a,POTION
-	ld b,20
+	ld a, POTION
+	ld b, 20
 	jr AIRecoverHP
 
 AIUseSuperPotion: ; 3a6d0 (e:66d0)
 ; enemy trainer heals his monster with a super potion
-	ld a,SUPER_POTION
-	ld b,50
+	ld a, SUPER_POTION
+	ld b, 50
 	jr AIRecoverHP
 
 AIUseHyperPotion: ; 3a6d6 (e:66d6)
 ; enemy trainer heals his monster with a hyper potion
-	ld a,HYPER_POTION
-	ld b,200
+	ld a, HYPER_POTION
+	ld b, 200
 	; fallthrough
 
 AIRecoverHP: ; 3a6da (e:66da)
 ; heal b HP and print "trainer used $(a) on pokemon!"
-	ld [wcf05],a
-	ld hl,wEnemyMonHP + 1
-	ld a,[hl]
-	ld [wHPBarOldHP],a
+	ld [wcf05], a
+	ld hl, wEnemyMonHP + 1
+	ld a, [hl]
+	ld [wHPBarOldHP], a
 	add b
-	ld [hld],a
-	ld [wHPBarNewHP],a
-	ld a,[hl]
-	ld [wHPBarOldHP+1],a
-	ld [wHPBarNewHP+1],a
-	jr nc,.next
+	ld [hld], a
+	ld [wHPBarNewHP], a
+	ld a, [hl]
+	ld [wHPBarOldHP+1], a
+	ld [wHPBarNewHP+1], a
+	jr nc, .next
 	inc a
-	ld [hl],a
-	ld [wHPBarNewHP+1],a
+	ld [hl], a
+	ld [wHPBarNewHP+1], a
 .next
 	inc hl
-	ld a,[hld]
-	ld b,a
-	ld de,wEnemyMonMaxHP + 1
-	ld a,[de]
+	ld a, [hld]
+	ld b, a
+	ld de, wEnemyMonMaxHP + 1
+	ld a, [de]
 	dec de
-	ld [wHPBarMaxHP],a
+	ld [wHPBarMaxHP], a
 	sub b
-	ld a,[hli]
-	ld b,a
-	ld a,[de]
-	ld [wHPBarMaxHP+1],a
+	ld a, [hli]
+	ld b, a
+	ld a, [de]
+	ld [wHPBarMaxHP+1], a
 	sbc b
-	jr nc,Func_3a718
+	jr nc, Func_3a718
 	inc de
-	ld a,[de]
+	ld a, [de]
 	dec de
-	ld [hld],a
-	ld [wHPBarNewHP],a
-	ld a,[de]
-	ld [hl],a
-	ld [wHPBarNewHP+1],a
+	ld [hld], a
+	ld [wHPBarNewHP], a
+	ld a, [de]
+	ld [hl], a
+	ld [wHPBarNewHP+1], a
 	; fallthrough
 
 Func_3a718: ; 3a718 (e:6718)
 	call AIPrintItemUse_
 	hlCoord 2, 2
 	xor a
-	ld [wListMenuID],a
+	ld [wListMenuID], a
 	predef UpdateHPBar2
 	jp DecrementAICount
 
 Func_3a72a: ; 3a72a (e:672a)
-	ld a,[wEnemyPartyCount]
-	ld c,a
-	ld hl,wEnemyMon1HP
+	ld a, [wEnemyPartyCount]
+	ld c, a
+	ld hl, wEnemyMon1HP
 
-	ld d,0 ; keep count of unfainted monsters
+	ld d, 0 ; keep count of unfainted monsters
 
 	; count how many monsters haven't fainted yet
 .loop
-	ld a,[hli]
-	ld b,a
-	ld a,[hld]
+	ld a, [hli]
+	ld b, a
+	ld a, [hld]
 	or b
-	jr z,.Fainted ; has monster fainted?
+	jr z, .Fainted ; has monster fainted?
 	inc d
 .Fainted
 	push bc
-	ld bc,$2C
-	add hl,bc
+	ld bc, $2C
+	add hl, bc
 	pop bc
 	dec c
-	jr nz,.loop
+	jr nz, .loop
 
-	ld a,d ; how many available monsters are there?
+	ld a, d ; how many available monsters are there?
 	cp 2 ; don't bother if only 1 or 2
-	jp nc,SwitchEnemyMon
+	jp nc, SwitchEnemyMon
 	and a
 	ret
 
@@ -1211,26 +1211,26 @@ SwitchEnemyMon: ; 3a74b (e:674b)
 
 ; prepare to withdraw the active monster: copy hp, number, and status to roster
 
-	ld a,[wEnemyMonPartyPos]
-	ld hl,wEnemyMon1HP
-	ld bc,wEnemyMon2 - wEnemyMon1
+	ld a, [wEnemyMonPartyPos]
+	ld hl, wEnemyMon1HP
+	ld bc, wEnemyMon2 - wEnemyMon1
 	call AddNTimes
-	ld d,h
-	ld e,l
-	ld hl,wEnemyMonHP
-	ld bc,4
+	ld d, h
+	ld e, l
+	ld hl, wEnemyMonHP
+	ld bc, 4
 	call CopyData
 
 	ld hl, AIBattleWithdrawText
 	call PrintText
 
-	ld a,1
-	ld [wd11d],a
+	ld a, 1
+	ld [wd11d], a
 	callab EnemySendOut
 	xor a
-	ld [wd11d],a
+	ld [wd11d], a
 
-	ld a,[W_ISLINKBATTLE]
+	ld a, [W_ISLINKBATTLE]
 	cp 4
 	ret z
 	scf
@@ -1243,119 +1243,119 @@ AIBattleWithdrawText: ; 3a781 (e:6781)
 AIUseFullHeal: ; 3a786 (e:6786)
 	call Func_3a69b
 	call AICureStatus
-	ld a,FULL_HEAL
+	ld a, FULL_HEAL
 	jp AIPrintItemUse
 
 AICureStatus: ; 3a791 (e:6791)
 ; cures the status of enemy's active pokemon
-	ld a,[wEnemyMonPartyPos]
-	ld hl,wEnemyMon1Status
-	ld bc,wEnemyMon2 - wEnemyMon1
+	ld a, [wEnemyMonPartyPos]
+	ld hl, wEnemyMon1Status
+	ld bc, wEnemyMon2 - wEnemyMon1
 	call AddNTimes
 	xor a
-	ld [hl],a ; clear status in enemy team roster
-	ld [wEnemyMonStatus],a ; clear status of active enemy
-	ld hl,W_ENEMYBATTSTATUS3
-	res 0,[hl]
+	ld [hl], a ; clear status in enemy team roster
+	ld [wEnemyMonStatus], a ; clear status of active enemy
+	ld hl, W_ENEMYBATTSTATUS3
+	res 0, [hl]
 	ret
 
 AIUseXAccuracy: ; 0x3a7a8 unused
 	call Func_3a69b
-	ld hl,W_ENEMYBATTSTATUS2
-	set 0,[hl]
-	ld a,X_ACCURACY
+	ld hl, W_ENEMYBATTSTATUS2
+	set 0, [hl]
+	ld a, X_ACCURACY
 	jp AIPrintItemUse
 
 AIUseGuardSpec: ; 3a7b5 (e:67b5)
 	call Func_3a69b
-	ld hl,W_ENEMYBATTSTATUS2
-	set 1,[hl]
-	ld a,GUARD_SPEC_
+	ld hl, W_ENEMYBATTSTATUS2
+	set 1, [hl]
+	ld a, GUARD_SPEC_
 	jp AIPrintItemUse
 
 AIUseDireHit: ; 0x3a7c2 unused
 	call Func_3a69b
-	ld hl,W_ENEMYBATTSTATUS2
-	set 2,[hl]
-	ld a,DIRE_HIT
+	ld hl, W_ENEMYBATTSTATUS2
+	set 2, [hl]
+	ld a, DIRE_HIT
 	jp AIPrintItemUse
 
 Func_3a7cf: ; 3a7cf (e:67cf)
-	ldh [hDivisor],a
-	ld hl,wEnemyMonMaxHP
-	ld a,[hli]
-	ldh [hDividend],a
-	ld a,[hl]
-	ldh [hDividend + 1],a
-	ld b,2
+	ldh [hDivisor], a
+	ld hl, wEnemyMonMaxHP
+	ld a, [hli]
+	ldh [hDividend], a
+	ld a, [hl]
+	ldh [hDividend + 1], a
+	ld b, 2
 	call Divide
-	ldh a,[hQuotient + 3]
-	ld c,a
-	ldh a,[hQuotient + 2]
-	ld b,a
-	ld hl,wEnemyMonHP + 1
-	ld a,[hld]
-	ld e,a
-	ld a,[hl]
-	ld d,a
-	ld a,d
+	ldh a, [hQuotient + 3]
+	ld c, a
+	ldh a, [hQuotient + 2]
+	ld b, a
+	ld hl, wEnemyMonHP + 1
+	ld a, [hld]
+	ld e, a
+	ld a, [hl]
+	ld d, a
+	ld a, d
 	sub b
 	ret nz
-	ld a,e
+	ld a, e
 	sub c
 	ret
 
 AIUseXAttack: ; 3a7f2 (e:67f2)
-	ld b,$A
-	ld a,X_ATTACK
+	ld b, $A
+	ld a, X_ATTACK
 	jr AIIncreaseStat
 
 AIUseXDefend: ; 3a7f8 (e:67f8)
-	ld b,$B
-	ld a,X_DEFEND
+	ld b, $B
+	ld a, X_DEFEND
 	jr AIIncreaseStat
 
 AIUseXSpeed: ; 3a7fe (e:67fe)
-	ld b,$C
-	ld a,X_SPEED
+	ld b, $C
+	ld a, X_SPEED
 	jr AIIncreaseStat
 
 AIUseXSpecial: ; 3a804 (e:6804)
-	ld b,$D
-	ld a,X_SPECIAL
+	ld b, $D
+	ld a, X_SPECIAL
 	; fallthrough
 
 AIIncreaseStat: ; 3a808 (e:6808)
-	ld [wcf05],a
+	ld [wcf05], a
 	push bc
 	call AIPrintItemUse_
 	pop bc
-	ld hl,W_ENEMYMOVEEFFECT
-	ld a,[hld]
+	ld hl, W_ENEMYMOVEEFFECT
+	ld a, [hld]
 	push af
-	ld a,[hl]
+	ld a, [hl]
 	push af
 	push hl
-	ld a,$AF
-	ld [hli],a
-	ld [hl],b
+	ld a, $AF
+	ld [hli], a
+	ld [hl], b
 	callab StatModifierUpEffect
 	pop hl
 	pop af
-	ld [hli],a
+	ld [hli], a
 	pop af
-	ld [hl],a
+	ld [hl], a
 	jp DecrementAICount
 
 AIPrintItemUse: ; 3a82c (e:682c)
-	ld [wcf05],a
+	ld [wcf05], a
 	call AIPrintItemUse_
 	jp DecrementAICount
 
 AIPrintItemUse_: ; 3a835 (e:6835)
 ; print "x used [wcf05] on z!"
-	ld a,[wcf05]
-	ld [wd11e],a
+	ld a, [wcf05]
+	ld [wd11e], a
 	call GetItemName
 	ld hl, AIBattleUseItemText
 	jp PrintText

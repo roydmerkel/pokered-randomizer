@@ -7,22 +7,22 @@ StartMenu_Pokedex: ; 13095 (4:7095)
 	jp RedisplayStartMenu
 
 StartMenu_Pokemon: ; 130a9 (4:70a9)
-	ld a,[wPartyCount]
+	ld a, [wPartyCount]
 	and a
-	jp z,RedisplayStartMenu
+	jp z, RedisplayStartMenu
 	xor a
-	ld [wMenuItemToSwap],a
-	ld [wd07d],a
-	ld [wUpdateSpritesEnabled],a
+	ld [wMenuItemToSwap], a
+	ld [wd07d], a
+	ld [wUpdateSpritesEnabled], a
 	call DisplayPartyMenu
 	jr .checkIfPokemonChosen
 .loop
 	xor a
-	ld [wMenuItemToSwap],a
-	ld [wd07d],a
+	ld [wMenuItemToSwap], a
+	ld [wd07d], a
 	call GoBackToPartyMenu
 .checkIfPokemonChosen
-	jr nc,.chosePokemon
+	jr nc, .chosePokemon
 .exitMenu
 	call GBPalWhiteOutWithDelay3
 	call RestoreScreenTilesAndReloadTilePatterns
@@ -30,94 +30,94 @@ StartMenu_Pokemon: ; 130a9 (4:70a9)
 	jp RedisplayStartMenu
 .chosePokemon
 	call SaveScreenTilesToBuffer1 ; save screen
-	ld a,$04
-	ld [wd125],a
+	ld a, $04
+	ld [wd125], a
 	call DisplayTextBoxID ; display pokemon menu options
-	ld hl,wWhichTrade
-	ld bc,$020c ; max menu item ID, top menu item Y
-	ld e,5
+	ld hl, wWhichTrade
+	ld bc, $020c ; max menu item ID, top menu item Y
+	ld e, 5
 .adjustMenuVariablesLoop
 	dec e
-	jr z,.storeMenuVariables
-	ld a,[hli]
+	jr z, .storeMenuVariables
+	ld a, [hli]
 	and a
-	jr z,.storeMenuVariables
+	jr z, .storeMenuVariables
 	inc b
 	dec c
 	dec c
 	jr .adjustMenuVariablesLoop
 .storeMenuVariables
-	ld hl,wTopMenuItemY
-	ld a,c
-	ld [hli],a ; top menu item Y
-	ldh a,[$fff7]
-	ld [hli],a ; top menu item X
+	ld hl, wTopMenuItemY
+	ld a, c
+	ld [hli], a ; top menu item Y
+	ldh a, [$fff7]
+	ld [hli], a ; top menu item X
 	xor a
-	ld [hli],a ; current menu item ID
+	ld [hli], a ; current menu item ID
 	inc hl
-	ld a,b
-	ld [hli],a ; max menu item ID
-	ld a,%00000011 ; A button, B button
-	ld [hli],a ; menu watched keys
+	ld a, b
+	ld [hli], a ; max menu item ID
+	ld a, %00000011 ; A button, B button
+	ld [hli], a ; menu watched keys
 	xor a
-	ld [hl],a
+	ld [hl], a
 	call HandleMenuInput
 	push af
 	call LoadScreenTilesFromBuffer1 ; restore saved screen
 	pop af
-	bit 1,a ; was the B button pressed?
-	jp nz,.loop
+	bit 1, a ; was the B button pressed?
+	jp nz, .loop
 ; if the B button wasn't pressed
-	ld a,[wMaxMenuItem]
-	ld b,a
-	ld a,[wCurrentMenuItem] ; menu selection
+	ld a, [wMaxMenuItem]
+	ld b, a
+	ld a, [wCurrentMenuItem] ; menu selection
 	cp b
-	jp z,.exitMenu ; if the player chose Cancel
+	jp z, .exitMenu ; if the player chose Cancel
 	dec b
 	cp b
-	jr z,.choseSwitch
+	jr z, .choseSwitch
 	dec b
 	cp b
-	jp z,.choseStats
-	ld c,a
-	ld b,0
-	ld hl,wWhichTrade
-	add hl,bc
+	jp z, .choseStats
+	ld c, a
+	ld b, 0
+	ld hl, wWhichTrade
+	add hl, bc
 	jp .choseOutOfBattleMove
 .choseSwitch
-	ld a,[wPartyCount]
-	cp a,2 ; is there more than one pokemon in the party?
-	jp c,StartMenu_Pokemon ; if not, no switching
+	ld a, [wPartyCount]
+	cp a, 2 ; is there more than one pokemon in the party?
+	jp c, StartMenu_Pokemon ; if not, no switching
 	call SwitchPartyMon_Stats
-	ld a,$04 ; swap pokemon positions menu
-	ld [wd07d],a
+	ld a, $04 ; swap pokemon positions menu
+	ld [wd07d], a
 	call GoBackToPartyMenu
 	jp .checkIfPokemonChosen
 .choseStats
 	call ClearSprites
 	xor a
-	ld [wcc49],a
+	ld [wcc49], a
 	predef StatusScreen
 	predef StatusScreen2
 	call ReloadMapData
 	jp StartMenu_Pokemon
 .choseOutOfBattleMove
 	push hl
-	ld a,[wWhichPokemon]
-	ld hl,wPartyMonNicks
+	ld a, [wWhichPokemon]
+	ld hl, wPartyMonNicks
 	call GetPartyMonName
 	pop hl
-	ld a,[hl]
+	ld a, [hl]
 	dec a
 	add a
-	ld b,0
-	ld c,a
-	ld hl,.outOfBattleMovePointers
-	add hl,bc
-	ld a,[hli]
-	ld h,[hl]
-	ld l,a
-	ld a,[W_OBTAINEDBADGES] ; badges obtained
+	ld b, 0
+	ld c, a
+	ld hl, .outOfBattleMovePointers
+	add hl, bc
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, [W_OBTAINEDBADGES] ; badges obtained
 	jp [hl]
 .outOfBattleMovePointers
 	dw .cut
@@ -130,62 +130,62 @@ StartMenu_Pokemon: ; 130a9 (4:70a9)
 	dw .teleport
 	dw .softboiled
 .fly
-	bit 2,a ; does the player have the Thunder Badge?
-	jp z,.newBadgeRequired
+	bit 2, a ; does the player have the Thunder Badge?
+	jp z, .newBadgeRequired
 	call CheckIfInOutsideMap
-	jr z,.canFly
-	ld a,[wWhichPokemon]
-	ld hl,wPartyMonNicks
+	jr z, .canFly
+	ld a, [wWhichPokemon]
+	ld hl, wPartyMonNicks
 	call GetPartyMonName
-	ld hl,.cannotFlyHereText
+	ld hl, .cannotFlyHereText
 	call PrintText
 	jp .loop
 .canFly
 	call ChooseFlyDestination
-	ld a,[wd732]
-	bit 3,a ; did the player decide to fly?
-	jp nz,.goBackToMap
+	ld a, [wd732]
+	bit 3, a ; did the player decide to fly?
+	jp nz, .goBackToMap
 	call LoadFontTilePatterns
-	ld hl,wd72e
-	set 1,[hl]
+	ld hl, wd72e
+	set 1, [hl]
 	jp StartMenu_Pokemon
 .cut
-	bit 1,a ; does the player have the Cascade Badge?
-	jp z,.newBadgeRequired
+	bit 1, a ; does the player have the Cascade Badge?
+	jp z, .newBadgeRequired
 	predef UsedCut
-	ld a,[wcd6a]
+	ld a, [wcd6a]
 	and a
-	jp z,.loop
+	jp z, .loop
 	jp CloseTextDisplay
 .surf
-	bit 4,a ; does the player have the Soul Badge?
-	jp z,.newBadgeRequired
+	bit 4, a ; does the player have the Soul Badge?
+	jp z, .newBadgeRequired
 	callba CheckForForcedBikeSurf
-	ld hl,wd728
-	bit 1,[hl]
-	res 1,[hl]
-	jp z,.loop
-	ld a,SURFBOARD
-	ld [wcf91],a
-	ld [wd152],a
+	ld hl, wd728
+	bit 1, [hl]
+	res 1, [hl]
+	jp z, .loop
+	ld a, SURFBOARD
+	ld [wcf91], a
+	ld [wd152], a
 	call UseItem
-	ld a,[wcd6a]
+	ld a, [wcd6a]
 	and a
-	jp z,.loop
+	jp z, .loop
 	call GBPalWhiteOutWithDelay3
 	jp .goBackToMap
 .strength
-	bit 3,a ; does the player have the Rainbow Badge?
-	jp z,.newBadgeRequired
+	bit 3, a ; does the player have the Rainbow Badge?
+	jp z, .newBadgeRequired
 	predef PrintStrengthTxt
 	call GBPalWhiteOutWithDelay3
 	jp .goBackToMap
 .flash
-	bit 0,a ; does the player have the Boulder Badge?
-	jp z,.newBadgeRequired
+	bit 0, a ; does the player have the Boulder Badge?
+	jp z, .newBadgeRequired
 	xor a
-	ld [wMapPalOffset],a
-	ld hl,.flashLightsAreaText
+	ld [wMapPalOffset], a
+	ld hl, .flashLightsAreaText
 	call PrintText
 	call GBPalWhiteOutWithDelay3
 	jp .goBackToMap
@@ -193,34 +193,34 @@ StartMenu_Pokemon: ; 130a9 (4:70a9)
 	TX_FAR _FlashLightsAreaText
 	db "@"
 .dig
-	ld a,ESCAPE_ROPE
-	ld [wcf91],a
-	ld [wd152],a
+	ld a, ESCAPE_ROPE
+	ld [wcf91], a
+	ld [wd152], a
 	call UseItem
-	ld a,[wcd6a]
+	ld a, [wcd6a]
 	and a
-	jp z,.loop
+	jp z, .loop
 	call GBPalWhiteOutWithDelay3
 	jp .goBackToMap
 .teleport
 	call CheckIfInOutsideMap
-	jr z,.canTeleport
-	ld a,[wWhichPokemon]
-	ld hl,wPartyMonNicks
+	jr z, .canTeleport
+	ld a, [wWhichPokemon]
+	ld hl, wPartyMonNicks
 	call GetPartyMonName
-	ld hl,.cannotUseTeleportNowText
+	ld hl, .cannotUseTeleportNowText
 	call PrintText
 	jp .loop
 .canTeleport
-	ld hl,.warpToLastPokemonCenterText
+	ld hl, .warpToLastPokemonCenterText
 	call PrintText
-	ld hl,wd732
-	set 3,[hl]
-	set 6,[hl]
-	ld hl,wd72e
-	set 1,[hl]
-	res 4,[hl]
-	ld c,60
+	ld hl, wd732
+	set 3, [hl]
+	set 6, [hl]
+	ld hl, wd72e
+	set 1, [hl]
+	res 4, [hl]
+	ld c, 60
 	call DelayFrames
 	call GBPalWhiteOutWithDelay3 ; zero all three palettes and wait 3 V-blanks
 	jp .goBackToMap
@@ -234,39 +234,39 @@ StartMenu_Pokemon: ; 130a9 (4:70a9)
 	TX_FAR _CannotFlyHereText
 	db "@"
 .softboiled
-	ld hl,wPartyMon1MaxHP
-	ld a,[wWhichPokemon]
-	ld bc,wPartyMon2 - wPartyMon1
+	ld hl, wPartyMon1MaxHP
+	ld a, [wWhichPokemon]
+	ld bc, wPartyMon2 - wPartyMon1
 	call AddNTimes
-	ld a,[hli]
-	ldh [hDividend],a
-	ld a,[hl]
-	ldh [hDividend + 1],a
-	ld a,5
-	ldh [hDivisor],a
-	ld b,2 ; number of bytes
+	ld a, [hli]
+	ldh [hDividend], a
+	ld a, [hl]
+	ldh [hDividend + 1], a
+	ld a, 5
+	ldh [hDivisor], a
+	ld b, 2 ; number of bytes
 	call Divide
-	ld bc,wPartyMon1HP - wPartyMon1MaxHP
-	add hl,bc
-	ld a,[hld]
-	ld b,a
-	ldh a,[hQuotient + 3]
+	ld bc, wPartyMon1HP - wPartyMon1MaxHP
+	add hl, bc
+	ld a, [hld]
+	ld b, a
+	ldh a, [hQuotient + 3]
 	sub b
-	ld b,[hl]
-	ldh a,[hQuotient + 2]
+	ld b, [hl]
+	ldh a, [hQuotient + 2]
 	sbc b
-	jp nc,.notHealthyEnough
-	ld a,[wcc2b]
+	jp nc, .notHealthyEnough
+	ld a, [wcc2b]
 	push af
-	ld a,POTION
-	ld [wcf91],a
-	ld [wd152],a
+	ld a, POTION
+	ld [wcf91], a
+	ld [wd152], a
 	call UseItem
 	pop af
-	ld [wcc2b],a
+	ld [wcc2b], a
 	jp .loop
 .notHealthyEnough ; if current HP is less than 1/5 of max HP
-	ld hl,.notHealthyEnoughText
+	ld hl, .notHealthyEnoughText
 	call PrintText
 	jp .loop
 .notHealthyEnoughText
@@ -276,7 +276,7 @@ StartMenu_Pokemon: ; 130a9 (4:70a9)
 	call RestoreScreenTilesAndReloadTilePatterns
 	jp CloseTextDisplay
 .newBadgeRequired
-	ld hl,.newBadgeRequiredText
+	ld hl, .newBadgeRequiredText
 	call PrintText
 	jp .loop
 .newBadgeRequiredText
@@ -286,13 +286,13 @@ StartMenu_Pokemon: ; 130a9 (4:70a9)
 ; writes a blank tile to all possible menu cursor positions on the party menu
 ErasePartyMenuCursors: ; 132ed (4:72ed)
 	hlCoord 0, 1
-	ld bc,2 * 20 ; menu cursor positions are 2 rows apart
-	ld a,6 ; 6 menu cursor positions
+	ld bc, 2 * 20 ; menu cursor positions are 2 rows apart
+	ld a, 6 ; 6 menu cursor positions
 .loop
-	ld [hl]," "
-	add hl,bc
+	ld [hl], " "
+	add hl, bc
 	dec a
-	jr nz,.loop
+	jr nz, .loop
 	ret
 
 ItemMenuLoop: ; 132fc (4:72fc)
@@ -300,28 +300,28 @@ ItemMenuLoop: ; 132fc (4:72fc)
 	call GoPAL_SET_CF1C
 
 StartMenu_Item: ; 13302 (4:7302)
-	ld a,[W_ISLINKBATTLE]
+	ld a, [W_ISLINKBATTLE]
 	dec a
-	jr nz,.notInLinkBattle
-	ld hl,CannotUseItemsHereText
+	jr nz, .notInLinkBattle
+	ld hl, CannotUseItemsHereText
 	call PrintText
 	jr .exitMenu
 .notInLinkBattle
-	ld bc,wNumBagItems
-	ld hl,wcf8b
-	ld a,c
-	ld [hli],a
-	ld [hl],b ; store item bag pointer at wcf8b (for DisplayListMenuID)
+	ld bc, wNumBagItems
+	ld hl, wcf8b
+	ld a, c
+	ld [hli], a
+	ld [hl], b ; store item bag pointer at wcf8b (for DisplayListMenuID)
 	xor a
-	ld [wcf93],a
-	ld a,ITEMLISTMENU
-	ld [wListMenuID],a
-	ld a,[wcc2c]
-	ld [wCurrentMenuItem],a
+	ld [wcf93], a
+	ld a, ITEMLISTMENU
+	ld [wListMenuID], a
+	ld a, [wcc2c]
+	ld [wCurrentMenuItem], a
 	call DisplayListMenuID
-	ld a,[wCurrentMenuItem]
-	ld [wcc2c],a
-	jr nc,.choseItem
+	ld a, [wCurrentMenuItem]
+	ld [wcc2c], a
+	jr nc, .choseItem
 .exitMenu
 	call LoadScreenTilesFromBuffer2 ; restore saved screen
 	call LoadTextBoxTilePatterns
@@ -329,111 +329,111 @@ StartMenu_Item: ; 13302 (4:7302)
 	jp RedisplayStartMenu
 .choseItem
 ; erase menu cursor (blank each tile in front of an item name)
-	ld a," "
+	ld a, " "
 	Coorda 5, 4
 	Coorda 5, 6
 	Coorda 5, 8
 	Coorda 5, 10
 	call PlaceUnfilledArrowMenuCursor
 	xor a
-	ld [wMenuItemToSwap],a
-	ld a,[wcf91]
-	cp a,BICYCLE
-	jp z,.useOrTossItem
+	ld [wMenuItemToSwap], a
+	ld a, [wcf91]
+	cp a, BICYCLE
+	jp z, .useOrTossItem
 .notBicycle1
-	ld a,$06 ; use/toss menu
-	ld [wd125],a
+	ld a, $06 ; use/toss menu
+	ld [wd125], a
 	call DisplayTextBoxID
-	ld hl,wTopMenuItemY
-	ld a,11
-	ld [hli],a ; top menu item Y
-	ld a,14
-	ld [hli],a ; top menu item X
+	ld hl, wTopMenuItemY
+	ld a, 11
+	ld [hli], a ; top menu item Y
+	ld a, 14
+	ld [hli], a ; top menu item X
 	xor a
-	ld [hli],a ; current menu item ID
+	ld [hli], a ; current menu item ID
 	inc hl
 	inc a ; a = 1
-	ld [hli],a ; max menu item ID
-	ld a,%00000011 ; A button, B button
-	ld [hli],a ; menu watched keys
+	ld [hli], a ; max menu item ID
+	ld a, %00000011 ; A button, B button
+	ld [hli], a ; menu watched keys
 	xor a
-	ld [hl],a ; old menu item id
+	ld [hl], a ; old menu item id
 	call HandleMenuInput
 	call PlaceUnfilledArrowMenuCursor
-	bit 1,a ; was the B button pressed?
-	jr z,.useOrTossItem
+	bit 1, a ; was the B button pressed?
+	jr z, .useOrTossItem
 	jp ItemMenuLoop
 .useOrTossItem ; if the player made the choice to use or toss the item
-	ld a,[wcf91]
-	ld [wd11e],a
+	ld a, [wcf91]
+	ld [wd11e], a
 	call GetItemName
 	call CopyStringToCF4B ; copy name to wcf4b
-	ld a,[wcf91]
-	cp a,BICYCLE
-	jr nz,.notBicycle2
-	ld a,[wd732]
-	bit 5,a
-	jr z,.useItem_closeMenu
-	ld hl,CannotGetOffHereText
+	ld a, [wcf91]
+	cp a, BICYCLE
+	jr nz, .notBicycle2
+	ld a, [wd732]
+	bit 5, a
+	jr z, .useItem_closeMenu
+	ld hl, CannotGetOffHereText
 	call PrintText
 	jp ItemMenuLoop
 .notBicycle2
-	ld a,[wCurrentMenuItem]
+	ld a, [wCurrentMenuItem]
 	and a
-	jr nz,.tossItem
+	jr nz, .tossItem
 .useItem
-	ld [wd152],a
-	ld a,[wcf91]
-	cp a,HM_01
-	jr nc,.useItem_partyMenu
-	ld hl,UsableItems_CloseMenu
-	ld de,1
+	ld [wd152], a
+	ld a, [wcf91]
+	cp a, HM_01
+	jr nc, .useItem_partyMenu
+	ld hl, UsableItems_CloseMenu
+	ld de, 1
 	call IsInArray
-	jr c,.useItem_closeMenu
-	ld a,[wcf91]
-	ld hl,UsableItems_PartyMenu
-	ld de,1
+	jr c, .useItem_closeMenu
+	ld a, [wcf91]
+	ld hl, UsableItems_PartyMenu
+	ld de, 1
 	call IsInArray
-	jr c,.useItem_partyMenu
+	jr c, .useItem_partyMenu
 	call UseItem
 	jp ItemMenuLoop
 .useItem_closeMenu
 	xor a
-	ld [wd152],a
+	ld [wd152], a
 	call UseItem
-	ld a,[wcd6a]
+	ld a, [wcd6a]
 	and a
-	jp z,ItemMenuLoop
+	jp z, ItemMenuLoop
 	jp CloseStartMenu
 .useItem_partyMenu
-	ld a,[wUpdateSpritesEnabled]
+	ld a, [wUpdateSpritesEnabled]
 	push af
 	call UseItem
-	ld a,[wcd6a]
-	cp a,$02
-	jp z,.partyMenuNotDisplayed
+	ld a, [wcd6a]
+	cp a, $02
+	jp z, .partyMenuNotDisplayed
 	call GBPalWhiteOutWithDelay3
 	call RestoreScreenTilesAndReloadTilePatterns
 	pop af
-	ld [wUpdateSpritesEnabled],a
+	ld [wUpdateSpritesEnabled], a
 	jp StartMenu_Item
 .partyMenuNotDisplayed
 	pop af
-	ld [wUpdateSpritesEnabled],a
+	ld [wUpdateSpritesEnabled], a
 	jp ItemMenuLoop
 .tossItem
 	call IsKeyItem
-	ld a,[wd124]
+	ld a, [wd124]
 	and a
-	jr nz,.skipAskingQuantity
-	ld a,[wcf91]
+	jr nz, .skipAskingQuantity
+	ld a, [wcf91]
 	call IsItemHM
-	jr c,.skipAskingQuantity
+	jr c, .skipAskingQuantity
 	call DisplayChooseQuantityMenu
 	inc a
-	jr z,.tossZeroItems
+	jr z, .tossZeroItems
 .skipAskingQuantity
-	ld hl,wNumBagItems
+	ld hl, wNumBagItems
 	call TossItem
 .tossZeroItems
 	jp ItemMenuLoop
@@ -500,13 +500,13 @@ StartMenu_TrainerInfo: ; 13460 (4:7460)
 	call GBPalWhiteOut
 	call ClearScreen
 	call UpdateSprites ; move sprites
-	ldh a,[hTilesetType]
+	ldh a, [hTilesetType]
 	push af
 	xor a
-	ldh [hTilesetType],a
+	ldh [hTilesetType], a
 	call DrawTrainerInfo
 	predef DrawBadges ; draw badges
-	ld b,$0d
+	ld b, $0d
 	call GoPAL_SET
 	call GBPalNormal
 	call WaitForTextScrollButtonPress ; wait for button press
@@ -517,101 +517,101 @@ StartMenu_TrainerInfo: ; 13460 (4:7460)
 	call ReloadMapData
 	call LoadGBPal
 	pop af
-	ldh [hTilesetType],a
+	ldh [hTilesetType], a
 	jp RedisplayStartMenu
 
 ; loads tile patterns and draws everything except for gym leader faces / badges
 DrawTrainerInfo: ; 1349a (4:749a)
-	ld de,RedPicFront
-	ld bc,(BANK(RedPicFront) << 8) | $01
+	ld de, RedPicFront
+	ld bc, (BANK(RedPicFront) << 8) | $01
 	predef Predef3B
 	call DisableLCD
 	hlCoord 0, 2
-	ld a," "
+	ld a, " "
 	call TrainerInfo_DrawVerticalLine
 	hlCoord 1, 2
 	call TrainerInfo_DrawVerticalLine
-	ld hl,vChars2 + $70
-	ld de,vChars2
-	ld bc,$70 * 4
+	ld hl, vChars2 + $70
+	ld de, vChars2
+	ld bc, $70 * 4
 	call CopyData
-	ld hl,TrainerInfoTextBoxTileGraphics ; $7b98 ; trainer info text box tile patterns
-	ld de,vChars2 + $770
-	ld bc,$0080
+	ld hl, TrainerInfoTextBoxTileGraphics ; $7b98 ; trainer info text box tile patterns
+	ld de, vChars2 + $770
+	ld bc, $0080
 	push bc
 	call TrainerInfo_FarCopyData
-	ld hl,BlankLeaderNames ; $7c28
-	ld de,vChars2 + $600
-	ld bc,$0170
+	ld hl, BlankLeaderNames ; $7c28
+	ld de, vChars2 + $600
+	ld bc, $0170
 	call TrainerInfo_FarCopyData
 	pop bc
-	ld hl,BadgeNumbersTileGraphics  ; $7d98 ; badge number tile patterns
-	ld de,vChars1 + $580
+	ld hl, BadgeNumbersTileGraphics  ; $7d98 ; badge number tile patterns
+	ld de, vChars1 + $580
 	call TrainerInfo_FarCopyData
-	ld hl,GymLeaderFaceAndBadgeTileGraphics  ; $6a9e ; gym leader face and badge tile patterns
-	ld de,vChars2 + $200
-	ld bc,$0400
-	ld a,$03
+	ld hl, GymLeaderFaceAndBadgeTileGraphics  ; $6a9e ; gym leader face and badge tile patterns
+	ld de, vChars2 + $200
+	ld bc, $0400
+	ld a, $03
 	call FarCopyData2
-	ld hl,TextBoxGraphics ; $6288
-	ld de,$00d0
-	add hl,de ; hl = colon tile pattern
-	ld de,vChars1 + $560
-	ld bc,$0010
-	ld a,$04
+	ld hl, TextBoxGraphics ; $6288
+	ld de, $00d0
+	add hl, de ; hl = colon tile pattern
+	ld de, vChars1 + $560
+	ld bc, $0010
+	ld a, $04
 	push bc
 	call FarCopyData2
 	pop bc
-	ld hl,TrainerInfoTextBoxTileGraphics + $80  ; $7c18 ; background tile pattern
-	ld de,vChars1 + $570
+	ld hl, TrainerInfoTextBoxTileGraphics + $80  ; $7c18 ; background tile pattern
+	ld de, vChars1 + $570
 	call TrainerInfo_FarCopyData
 	call EnableLCD
-	ld hl,wWhichTrade
-	ld a,18 + 1
-	ld [hli],a
+	ld hl, wWhichTrade
+	ld a, 18 + 1
+	ld [hli], a
 	dec a
-	ld [hli],a
-	ld [hl],1
+	ld [hli], a
+	ld [hl], 1
 	hlCoord 0, 0
 	call TrainerInfo_DrawTextBox
-	ld hl,wWhichTrade
-	ld a,16 + 1
-	ld [hli],a
+	ld hl, wWhichTrade
+	ld a, 16 + 1
+	ld [hli], a
 	dec a
-	ld [hli],a
-	ld [hl],3
+	ld [hli], a
+	ld [hl], 3
 	hlCoord 1, 10
 	call TrainerInfo_DrawTextBox
 	hlCoord 0, 10
-	ld a,$d7
+	ld a, $d7
 	call TrainerInfo_DrawVerticalLine
 	hlCoord 19, 10
 	call TrainerInfo_DrawVerticalLine
 	hlCoord 6, 9
-	ld de,TrainerInfo_BadgesText
+	ld de, TrainerInfo_BadgesText
 	call PlaceString
 	hlCoord 2, 2
-	ld de,TrainerInfo_NameMoneyTimeText
+	ld de, TrainerInfo_NameMoneyTimeText
 	call PlaceString
 	hlCoord 7, 2
-	ld de,wPlayerName
+	ld de, wPlayerName
 	call PlaceString
 	hlCoord 8, 4
-	ld de,wPlayerMoney
-	ld c,$e3
+	ld de, wPlayerMoney
+	ld c, $e3
 	call PrintBCDNumber
 	hlCoord 9, 6
-	ld de,W_PLAYTIMEHOURS + 1 ; hours
-	ld bc,$4103
+	ld de, W_PLAYTIMEHOURS + 1 ; hours
+	ld bc, $4103
 	call PrintNumber
-	ld [hl],$d6 ; colon tile ID
+	ld [hl], $d6 ; colon tile ID
 	inc hl
-	ld de,W_PLAYTIMEMINUTES + 1 ; minutes
-	ld bc,$8102
+	ld de, W_PLAYTIMEMINUTES + 1 ; minutes
+	ld bc, $8102
 	jp PrintNumber
 
 TrainerInfo_FarCopyData: ; 1357f (4:757f)
-	ld a,$0b
+	ld a, $0b
 	jp FarCopyData2
 
 TrainerInfo_NameMoneyTimeText: ; 13584 (4:7584)
@@ -631,43 +631,43 @@ TrainerInfo_BadgesText: ; 13597 (4:7597)
 ; [wTrainerEngageDistance] = width
 ; [wTrainerFacingDirection] = distance from the end of a text box row to the start of the next
 TrainerInfo_DrawTextBox: ; 135a0 (4:75a0)
-	ld a,$79 ; upper left corner tile ID
-	ld de,$7a7b ; top edge and upper right corner tile ID's
+	ld a, $79 ; upper left corner tile ID
+	ld de, $7a7b ; top edge and upper right corner tile ID's
 	call TrainerInfo_DrawHorizontalEdge ; draw top edge
 	call TrainerInfo_NextTextBoxRow
-	ld a,[wWhichTrade] ; width of the text box plus one
-	ld e,a
-	ld d,0
-	ld c,6 ; height of the text box
+	ld a, [wWhichTrade] ; width of the text box plus one
+	ld e, a
+	ld d, 0
+	ld c, 6 ; height of the text box
 .loop
-	ld [hl],$7c ; left edge tile ID
-	add hl,de
-	ld [hl],$78 ; right edge tile ID
+	ld [hl], $7c ; left edge tile ID
+	add hl, de
+	ld [hl], $78 ; right edge tile ID
 	call TrainerInfo_NextTextBoxRow
 	dec c
-	jr nz,.loop
-	ld a,$7d ; lower left corner tile ID
-	ld de,$777e ; bottom edge and lower right corner tile ID's
+	jr nz, .loop
+	ld a, $7d ; lower left corner tile ID
+	ld de, $777e ; bottom edge and lower right corner tile ID's
 
 TrainerInfo_DrawHorizontalEdge: ; 135c3 (4:75c3)
-	ld [hli],a ; place left corner tile
-	ld a,[wTrainerEngageDistance] ; width of the text box
-	ld c,a
-	ld a,d
+	ld [hli], a ; place left corner tile
+	ld a, [wTrainerEngageDistance] ; width of the text box
+	ld c, a
+	ld a, d
 .loop
-	ld [hli],a ; place edge tile
+	ld [hli], a ; place edge tile
 	dec c
-	jr nz,.loop
-	ld a,e
-	ld [hl],a ; place right corner tile
+	jr nz, .loop
+	ld a, e
+	ld [hl], a ; place right corner tile
 	ret
 
 TrainerInfo_NextTextBoxRow: ; 135d0 (4:75d0)
-	ld a,[wTrainerFacingDirection] ; distance to the start of the next row
+	ld a, [wTrainerFacingDirection] ; distance to the start of the next row
 .loop
 	inc hl
 	dec a
-	jr nz,.loop
+	jr nz, .loop
 	ret
 
 ; draws a vertical line
@@ -675,26 +675,26 @@ TrainerInfo_NextTextBoxRow: ; 135d0 (4:75d0)
 ; hl = address of top tile in the line
 ; a = tile ID
 TrainerInfo_DrawVerticalLine: ; 135d8 (4:75d8)
-	ld de,20
-	ld c,8
+	ld de, 20
+	ld c, 8
 .loop
-	ld [hl],a
-	add hl,de
+	ld [hl], a
+	add hl, de
 	dec c
-	jr nz,.loop
+	jr nz, .loop
 	ret
 
 StartMenu_SaveReset: ; 135e3 (4:75e3)
-	ld a,[wd72e]
-	bit 6,a ; is the player using the link feature?
-	jp nz,Init
+	ld a, [wd72e]
+	bit 6, a ; is the player using the link feature?
+	jp nz, Init
 	predef SaveSAV ; save the game
 	call LoadScreenTilesFromBuffer2 ; restore saved screen
 	jp HoldTextDisplayOpen
 
 StartMenu_Option: ; 135f6 (4:75f6)
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED],a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	call ClearScreen
 	call UpdateSprites
 	callab DisplayOptionMenu
