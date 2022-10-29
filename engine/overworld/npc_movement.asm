@@ -56,7 +56,7 @@ Func_1a44c: ; 1a44c (6:644c)
 	sub $a
 	ld [wcca1], a
 	jr z, .asm_1a475
-	ld b, $0
+	ld b, 0
 	ld c, a
 	ld hl, wNPCMovementDirections2
 	ld a, $80
@@ -85,7 +85,7 @@ Func_1a485: ; 1a485 (6:6485)
 	ret nz
 	ld a, [wcca1]
 	ld [wSimulatedJoypadStatesIndex], a
-	ldh [$ff95], a
+	ldh [hNPCMovementDirections2Index], a
 	predef ConvertNPCMovementDirectionsToJoypadMasks
 	call StartSimulatingJoypadStates
 	ld a, $2
@@ -228,7 +228,7 @@ Func_1a581: ; 1a581 (6:6581)
 	call DecodeRLEList
 	dec a
 	ld [wSimulatedJoypadStatesIndex], a
-	ld a, $1
+	ld a, 1
 	ld [wd12f], a
 	predef PewterGuys
 	ld hl, wNPCMovementDirections2

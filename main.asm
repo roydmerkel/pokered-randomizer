@@ -803,151 +803,151 @@ SubtractAmountPaidFromMoney_: ; 6b21 (1:6b21)
 	ret
 
 HandleItemListSwapping: ; 6b44 (1:6b44)
-	ld a,[wListMenuID]
-	cp a,ITEMLISTMENU
-	jp nz,DisplayListMenuIDLoop ; only rearrange item list menus
+	ld a, [wListMenuID]
+	cp a, ITEMLISTMENU
+	jp nz, DisplayListMenuIDLoop ; only rearrange item list menus
 	push hl
-	ld hl,wcf8b
-	ld a,[hli]
-	ld h,[hl]
-	ld l,a
+	ld hl, wcf8b
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
 	inc hl ; hl = beginning of list entries
-	ld a,[wCurrentMenuItem]
-	ld b,a
-	ld a,[wListScrollOffset]
+	ld a, [wCurrentMenuItem]
+	ld b, a
+	ld a, [wListScrollOffset]
 	add b
 	add a
-	ld c,a
-	ld b,0
-	add hl,bc ; hl = address of currently selected item entry
-	ld a,[hl]
+	ld c, a
+	ld b, 0
+	add hl, bc ; hl = address of currently selected item entry
+	ld a, [hl]
 	pop hl
 	inc a
-	jp z,DisplayListMenuIDLoop ; ignore attempts to swap the Cancel menu item
-	ld a,[wMenuItemToSwap] ; ID of item chosen for swapping (counts from 1)
+	jp z, DisplayListMenuIDLoop ; ignore attempts to swap the Cancel menu item
+	ld a, [wMenuItemToSwap] ; ID of item chosen for swapping (counts from 1)
 	and a ; has the first item to swap already been chosen?
-	jr nz,.swapItems
+	jr nz, .swapItems
 ; if not, set the currently selected item as the first item
-	ld a,[wCurrentMenuItem]
+	ld a, [wCurrentMenuItem]
 	inc a
-	ld b,a
-	ld a,[wListScrollOffset] ; index of top (visible) menu item within the list
+	ld b, a
+	ld a, [wListScrollOffset] ; index of top (visible) menu item within the list
 	add b
-	ld [wMenuItemToSwap],a ; ID of item chosen for swapping (counts from 1)
-	ld c,20
+	ld [wMenuItemToSwap], a ; ID of item chosen for swapping (counts from 1)
+	ld c, 20
 	call DelayFrames
 	jp DisplayListMenuIDLoop
 .swapItems
-	ld a,[wCurrentMenuItem]
+	ld a, [wCurrentMenuItem]
 	inc a
-	ld b,a
-	ld a,[wListScrollOffset]
+	ld b, a
+	ld a, [wListScrollOffset]
 	add b
-	ld b,a
-	ld a,[wMenuItemToSwap] ; ID of item chosen for swapping (counts from 1)
+	ld b, a
+	ld a, [wMenuItemToSwap] ; ID of item chosen for swapping (counts from 1)
 	cp b ; is the currently selected item the same as the first item to swap?
-	jp z,DisplayListMenuIDLoop ; ignore attempts to swap an item with itself
+	jp z, DisplayListMenuIDLoop ; ignore attempts to swap an item with itself
 	dec a
-	ld [wMenuItemToSwap],a ; ID of item chosen for swapping (counts from 1)
-	ld c,20
+	ld [wMenuItemToSwap], a ; ID of item chosen for swapping (counts from 1)
+	ld c, 20
 	call DelayFrames
 	push hl
 	push de
-	ld hl,wcf8b
-	ld a,[hli]
-	ld h,[hl]
-	ld l,a
+	ld hl, wcf8b
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
 	inc hl ; hl = beginning of list entries
-	ld d,h
-	ld e,l ; de = beginning of list entries
-	ld a,[wCurrentMenuItem]
-	ld b,a
-	ld a,[wListScrollOffset]
+	ld d, h
+	ld e, l ; de = beginning of list entries
+	ld a, [wCurrentMenuItem]
+	ld b, a
+	ld a, [wListScrollOffset]
 	add b
 	add a
-	ld c,a
-	ld b,0
-	add hl,bc ; hl = address of currently selected item entry
-	ld a,[wMenuItemToSwap] ; ID of item chosen for swapping (counts from 1)
+	ld c, a
+	ld b, 0
+	add hl, bc ; hl = address of currently selected item entry
+	ld a, [wMenuItemToSwap] ; ID of item chosen for swapping (counts from 1)
 	add a
 	add e
-	ld e,a
-	jr nc,.noCarry
+	ld e, a
+	jr nc, .noCarry
 	inc d
 .noCarry ; de = address of first item to swap
-	ld a,[de]
-	ld b,a
-	ld a,[hli]
+	ld a, [de]
+	ld b, a
+	ld a, [hli]
 	cp b
-	jr z,.swapSameItemType
+	jr z, .swapSameItemType
 .swapDifferentItems
-	ldh [$ff95],a ; [$ff95] = second item ID
-	ld a,[hld]
-	ldh [$ff96],a ; [$ff96] = second item quantity
-	ld a,[de]
-	ld [hli],a ; put first item ID in second item slot
+	ldh [hSwapItemID], a ; [$ff95] = second item ID
+	ld a, [hld]
+	ldh [hSwapItemQuantity], a ; [$ff96] = second item quantity
+	ld a, [de]
+	ld [hli], a ; put first item ID in second item slot
 	inc de
-	ld a,[de]
-	ld [hl],a ; put first item quantity in second item slot
-	ldh a,[$ff96]
-	ld [de],a ; put second item quantity in first item slot
+	ld a, [de]
+	ld [hl], a ; put first item quantity in second item slot
+	ldh a, [hSwapItemQuantity]
+	ld [de], a ; put second item quantity in first item slot
 	dec de
-	ldh a,[$ff95]
-	ld [de],a ; put second item ID in first item slot
+	ldh a, [hSwapItemID]
+	ld [de], a ; put second item ID in first item slot
 	xor a
-	ld [wMenuItemToSwap],a ; 0 means no item is currently being swapped
+	ld [wMenuItemToSwap], a ; 0 means no item is currently being swapped
 	pop de
 	pop hl
 	jp DisplayListMenuIDLoop
 .swapSameItemType
 	inc de
-	ld a,[hl]
-	ld b,a
-	ld a,[de]
+	ld a, [hl]
+	ld b, a
+	ld a, [de]
 	add b ; a = sum of both item quantities
-	cp a,100 ; is the sum too big for one item slot?
-	jr c,.combineItemSlots
+	cp a, 100 ; is the sum too big for one item slot?
+	jr c, .combineItemSlots
 ; swap enough items from the first slot to max out the second slot if they can't be combined
-	sub a,99
-	ld [de],a
-	ld a,99
-	ld [hl],a
+	sub a, 99
+	ld [de], a
+	ld a, 99
+	ld [hl], a
 	jr .done
 .combineItemSlots
-	ld [hl],a ; put the sum in the second item slot
-	ld hl,wcf8b
-	ld a,[hli]
-	ld h,[hl]
-	ld l,a
+	ld [hl], a ; put the sum in the second item slot
+	ld hl, wcf8b
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
 	dec [hl] ; decrease the number of items
-	ld a,[hl]
-	ld [wd12a],a ; update number of items variable
-	cp a,1
-	jr nz,.skipSettingMaxMenuItemID
-	ld [wMaxMenuItem],a ; if the number of items is only one now, update the max menu item ID
+	ld a, [hl]
+	ld [wd12a], a ; update number of items variable
+	cp a, 1
+	jr nz, .skipSettingMaxMenuItemID
+	ld [wMaxMenuItem], a ; if the number of items is only one now, update the max menu item ID
 .skipSettingMaxMenuItemID
 	dec de
-	ld h,d
-	ld l,e
+	ld h, d
+	ld l, e
 	inc hl
 	inc hl ; hl = address of item after first item to swap
 .moveItemsUpLoop ; erase the first item slot and move up all the following item slots to fill the gap
-	ld a,[hli]
-	ld [de],a
+	ld a, [hli]
+	ld [de], a
 	inc de
 	inc a ; reached the $ff terminator?
-	jr z,.afterMovingItemsUp
-	ld a,[hli]
-	ld [de],a
+	jr z, .afterMovingItemsUp
+	ld a, [hli]
+	ld [de], a
 	inc de
 	jr .moveItemsUpLoop
 .afterMovingItemsUp
 	xor a
-	ld [wListScrollOffset],a
-	ld [wCurrentMenuItem],a
+	ld [wListScrollOffset], a
+	ld [wCurrentMenuItem], a
 .done
 	xor a
-	ld [wMenuItemToSwap],a ; 0 means no item is currently being swapped
+	ld [wMenuItemToSwap], a ; 0 means no item is currently being swapped
 	pop de
 	pop hl
 	jp DisplayListMenuIDLoop
@@ -4563,7 +4563,7 @@ IsItemInBag_: ; f8a5 (3:78a5)
 
 FindPathToPlayer: ; f8ba (3:78ba)
 	xor a
-	ld hl, $ff97
+	ld hl, hFindPathNumSteps
 	ld [hli], a
 	ld [hli], a
 	ld [hli], a
@@ -4571,35 +4571,35 @@ FindPathToPlayer: ; f8ba (3:78ba)
 	ld hl, wNPCMovementDirections2
 	ld de, $0
 .loop
-	ldh a, [$ff99]
+	ldh a, [hFindPathYProgress]
 	ld b, a
-	ldh a, [$ff95] ; Y distance in steps
+	ldh a, [hNPCPlayerYDistance] ; Y distance in steps
 	call CalcDifference
 	ld d, a
 	and a
 	jr nz, .asm_f8da
-	ldh a, [$ff98]
+	ldh a, [hFindPathFlags]
 	set 0, a
-	ldh [$ff98], a
+	ldh [hFindPathFlags], a
 .asm_f8da
-	ldh a, [$ff9a]
+	ldh a, [hFindPathXProgress]
 	ld b, a
-	ldh a, [$ff96] ; X distance in steps
+	ldh a, [hNPCPlayerXDistance] ; X distance in steps
 	call CalcDifference
 	ld e, a
 	and a
 	jr nz, .asm_f8ec
-	ldh a, [$ff98]
+	ldh a, [hFindPathFlags]
 	set 1, a
-	ldh [$ff98], a
+	ldh [hFindPathFlags], a
 .asm_f8ec
-	ldh a, [$ff98]
+	ldh a, [hFindPathFlags]
 	cp $3
 	jr z, .done
 	ld a, e
 	cp d
 	jr c, .asm_f90a
-	ldh a, [$ff9d]
+	ldh a, [hNPCPlayerRelativePosFlags]
 	bit 1, a
 	jr nz, .asm_f900
 	ld d, NPC_MOVEMENT_RIGHT
@@ -4607,12 +4607,12 @@ FindPathToPlayer: ; f8ba (3:78ba)
 .asm_f900
 	ld d, NPC_MOVEMENT_LEFT
 .asm_f902
-	ldh a, [$ff9a]
-	add $1
-	ldh [$ff9a], a
+	ldh a, [hFindPathXProgress]
+	add 1
+	ldh [hFindPathXProgress], a
 	jr .asm_f91c
 .asm_f90a
-	ldh a, [$ff9d]
+	ldh a, [hNPCPlayerRelativePosFlags]
 	bit 0, a
 	jr nz, .asm_f914
 	ld d, NPC_MOVEMENT_DOWN
@@ -4620,15 +4620,15 @@ FindPathToPlayer: ; f8ba (3:78ba)
 .asm_f914
 	ld d, NPC_MOVEMENT_UP
 .asm_f916
-	ldh a, [$ff99]
-	add $1
-	ldh [$ff99], a
+	ldh a, [hFindPathYProgress]
+	add 1
+	ldh [hFindPathYProgress], a
 .asm_f91c
 	ld a, d
 	ld [hli], a
-	ldh a, [$ff97]
+	ldh a, [hFindPathNumSteps]
 	inc a
-	ldh [$ff97], a
+	ldh [hFindPathNumSteps], a
 	jp .loop
 .done
 	ld [hl], $ff
@@ -4636,13 +4636,13 @@ FindPathToPlayer: ; f8ba (3:78ba)
 
 CalcPositionOfPlayerRelativeToNPC: ; f929 (3:7929)
 	xor a
-	ldh [$ff9d], a
+	ldh [hNPCPlayerRelativePosFlags], a
 	ld a, [wSpriteStateData1 + 4] ; player's sprite screen Y position in pixels
 	ld d, a
 	ld a, [wSpriteStateData1 + 6] ; player's sprite screen X position in pixels
 	ld e, a
 	ld hl, wSpriteStateData1
-	ldh a, [$ff95] ; sprite offset
+	ldh a, [hNPCSpriteOffset] ; sprite offset
 	add l
 	add $4
 	ld l, a
@@ -4656,14 +4656,14 @@ CalcPositionOfPlayerRelativeToNPC: ; f929 (3:7929)
 	jr nc, .NPCSouthOfOrAlignedWithPlayer
 .NPCNorthOfPlayer
 	push hl
-	ld hl, $ff9d
+	ld hl, hNPCPlayerRelativePosFlags
 	bit 0, [hl]
 	set 0, [hl]
 	pop hl
 	jr .divideYDistance
 .NPCSouthOfOrAlignedWithPlayer
 	push hl
-	ld hl, $ff9d
+	ld hl, hNPCPlayerRelativePosFlags
 	bit 0, [hl]
 	res 0, [hl]
 	pop hl
@@ -4675,7 +4675,7 @@ CalcPositionOfPlayerRelativeToNPC: ; f929 (3:7929)
 	ld [hli], a
 	call DivideBytes ; divide Y absolute distance by 16
 	ld a, [hl] ; quotient
-	ldh [$ff95], a
+	ldh [hNPCPlayerYDistance], a
 	pop hl
 	inc hl
 	ld b, e
@@ -4684,14 +4684,14 @@ CalcPositionOfPlayerRelativeToNPC: ; f929 (3:7929)
 	jr nc, .NPCEastOfOrAlignedWithPlayer
 .NPCWestOfPlayer
 	push hl
-	ld hl, $ff9d
+	ld hl, hNPCPlayerRelativePosFlags
 	bit 1, [hl]
 	set 1, [hl]
 	pop hl
 	jr .divideXDistance
 .NPCEastOfOrAlignedWithPlayer
 	push hl
-	ld hl, $ff9d
+	ld hl, hNPCPlayerRelativePosFlags
 	bit 1, [hl]
 	res 1, [hl]
 	pop hl
@@ -4701,18 +4701,18 @@ CalcPositionOfPlayerRelativeToNPC: ; f929 (3:7929)
 	ldh [$ffe6], a
 	call DivideBytes ; divide X absolute distance by 16
 	ldh a, [$ffe7] ; quotient
-	ldh [$ff96], a
-	ldh a, [$ff9b]
+	ldh [hNPCPlayerXDistance], a
+	ldh a, [hNPCPlayerRelativePosPerspective]
 	and a
 	ret z
-	ldh a, [$ff9d]
+	ldh a, [hNPCPlayerRelativePosFlags]
 	cpl
 	and $3
-	ldh [$ff9d], a
+	ldh [hNPCPlayerRelativePosFlags], a
 	ret
 
 ConvertNPCMovementDirectionsToJoypadMasks: ; f9a0 (3:79a0)
-	ldh a, [$ff95]
+	ldh a, [hNPCMovementDirections2Index]
 	ld [wNPCMovementDirections2Index], a
 	dec a
 	ld de, wSimulatedJoypadStatesEnd
@@ -4726,9 +4726,9 @@ ConvertNPCMovementDirectionsToJoypadMasks: ; f9a0 (3:79a0)
 	call ConvertNPCMovementDirectionToJoypadMask
 	ld [de], a
 	inc de
-	ldh a, [$ff95]
+	ldh a, [hNPCMovementDirections2Index]
 	dec a
-	ldh [$ff95], a
+	ldh [hNPCMovementDirections2Index], a
 	jr nz, .loop
 	ret
 

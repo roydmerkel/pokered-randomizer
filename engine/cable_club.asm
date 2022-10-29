@@ -646,7 +646,7 @@ Func_5827:
 	push de
 	push hl
 	ld a, c
-	ldh [$ff95], a
+	ldh [hPastLeadingZeros], a
 	call GetMonName
 	pop hl
 	call PlaceString

@@ -2131,9 +2131,9 @@ LoadMapHeader:: ; 107c (0:107c)
 	ld c, a
 	ld de, wd4d1 ; base address of sign text IDs
 	ld a, d
-	ldh [$ff95], a
+	ldh [hSignCoordPointer], a
 	ld a, e
-	ldh [$ff96], a
+	ldh [hSignCoordPointer + 1], a
 	ld de, wd4b1 ; base address of sign coordinates
 .signLoop
 	ld a, [hli]
@@ -2143,17 +2143,17 @@ LoadMapHeader:: ; 107c (0:107c)
 	ld [de], a
 	inc de
 	push de
-	ldh a, [$ff95]
+	ldh a, [hSignCoordPointer]
 	ld d, a
-	ldh a, [$ff96]
+	ldh a, [hSignCoordPointer + 1]
 	ld e, a
 	ld a, [hli]
 	ld [de], a
 	inc de
 	ld a, d
-	ldh [$ff95], a
+	ldh [hSignCoordPointer], a
 	ld a, e
-	ldh [$ff96], a
+	ldh [hSignCoordPointer + 1], a
 	pop de
 	dec c
 	jr nz, .signLoop

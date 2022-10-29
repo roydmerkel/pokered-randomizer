@@ -73,12 +73,12 @@ PalletTownScript2: ; 18ed2 (6:4ed2)
 	ld a, 1
 	ld [W_YCOORD], a
 	ld a, 1
-	ldh [$FF9B], a
+	ldh [hNPCPlayerRelativePosPerspective], a
 	ld a, 1
 	swap a
-	ldh [$FF95], a
+	ldh [hNPCSpriteOffset], a
 	predef CalcPositionOfPlayerRelativeToNPC
-	ld hl, $FF95
+	ld hl, hNPCPlayerYDistance
 	dec [hl]
 	predef FindPathToPlayer ; load Oak’s movement into wNPCMovementDirections2
 	ld de, wNPCMovementDirections2
