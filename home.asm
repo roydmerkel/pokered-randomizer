@@ -3332,8 +3332,8 @@ GetName:: ; 376b (0:376b)
 ; [wPredefBank] = bank of list
 ;
 ; returns pointer to name in de
-	ld a,[wd0b5]
-	ld [wd11e],a
+	ld a, [wd0b5]
+	ld [wd11e], a
 
     ld a, [W_LISTTYPE]
     cp 4 ; item names
@@ -3344,74 +3344,74 @@ GetName:: ; 376b (0:376b)
 	jp nc, GetMachineName
 .notitem
     
-	ldh a,[H_LOADEDROMBANK]
+	ldh a, [H_LOADEDROMBANK]
 	push af
 	push hl
 	push bc
 	push de
-	ld a,[W_LISTTYPE]    ;List3759_entrySelector
+	ld a, [W_LISTTYPE]    ;List3759_entrySelector
 	dec a
-	jr nz,.otherEntries
+	jr nz, .otherEntries
 	;1 = MON_NAMES
 	call GetMonName
-	ld hl,11
-	add hl,de
-	ld e,l
-	ld d,h
+	ld hl, 11
+	add hl, de
+	ld e, l
+	ld d, h
 	jr .gotPtr
 .otherEntries ; $378d
 	;2-7 = OTHER ENTRIES
-	ld a,[wPredefBank]
-	ldh [H_LOADEDROMBANK],a
-	ld [$2000],a
-	ld a,[W_LISTTYPE]    ;VariousNames' entryID
+	ld a, [wPredefBank]
+	ldh [H_LOADEDROMBANK], a
+	ld [$2000], a
+	ld a, [W_LISTTYPE]    ;VariousNames' entryID
 	dec a
 	add a
-	ld d,0
-	ld e,a
-	jr nc,.skip
+	ld d, 0
+	ld e, a
+	jr nc, .skip
 	inc d
 .skip ; $37a0
-	ld hl,NamePointers
-	add hl,de
-	ld a,[hli]
-	ldh [$ff96],a
-	ld a,[hl]
-	ldh [$ff95],a
-	ldh a,[$ff95]
-	ld h,a
-	ldh a,[$ff96]
-	ld l,a
-	ld a,[wd0b5]
-	ld b,a
-	ld c,0
+	ld hl, NamePointers
+	add hl, de
+	ld a, [hli]
+	ldh [hSwapTemp + 1], a
+	ld a, [hl]
+	ldh [hSwapTemp], a
+	ldh a, [hSwapTemp]
+	ld h, a
+	ldh a, [hSwapTemp + 1]
+	ld l, a
+	ld a, [wd0b5]
+	ld b, a
+	ld c, 0
 .nextName
-	ld d,h
-	ld e,l
+	ld d, h
+	ld e, l
 .nextChar
-	ld a,[hli]
+	ld a, [hli]
 	cp a, "@"
-	jr nz,.nextChar
+	jr nz, .nextChar
 	inc c           ;entry counter
-	ld a,b          ;wanted entry
+	ld a, b          ;wanted entry
 	cp c
-	jr nz,.nextName
-	ld h,d
-	ld l,e
-	ld de,wcd6d
-	ld bc,$0014
+	jr nz, .nextName
+	ld h, d
+	ld l, e
+	ld de, wcd6d
+	ld bc, $0014
 	call CopyData
 .gotPtr ; $37cd
-	ld a,e
-	ld [wcf8d],a
-	ld a,d
-	ld [wcf8e],a
+	ld a, e
+	ld [wcf8d], a
+	ld a, d
+	ld [wcf8e], a
 	pop de
 	pop bc
 	pop hl
 	pop af
-	ldh [H_LOADEDROMBANK],a
-	ld [$2000],a
+	ldh [H_LOADEDROMBANK], a
+	ld [$2000], a
 	ret
 
 GetItemPrice:: ; 37df (0:37df)

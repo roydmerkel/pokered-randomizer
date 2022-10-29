@@ -169,17 +169,17 @@ hExperience EQU $FF96 ; bytes
 
 
 
-hMoney EQU $FF9F ; 3 byes FFA0 FFA1
+hMoney EQU $FF9F ; 3 byes
 
 ; some code zeroes this for no reason when writing a coin amount
 hUnusedCoinsByte EQU $FF9F
-hCoins EQU $FFA0 ; 2 bytes FFA1
+hCoins EQU $FFA0 ; 2 bytes
 
 
 hDivideBCDDivisor EQU $FFA2
-hDivideBCDQuotient EQU $FFA2 ; 3 bytes A3 A4
+hDivideBCDQuotient EQU $FFA2 ; 3 bytes
 
-hDivideBCDBuffer EQU $FFA5 ; 3 bytes A6 A7
+hDivideBCDBuffer EQU $FFA5 ; 3 bytes
 
 
 

@@ -1247,17 +1247,17 @@ ItemUseMedicine: ; dabb (3:5abb)
 	push hl
 	push de
 	ld d, a
-	callab CalcExperience ; calculate experience for next level and store it at $ff96
+	callab CalcExperience ; calculate experience for next level and store it at hExperience
 	pop de
 	pop hl
 	ld bc, -19
 	add hl,bc ; hl now points to experience
 ; update experience to minimum for new level
-	ldh a, [$ff96]
+	ldh a, [hExperience]
 	ld [hli], a
-	ldh a, [$ff97]
+	ldh a, [hExperience + 1]
 	ld [hli], a
-	ldh a, [$ff98]
+	ldh a, [hExperience + 2]
 	ld [hl], a
 	pop hl
 	ld a, [wWhichPokemon]

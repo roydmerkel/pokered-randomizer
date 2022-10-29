@@ -34,7 +34,7 @@ StatusScreen: ; 12953 (4:6953)
 	call CopyVideoDataDouble ; ─┘
 	ld de, PTile
 	ld hl, vChars2 + $720
-	ld bc,(BANK(PTile) << 8 | $01)
+	ld bc, (BANK(PTile) << 8 | $01)
 	call CopyVideoDataDouble ; P (for PP), inline
 	ldh a, [hTilesetType]
 	push af
@@ -375,13 +375,13 @@ StatusScreen2: ; 12b57 (4:6b57)
 	ld d, a
 	callab CalcExperience
 	ld hl, wcfa8
-	ldh a, [$ff98]
+	ldh a, [hExperience + 2]
 	sub [hl]
 	ld [hld], a
-	ldh a, [$ff97]
+	ldh a, [hExperience + 1]
 	sbc [hl]
 	ld [hld], a
-	ldh a, [$ff96]
+	ldh a, [hExperience]
 	sbc [hl]
 	ld [hld], a
 	ret
