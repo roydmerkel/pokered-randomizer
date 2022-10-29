@@ -45,16 +45,16 @@ ResetStatusAndHalveMoneyOnBlackout::
 	ld a, [wPlayerMoney + 2]
 	ldh [hMoney + 2], a
 	xor a
-	ldh [$ffa2], a
-	ldh [$ffa3], a
+	ldh [hDivideBCDDivisor], a
+	ldh [hDivideBCDDivisor + 1], a
 	ld a, 2
-	ldh [$ffa4], a
+	ldh [hDivideBCDDivisor + 2], a
 	predef DivideBCDPredef3
-	ldh a, [$ffa2]
+	ldh a, [hDivideBCDQuotient]
 	ld [wPlayerMoney], a
-	ldh a, [$ffa2 + 1]
+	ldh a, [hDivideBCDQuotient + 1]
 	ld [wPlayerMoney + 1], a
-	ldh a, [$ffa2 + 2]
+	ldh a, [hDivideBCDQuotient + 2]
 	ld [wPlayerMoney + 2], a
 
 .lostmoney
@@ -4281,37 +4281,37 @@ DivideBCDPredef4::
 
 DivideBCD::
 	xor a
-	ldh [$ffa5], a
-	ldh [$ffa6], a
-	ldh [$ffa7], a
+	ldh [hDivideBCDBuffer], a
+	ldh [hDivideBCDBuffer+1], a
+	ldh [hDivideBCDBuffer+2], a
 	ld d, $1
 .asm_f72a
-	ldh a, [$ffa2]
+	ldh a, [hDivideBCDDivisor]
 	and $f0
 	jr nz, .asm_f75b
 	inc d
-	ldh a, [$ffa2]
+	ldh a, [hDivideBCDDivisor]
 	swap a
 	and $f0
 	ld b, a
-	ldh a, [$ffa3]
+	ldh a, [hDivideBCDDivisor+1]
 	swap a
-	ldh [$ffa3], a
+	ldh [hDivideBCDDivisor+1], a
 	and $f
 	or b
-	ldh [$ffa2], a
-	ldh a, [$ffa3]
+	ldh [hDivideBCDDivisor], a
+	ldh a, [hDivideBCDDivisor+1]
 	and $f0
 	ld b, a
-	ldh a, [$ffa4]
+	ldh a, [hDivideBCDDivisor+2]
 	swap a
-	ldh [$ffa4], a
+	ldh [hDivideBCDDivisor+2], a
 	and $f
 	or b
-	ldh [$ffa3], a
-	ldh a, [$ffa4]
+	ldh [hDivideBCDDivisor+1], a
+	ldh a, [hDivideBCDDivisor+2]
 	and $f0
-	ldh [$ffa4], a
+	ldh [hDivideBCDDivisor+2], a
 	jr .asm_f72a
 .asm_f75b
 	push de
@@ -4321,16 +4321,16 @@ DivideBCD::
 	ld a, b
 	swap a
 	and $f0
-	ldh [$ffa5], a
+	ldh [hDivideBCDBuffer], a
 	dec d
 	jr z, .asm_f7bc
 	push de
 	call Func_f7d7
 	call Func_f800
 	pop de
-	ldh a, [$ffa5]
+	ldh a, [hDivideBCDBuffer]
 	or b
-	ldh [$ffa5], a
+	ldh [hDivideBCDBuffer], a
 	dec d
 	jr z, .asm_f7bc
 	push de
@@ -4340,16 +4340,16 @@ DivideBCD::
 	ld a, b
 	swap a
 	and $f0
-	ldh [$ffa6], a
+	ldh [hDivideBCDBuffer+1], a
 	dec d
 	jr z, .asm_f7bc
 	push de
 	call Func_f7d7
 	call Func_f800
 	pop de
-	ldh a, [$ffa6]
+	ldh a, [hDivideBCDBuffer+1]
 	or b
-	ldh [$ffa6], a
+	ldh [hDivideBCDBuffer+1], a
 	dec d
 	jr z, .asm_f7bc
 	push de
@@ -4359,23 +4359,23 @@ DivideBCD::
 	ld a, b
 	swap a
 	and $f0
-	ldh [$ffa7], a
+	ldh [hDivideBCDBuffer+2], a
 	dec d
 	jr z, .asm_f7bc
 	push de
 	call Func_f7d7
 	call Func_f800
 	pop de
-	ldh a, [$ffa7]
+	ldh a, [hDivideBCDBuffer+2]
 	or b
-	ldh [$ffa7], a
+	ldh [hDivideBCDBuffer+2], a
 .asm_f7bc
-	ldh a, [$ffa5]
-	ldh [$ffa2], a
-	ldh a, [$ffa6]
-	ldh [$ffa3], a
-	ldh a, [$ffa7]
-	ldh [$ffa4], a
+	ldh a, [hDivideBCDBuffer]
+	ldh [hDivideBCDQuotient], a
+	ldh a, [hDivideBCDBuffer+1]
+	ldh [hDivideBCDQuotient+1], a
+	ldh a, [hDivideBCDBuffer+2]
+	ldh [hDivideBCDQuotient+2], a
 	pop de
 	ld a, $6
 	sub d
@@ -4390,42 +4390,42 @@ DivideBCD::
 	ret
 
 Func_f7d7: ; f7d7 (3:77d7)
-	ldh a, [$ffa4]
+	ldh a, [hDivideBCDDivisor+2]
 	swap a
 	and $f
 	ld b, a
-	ldh a, [$ffa3]
+	ldh a, [hDivideBCDDivisor+1]
 	swap a
-	ldh [$ffa3], a
+	ldh [hDivideBCDDivisor+1], a
 	and $f0
 	or b
-	ldh [$ffa4], a
-	ldh a, [$ffa3]
+	ldh [hDivideBCDDivisor+2], a
+	ldh a, [hDivideBCDDivisor+1]
 	and $f
 	ld b, a
-	ldh a, [$ffa2]
+	ldh a, [hDivideBCDDivisor]
 	swap a
-	ldh [$ffa2], a
+	ldh [hDivideBCDDivisor], a
 	and $f0
 	or b
-	ldh [$ffa3], a
-	ldh a, [$ffa2]
+	ldh [hDivideBCDDivisor+1], a
+	ldh a, [hDivideBCDDivisor]
 	and $f
-	ldh [$ffa2], a
+	ldh [hDivideBCDDivisor], a
 	ret
 
 Func_f800: ; f800 (3:7800)
 	ld bc, $3
 .asm_f803
 	ld de, hMoney
-	ld hl, $ffa2
+	ld hl, hDivideBCDDivisor
 	push bc
 	call StringCmp
 	pop bc
 	ret c
 	inc b
 	ld de, hMoney + 2
-	ld hl, $ffa4
+	ld hl, hDivideBCDDivisor + 2
 	push bc
 	call SubBCD
 	pop bc

@@ -1644,17 +1644,17 @@ DisplayChooseQuantityMenu:: ; 2d57 (0:2d57)
 	and a ; should the price be halved (for selling items)?
 	jr z, .skipHalvingPrice
 	xor a
-	ldh [$ffa2], a
-	ldh [$ffa3], a
+	ldh [hDivideBCDDivisor], a
+	ldh [hDivideBCDDivisor + 1], a
 	ld a, $02
-	ldh [$ffa4], a
+	ldh [hDivideBCDDivisor + 2], a
 	predef DivideBCDPredef3 ; halves the price
 ; store the halved price
-	ldh a, [$ffa2]
+	ldh a, [hDivideBCDQuotient]
 	ldh [hMoney], a
-	ldh a, [$ffa3]
+	ldh a, [hDivideBCDQuotient + 1]
 	ldh [hMoney + 1], a
-	ldh a, [$ffa4]
+	ldh a, [hDivideBCDQuotient + 2]
 	ldh [hMoney + 2], a
 .skipHalvingPrice
 	hlCoord 12, 10
