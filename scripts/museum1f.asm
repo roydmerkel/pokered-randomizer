@@ -81,10 +81,10 @@ Museum1FText1: ; 5c135 (17:4135)
 	and a
 	jr nz, .asm_de133
 	xor a
-	ldh [$ff9f], a
-	ldh [$ffa0], a
+	ldh [hMoney], a
+	ldh [hMoney + 1], a
 	ld a, $50
-	ldh [$ffa1], a
+	ldh [hMoney + 2], a
 	call HasEnoughMoney
 	jr nc, .asm_0f3e3
 	ld hl, Museum1FText_5c229

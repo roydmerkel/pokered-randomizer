@@ -188,7 +188,7 @@ DisplayPokemartDialogue_: ; 6c20 (1:6c20)
 	jp .loop
 .isThereEnoughMoney
 	ld de, wPlayerMoney
-	ld hl, $ff9f ; item price
+	ld hl, hMoney ; item price
 	ld c, 3 ; length of money in bytes
 	jp StringCmp
 .notEnoughMoney

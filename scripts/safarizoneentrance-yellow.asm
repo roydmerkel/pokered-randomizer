@@ -1,85 +1,85 @@
 .xf1f77
-	ld hl,.ForJust500Text
+	ld hl, .ForJust500Text
 	call PrintText
-	ld a,$13
-	ld [wd125],a
+	ld a, $13
+	ld [wd125], a
 	call DisplayTextBoxID
 	call YesNoChoice
-	ld a,[wCurrentMenuItem]
+	ld a, [wCurrentMenuItem]
 	and a
-	jp nz,.PleaseComeAgain
-	ld hl,$d346 ; yellow d346
-	ld a,[hli]
+	jp nz, .PleaseComeAgain
+	ld hl, $d346 ; yellow d346
+	ld a, [hli]
 	or [hl]
 	inc hl
 	or [hl]
-	jr nz,.xf1f9f
+	jr nz, .xf1f9f
 .xf1f98
-	call .xf20ce
-	jr c,.CantPayWalkDown
+	call  .xf20ce
+	jr c, .CantPayWalkDown
 	jr .xf1ff2
 
 .xf1f9f
 	xor a
-	ldh [$ff9f],a
-	ld a,$05
-	ldh [$ffa0],a
-	ld a,$00
-	ldh [$ffa1],a
+	ldh [hMoney], a
+	ld a, $05
+	ldh [hMoney + 1], a
+	ld a, $00
+	ldh [hMoney + 2], a
 	call HasEnoughMoney
-	jr nc,.success
-	ld hl,.NotEnoughMoneyText
+	jr nc, .success
+	ld hl, .NotEnoughMoneyText
 	call PrintText
 	call .xf2077
-	jr c,.CantPayWalkDown
+	jr c, .CantPayWalkDown
 	jr .xf1ff2
 
 .success
 	xor a
-	ld [wSubtrahend],a
-	ld a,$05
-	ld [wSubtrahend+1],a
-	ld a,$00
-	ld [wSubtrahend+2],a
-	ld hl,wTrainerFacingDirection
-	ld de,wPlayerMoney + 2
-	ld c,3
+	ld [wSubtrahend], a
+	ld a, $05
+	ld [wSubtrahend+1], a
+	ld a, $00
+	ld [wSubtrahend+2], a
+	ld hl, wTrainerFacingDirection
+	ld de, wPlayerMoney + 2
+	ld c, 3
 	predef SubBCDPredef
-	ld a,$b2
+	ld a, $b2
 	call $3736
 	call $373e
-	ld a,$13
-	ld [wd125],a
+	ld a, $13
+	ld [wd125], a
 	call DisplayTextBoxID
-	ld hl,.MakePaymentText
+	ld hl, .MakePaymentText
 	call PrintText
-	ld a,30
-	ld hl,(502 / $100) << 8 | (502 % $100)
+	ld a, 30
+	ld hl, (502 / $100) << 8 | (502 % $100)
 .xf1ff2
-	ld [W_NUMSAFARIBALLS],a
-	ld a,h
-	ld [wSafariSteps],a
-	ld a,l
-	ld [wSafariSteps + 1],a
-	ld a,$40
-	ld c,3
+	ld [W_NUMSAFARIBALLS], a
+	ld a, h
+	ld [wSafariSteps], a
+	ld a, l
+	ld [wSafariSteps + 1], a
+	ld a, $40
+	ld c, 3
 	call SafariZoneEntranceAutoWalk
-	ld hl,wd790
-	set 7,[hl]
-	res 6,[hl]
-	ld a,3
-	ld [W_SAFARIZONEENTRANCECURSCRIPT],a
+	ld hl, wd790
+	set 7, [hl]
+	res 6, [hl]
+	ld a, 3
+	ld [W_SAFARIZONEENTRANCECURSCRIPT], a
 	jr .done
 
 .PleaseComeAgain
-	ld hl,.PleaseComeAgainText
+	ld hl, .PleaseComeAgainText
 	call PrintText
 .CantPayWalkDown
-	ld a,$80
-	ld c,1
+	ld a, $80
+	ld c, 1
 	call SafariZoneEntranceAutoWalk
-	ld a,4
-	ld [W_SAFARIZONEENTRANCECURSCRIPT],a
+	ld a, 4
+	ld [W_SAFARIZONEENTRANCECURSCRIPT], a
 .done
 	ret
 
@@ -102,14 +102,14 @@
 	db "@"
 
 .SafariZoneEntranceText2
-	ld hl,.FirstTimeQuestionText
+	ld hl, .FirstTimeQuestionText
 	call PrintText
 	call YesNoChoice
-	ld a,[wCurrentMenuItem]
+	ld a, [wCurrentMenuItem]
 	and a
-	ld hl,.RegularText
-	jr nz,.Explanation
-	ld hl,.ExplanationText
+	ld hl, .RegularText
+	jr nz, .Explanation
+	ld hl, .ExplanationText
 .Explanation
 	call PrintText
 	ret
@@ -128,48 +128,48 @@
 
 SafariZoneEntranceAutoWalk:
 	push af
-	ld b,0
-	ld a,c
-	ld [wSimulatedJoypadStatesIndex],a
-	ld hl,wSimulatedJoypadStatesEnd
+	ld b, 0
+	ld a, c
+	ld [wSimulatedJoypadStatesIndex], a
+	ld hl, wSimulatedJoypadStatesEnd
 	pop af
 	call FillMemory
 	jp StartSimulatingJoypadStates
 
 .xf2077
-	ld hl,wPlayerMoney
-	ld de,$ff9f
-	ld bc,3
+	ld hl, wPlayerMoney
+	ld de, $ff9f
+	ld bc, 3
 	call $b1 ; yellow $00b1
 	xor a
-	ldh [$ffa2],a
-	ldh [$ffa3],a
-	ld a,$17 ; ¥17 per safari ball
-	ldh [$ffa4],a
+	ldh [$ffa2], a
+	ldh [$ffa3], a
+	ld a, $17 ; ¥17 per safari ball
+	ldh [$ffa4], a
 	predef DivideBCDPredef3
-	ldh a,[$ffa4]
+	ldh a, [$ffa4]
 	call .xf211e
 	pop af
-	ld hl,$d346
+	ld hl, $d346
 	xor a
-	ld bc,3
+	ld bc, 3
 	call FillMemory
-	ld hl,.OhAllRightText
+	ld hl, .OhAllRightText
 	call Func_3c59
-	ld a,$13
-	ld a,[$d124]
+	ld a, $13
+	ld a, [$d124]
 	call DisplayTextBoxID
-	ld hl,.CantGive30BallsText
+	ld hl, .CantGive30BallsText
 	call PrintText
 	pop af
 	inc a
-	jr z,.xf20bd
+	jr z, .xf20bd
 	cp 29
-	jr c,.xf20bf
+	jr c, .xf20bf
 .xf20bd
-	ld a,29
+	ld a, 29
 .xf20bf
-	ld hl,$1f6
+	ld hl, $1f6
 	and a
 	ret
 
@@ -182,30 +182,30 @@ SafariZoneEntranceAutoWalk:
 	db "@"
 
 .xf20ce
-	ld hl,$d70c
-	ld a,[hl]
+	ld hl, $d70c
+	ld a, [hl]
 	push af
 	inc [hl]
-	ld e,a
-	ld d,0
-	ld hl,.lowcosttextpointers
-	add hl,de
-	add hl,de
-	ld a,[hli]
-	ld h,[hl]
-	ld l,a
+	ld e, a
+	ld d, 0
+	ld hl, .lowcosttextpointers
+	add hl, de
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
 	call PrintText
 	pop af
 	cp 3
-	jr z,.next
+	jr z, .next
 	scf
 	ret
 
 .next
-	ld hl,.xf20f6
+	ld hl, .xf20f6
 	call $3c46
-	ld a,1
-	ld hl,$01f6
+	ld a, 1
+	ld hl, $01f6
 	and a
 	ret
 
@@ -240,16 +240,16 @@ SafariZoneEntranceAutoWalk:
 
 .xf211e
 	push hl
-	ld c,a
+	ld c, a
 	and $f
-	ld l,a
-	ld h,0
-	ld a,c
+	ld l, a
+	ld h, 0
+	ld a, c
 	and $f0
 	swap a
-	ld bc,$a
+	ld bc, $a
 	call $3a74
-	ld a,l
+	ld a, l
 	pop hl
 	ret
 

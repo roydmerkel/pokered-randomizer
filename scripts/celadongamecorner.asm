@@ -138,21 +138,21 @@ CeladonGameCornerText2: ; 48ca9 (12:4ca9)
 	call Has9990Coins
 	jr nc, .asm_31338 ; 0x48cc6
 	xor a
-	ldh [$9f], a
-	ldh [$a1], a
+	ldh [hMoney], a
+	ldh [hMoney + 2], a
 	ld a, $10
-	ldh [$a0], a
+	ldh [hMoney + 1], a
 	call HasEnoughMoney
 	jr nc, .asm_b6ef0 ; 0x48cd4
 	ld hl, CeladonGameCornerText_48d31 ; $4d31
 	jr .asm_e2afd ; 0x48cd9
 .asm_b6ef0 ; 0x48cdb
 	xor a
-	ldh [$9f], a
-	ldh [$a1], a
+	ldh [hMoney], a
+	ldh [hMoney + 2], a
 	ld a, $10
-	ldh [$a0], a
-	ld hl, $ffa1
+	ldh [hMoney + 1], a
+	ld hl, hMoney + 2
 	ld de, wPlayerMoney + 2
 	ld c, $3
 	predef SubBCDPredef

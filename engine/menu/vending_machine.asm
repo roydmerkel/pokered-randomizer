@@ -37,10 +37,10 @@ VendingMachineMenu: ; 74ee0 (1d:4ee0)
 	cp $3
 	jr z, .asm_74f93
 	xor a
-	ldh [$ff9f], a
-	ldh [$ffa1], a
+	ldh [hMoney], a
+	ldh [hMoney + 2], a
 	ld a, $2
-	ldh [$ffa0], a
+	ldh [hMoney + 1], a
 	call HasEnoughMoney
 	jr nc, .enoughMoney
 	ld hl, VendingMachineText4

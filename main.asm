@@ -31,19 +31,19 @@ ResetStatusAndHalveMoneyOnBlackout::
 	ld [wNPCMovementScriptPointerTableNum], a
 	ld [wFlags_0xcd60], a
 
-	ldh [$ff9f], a
-	ldh [$ff9f + 1], a
-	ldh [$ff9f + 2], a
+	ldh [hMoney], a
+	ldh [hMoney + 1], a
+	ldh [hMoney + 2], a
 	call HasEnoughMoney
 	jr c, .lostmoney ; never happens
 
 	; Halve the player's money.
 	ld a, [wPlayerMoney]
-	ldh [$ff9f], a
+	ldh [hMoney], a
 	ld a, [wPlayerMoney + 1]
-	ldh [$ff9f + 1], a
+	ldh [hMoney + 1], a
 	ld a, [wPlayerMoney + 2]
-	ldh [$ff9f + 2], a
+	ldh [hMoney + 2], a
 	xor a
 	ldh [$ffa2], a
 	ldh [$ffa3], a
@@ -787,17 +787,17 @@ INCLUDE "engine/oak_speech2.asm"
 ; subtracts the amount the player paid from their money
 ; sets carry flag if there is enough money and unsets carry flag if not
 SubtractAmountPaidFromMoney_: ; 6b21 (1:6b21)
-	ld de,wPlayerMoney
-	ld hl,$ff9f ; total price of items
-	ld c,3 ; length of money in bytes
+	ld de, wPlayerMoney
+	ld hl, hMoney ; total price of items
+	ld c, 3 ; length of money in bytes
 	call StringCmp
 	ret c
-	ld de,wPlayerMoney + 2
-	ld hl,$ffa1 ; total price of items
-	ld c,3 ; length of money in bytes
+	ld de, wPlayerMoney + 2
+	ld hl, hMoney + 2 ; total price of items
+	ld c, 3 ; length of money in bytes
 	predef SubBCDPredef ; subtract total price from money
-	ld a,$13
-	ld [wd125],a
+	ld a, $13
+	ld [wd125], a
 	call DisplayTextBoxID ; redraw money text box
 	and a
 	ret
@@ -4417,14 +4417,14 @@ Func_f7d7: ; f7d7 (3:77d7)
 Func_f800: ; f800 (3:7800)
 	ld bc, $3
 .asm_f803
-	ld de, $ff9f
+	ld de, hMoney
 	ld hl, $ffa2
 	push bc
 	call StringCmp
 	pop bc
 	ret c
 	inc b
-	ld de, $ffa1
+	ld de, hMoney + 2
 	ld hl, $ffa4
 	push bc
 	call SubBCD

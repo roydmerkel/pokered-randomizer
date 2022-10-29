@@ -1312,18 +1312,18 @@ CountSetBits:: ; 2b7f (0:2b7f)
 ; subtracts the amount the player paid from their money
 ; sets carry flag if there is enough money and unsets carry flag if not
 SubtractAmountPaidFromMoney:: ; 2b96 (0:2b96)
-	ld b,BANK(SubtractAmountPaidFromMoney_)
-	ld hl,SubtractAmountPaidFromMoney_
+	ld b, BANK(SubtractAmountPaidFromMoney_)
+	ld hl, SubtractAmountPaidFromMoney_
 	jp Bankswitch
 
 ; adds the amount the player sold to their money
 AddAmountSoldToMoney:: ; 2b9e (0:2b9e)
-	ld de,wPlayerMoney + 2
-	ld hl,$ffa1 ; total price of items
-	ld c,3 ; length of money in bytes
+	ld de, wPlayerMoney + 2
+	ld hl, hMoney + 2 ; total price of items
+	ld c, 3 ; length of money in bytes
 	predef AddBCDPredef ; add total price to money
-	ld a,$13
-	ld [wd125],a
+	ld a, $13
+	ld [wd125], a
 	call DisplayTextBoxID ; redraw money text box
 	ld a, RBSFX_02_5a
 	call PlaySoundWaitForCurrent ; play sound
@@ -1335,15 +1335,15 @@ AddAmountSoldToMoney:: ; 2b9e (0:2b9e)
 ; [wWhichPokemon] = index (within the inventory) of the item to remove
 ; [wcf96] = quantity to remove
 RemoveItemFromInventory:: ; 2bbb (0:2bbb)
-	ldh a,[H_LOADEDROMBANK]
+	ldh a, [H_LOADEDROMBANK]
 	push af
-	ld a,BANK(RemoveItemFromInventory_)
-	ldh [H_LOADEDROMBANK],a
-	ld [$2000],a
+	ld a, BANK(RemoveItemFromInventory_)
+	ldh [H_LOADEDROMBANK], a
+	ld [$2000], a
 	call RemoveItemFromInventory_
 	pop af
-	ldh [H_LOADEDROMBANK],a
-	ld [$2000],a
+	ldh [H_LOADEDROMBANK], a
+	ld [$2000], a
 	ret
 
 ; function to add an item (in varying quantities) to the player's bag or PC box
@@ -1354,16 +1354,16 @@ RemoveItemFromInventory:: ; 2bbb (0:2bbb)
 ; sets carry flag if successful, unsets carry flag if unsuccessful
 AddItemToInventory:: ; 2bcf (0:2bcf)
 	push bc
-	ldh a,[H_LOADEDROMBANK]
+	ldh a, [H_LOADEDROMBANK]
 	push af
-	ld a,BANK(AddItemToInventory_)
-	ldh [H_LOADEDROMBANK],a
-	ld [$2000],a
+	ld a, BANK(AddItemToInventory_)
+	ldh [H_LOADEDROMBANK], a
+	ld [$2000], a
 	call AddItemToInventory_
 	pop bc
-	ld a,b
-	ldh [H_LOADEDROMBANK],a
-	ld [$2000],a
+	ld a, b
+	ldh [H_LOADEDROMBANK], a
+	ld [$2000], a
 	pop bc
 	ret
 
@@ -1626,14 +1626,14 @@ DisplayChooseQuantityMenu:: ; 2d57 (0:2d57)
 	ld c, $03
 	ld a, [wcf96]
 	ld b, a
-	ld hl, $ff9f ; total price
+	ld hl, hMoney ; total price
 ; initialize total price to 0
 	xor a
 	ld [hli], a
 	ld [hli], a
 	ld [hl], a
 .addLoop ; loop to multiply the individual price by the quantity to get the total price
-	ld de, $ffa1
+	ld de, hMoney + 2
 	ld hl, hItemPrice + 2
 	push bc
 	predef AddBCDPredef ; add the individual price to the current sum
@@ -1651,16 +1651,16 @@ DisplayChooseQuantityMenu:: ; 2d57 (0:2d57)
 	predef DivideBCDPredef3 ; halves the price
 ; store the halved price
 	ldh a, [$ffa2]
-	ldh [$ff9f], a
+	ldh [hMoney], a
 	ldh a, [$ffa3]
-	ldh [$ffa0], a
+	ldh [hMoney + 1], a
 	ldh a, [$ffa4]
-	ldh [$ffa1], a
+	ldh [hMoney + 2], a
 .skipHalvingPrice
 	hlCoord 12, 10
 	ld de, SpacesBetweenQuantityAndPriceText
 	call PlaceString
-	ld de, $ff9f ; total price
+	ld de, hMoney ; total price
 	ld c, $a3
 	call PrintBCDNumber
 	hlCoord 9, 10
@@ -2962,9 +2962,9 @@ GetTrainerName:: ; 359e (0:359e)
 
 HasEnoughMoney::
 ; Check if the player has at least as much
-; money as the 3-byte BCD value at $ff9f.
+; money as the 3-byte BCD value at hMoney.
 	ld de, wPlayerMoney
-	ld hl, $ff9f
+	ld hl, hMoney
 	ld c, 3
 	jp StringCmp
 
