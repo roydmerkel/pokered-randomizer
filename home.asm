@@ -2970,9 +2970,9 @@ HasEnoughMoney::
 
 HasEnoughCoins::
 ; Check if the player has at least as many
-; coins as the 2-byte BCD value at $ffa0.
+; coins as the 2-byte BCD value at hCoins.
 	ld de, wPlayerCoins
-	ld hl, $ffa0
+	ld hl, hCoins
 	ld c, 2
 	jp StringCmp
 

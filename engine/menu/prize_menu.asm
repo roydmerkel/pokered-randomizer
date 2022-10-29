@@ -179,11 +179,11 @@ LoadCoinsToSubtract: ; 528b1 (14:68b1)
 	ld hl, wd141 ; first prize's price
 	add hl, de ; get selected prize's price
 	xor a
-	ldh [$FF9F], a
+	ldh [hUnusedCoinsByte], a
 	ld a, [hli]
-	ldh [$FFA0], a
+	ldh [hCoins], a
 	ld a, [hl]
-	ldh [$FFA1], a
+	ldh [hCoins + 1], a
 	ret
 
 HandlePrizeChoice: ; 528c6 (14:68c6)
@@ -239,7 +239,7 @@ HandlePrizeChoice: ; 528c6 (14:68c6)
 	ret nc
 .SubtractCoins ; 14:692C
 	call LoadCoinsToSubtract
-	ld hl, $FFA1
+	ld hl, hCoins + 1
 	ld de, wPlayerCoins + 1
 	ld c, $02 ; how many bytes
 	predef SubBCDPredef ; subtract coins (BCD daa operations)

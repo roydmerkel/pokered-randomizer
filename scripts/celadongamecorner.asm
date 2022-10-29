@@ -157,12 +157,12 @@ CeladonGameCornerText2: ; 48ca9 (12:4ca9)
 	ld c, $3
 	predef SubBCDPredef
 	xor a
-	ldh [$9f], a
-	ldh [$a0], a
+	ldh [hUnusedCoinsByte], a
+	ldh [hCoins], a
 	ld a, $50
-	ldh [$a1], a
+	ldh [hCoins + 1], a
 	ld de, wPlayerCoins + 1
-	ld hl, $ffa1
+	ld hl, hCoins + 1
 	ld c, $2
 	predef AddBCDPredef
 	call CeladonGameCornerScript_48f1e
@@ -225,12 +225,12 @@ CeladonGameCornerText5: ; 48d4a (12:4d4a)
 	call Has9990Coins
 	jr nc, .asm_98546 ; 0x48d62
 	xor a
-	ldh [$9f], a
-	ldh [$a0], a
+	ldh [hUnusedCoinsByte], a
+	ldh [hCoins], a
 	ld a, $10
-	ldh [$a1], a
+	ldh [hCoins + 1], a
 	ld de, wPlayerCoins + 1
-	ld hl, $ffa1
+	ld hl, hCoins + 1
 	ld c, $2
 	predef AddBCDPredef
 	ld hl, wd77e
@@ -307,12 +307,12 @@ CeladonGameCornerText9: ; 48dd9 (12:4dd9)
 	call Has9990Coins
 	jr nc, .asm_f17c3 ; 0x48df1
 	xor a
-	ldh [$9f], a
-	ldh [$a0], a
+	ldh [hUnusedCoinsByte], a
+	ldh [hCoins], a
 	ld a, $20
-	ldh [$a1], a
+	ldh [hCoins + 1], a
 	ld de, wPlayerCoins + 1
-	ld hl, $ffa1
+	ld hl, hCoins + 1
 	ld c, $2
 	predef AddBCDPredef
 	ld hl, wd77e
@@ -360,12 +360,12 @@ CeladonGameCornerText10: ; 48e3b (12:4e3b)
 	call Has9990Coins
 	jr z, .asm_9505a ; 0x48e53
 	xor a
-	ldh [$9f], a
-	ldh [$a0], a
+	ldh [hUnusedCoinsByte], a
+	ldh [hCoins], a
 	ld a, $20
-	ldh [$a1], a
+	ldh [hCoins + 1], a
 	ld de, wPlayerCoins + 1
-	ld hl, $ffa1
+	ld hl, hCoins + 1
 	ld c, $2
 	predef AddBCDPredef
 	ld hl, wd77e
@@ -514,7 +514,7 @@ GameCornerBlankText2: ; 48f8d (12:4f8d)
 
 Has9990Coins: ; 48f95 (12:4f95)
 	ld a, $99
-	ldh [$ffa0], a
+	ldh [hCoins], a
 	ld a, $90
-	ldh [$ffa1], a
+	ldh [hCoins + 1], a
 	jp HasEnoughCoins
