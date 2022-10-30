@@ -746,7 +746,7 @@ HandleBlackOut::
 	ld hl, wd72e
 	res 5, [hl]
 	ld a, Bank(ResetStatusAndHalveMoneyOnBlackout) ; also Bank(SpecialWarpIn) and Bank(SpecialEnterMap)
-	ldh [H_LOADEDROMBANK], a
+	ldh [hLoadedROMBank], a
 	ld [MBC1RomBank], a
 	call ResetStatusAndHalveMoneyOnBlackout
 	call SpecialWarpIn
@@ -787,7 +787,7 @@ HandleFlyWarpOrDungeonWarp::
 	res 5, [hl] ; forced to ride bike
 	call LeaveMapAnim
 	ld a, Bank(SpecialWarpIn)
-	ldh [H_LOADEDROMBANK], a
+	ldh [hLoadedROMBank], a
 	ld [$2000], a
 	call SpecialWarpIn
 	jp SpecialEnterMap
@@ -1370,10 +1370,10 @@ TilePairCollisionsWater:: ; 0ca0 (0:0ca0)
 
 ; this builds a tile map from the tile block map based on the current X/Y coordinates of the player's character
 LoadCurrentMapView:: ; 0caa (0:0caa)
-	ldh a, [H_LOADEDROMBANK]
+	ldh a, [hLoadedROMBank]
 	push af
 	ld a, [W_TILESETBANK] ; tile data ROM bank
-	ldh [H_LOADEDROMBANK], a
+	ldh [hLoadedROMBank], a
 	ld [$2000], a ; switch to ROM bank that contains tile data
 	ld a, [wCurrentTileBlockMapViewPointer] ; address of upper left corner of current map view
 	ld e, a
@@ -1455,7 +1455,7 @@ LoadCurrentMapView:: ; 0caa (0:0caa)
 	dec b
 	jr nz, .rowLoop2
 	pop af
-	ldh [H_LOADEDROMBANK], a
+	ldh [hLoadedROMBank], a
 	ld [$2000], a ; restore previous ROM bank
 	ret
 
@@ -2288,10 +2288,10 @@ LoadMapHeader:: ; 107c (0:107c)
 	ld a, [W_CURMAP]
 	ld c, a
 	ld b, $00
-	ldh a, [H_LOADEDROMBANK]
+	ldh a, [hLoadedROMBank]
 	push af
 	ld a, BANK(MapSongBanks)
-	ldh [H_LOADEDROMBANK], a
+	ldh [hLoadedROMBank], a
 	ld [$2000], a
 	ld hl, MapSongBanks
 	add hl, bc
@@ -2301,7 +2301,7 @@ LoadMapHeader:: ; 107c (0:107c)
 	ld a, [hl]
 	ld [wd35c], a ; music 2
 	pop af
-	ldh [H_LOADEDROMBANK], a
+	ldh [hLoadedROMBank], a
 	ld [$2000], a
 	ret
 
@@ -2319,7 +2319,7 @@ CopyMapConnectionHeader:: ; 1238 (0:1238)
 
 ; function to load map data
 LoadMapData:: ; 1241 (0:1241)
-	ldh a, [H_LOADEDROMBANK]
+	ldh a, [hLoadedROMBank]
 	push af
 	call DisableLCD
 	ld a, $98
@@ -2374,7 +2374,7 @@ LoadMapData:: ; 1241 (0:1241)
 	call Func_2312 ; music related
 .restoreRomBank
 	pop af
-	ldh [H_LOADEDROMBANK], a
+	ldh [hLoadedROMBank], a
 	ld [$2000], a
 	ret
 
@@ -2393,7 +2393,7 @@ SwitchToMapRomBank:: ; 12bc (0:12bc)
 	ldh [$ffe8], a ; save map ROM bank
 	call BankswitchBack
 	ldh a, [$ffe8]
-	ldh [H_LOADEDROMBANK], a
+	ldh [hLoadedROMBank], a
 	ld [$2000], a ; switch to map ROM bank
 	pop bc
 	pop hl

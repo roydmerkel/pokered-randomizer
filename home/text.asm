@@ -684,14 +684,14 @@ TextCommand0D:: ; 1c9a (0:1c9a)
 ; BB = bank
 TextCommand17:: ; 1ca3 (0:1ca3)
 	pop hl
-	ldh a, [H_LOADEDROMBANK]
+	ldh a, [hLoadedROMBank]
 	push af
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
 	ld d, a
 	ld a, [hli]
-	ldh [H_LOADEDROMBANK], a
+	ldh [hLoadedROMBank], a
 	ld [$2000], a
 	push hl
 	ld l, e
@@ -699,7 +699,7 @@ TextCommand17:: ; 1ca3 (0:1ca3)
 	call TextCommandProcessor
 	pop hl
 	pop af
-	ldh [H_LOADEDROMBANK], a
+	ldh [hLoadedROMBank], a
 	ld [$2000], a
 	jp NextTextCommand
 

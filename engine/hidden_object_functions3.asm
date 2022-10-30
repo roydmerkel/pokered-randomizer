@@ -129,7 +129,7 @@ TownMapText: ; fc12 (3:7c12)
 	res 6, [hl]
 	ld de, TextScriptEnd
 	push de
-	ldh a, [H_LOADEDROMBANK]
+	ldh a, [hLoadedROMBank]
 	push af
 	jp CloseTextDisplay
 

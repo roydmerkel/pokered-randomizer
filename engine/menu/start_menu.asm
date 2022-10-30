@@ -1,6 +1,6 @@
 DisplayStartMenu:: ; 2acd (0:2acd)
 	ld a, $04 ; hardcoded Bank, not sure what's it refers to
-	ldh [H_LOADEDROMBANK], a
+	ldh [hLoadedROMBank], a
 	ld [$2000], a ; ROM bank 4
 	ld a, [wWalkBikeSurfState] ; walking/biking/surfing
 	ld [wWalkBikeSurfStateCopy], a

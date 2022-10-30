@@ -6486,7 +6486,7 @@ LoadPlayerBackPic: ; 3ec92 (f:6c92)
 	ld [$4000], a
 	ld hl, vSprites
 	ld de, S_SPRITEBUFFER1
-	ldh a, [H_LOADEDROMBANK]
+	ldh a, [hLoadedROMBank]
 	ld b, a
 	ld c, 7 * 7
 	call CopyVideoData
@@ -7141,7 +7141,7 @@ LoadMonBackPic:
 	ld hl, vSprites
 	ld de, vBackPic
 	ld c, (2*SPRITEBUFFERSIZE)/16 ; count of 16-byte chunks to be copied
-	ldh a, [H_LOADEDROMBANK]
+	ldh a, [hLoadedROMBank]
 	ld b, a
 	jp CopyVideoData
 

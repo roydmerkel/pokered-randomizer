@@ -213,7 +213,7 @@ PewterCityText3: ; 193b1 (6:53b1)
 	ld [wNPCMovementScriptFunctionNum], a
 	ld a, $2
 	ld [wNPCMovementScriptPointerTableNum], a
-	ldh a, [$b8]
+	ldh a, [hLoadedROMBank]
 	ld [wNPCMovementScriptBank], a
 	ld a, $3
 	ld [wSpriteIndex], a
@@ -277,7 +277,7 @@ PewterCityText5: ; 19436 (6:5436)
 	ld [wNPCMovementScriptFunctionNum], a
 	ld a, $3
 	ld [wNPCMovementScriptPointerTableNum], a
-	ldh a, [$b8]
+	ldh a, [hLoadedROMBank]
 	ld [wNPCMovementScriptBank], a
 	ld a, $5
 	ld [wSpriteIndex], a

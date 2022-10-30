@@ -2,10 +2,10 @@
 ; bank is given in a, sprite input stream is pointed to in W_SPRITEINPUTPTR
 UncompressSpriteData:: ; 24fd (0:24fd)
 	ld b, a
-	ldh a, [H_LOADEDROMBANK]
+	ldh a, [hLoadedROMBank]
 	push af
 	ld a, b
-	ldh [H_LOADEDROMBANK], a
+	ldh [hLoadedROMBank], a
 	ld [$2000], a
 	ld a, $a
 	ld [$0], a
@@ -13,7 +13,7 @@ UncompressSpriteData:: ; 24fd (0:24fd)
 	ld [$4000], a
 	call _UncompressSpriteData
 	pop af
-	ldh [H_LOADEDROMBANK], a
+	ldh [hLoadedROMBank], a
 	ld [$2000], a
 	ret
 

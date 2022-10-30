@@ -40,29 +40,29 @@ OakSpeech: ; 6115 (1:6115)
 	ld a, SFX_STOP_ALL_MUSIC
 	call PlaySound ; stop music
 	ld a, 0 ; 0 ; BANK(Music_Routes2) ; bank of song
-	ld c,a
+	ld c, a
 	ld a, MUSIC_ROUTES2 ; song #
 	call PlayMusic  ; plays music
 	call ClearScreen
 	call LoadTextBoxTilePatterns
 	call SetDefaultNames
 	predef InitPlayerData2
-	ld hl,wNumBoxItems
+	ld hl, wNumBoxItems
 	ld a, [OWItemBox]
-	ld [wcf91],a
-	ld a,1
-	ld [wcf96],a
+	ld [wcf91], a
+	ld a, 1
+	ld [wcf96], a
 	call AddItemToInventory  ; give one potion
-	ld a,[W_ANIMATIONID]
-	ld [wDestinationMap],a
+	ld a, [W_ANIMATIONID]
+	ld [wDestinationMap], a
 	call SpecialWarpIn
 	xor a
-	ldh [hTilesetType],a
-	ld a,[wd732]
-	bit 1,a ; XXX when is bit 1 set?
-	jp nz,Func_61bc ; easter egg: skip the intro
+	ldh [hTilesetType], a
+	ld a, [wd732]
+	bit 1, a ; XXX when is bit 1 set?
+	jp nz, Func_61bc ; easter egg: skip the intro
 	
-	;ld de,ProfOakPic
+	;ld de, ProfOakPic
 	;ld bc, (Bank(ProfOakPic) << 8) | $00
 	ld a, PROF_OAK
 	ld [W_TRAINERCLASS], a
@@ -75,96 +75,96 @@ OakSpeech: ; 6115 (1:6115)
 	
 	call IntroPredef3B   ; displays Oak pic?
 	call FadeInIntroPic
-	ld hl,OakSpeechText1
+	ld hl, OakSpeechText1
 	call PrintText      ; prints text box
 	call GBFadeOutToWhite
 	call ClearScreen
-	ld a,[OakSpeechPokemon]
-	ld [wd0b5],a    ; pic displayed is stored at this location
-	ld [wcf91],a
+	ld a, [OakSpeechPokemon]
+	ld [wd0b5], a    ; pic displayed is stored at this location
+	ld [wcf91], a
 	call GetMonHeader      ; this is also related to the pic
 	hlCoord 6, 4     ; position on tilemap the pic is displayed
 	call LoadFlippedFrontSpriteByMonIndex      ; displays pic?
 	call MovePicLeft
-	ld hl,OakSpeechText2
+	ld hl, OakSpeechText2
 	call PrintText      ; Prints text box
 	call GBFadeOutToWhite
 	call ClearScreen
-	ld de,RedPicFront
-	ld bc,(Bank(RedPicFront) << 8) | $00
+	ld de, RedPicFront
+	ld bc, (Bank(RedPicFront) << 8) | $00
 	call IntroPredef3B      ; displays player pic?
 	call MovePicLeft
-	ld hl,IntroducePlayerText
+	ld hl, IntroducePlayerText
 	call PrintText
 	call LoadDefaultNamesPlayer ; brings up NewName/Red/etc menu
 	call GBFadeOutToWhite
 	call ClearScreen
-	ld de,Rival1Pic
-	ld bc,(Bank(Rival1Pic) << 8) | $00
+	ld de, Rival1Pic
+	ld bc, (Bank(Rival1Pic) << 8) | $00
 	call IntroPredef3B ; displays rival pic
 	call FadeInIntroPic
-	ld hl,IntroduceRivalText
+	ld hl, IntroduceRivalText
 	call PrintText
 	call LoadDefaultNamesRival
 
 Func_61bc: ; 61bc (1:61bc)
 	call GBFadeOutToWhite
 	call ClearScreen
-	ld de,RedPicFront
-	ld bc,(Bank(RedPicFront) << 8) | $00
+	ld de, RedPicFront
+	ld bc, (Bank(RedPicFront) << 8) | $00
 	call IntroPredef3B
 	call GBFadeInFromWhite
-	ld a,[wd72d]
+	ld a, [wd72d]
 	and a
-	jr nz,.next
-	ld hl,OakSpeechText3
+	jr nz, .next
+	ld hl, OakSpeechText3
 	call PrintText
 .next
-	ldh a,[H_LOADEDROMBANK]
+	ldh a, [hLoadedROMBank]
 	push af
-	ld a,RBSFX_02_48
+	ld a, RBSFX_02_48
 	call PlaySound
 	pop af
-	ldh [H_LOADEDROMBANK],a
-	ld [$2000],a
-	ld c,4
+	ldh [hLoadedROMBank], a
+	ld [$2000], a
+	ld c, 4
 	call DelayFrames
-	ld de,RedSprite ; $4180
-	ld hl,vSprites
-	ld bc,(BANK(RedSprite) << 8) | $0C
+	ld de, RedSprite ; $4180
+	ld hl, vSprites
+	ld bc, (BANK(RedSprite) << 8) | $0C
 	call CopyVideoData
-	ld de,ShrinkPic1
-	ld bc,(BANK(ShrinkPic1) << 8) | $00
+	ld de, ShrinkPic1
+	ld bc, (BANK(ShrinkPic1) << 8) | $00
 	call IntroPredef3B
-	ld c,4
+	ld c, 4
 	call DelayFrames
-	ld de,ShrinkPic2
-	ld bc,(BANK(ShrinkPic2) << 8) | $00
+	ld de, ShrinkPic2
+	ld bc, (BANK(ShrinkPic2) << 8) | $00
 	call IntroPredef3B
 	call ResetPlayerSpriteData
-	ldh a,[H_LOADEDROMBANK]
+	ldh a, [hLoadedROMBank]
 	push af
-	ld a,0 ;  0 ; BANK(Music_PalletTown)
-	ld [wAudioROMBank],a
-	ld [wAudioSavedROMBank],a
+	ld a, 0 ;  0 ; BANK(Music_PalletTown)
+	ld [wAudioROMBank], a
+	ld [wAudioSavedROMBank], a
 	ld a, 10
-	ld [wMusicHeaderPointer],a
+	ld [wMusicHeaderPointer], a
 	ld a, SFX_STOP_ALL_MUSIC
-	ld [wNewSoundID],a
+	ld [wNewSoundID], a
 	call PlaySound ; stop music
 	pop af
-	ldh [H_LOADEDROMBANK],a
-	ld [$2000],a
+	ldh [hLoadedROMBank], a
+	ld [$2000], a
 	ld c, 20
 	call DelayFrames
 	hlCoord 6, 5
-	ld b,7
-	ld c,7
+	ld b, 7
+	ld c, 7
 	call ClearScreenArea
 	call LoadTextBoxTilePatterns
-	ld a,1
-	ld [wUpdateSpritesEnabled],a
-	ld c,50
+	ld a, 1
+	ld [wUpdateSpritesEnabled], a
+	ld c, 50
 	call DelayFrames
 	call GBFadeOutToWhite
 	jp ClearScreen
@@ -187,15 +187,15 @@ OakSpeechText3: ; 626c (1:626c)
 	db "@"
 
 FadeInIntroPic: ; 6271 (1:6271)
-	ld hl,IntroFadePalettes
-	ld b,6
+	ld hl, IntroFadePalettes
+	ld b, 6
 .next
-	ld a,[hli]
-	ldh [rBGP],a
-	ld c,10
+	ld a, [hli]
+	ldh [rBGP], a
+	ld c, 10
 	call DelayFrames
 	dec b
-	jr nz,.next
+	jr nz, .next
 	ret
 
 IntroFadePalettes: ; 6282 (1:6282)
@@ -207,19 +207,19 @@ IntroFadePalettes: ; 6282 (1:6282)
 	db %11100100
 
 MovePicLeft: ; 6288 (1:6288)
-	ld a,119
-	ldh [rWX],a
+	ld a, 119
+	ldh [rWX], a
 	call DelayFrame
 
-	ld a,$E4
-	ldh [rBGP],a
+	ld a, $E4
+	ldh [rBGP], a
 .next
 	call DelayFrame
-	ldh a,[rWX]
+	ldh a, [rWX]
 	sub 8
 	cp $FF
 	ret z
-	ldh [rWX],a
+	ldh [rWX], a
 	jr .next
 
 Predef3B: ; 62a1 (1:62a1)
@@ -227,21 +227,21 @@ Predef3B: ; 62a1 (1:62a1)
 IntroPredef3B: ; 62a4 (1:62a4)
 ; bank of sprite given in b
 	push bc
-	ld a,b
+	ld a, b
 	call UncompressSpriteFromDE
-	ld hl,S_SPRITEBUFFER1
-	ld de,S_SPRITEBUFFER0
-	ld bc,$310
+	ld hl, S_SPRITEBUFFER1
+	ld de, S_SPRITEBUFFER0
+	ld bc, $310
 	call CopyData
-	ld de,vFrontPic
+	ld de, vFrontPic
 	call InterlaceMergeSpriteBuffers
 	pop bc
-	ld a,c
+	ld a, c
 	and a
 	hlCoord 15, 1
-	jr nz,.next
+	jr nz, .next
 	hlCoord 6, 4
 .next
 	xor a
-	ldh [$FFE1],a
+	ldh [$FFE1], a
 	predef_jump Func_3f0c6

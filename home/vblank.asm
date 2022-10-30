@@ -5,7 +5,7 @@ VBlank::
 	push de
 	push hl
 
-	ldh a, [H_LOADEDROMBANK]
+	ldh a, [hLoadedROMBank]
 	ld [wd122], a
 
 	ldh a, [hSCX]
@@ -28,7 +28,7 @@ VBlank::
 	call UpdateMovingBgTiles
 	call $ff80 ; hOAMDMA
 	ld a, Bank(PrepareOAMData)
-	ldh [H_LOADEDROMBANK], a
+	ldh [hLoadedROMBank], a
 	ld [MBC1RomBank], a
 	call PrepareOAMData
 
@@ -55,7 +55,7 @@ VBlank::
 
     call UpdateSound
 ;	ld a, [wAudioROMBank] ; music ROM bank
-;	ldh [H_LOADEDROMBANK], a
+;	ldh [hLoadedROMBank], a
 ;	ld [MBC1RomBank], a
 ;
 ;	cp BANK(Music2_UpdateMusic)
@@ -81,7 +81,7 @@ VBlank::
 	call z, ReadJoypad
 
 	ld a, [wd122]
-	ldh [H_LOADEDROMBANK], a
+	ldh [hLoadedROMBank], a
 	ld [MBC1RomBank], a
 
 	pop hl
