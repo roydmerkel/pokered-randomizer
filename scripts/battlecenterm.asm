@@ -1,6 +1,6 @@
 BattleCenterMScript: ; 4fd10 (13:7d10)
 	call EnableAutoTextBoxDrawing
-	ldh a, [$ffaa]
+	ldh a, [hSerialConnectionStatus]
 	cp $2
 	ld a, $8
 	jr z, .asm_4fd1d ; 0x4fd19 $2
@@ -21,7 +21,7 @@ BattleCenterMScript: ; 4fd10 (13:7d10)
 	ld [hl], a
 	ld a, $8
 	ld [wSpriteStateData1 + $19], a
-	ldh a, [$ffaa]
+	ldh a, [hSerialConnectionStatus]
 	cp $2
 	ret z
 	ld a, 7

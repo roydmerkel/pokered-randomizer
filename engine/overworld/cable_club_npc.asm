@@ -16,20 +16,20 @@ CableClubNPC: ; 71c5 (1:71c5)
 Func_71e1: ; 71e1 (1:71e1)
 	ld a, $1
 	ld [wMenuJoypadPollCount], a
-	ld a, $5a
+	ld a, 90
 	ld [wcc47], a
 .asm_71eb
-	ldh a, [$ffaa]
+	ldh a, [hSerialConnectionStatus]
 	cp $2
 	jr z, .asm_721a ; 0x71ef $29
 	cp $1
 	jr z, .asm_721a ; 0x71f3 $25
 	ld a, $ff
-	ldh [$ffaa], a
+	ldh [hSerialConnectionStatus], a
 	ld a, $2
 	ldh [rSB], a
 	xor a
-	ldh [$ffad], a
+	ldh [hSerialReceiveData], a
 	ld a, $80
 	ldh [rSC], a
 	ld a, [wcc47]
@@ -69,7 +69,7 @@ Func_71e1: ; 71e1 (1:71e1)
 	ld [hli], a
 	xor a
 	ld [hl], a
-	ldh [$ffa9], a
+	ldh [hSerialReceivedNewData], a
 	ld [wcc42], a
 	call Func_227f
 	ld hl, wcc47
@@ -149,11 +149,11 @@ CableClubNPCText6: ; 72d2 (1:72d2)
 Func_72d7: ; 72d7 (1:72d7)
 	call Delay3
 	ld a, $ff
-	ldh [$ffaa], a
+	ldh [hSerialConnectionStatus], a
 	ld a, $2
 	ldh [rSB], a
 	xor a
-	ldh [$ffad], a
+	ldh [hSerialReceiveData], a
 	ld a, $80
 	ldh [rSC], a
 	ret

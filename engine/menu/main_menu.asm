@@ -203,7 +203,7 @@ LinkMenu: ; 5c0a (1:5c0a)
 	ld a, [wcc42]
 	and $c
 	jr z, .asm_5c98
-	ldh a, [$ffaa]
+	ldh a, [hSerialConnectionStatus]
 	cp $2
 	jr z, .asm_5ca1
 .asm_5c98
@@ -212,7 +212,7 @@ LinkMenu: ; 5c0a (1:5c0a)
 	and $3
 	ld [wCurrentMenuItem], a ; wCurrentMenuItem
 .asm_5ca1
-	ldh a, [$ffaa]
+	ldh a, [hSerialConnectionStatus]
 	cp $2
 	jr nz, .asm_5cb1
 	call DelayFrame

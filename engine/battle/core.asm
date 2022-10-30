@@ -519,7 +519,7 @@ MainInBattleLoop: ; 3c233 (f:4233)
 	jr nc, .playerMovesFirst ; if player is faster
 	jr .enemyMovesFirst ; if enemy is faster
 .speedEqual
-	ldh a, [$ffaa]
+	ldh a, [hSerialConnectionStatus]
 	cp $2
 	jr z, .invertOutcome
 	call BattleRandom

@@ -95,17 +95,17 @@ Func_5345: ; 5345
 	ld a, $ff
 	ld [de], a
 	call Func_227f
-	ldh a, [$ffaa]
+	ldh a, [hSerialConnectionStatus]
 	cp $2
 	jr nz, .asm_53d2
 	call Delay3
 	xor a
-	ldh [$ffac], a
+	ldh [hSerialSendData], a
 	ld a, $81
 	ldh [rSC], a
 	call DelayFrame
 	xor a
-	ldh [$ffac], a
+	ldh [hSerialSendData], a
 	ld a, $81
 	ldh [rSC], a
 .asm_53d2
@@ -132,7 +132,7 @@ Func_5345: ; 5345
 	ldh [rIE], a ; $ffff
 	ld a, SFX_STOP_ALL_MUSIC
 	call PlaySound
-	ldh a, [$ffaa]
+	ldh a, [hSerialConnectionStatus]
 	cp $2
 	jr z, .asm_5431
 	ld hl, wTileMapBackup2
@@ -254,7 +254,7 @@ Func_5345: ; 5345
 	ld [wcc38], a
 	ld a, SFX_STOP_ALL_MUSIC
 	call PlaySound
-	ldh a, [$ffaa]
+	ldh a, [hSerialConnectionStatus]
 	cp $2
 	ld c, 66
 	call z, DelayFrames
@@ -818,7 +818,7 @@ TradeCenter_Trade:
 	call LoadHpBarAndStatusTilePatterns
 	xor a
 	ld [wcc5b], a
-	ldh a, [$ffaa]
+	ldh a, [hSerialConnectionStatus]
 	cp $1
 	jr z, .asm_59d9 ; 0x59d0 $7
 	predef Func_410e2

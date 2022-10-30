@@ -3,14 +3,14 @@ Serial:: ; 2125 (0:2125)
 	push bc
 	push de
 	push hl
-	ldh a, [$ffaa]
+	ldh a, [hSerialConnectionStatus]
 	inc a
 	jr z, .asm_2142
 	ldh a, [rSB]
-	ldh [$ffad], a
-	ldh a, [$ffac]
+	ldh [hSerialReceiveData], a
+	ldh a, [hSerialSendData]
 	ldh [rSB], a
-	ldh a, [$ffaa]
+	ldh a, [hSerialConnectionStatus]
 	cp $2
 	jr z, .asm_2162
 	ld a, $80
@@ -18,8 +18,8 @@ Serial:: ; 2125 (0:2125)
 	jr .asm_2162
 .asm_2142
 	ldh a, [rSB]
-	ldh [$ffad], a
-	ldh [$ffaa], a
+	ldh [hSerialReceiveData], a
+	ldh [hSerialConnectionStatus], a
 	cp $2
 	jr z, .asm_215f
 	xor a
@@ -38,9 +38,9 @@ Serial:: ; 2125 (0:2125)
 	ldh [rSB], a
 .asm_2162
 	ld a, $1
-	ldh [$ffa9], a
+	ldh [hSerialReceivedNewData], a
 	ld a, $fe
-	ldh [$ffac], a
+	ldh [hSerialSendData], a
 	pop hl
 	pop de
 	pop bc
@@ -48,20 +48,20 @@ Serial:: ; 2125 (0:2125)
 	reti
 
 Func_216f:: ; 216f (0:216f)
-	ld a, $1
-	ldh [$ffab], a
+	ld a, 1
+	ldh [hSerialIgnoringInitialData], a
 .asm_2173
 	ld a, [hl]
-	ldh [$ffac], a
+	ldh [hSerialSendData], a
 	call Func_219a
 	push bc
 	ld b, a
 	inc hl
-	ld a, $30
+	ld a, 48
 .asm_217e
 	dec a
 	jr nz, .asm_217e
-	ldh a, [$ffab]
+	ldh a, [hSerialIgnoringInitialData]
 	and a
 	ld a, b
 	pop bc
@@ -70,7 +70,7 @@ Func_216f:: ; 216f (0:216f)
 	cp $fd
 	jr nz, .asm_2173
 	xor a
-	ldh [$ffab], a
+	ldh [hSerialIgnoringInitialData], a
 	jr .asm_2173
 .asm_2192
 	ld [de], a
@@ -83,17 +83,17 @@ Func_216f:: ; 216f (0:216f)
 
 Func_219a:: ; 219a (0:219a)
 	xor a
-	ldh [$ffa9], a
-	ldh a, [$ffaa]
+	ldh [hSerialReceivedNewData], a
+	ldh a, [hSerialConnectionStatus]
 	cp $2
 	jr nz, .asm_21a7
 	ld a, $81
 	ldh [rSC], a
 .asm_21a7
-	ldh a, [$ffa9]
+	ldh a, [hSerialReceivedNewData]
 	and a
 	jr nz, .asm_21f1
-	ldh a, [$ffaa]
+	ldh a, [hSerialConnectionStatus]
 	cp $1
 	jr nz, .asm_21cc
 	call Func_2237
@@ -123,16 +123,16 @@ Func_219a:: ; 219a (0:219a)
 	dec a
 	ld [wd075], a
 	jr nz, .asm_21a7
-	ldh a, [$ffaa]
+	ldh a, [hSerialConnectionStatus]
 	cp $1
 	jr z, .asm_21f1
-	ld a, $ff
+	ld a, 255
 .asm_21ee
 	dec a
 	jr nz, .asm_21ee
 .asm_21f1
 	xor a
-	ldh [$ffa9], a
+	ldh [hSerialReceivedNewData], a
 	ldh a, [rIE] ; $ffff
 	and $f
 	sub $8
@@ -141,7 +141,7 @@ Func_219a:: ; 219a (0:219a)
 	ld a, $50
 	ld [wd075], a
 .asm_2204
-	ldh a, [$ffad]
+	ldh a, [hSerialReceiveData]
 	cp $fe
 	ret nz
 	call Func_2237
@@ -165,12 +165,12 @@ Func_219a:: ; 219a (0:219a)
 	ld a, $fe
 	ret z
 	ld a, [hl]
-	ldh [$ffac], a
+	ldh [hSerialSendData], a
 	call DelayFrame
 	jp Func_219a
 
 Func_2231:: ; 2231 (0:2231)
-	ld a, $f
+	ld a, 15
 .asm_2233
 	dec a
 	jr nz, .asm_2233
@@ -193,20 +193,20 @@ Func_223f:: ; 223f (0:223f)
 Func_2247:: ; 2247 (0:2247)
 	ld hl, wcc42
 	ld de, wcc3d
-	ld c, $2
-	ld a, $1
-	ldh [$ffab], a
+	ld c, 2
+	ld a, 1
+	ldh [hSerialIgnoringInitialData], a
 .asm_2253
 	call DelayFrame
 	ld a, [hl]
-	ldh [$ffac], a
+	ldh [hSerialSendData], a
 	call Func_219a
 	ld b, a
 	inc hl
-	ldh a, [$ffab]
+	ldh a, [hSerialIgnoringInitialData]
 	and a
-	ld a, $0
-	ldh [$ffab], a
+	ld a, 0
+	ldh [hSerialIgnoringInitialData], a
 	jr nz, .asm_2253
 	ld a, b
 	ld [de], a
@@ -245,13 +245,13 @@ Func_227f:: ; 227f (0:227f)
 	ld a, [wcc3e]
 	inc a
 	jr z, .asm_2284
-	ld b, $a
+	ld b, 10
 .asm_22a8
 	call DelayFrame
 	call Func_22c3
 	dec b
 	jr nz, .asm_22a8
-	ld b, $a
+	ld b, 10
 .asm_22b3
 	call DelayFrame
 	call Func_22ed
@@ -265,20 +265,20 @@ Func_22c3:: ; 22c3 (0:22c3)
 	call asm_22d7
 	ld a, [wcc42]
 	add $60
-	ldh [$ffac], a
-	ldh a, [$ffaa]
+	ldh [hSerialSendData], a
+	ldh a, [hSerialConnectionStatus]
 	cp $2
 	jr nz, asm_22d7
 	ld a, $81
 	ldh [rSC], a
 asm_22d7:: ; 22d7 (0:22d7)
-	ldh a, [$ffad]
+	ldh a, [hSerialReceiveData]
 	ld [wcc3d], a
 	and $f0
 	cp $60
 	ret nz
 	xor a
-	ldh [$ffad], a
+	ldh [hSerialReceiveData], a
 	ld a, [wcc3d]
 	and $f
 	ld [wcc3e], a
@@ -286,8 +286,8 @@ asm_22d7:: ; 22d7 (0:22d7)
 
 Func_22ed:: ; 22ed (0:22ed)
 	xor a
-	ldh [$ffac], a
-	ldh a, [$ffaa]
+	ldh [hSerialSendData], a
+	ldh a, [hSerialConnectionStatus]
 	cp $2
 	ret nz
 	ld a, $81
@@ -298,7 +298,7 @@ Func_22fa:: ; 22fa (0:22fa)
 	ld a, $2
 	ldh [rSB], a
 	xor a
-	ldh [$ffad], a
+	ldh [hSerialReceiveData], a
 	ld a, $80
 	ldh [rSC], a
 	ret

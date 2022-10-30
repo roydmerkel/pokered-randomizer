@@ -511,7 +511,7 @@ MonWasReleasedText: ; 0x21820
 	db "@"
 
 PrintJustAMomentText1:: ; 5824 (8:5825)
-	ldh a, [$ffaa]
+	ldh a, [hSerialConnectionStatus]
 	cp $1
 	ret z
 	ld a, [wSpriteStateData1 + 9]
@@ -529,7 +529,7 @@ PrintJustAMomentText1:: ; 5824 (8:5825)
 	jp PrintPredefTextID
 
 PrintJustAMomentText2:: ; 5845 (8:5845)
-	ldh a, [$ffaa]
+	ldh a, [hSerialConnectionStatus]
 	cp $2
 	ret z
 	ld a, [wSpriteStateData1 + 9]

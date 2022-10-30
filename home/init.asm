@@ -81,7 +81,7 @@ rLCDC_DEFAULT EQU %11100011
 	ldh [rWX], a
 
 	ld a, $ff
-	ldh [$ffaa], a
+	ldh [hSerialConnectionStatus], a
 
 	ld h, vBGMap0 / $100
 	call ClearBgMap

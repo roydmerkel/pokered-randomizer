@@ -599,31 +599,31 @@ INCLUDE "engine/oak_speech.asm"
 SpecialWarpIn: ; 62ce (1:62ce)
 	call LoadSpecialWarpData
 	predef LoadTilesetHeader
-	ld hl,wd732
-	bit 2,[hl] ; dungeon warp or fly warp?
-	res 2,[hl]
-	jr z,.next
+	ld hl, wd732
+	bit 2, [hl] ; dungeon warp or fly warp?
+	res 2, [hl]
+	jr z, .next
 ; if dungeon warp or fly warp
-	ld a,[wDestinationMap]
+	ld a, [wDestinationMap]
 	jr .next2
 .next
-	bit 1,[hl]
-	jr z,.next3
+	bit 1, [hl]
+	jr z, .next3
 	call EmptyFunc
 .next3
-	ld a,0
+	ld a, 0
 .next2
-	ld b,a
-	ld a,[wd72d]
+	ld b, a
+	ld a, [wd72d]
 	and a
-	jr nz,.next4
-	ld a,b
+	jr nz, .next4
+	ld a, b
 .next4
-	ld hl,wd732
-	bit 4,[hl] ; dungeon warp?
+	ld hl, wd732
+	bit 4, [hl] ; dungeon warp?
 	ret nz
 ; if not dungeon warp
-	ld [wLastMap],a
+	ld [wLastMap], a
 	ret
 
 ; gets the map ID, tile block map view pointer, tileset, and coordinates
@@ -641,7 +641,7 @@ LoadSpecialWarpData: ; 62ff (1:62ff)
 	cp TRADE_CENTER
 	jr nz, .notTradeCenter
 	ld hl, TradeCenterSpec1
-	ldh a, [$ffaa]
+	ldh a, [hSerialConnectionStatus]
 	cp $2
 	jr z, .copyWarpData
 	ld hl, TradeCenterSpec2
@@ -686,8 +686,8 @@ LoadSpecialWarpData: ; 62ff (1:62ff)
 	ld a, [wWhichDungeonWarp]
 	ld c, a
 	ld hl, DungeonWarpList
-	ld de, $0
-	ld a, $6
+	ld de, 0
+	ld a, 6
 	ld [wd12f], a
 .dungeonWarpListLoop
 	ld a, [hli]
