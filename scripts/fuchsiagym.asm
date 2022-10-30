@@ -177,7 +177,7 @@ FuchsiaGymText1: ; 75534 (1d:5534)
 	ld a, $5
 	ld [W_GYMLEADERNO], a
 	xor a
-	ldh [$b4], a
+	ldh [hJoyHeld], a
 	ld a, $3
 	ld [W_FUCHSIAGYMCURSCRIPT], a
 .asm_e84c6 ; 0x7557e

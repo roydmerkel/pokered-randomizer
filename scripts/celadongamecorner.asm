@@ -415,9 +415,9 @@ CeladonGameCornerText11: ; 48e9d (12:4e9d)
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
 	xor a
-	ldh [$b4], a
-	ldh [$b3], a
-	ldh [$b2], a
+	ldh [hJoyHeld], a
+	ldh [hJoyPressed], a
+	ldh [hJoyReleased], a
 	ld a, $1
 	ld [W_CELADONGAMECORNERCURSCRIPT], a
 	jp TextScriptEnd

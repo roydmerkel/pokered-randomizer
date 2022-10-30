@@ -167,7 +167,7 @@ VermilionGymText1: ; 5cb1d (17:4b1d)
 	ld a, $3
 	ld [W_GYMLEADERNO], a
 	xor a
-	ldh [$b4], a
+	ldh [hJoyHeld], a
 	ld a, $3
 	ld [W_VERMILIONGYMCURSCRIPT], a
 	ld [W_CURMAPSCRIPT], a

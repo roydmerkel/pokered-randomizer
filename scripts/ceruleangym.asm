@@ -137,7 +137,7 @@ CeruleanGymText1: ; 5c771 (17:4771)
 	ld a, $2
 	ld [W_GYMLEADERNO], a
 	xor a
-	ldh [$b4], a
+	ldh [hJoyHeld], a
 	ld a, $3
 	ld [W_CERULEANGYMCURSCRIPT], a
 .asm_95b04 ; 0x5c7bb

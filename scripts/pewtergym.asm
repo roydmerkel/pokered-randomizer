@@ -137,7 +137,7 @@ PewterGymText1: ; 5c44e (17:444e)
 	ld a, $1
 	ld [W_GYMLEADERNO], a
 	xor a
-	ldh [$b4], a
+	ldh [hJoyHeld], a
 	ld a, $3
 	ld [W_PEWTERGYMCURSCRIPT], a
 	ld [W_CURMAPSCRIPT], a

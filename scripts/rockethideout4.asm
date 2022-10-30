@@ -136,7 +136,7 @@ RocketHideout4Text1: ; 4553a (11:553a)
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
 	xor a
-	ldh [$b4], a
+	ldh [hJoyHeld], a
 	ld a, $3
 	ld [W_ROCKETHIDEOUT4CURSCRIPT], a
 	ld [W_CURMAPSCRIPT], a

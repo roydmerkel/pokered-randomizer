@@ -3,7 +3,7 @@ _Joypad::
 	cp A_BUTTON + B_BUTTON + SELECT + START ; soft reset
 	jp z, TrySoftReset
 	ld b, a
-	ldh a, [hJoyHeldLast]
+	ldh a, [hJoyLast]
 	ld e, a
 	xor b
 	ld d, a
@@ -13,11 +13,11 @@ _Joypad::
 	and b
 	ldh [hJoyPressed], a
 	ld a, b
-	ldh [hJoyHeldLast], a
+	ldh [hJoyLast], a
 	ld a, [wd730]
 	bit 5, a
 	jr nz, DiscardButtonPresses
-	ldh a, [hJoyHeldLast]
+	ldh a, [hJoyLast]
 	ldh [hJoyHeld], a
 	ld a, [wJoyIgnore]
 	and a

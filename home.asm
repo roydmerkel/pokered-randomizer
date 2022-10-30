@@ -172,24 +172,24 @@ CheckForUserInterruption:: ; 12f8 (0:12f8)
 ; INPUT:
 ; a = ID of destination warp within destination map
 LoadDestinationWarpPosition:: ; 1313 (0:1313)
-	ld b,a
-	ldh a,[H_LOADEDROMBANK]
+	ld b, a
+	ldh a, [H_LOADEDROMBANK]
 	push af
-	ld a,[wPredefParentBank]
-	ldh [H_LOADEDROMBANK],a
-	ld [$2000],a
-	ld a,b
+	ld a, [wPredefParentBank]
+	ldh [H_LOADEDROMBANK], a
+	ld [$2000], a
+	ld a, b
 	add a
 	add a
-	ld c,a
-	ld b,0
-	add hl,bc
-	ld bc,4
-	ld de,wCurrentTileBlockMapViewPointer
+	ld c, a
+	ld b, 0
+	add hl, bc
+	ld bc, 4
+	ld de, wCurrentTileBlockMapViewPointer
 	call CopyData
 	pop af
-	ldh [H_LOADEDROMBANK],a
-	ld [$2000],a
+	ldh [H_LOADEDROMBANK], a
+	ld [$2000], a
 	ret
 
 
@@ -2353,7 +2353,7 @@ CheckFightingMapTrainers:: ; 3219 (0:3219)
 	ld a, D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
 	xor a
-	ldh [$b4], a
+	ldh [hJoyHeld], a
 	call TrainerWalkUpToPlayer_Bank0
 	ld hl, W_CURMAPSCRIPT
 	inc [hl]      ; increment map script index (next script function is usually DisplayEnemyTrainerTextAndStartBattle)
@@ -3617,43 +3617,43 @@ PrintLetterDelay:: ; 38d3 (0:38d3)
     bit 0, a
     ret nz
     
-	ld a,[wd730]
-	bit 6,a
+	ld a, [wd730]
+	bit 6, a
 	ret nz
-	ld a,[wd358]
-	bit 1,a
+	ld a, [wd358]
+	bit 1, a
 	ret z
 		
 	push hl
 	push de
 	push bc
-	ld a,[wd358]
-	bit 0,a
-	jr z,.waitOneFrame
-	ld a,[W_OPTIONS]
+	ld a, [wd358]
+	bit 0, a
+	jr z, .waitOneFrame
+	ld a, [W_OPTIONS]
 	and $f
-	ldh [H_FRAMECOUNTER],a
+	ldh [H_FRAMECOUNTER], a
 	jr .checkButtons
 .waitOneFrame
-	ld a,1
-	ldh [H_FRAMECOUNTER],a
+	ld a, 1
+	ldh [H_FRAMECOUNTER], a
 .checkButtons
 	call Joypad
-	ldh a,[hJoyHeld]
+	ldh a, [hJoyHeld]
 .checkAButton
-	bit 0,a ; is the A button pressed?
-	jr z,.checkBButton
+	bit 0, a ; is the A button pressed?
+	jr z, .checkBButton
 	jr .endWait
 .checkBButton
-	bit 1,a ; is the B button pressed?
-	jr z,.buttonsNotPressed
+	bit 1, a ; is the B button pressed?
+	jr z, .buttonsNotPressed
 .endWait	
 	call DelayFrame
 	jr .done
 .buttonsNotPressed ; if neither A nor B is pressed
-	ldh a,[H_FRAMECOUNTER]
+	ldh a, [H_FRAMECOUNTER]
 	and a
-	jr nz,.checkButtons
+	jr nz, .checkButtons
 .done
 	ld a, TRANSFERBOTTOM
 	ldh [H_AUTOBGTRANSFERPORTION], a
