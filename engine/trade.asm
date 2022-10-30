@@ -16,14 +16,14 @@ Func_410f3: ; 410f3 (10:50f3)
 Func_41102: ; 41102 (10:5102)
 	ld a, [W_OPTIONS] ; W_OPTIONS
 	push af
-	ldh a, [$ffaf]
+	ldh a, [hSCY]
 	push af
-	ldh a, [$ffae]
+	ldh a, [hSCX]
 	push af
 	xor a
 	ld [W_OPTIONS], a ; W_OPTIONS
-	ldh [$ffaf], a
-	ldh [$ffae], a
+	ldh [hSCY], a
+	ldh [hSCX], a
 	push de
 .asm_41115
 	pop de
@@ -45,9 +45,9 @@ Func_41102: ; 41102 (10:5102)
 	jp [hl]
 .asm_4112d
 	pop af
-	ldh [$ffae], a
+	ldh [hSCX], a
 	pop af
-	ldh [$ffaf], a
+	ldh [hSCY], a
 	pop af
 	ld [W_OPTIONS], a ; W_OPTIONS
 	ret
@@ -178,7 +178,7 @@ Func_41245: ; 41245 (10:5245)
 	ldh [hWY], a
 	ld a, $86
 	ldh [rWX], a ; $ff4b
-	ldh [$ffae], a
+	ldh [hSCX], a
 	xor a
 	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	hlCoord 4, 0
@@ -197,7 +197,7 @@ Func_41245: ; 41245 (10:5245)
 	call DelayFrame
 	pop af
 	ldh [rWX], a ; $ff4b
-	ldh [$ffae], a
+	ldh [hSCX], a
 	dec a
 	dec a
 	and a
@@ -222,7 +222,7 @@ Func_41298: ; 41298 (10:5298)
 	ld hl, vBGMap1 + $8c
 	call Func_414ae
 	ld a, $a0
-	ldh [$ffae], a
+	ldh [hSCX], a
 	call DelayFrame
 	ld a, $8b
 	ldh [rLCDC], a ; $ff40
@@ -234,9 +234,9 @@ Func_41298: ; 41298 (10:5298)
 	call PlaySound
 	ld c, $14
 .asm_412c8
-	ldh a, [$ffae]
+	ldh a, [hSCX]
 	add $4
-	ldh [$ffae], a
+	ldh [hSCX], a
 	dec c
 	jr nz, .asm_412c8
 	ret
@@ -395,7 +395,7 @@ Func_41411: ; 41411 (10:5411)
 	ld a, $ab
 	ldh [rLCDC], a ; $ff40
 	xor a
-	ldh [$ffae], a
+	ldh [hSCX], a
 	ld a, $90
 	ldh [hWY], a
 	ret
@@ -494,14 +494,14 @@ Func_414c5: ; 414c5 (10:54c5)
 	ld a, e
 	dec a
 	jr z, .asm_414d5
-	ldh a, [$ffae]
+	ldh a, [hSCX]
 	sub $2
 	jr .asm_414d9
 .asm_414d5
-	ldh a, [$ffae]
+	ldh a, [hSCX]
 	add $2
 .asm_414d9
-	ldh [$ffae], a
+	ldh [hSCX], a
 	call DelayFrame
 	dec d
 	jr nz, .asm_414cb
@@ -657,7 +657,7 @@ Func_415c8: ; 415c8 (10:55c8)
 	xor a
 	ldh [hWY], a
 	ld a, $90
-	ldh [$ffae], a
+	ldh [hSCX], a
 	ret
 
 Func_415df: ; 415df (10:55df)

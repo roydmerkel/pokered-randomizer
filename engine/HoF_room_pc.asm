@@ -47,54 +47,54 @@ Func_740ba: ; 740ba (1d:40ba)
 
 DisplayCreditsMon: ; 740cb (1d:40cb)
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED],a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	call SaveScreenTilesToBuffer1
 	call FillMiddleOfScreenWithWhite
 
 	; display the next monster from CreditsMons
-	ld hl,wTrainerEngageDistance
-	ld c,[hl] ; how many monsters have we displayed so far?
+	ld hl, wTrainerEngageDistance
+	ld c, [hl] ; how many monsters have we displayed so far?
 	inc [hl]
-	ld b,0
-	ld hl,CreditsMons
-	add hl,bc ; go that far in the list of monsters and get the next one
-	ld a,[hl]
-	ld [wcf91],a
-	ld [wd0b5],a
+	ld b, 0
+	ld hl, CreditsMons
+	add hl, bc ; go that far in the list of monsters and get the next one
+	ld a, [hl]
+	ld [wcf91], a
+	ld [wd0b5], a
 	hlCoord 8, 6
 	call GetMonHeader
 	call LoadFrontSpriteByMonIndex
-	ld hl,vBGMap0 + $c
+	ld hl, vBGMap0 + $c
 	call Func_74164
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED],a
+	ldh [H_AUTOBGTRANSFERENABLED], a
 	call LoadScreenTilesFromBuffer1
-	ld hl,vBGMap0
+	ld hl, vBGMap0
 	call Func_74164
-	ld a,$A7
-	ldh [rWX],a
-	ld hl,vBGMap1
+	ld a, $A7
+	ldh [rWX], a
+	ld hl, vBGMap1
 	call Func_74164
 	call FillMiddleOfScreenWithWhite
-	ld a,$FC
-	ldh [rBGP],a
-	ld bc,7
+	ld a, $FC
+	ldh [rBGP], a
+	ld bc, 7
 .next
 	call Func_74140
 	dec c
-	jr nz,.next
-	ld c,$14
+	jr nz, .next
+	ld c, $14
 .next2
 	call Func_74140
-	ldh a,[rWX]
+	ldh a, [rWX]
 	sub 8
-	ldh [rWX],a
+	ldh [rWX], a
 	dec c
-	jr nz,.next2
+	jr nz, .next2
 	xor a
-	ldh [hWY],a
-	ld a,$C0
-	ldh [rBGP],a
+	ldh [hWY], a
+	ld a, $C0
+	ldh [rBGP], a
 	ret
 
 INCLUDE "data/credit_mons.asm"

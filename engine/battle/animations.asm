@@ -983,9 +983,9 @@ Func_7907c ; 507C
 	ld c, 5
 	call DelayFrames
 	pop bc
-	ldh a, [$ffae] ; background scroll X
+	ldh a, [hSCX] ; background scroll X
 	sub a, 8 ; scroll to the left
-	ldh [$ffae], a
+	ldh [hSCX], a
 	pop de
 	jr .loop
 
@@ -2777,7 +2777,7 @@ AnimationShakeEnemyHUD: ; 79d77 (1e:5d77)
 	ld bc, 7 * 7
 	call CopyVideoData
 	xor a
-	ldh [$ffae], a
+	ldh [hSCX], a
 	ld hl, vBGMap0
 	call Func_79e0d
 	ld a, $90
@@ -2821,23 +2821,23 @@ Func_79dda: ; 79dda (1e:5dda)
 	jp Func_79ace
 
 Func_79de9: ; 79de9 (1e:5de9)
-	ldh a, [$ffae]
+	ldh a, [hSCX]
 	ld [wTrainerSpriteOffset], a
 .asm_79dee
 	ld a, [wTrainerSpriteOffset]
 	add d
-	ldh [$ffae], a
-	ld c, $2
+	ldh [hSCX], a
+	ld c, 2
 	call DelayFrames
 	ld a, [wTrainerSpriteOffset]
 	sub d
-	ldh [$ffae], a
-	ld c, $2
+	ldh [hSCX], a
+	ld c, 2
 	call DelayFrames
 	dec e
 	jr nz, .asm_79dee
 	ld a, [wTrainerSpriteOffset]
-	ldh [$ffae], a
+	ldh [hSCX], a
 	ret
 
 Func_79e0d: ; 79e0d (1e:5e0d)

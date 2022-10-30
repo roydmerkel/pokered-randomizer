@@ -1625,12 +1625,12 @@ AdvancePlayerSprite:: ; 0d27 (0:0d27)
 	ld c, a
 	sla b
 	sla c
-	ldh a, [$ffaf]
+	ldh a, [hSCY]
 	add b
-	ldh [$ffaf], a ; update background scroll Y
-	ldh a, [$ffae]
+	ldh [hSCY], a ; update background scroll Y
+	ldh a, [hSCX]
 	add c
-	ldh [$ffae], a ; update background scroll X
+	ldh [hSCX], a ; update background scroll X
 ; shift all the sprites in the direction opposite of the player's motion
 ; so that the player appears to move relative to them
 	ld hl, wSpriteStateData1 + $14
@@ -2326,8 +2326,8 @@ LoadMapData:: ; 1241 (0:1241)
 	ld [wMapViewVRAMPointer + 1], a
 	xor a
 	ld [wMapViewVRAMPointer], a
-	ldh [$ffaf], a
-	ldh [$ffae], a
+	ldh [hSCY], a
+	ldh [hSCX], a
 	ld [wWalkCounter], a
 	ld [wd119], a
 	ld [wWalkBikeSurfStateCopy], a

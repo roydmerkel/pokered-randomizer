@@ -6,7 +6,7 @@ AnimateHallOfFame: ; 701a0 (1c:41a0)
 	call LoadFontTilePatterns
 	call LoadTextBoxTilePatterns
 	call DisableLCD
-	ld hl,vBGMap0
+	ld hl, vBGMap0
 	ld bc, $800
 	ld a, $7f
 	call FillMemory
@@ -55,11 +55,11 @@ AnimateHallOfFame: ; 701a0 (1c:41a0)
 	ld [wTrainerFacingDirection], a
 	call Func_70278
 	call Func_702e1
-	ld c, $50
+	ld c, 80
 	call DelayFrames
 	hlCoord 2, 13
-	ld b, $3
-	ld c, $e
+	ld b, 3
+	ld c, 14
 	call TextBoxBorder
 	hlCoord 4, 15
 	ld de, HallOfFameText
@@ -97,9 +97,9 @@ HallOfFameText: ; 7026b (1c:426b)
 Func_70278: ; 70278 (1c:4278)
 	call ClearScreen
 	ld a, $d0
-	ldh [$ffaf], a
+	ldh [hSCY], a
 	ld a, $c0
-	ldh [$ffae], a
+	ldh [hSCX], a
 	ld a, [wWhichTrade] ; wWhichTrade
 	ld [wcf91], a
 	ld [wd0b5], a
@@ -117,14 +117,14 @@ Func_70278: ; 70278 (1c:4278)
 	predef LoadMonBackPic
 .asm_702ab
 	ld b, $b
-	ld c, $0
+	ld c, 0
 	call GoPAL_SET
 	ld a, $e4
 	ldh [rBGP], a ; $ff47
 	ld c, $31
 	call Func_7036d
 	ld d, $a0
-	ld e, $4
+	ld e, 4
 	ld a, [wOnSGB]
 	and a
 	jr z, .asm_702c7
@@ -132,16 +132,16 @@ Func_70278: ; 70278 (1c:4278)
 .asm_702c7
 	call .asm_702d5
 	xor a
-	ldh [$ffaf], a
+	ldh [hSCY], a
 	ld c, a
 	call Func_7036d
-	ld d, $0
+	ld d, 0
 	ld e, $fc
 .asm_702d5
 	call DelayFrame
-	ldh a, [$ffae]
+	ldh a, [hSCX]
 	add e
-	ldh [$ffae], a
+	ldh [hSCX], a
 	cp d
 	jr nz, .asm_702d5
 	ret
@@ -155,8 +155,8 @@ Func_702e1: ; 702e1 (1c:42e1)
 
 Func_702f0: ; 702f0 (1c:42f0)
 	hlCoord 0, 2
-	ld b, $9
-	ld c, $a
+	ld b, 9
+	ld c, 10
 	call TextBoxBorder
 	hlCoord 2, 6
 	ld de, HoFMonInfoText
@@ -207,12 +207,12 @@ Func_70377: ; 70377 (1c:4377)
 	set 3, [hl]
 	predef DisplayDexRating
 	hlCoord 0, 4
-	ld b, $6
-	ld c, $a
+	ld b, 6
+	ld c, 10
 	call TextBoxBorder
 	hlCoord 5, 0
-	ld b, $2
-	ld c, $9
+	ld b, 2
+	ld c, 9
 	call TextBoxBorder
 	hlCoord 7, 2
 	ld de, wPlayerName ; wd158
@@ -244,7 +244,7 @@ Func_70377: ; 70377 (1c:4377)
 
 Func_703e2: ; 703e2 (1c:43e2)
 	call PrintText
-	ld c, $78
+	ld c, 120
 	jp DelayFrames
 
 HoFPlayTimeText: ; 703ea (1c:43ea)
@@ -277,7 +277,7 @@ Func_70404: ; 70404 (1c:4404)
 	jp CopyData
 
 Func_70423: ; 70423 (1c:4423)
-	ld a, $a
+	ld a, 10
 	ld [wcfc8], a
 	ld [wcfc9], a
 	ld a, $ff

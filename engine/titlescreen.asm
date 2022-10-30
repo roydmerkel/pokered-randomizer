@@ -27,9 +27,9 @@ LoadTitlescreenGraphics: ; 42dd (1:42dd)
 	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	xor a
 	ldh [hTilesetType], a
-	ldh [$ffae], a
+	ldh [hSCX], a
 	ld a, $40
-	ldh [$ffaf], a
+	ldh [hSCY], a
 	ld a, $90
 	ldh [hWY], a
 	call ClearScreen
@@ -131,7 +131,7 @@ ENDC
 	call GBPalNormal
 	ld a, $e4
 	ldh [rOBP0], a ; $ff48
-	ld bc, $ffaf ; background scroll Y
+	ld bc, hSCY ; background scroll Y
 	ld hl, .TitleScreenPokemonLogoYScrolls ; $43db
 .asm_43c6
 	ld a, [hli]

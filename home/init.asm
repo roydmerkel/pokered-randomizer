@@ -68,8 +68,8 @@ rLCDC_DEFAULT EQU %11100011
 	xor a
 	ldh [hTilesetType], a
 	ldh [rSTAT], a
-	ldh [$ffae], a
-	ldh [$ffaf], a
+	ldh [hSCX], a
+	ldh [hSCY], a
 	ldh [rIF], a
 	ld a, 1 << VBLANK + 1 << TIMER + 1 << SERIAL
 	ldh [rIE], a

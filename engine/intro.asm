@@ -7,7 +7,7 @@ PlayIntro: ; 41682 (10:5682)
 	call PlayIntroScene
 	call GBFadeOutToWhite
 	xor a
-	ldh [$ffae], a
+	ldh [hSCX], a
 	ldh [H_AUTOBGTRANSFERENABLED], a
 	call ClearSprites
 	call DelayFrame
@@ -21,7 +21,7 @@ PlayIntroScene: ; 4169d (10:569d)
 	ldh [rOBP0], a
 	ldh [rOBP1], a
 	xor a
-	ldh [$ffae], a
+	ldh [hSCX], a
 	ld b, $3
 	call Func_4183f
 	ld a, 0
@@ -46,7 +46,7 @@ PlayIntroScene: ; 4169d (10:569d)
 	call PlaySound
 	ld de, IntroNidorinoAnimation2
 	call AnimateIntroNidorino
-	ld c, $a
+	ld c, 10
 	call CheckForUserInterruption
 	ret c
 
@@ -60,7 +60,7 @@ PlayIntroScene: ; 4169d (10:569d)
 	call PlaySound
 	ld de, IntroNidorinoAnimation2
 	call AnimateIntroNidorino
-	ld c, $1e
+	ld c, 30
 	call CheckForUserInterruption
 	ret c
 
@@ -71,7 +71,7 @@ PlayIntroScene: ; 4169d (10:569d)
 	call PlaySound
 	ld de, $401
 	call Func_4180e
-	ld c, $1e
+	ld c, 30
 	call CheckForUserInterruption
 	ret c
 
@@ -89,7 +89,7 @@ PlayIntroScene: ; 4169d (10:569d)
 	ld [wd09f], a
 	ld de, IntroNidorinoAnimation3
 	call AnimateIntroNidorino
-	ld c, $1e
+	ld c, 30
 	call CheckForUserInterruption
 	ret c
 
@@ -97,7 +97,7 @@ PlayIntroScene: ; 4169d (10:569d)
 	call Func_4180e
 	ld b, $3
 	call Func_4183f
-	ld c, $3c
+	ld c, 60
 	call CheckForUserInterruption
 	ret c
 
@@ -113,7 +113,7 @@ PlayIntroScene: ; 4169d (10:569d)
 	call PlaySound
 	ld de, IntroNidorinoAnimation5 ; $593c
 	call AnimateIntroNidorino
-	ld c, $14
+	ld c, 20
 	call CheckForUserInterruption
 	ret c
 
@@ -121,7 +121,7 @@ PlayIntroScene: ; 4169d (10:569d)
 	ld [wd09f], a
 	ld de, IntroNidorinoAnimation6 ; $5947
 	call AnimateIntroNidorino
-	ld c, $1e
+	ld c, 30
 	call CheckForUserInterruption
 	ret c
 
@@ -171,14 +171,14 @@ Func_417ae: ; 417ae (10:57ae)
 
 Func_417c7: ; 417c7 (10:57c7)
 	ld hl, wOAMBuffer
-	ld d, $0
+	ld d, 0
 .asm_417cc
 	push bc
 	ld a, [W_BASECOORDY] ; wd082
 	ld e, a
 .asm_417d1
 	ld a, e
-	add $8
+	add 8
 	ld e, a
 	ld [hli], a
 	ld a, [W_BASECOORDX] ; wd081
@@ -191,7 +191,7 @@ Func_417c7: ; 417c7 (10:57c7)
 	dec c
 	jr nz, .asm_417d1
 	ld a, [W_BASECOORDX] ; wd081
-	add $8
+	add 8
 	ld [W_BASECOORDX], a ; wd081
 	pop bc
 	dec b
@@ -207,7 +207,7 @@ Func_417f8: ; 417f8 (10:57f8)
 	hlCoord 0, 4
 	ld bc, $c8
 asm_417fe: ; 417fe (10:57fe)
-	ld [hl], $0
+	ld [hl], 0
 	inc hl
 	dec bc
 	ld a, b
@@ -216,7 +216,7 @@ asm_417fe: ; 417fe (10:57fe)
 	ret
 
 Func_41807: ; 41807 (10:5807)
-	ld a, $1
+	ld a, 1
 .asm_41809
 	ld [hli], a
 	dec c
@@ -229,13 +229,13 @@ Func_4180e: ; 4180e (10:580e)
 	jr z, .asm_4181d
 	cp $1
 	jr z, .asm_4182d
-	ldh a, [$ffae]
+	ldh a, [hSCX]
 	dec a
 	dec a
 	jr .asm_41831
 .asm_4181d
 	push de
-	ld a, $2
+	ld a, 2
 	ld [W_BASECOORDX], a ; wd081
 	xor a
 	ld [W_BASECOORDY], a ; wd082
@@ -243,13 +243,13 @@ Func_4180e: ; 4180e (10:580e)
 	call Func_417ae
 	pop de
 .asm_4182d
-	ldh a, [$ffae]
+	ldh a, [hSCX]
 	inc a
 	inc a
 .asm_41831
-	ldh [$ffae], a
+	ldh [hSCX], a
 	push de
-	ld c, $2
+	ld c, 2
 	call CheckForUserInterruption
 	pop de
 	ret c
@@ -261,7 +261,7 @@ Func_4183f: ; 4183f (10:583f)
 	hlCoord 13, 7
 
 Func_41842: ; 41842 (10:5842)
-	ld c, $0
+	ld c, 0
 	predef_jump Func_79dda
 
 Func_41849: ; 41849 (10:5849)
@@ -297,7 +297,7 @@ PlayShootingStar: ; 4188a (10:588a)
 	callba LoadCopyrightAndTextBoxTiles
 	ld a, $e4
 	ldh [rBGP], a ; $ff47
-	ld c, $b4
+	ld c, 180
 	call DelayFrames
 	call ClearScreen
 	call DisableLCD
@@ -309,13 +309,13 @@ PlayShootingStar: ; 4188a (10:588a)
 	ld hl, rLCDC ; $ff40
 	res 5, [hl]
 	set 3, [hl]
-	ld c, $40
+	ld c, 64
 	call DelayFrames
 	callba AnimateShootingStar
 	push af
 	pop af
 	jr c, .asm_418d0
-	ld c, $28
+	ld c, 40
 	call DelayFrames
 .asm_418d0
 	ld a, 0 ; BANK(Music_IntroBattle)
@@ -422,7 +422,7 @@ IntroNidorinoAnimation7: ; 41950 (10:5950)
 GameFreakIntro: ; 41959 (10:5959)
 	INCBIN "gfx/gamefreak_intro.2bpp"
 	INCBIN "gfx/gamefreak_logo.2bpp"
-	ds $10 ; blank tile
+	ds 16 ; blank tile
 
 FightIntroBackMon: ; 41a99 (10:5a99)
 	INCBIN "gfx/intro_fight.2bpp"
