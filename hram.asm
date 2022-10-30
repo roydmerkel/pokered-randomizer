@@ -207,7 +207,7 @@ hJoy6        EQU $FFB6
 hJoy7        EQU $FFB7
 
 hLoadedROMBank     EQU $FFB8
-hSavedROMBank      EQU $FFB9
+hSavedROMBank      EQU $FFB8
 
 ; is automatic background transfer during V-blank enabled?
 ; if nonzero, yes

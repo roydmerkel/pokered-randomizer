@@ -194,7 +194,7 @@ PlayCry:: ; 13d0 (0:13d0)
 
 ; Cry headers are stuck in one bank.
 	ld a, BANK(CryHeaders)
-	ldh [hLoadedROMBank], a
+	ldh [hSavedROMBank], a
 	ld [$2000], a
 
 ; Each header is 6 bytes long:
@@ -255,7 +255,7 @@ PlaySFX:: ; 3c23
 
 PlaySFX_play
 .play
-	ldh a, [hLoadedROMBank]
+	ldh a, [hSavedROMBank]
 	push af
 	ld a, BANK(_PlaySFX)
 	ldh [hLoadedROMBank], a
