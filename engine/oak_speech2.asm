@@ -105,7 +105,7 @@ asm_6a19: ; 6a19 (1:6a19)
 	ld e, l
 .asm_6a2f
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	ldh a, [hSlideDirection]
 	and a
 	jr nz, .asm_6a3c
@@ -128,7 +128,7 @@ asm_6a19: ; 6a19 (1:6a19)
 	ld [hl], a
 .asm_6a4a
 	ld a, 1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	call Delay3
 	ldh a, [hSlidingRegionSize] ; $ff8c
 	ld c, a

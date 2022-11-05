@@ -1130,13 +1130,13 @@ ItemUseMedicine: ; dabb (3:5abb)
 	call PlaySoundWaitForCurrent ; play sound
 .showHealingItemMessage
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call ClearScreen
 	dec a
 	ld [wUpdateSpritesEnabled], a
 	call RedrawPartyMenu ; redraws the party menu and displays the message
 	ld a, 1
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ld c, 50
 	call DelayFrames
 	call WaitForTextScrollButtonPress ; wait for a button press

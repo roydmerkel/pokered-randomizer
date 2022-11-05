@@ -153,7 +153,7 @@ HandlePokedexSideMenu: ; 4006d (10:406d)
 ; sets carry flag if player presses A, unsets carry flag if player presses B
 HandlePokedexListMenu: ; 40111 (10:4111)
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 ; draw the horizontal line separating the seen and owned amounts from the menu
 	hlCoord 15, 8
 	ld a, $7a ; horizontal line tile
@@ -212,7 +212,7 @@ HandlePokedexListMenu: ; 40111 (10:4111)
 	ld [wWhichTrade], a ; max seen pokemon
 .loop
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	hlCoord 4, 2
 	ld bc, $0e0a
 	call ClearScreenArea
@@ -276,7 +276,7 @@ HandlePokedexListMenu: ; 40111 (10:4111)
 	dec d
 	jr nz, .printPokemonLoop
 	ld a, 01
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call Delay3
 	call GBPalNormal
 	call HandleMenuInput

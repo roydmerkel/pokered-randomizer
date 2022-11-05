@@ -115,7 +115,7 @@ StatusScreen: ; 12953 (4:6953)
 	ld a, [wcc49]
 	add a
 	ld c, a
-	ld b, $0
+	ld b, 0
 	add hl, bc
 	ld a, [hli]
 	ld h, [hl]
@@ -182,19 +182,19 @@ PrintStatsBox: ; 12ae4 (4:6ae4)
 	and a ; a is 0 from the status screen
 	jr nz, .DifferentBox ; 0x12ae6 $12
 	hlCoord 0, 8
-	ld b, $8
-	ld c, $8
+	ld b, 8
+	ld c, 8
 	call TextBoxBorder ; Draws the box
 	hlCoord 1, 9 ; Start printing stats from here
-	ld bc, $0019 ; Number offset
+	ld bc, $19 ; Number offset
 	jr .PrintStats ; 0x12af8 $10
 .DifferentBox
 	hlCoord 9, 2
-	ld b, $8
-	ld c, $9
+	ld b, 8
+	ld c, 9
 	call TextBoxBorder
 	hlCoord 11, 3
-	ld bc, $0018
+	ld bc, $18
 .PrintStats
 	push bc
 	push hl
@@ -231,7 +231,7 @@ StatusScreen2: ; 12b57 (4:6b57)
 	push af
 	xor a
 	ldh [hTilesetType], a
-	ldh [$ffba], a
+	ldh [hAutoBGTransferEnabled], a
 	ld bc, $0005
 	ld hl, wd0dc
 	call FillMemory
@@ -246,8 +246,8 @@ StatusScreen2: ; 12b57 (4:6b57)
 	hlCoord 19, 3
 	ld [hl], $78
 	hlCoord 0, 8
-	ld b, $8
-	ld c, $12
+	ld b, 8
+	ld c, 18
 	call TextBoxBorder ; Draw move container
 	hlCoord 2, 9
 	ld de, wd0e1
@@ -271,7 +271,7 @@ StatusScreen2: ; 12b57 (4:6b57)
 .InitPP ; 12bbb
 	ld hl, wcfa0
 	deCoord 14, 10
-	ld b, $0
+	ld b, 0
 .PrintPP ; 12bc3
 	ld a, [hli]
 	and a
@@ -356,7 +356,7 @@ StatusScreen2: ; 12b57 (4:6b57)
 	hlCoord 9, 1
 	call PlaceString
 	ld a, $1
-	ldh [$ffba], a
+	ldh [hAutoBGTransferEnabled], a
 	call Delay3
 	call WaitForTextScrollButtonPress ; wait for button
 	pop af
@@ -400,7 +400,7 @@ LevelUpText: ; 12cba (4:6cba)
 	db "LEVEL UP@"
 
 Func_12cc3: ; 12cc3 (4:6cc3)
-	ld bc, $a
+	ld bc, 10
 	ld a, $7f
 	jp FillMemory
 

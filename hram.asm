@@ -212,7 +212,7 @@ hSavedROMBank      EQU $FFB8
 ; is automatic background transfer during V-blank enabled?
 ; if nonzero, yes
 ; if zero, no
-H_AUTOBGTRANSFERENABLED EQU $FFBA
+hAutoBGTransferEnabled EQU $FFBA
 
 TRANSFERTOP    EQU 0
 TRANSFERMIDDLE EQU 1

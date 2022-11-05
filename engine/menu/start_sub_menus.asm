@@ -694,7 +694,7 @@ StartMenu_SaveReset: ; 135e3 (4:75e3)
 
 StartMenu_Option: ; 135f6 (4:75f6)
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call ClearScreen
 	call UpdateSprites
 	callab DisplayOptionMenu

@@ -106,7 +106,7 @@ Evolution_PartyMonLoop: ; loop over party mons
 	jp c, .nextEvoEntry2 ; if so, go the next evolution entry
 .asm_3adb6
 	ld [W_CURENEMYLVL], a
-	ld a, $1
+	ld a, 1
 	ld [wd121], a
 	push hl
 	ld a, [hl]
@@ -117,15 +117,15 @@ Evolution_PartyMonLoop: ; loop over party mons
 	call CopyStringToCF4B
 	ld hl, IsEvolvingText
 	call PrintText
-	ld c, $32
+	ld c, 50
 	call DelayFrames
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ld hl, wTileMap
 	ld bc, $c14
 	call ClearScreenArea
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ld a, $ff
 	ld [wUpdateSpritesEnabled], a
 	call ClearSprites
@@ -149,7 +149,7 @@ Evolution_PartyMonLoop: ; loop over party mons
 	ld a, RBSFX_02_3b
 	call PlaySoundWaitForCurrent
 	call WaitForSoundToFinish
-	ld c, $28
+	ld c, 40
 	call DelayFrames
 	call ClearScreen
 	call RenameEvolvedMon
@@ -385,7 +385,7 @@ WriteMonMoves: ; 3afb8 (e:6fb8)
 	push de
 	push bc
 	ld hl, EvosMovesPointerTable
-	ld b, $0
+	ld b, 0
 	ld a, [wcf91]  ; cur mon ID
 	dec a
 	add a

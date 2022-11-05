@@ -146,7 +146,7 @@ SlidePlayerAndEnemySilhouettesOnScreen: ; 3c04c (f:404c)
 	ld [wUpdateSpritesEnabled], a
 	call Delay3
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ld b, $70
 	ld c, $90
 	ld a, c
@@ -172,7 +172,7 @@ SlidePlayerAndEnemySilhouettesOnScreen: ; 3c04c (f:404c)
 	dec c
 	jr nz, .slideSilhouettesLoop
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ld a, $31
 	ldh [$ffe1], a
 	hlCoord 1, 5
@@ -181,7 +181,7 @@ SlidePlayerAndEnemySilhouettesOnScreen: ; 3c04c (f:404c)
 	ldh [hWY], a
 	ldh [rWY], a
 	inc a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call Delay3
 	ld b, $1
 	call GoPAL_SET
@@ -1340,7 +1340,7 @@ LinkBattleLostText: ; 3c88e (f:488e)
 	db "@"
 
 ; slides pic of fainted mon downwards until it disappears
-; bug: when this is called, [H_AUTOBGTRANSFERENABLED] is non-zero, so there is screen tearing
+; bug: when this is called, [hAutoBGTransferEnabled] is non-zero, so there is screen tearing
 SlideDownFaintedMonPic: ; 3c893 (f:4893)
 	ld a, [wd730]
 	push af
@@ -1393,7 +1393,7 @@ SevenSpacesText: ; 3c8d7 (f:48d7)
 ; slides the player or enemy trainer off screen
 ; a is the number of tiles to slide it horizontally (always 9 for the player trainer or 8 for the enemy trainer)
 ; if a is 8, the slide is to the right, else it is to the left
-; bug: when this is called, [H_AUTOBGTRANSFERENABLED] is non-zero, so there is screen tearing
+; bug: when this is called, [hAutoBGTransferEnabled] is non-zero, so there is screen tearing
 SlideTrainerPicOffScreen: ; 3c8df (f:48df)
 	ldh [hSlideAmount], a
 	ld c, a
@@ -1982,7 +1982,7 @@ DrawHUDsAndHPBars: ; 3cd5a (f:4d5a)
 
 DrawPlayerHUDAndHPBar: ; 3cd60 (f:4d60)
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	hlCoord 9, 7
 	ld bc, $50b
 	call ClearScreenArea
@@ -2015,7 +2015,7 @@ DrawPlayerHUDAndHPBar: ; 3cd60 (f:4d60)
 	hlCoord 10, 9
 	predef DrawHP 
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ld hl, wcf1d
 	call GetBattleHealthBarColor
 	ld hl, wBattleMonHP
@@ -2043,7 +2043,7 @@ DrawPlayerHUDAndHPBar: ; 3cd60 (f:4d60)
 
 DrawEnemyHUDAndHPBar: ; 3cdec (f:4dec)
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ld hl, wTileMap
 	ld bc, $40c
 	call ClearScreenArea
@@ -2128,7 +2128,7 @@ DrawEnemyHUDAndHPBar: ; 3cdec (f:4dec)
 	hlCoord 2, 2
 	call DrawHPBar
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ld hl, wcf1e
 
 GetBattleHealthBarColor: ; 3ce90 (f:4e90)
@@ -2989,7 +2989,7 @@ SwapMovesInMenu: ; 3d435 (f:5435)
 
 Func_3d4b6: ; 3d4b6 (f:54b6)
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	hlCoord 0, 8
 	ld b, 3
 	ld c, 9
@@ -3053,7 +3053,7 @@ Func_3d4b6: ; 3d4b6 (f:54b6)
 	predef Func_27d98
 .asm_3d54e
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	jp Delay3
 
 DisabledText: ; 3d555 (f:5555)
@@ -6403,13 +6403,13 @@ DoBattleTransitionAndInitBattleVariables: ; 3ec32 (f:6c32)
 	predef BattleTransition
 	callab LoadHudAndHpBarAndStatusTilePatterns
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ld a, $ff
 	ld [wUpdateSpritesEnabled], a
 	call ClearSprites
 	call ClearScreen
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ldh [hWY], a
 	ldh [rWY], a
 	ldh [hTilesetType], a
@@ -6972,7 +6972,7 @@ InitBattle_Common: ; 3efeb (f:6feb)
 	call GoPAL_SET
 	call SlidePlayerAndEnemySilhouettesOnScreen
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ld hl, .emptyString
 	call PrintText
 	call SaveScreenTilesToBuffer1
@@ -6980,7 +6980,7 @@ InitBattle_Common: ; 3efeb (f:6feb)
 	ld a, $98
 	ldh [$ffbd], a
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call Delay3
 	ld a, $9c
 	ldh [$ffbd], a

@@ -436,7 +436,7 @@ Func_7390e: ; 7390e (1c:790e)
 
 Func_7393f: ; 7393f (1c:793f)
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	ld a, $3
 	ld [wMenuWatchedKeys], a ; wMenuWatchedKeys
 	ld a, $b
@@ -502,7 +502,7 @@ Func_7393f: ; 7393f (1c:793f)
 	dec a
 	jr nz, .asm_739c2
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	ret
 
 ChooseABoxText: ; 739d4 (1c:79d4)

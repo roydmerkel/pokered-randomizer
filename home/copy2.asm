@@ -49,10 +49,10 @@ CopyVideoData::
 ; tiles from b:de to hl, 8 tiles at a time.
 ; This takes c/8 frames.
 
-	ldh a, [H_AUTOBGTRANSFERENABLED]
+	ldh a, [hAutoBGTransferEnabled]
 	push af
 	xor a ; disable auto-transfer while copying
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 
 	ldh a, [hLoadedROMBank]
 	ldh [hROMBankTemp], a
@@ -83,7 +83,7 @@ CopyVideoData::
 	ldh [hLoadedROMBank], a
 	ld [MBC1RomBank], a
 	pop af
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ret
 
 .keepgoing
@@ -99,10 +99,10 @@ CopyVideoDataDouble::
 ; Wait for the next VBlank, then copy c 1bpp
 ; tiles from b:de to hl, 8 tiles at a time.
 ; This takes c/8 frames.
-	ldh a, [H_AUTOBGTRANSFERENABLED]
+	ldh a, [hAutoBGTransferEnabled]
 	push af
 	xor a ; disable auto-transfer while copying
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ldh a, [hLoadedROMBank]
 	ldh [hROMBankTemp], a
 
@@ -132,7 +132,7 @@ CopyVideoDataDouble::
 	ldh [hLoadedROMBank], a
 	ld [MBC1RomBank], a
 	pop af
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ret
 
 .keepgoing

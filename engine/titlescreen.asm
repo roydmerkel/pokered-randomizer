@@ -24,7 +24,7 @@ SetDefaultNamesBeforeTitlescreen: ; 42b7 (1:42b7)
 LoadTitlescreenGraphics: ; 42dd (1:42dd)
 	call GBPalWhiteOut
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	xor a
 	ldh [hTilesetType], a
 	ldh [hSCX], a
@@ -225,7 +225,7 @@ ENDC
 	xor a
 	ldh [hWY], a
 	inc a
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	call ClearScreen
 	ld a, $98
 	call Func_4533

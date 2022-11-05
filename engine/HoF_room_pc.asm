@@ -47,7 +47,7 @@ Func_740ba: ; 740ba (1d:40ba)
 
 DisplayCreditsMon: ; 740cb (1d:40cb)
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call SaveScreenTilesToBuffer1
 	call FillMiddleOfScreenWithWhite
 
@@ -67,7 +67,7 @@ DisplayCreditsMon: ; 740cb (1d:40cb)
 	ld hl, vBGMap0 + $c
 	call Func_74164
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call LoadScreenTilesFromBuffer1
 	ld hl, vBGMap0
 	call Func_74164
@@ -132,7 +132,7 @@ Func_74164: ; 74164 (1d:4164)
 	ld a, h
 	ldh [$ffbd], a
 	ld a, 1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	jp Delay3
 
 Func_74171: ; 74171 (1d:4171)

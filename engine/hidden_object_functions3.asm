@@ -122,7 +122,7 @@ TownMapText: ; fc12 (3:7c12)
 	xor a
 	ldh [hWY], a
 	inc a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call LoadFontTilePatterns
 	callba DisplayTownMap
 	ld hl, wd730

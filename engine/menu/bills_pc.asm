@@ -1,6 +1,6 @@
 Func_213c8:: ; 213c8 (8:53c8)
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	call SaveScreenTilesToBuffer2
 	ld a, [wd5a2]
 	and a
@@ -12,22 +12,22 @@ Func_213c8:: ; 213c8 (8:53c8)
 	and a
 	jr nz, .asm_213f3
 	ld hl, wTileMap
-	ld b, $8
-	ld c, $e
+	ld b, 8
+	ld c, 14
 	jr .asm_213fa
 .asm_213ea
 	ld hl, wTileMap
-	ld b, $6
-	ld c, $e
+	ld b, 6
+	ld c, 14
 	jr .asm_213fa
 .asm_213f3
 	ld hl, wTileMap
-	ld b, $a
-	ld c, $e
+	ld b, 10
+	ld c, 14
 .asm_213fa
 	call TextBoxBorder
 	call UpdateSprites
-	ld a, $3
+	ld a, 3
 	ld [wMaxMenuItem], a ; wMaxMenuItem
 	ld a, [wd7f1]
 	bit 0, a
@@ -56,7 +56,7 @@ Func_213c8:: ; 213c8 (8:53c8)
 	ld a, [wd5a2]
 	and a
 	jr z, .asm_2145a
-	ld a, $4
+	ld a, 4
 	ld [wMaxMenuItem], a ; wMaxMenuItem
 	hlCoord 2, 8
 	ld de, PKMNLeaguePCText ; $54b2
@@ -77,15 +77,15 @@ Func_213c8:: ; 213c8 (8:53c8)
 	call PlaceString
 	ld a, $3
 	ld [wMenuWatchedKeys], a ; wMenuWatchedKeys
-	ld a, $2
+	ld a, 2
 	ld [wTopMenuItemY], a ; wTopMenuItemY
-	ld a, $1
+	ld a, 1
 	ld [wTopMenuItemX], a ; wTopMenuItemX
 	xor a
 	ld [wCurrentMenuItem], a ; wCurrentMenuItem
 	ld [wLastMenuItem], a ; wLastMenuItem
-	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ld a, 1
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	ret
 
 SomeonesPCText:   db "SOMEONE's PC@"
@@ -123,20 +123,20 @@ BillsPCMenu:
 	call CopyVideoData
 	call LoadScreenTilesFromBuffer2DisableBGTransfer
 	ld hl, wTileMap
-	ld b, $a
-	ld c, $c
+	ld b, 10
+	ld c, 12
 	call TextBoxBorder
 	hlCoord 2, 2
 	ld de, BillsPCMenuText ; $56e1
 	call PlaceString
 	ld hl, wTopMenuItemY ; wTopMenuItemY
-	ld a, $2
+	ld a, 2
 	ld [hli], a
 	dec a
 	ld [hli], a
 	inc hl
 	inc hl
-	ld a, $4
+	ld a, 4
 	ld [hli], a
 	ld a, $3
 	ld [hli], a
@@ -150,8 +150,8 @@ BillsPCMenu:
 	ld hl, WhatText
 	call PrintText
 	hlCoord 9, 14
-	ld b, $2
-	ld c, $9
+	ld b, 2
+	ld c, 9
 	call TextBoxBorder
 	ld a, [wd5a0]
 	and $7f
@@ -169,8 +169,8 @@ BillsPCMenu:
 	hlCoord 10, 16
 	ld de, BoxNoPCText ; $5713
 	call PlaceString
-	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ld a, 1
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	call Delay3
 	call HandleMenuInput
 	bit 1, a
@@ -286,7 +286,7 @@ Func_21618: ; 21618 (8:5618)
 	xor a
 	ld [wcf95], a
 	call Func_3a68
-	ld a, $1
+	ld a, 1
 	ld [wcf95], a
 	call RemovePokemon
 	call WaitForSoundToFinish
@@ -391,8 +391,8 @@ HMMoveArray: ; 21745 (8:5745)
 
 Func_2174b: ; 2174b (8:574b)
 	hlCoord 9, 10
-	ld b, $6
-	ld c, $9
+	ld b, 6
+	ld c, 9
 	call TextBoxBorder
 	ld a, [wccd3]
 	and a
@@ -406,14 +406,14 @@ Func_2174b: ; 2174b (8:574b)
 	ld de, StatsCancelPCText ; $57dc
 	call PlaceString
 	ld hl, wTopMenuItemY ; wTopMenuItemY
-	ld a, $c
+	ld a, 12
 	ld [hli], a
-	ld a, $a
+	ld a, 10
 	ld [hli], a
 	xor a
 	ld [hli], a
 	inc hl
-	ld a, $2
+	ld a, 2
 	ld [hli], a
 	ld a, $3
 	ld [hli], a

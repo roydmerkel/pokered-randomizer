@@ -79,15 +79,15 @@ PointerTable_4115f: ; 4115f (10:515f)
 	dw Func_41217
 
 Func_41181: ; 41181 (10:5181)
-	ld c, $64
+	ld c, 100
 	jp DelayFrames
 
 Func_41186: ; 41186 (10:5186)
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	call Delay3
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	ret
 
 Delay50: ; 41191 (10:5191)
@@ -131,7 +131,7 @@ LoadTradingGFXAndMonNames: ; 411a1 (10:51a1)
 	ldh [rOBP0], a ; $ff48
 	call EnableLCD
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	ld a, [wWhichTrade] ; wWhichTrade
 	ld [wd11e], a
 	call GetMonName
@@ -180,10 +180,10 @@ Func_41245: ; 41245 (10:5245)
 	ldh [rWX], a ; $ff4b
 	ldh [hSCX], a
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	hlCoord 4, 0
-	ld b, $6
-	ld c, $a
+	ld b, 6
+	ld c, 10
 	call TextBoxBorder
 	call Func_42769
 	ld b, $98
@@ -210,7 +210,7 @@ Func_41245: ; 41245 (10:5245)
 	ld a, [wWhichTrade] ; wWhichTrade
 	call PlayCry
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	ret
 
 Func_41298: ; 41298 (10:5298)
@@ -232,10 +232,10 @@ Func_41298: ; 41298 (10:5298)
 	call Func_41186
 	ld a, RBSFX_02_3d
 	call PlaySound
-	ld c, $14
+	ld c, 20
 .asm_412c8
 	ldh a, [hSCX]
-	add $4
+	add 4
 	ldh [hSCX], a
 	dec c
 	jr nz, .asm_412c8
@@ -261,7 +261,7 @@ Func_412d2: ; 412d2 (10:52d2)
 	ld [wd09f], a
 	add $7e
 	ld hl, wOAMBuffer + $02
-	ld de, $4
+	ld de, 4
 	ld c, e
 .asm_41300
 	ld [hl], a
@@ -281,13 +281,13 @@ Func_412d2: ; 412d2 (10:52d2)
 .asm_41318
 	call ClearSprites
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	call ClearScreen
 	ld b, $98
 	call CopyScreenTileBufferToVRAM
 	call Delay3
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	ret
 
 UnknownOAM_4132e: ; 4132e (10:532e)
@@ -299,19 +299,19 @@ Func_41336: ; 41336 (10:5336)
 	call Func_41676
 	call Func_415c8
 	hlCoord 4, 10
-	ld b, $6
-	ld c, $a
+	ld b, 6
+	ld c, 10
 	call TextBoxBorder
 	call Func_427a7
 	call Func_41186
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	ld a, [wTrainerEngageDistance]
 	call Func_415a4
 	ld a, ANIM_AD
 	call Func_41676
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	ld a, [wTrainerEngageDistance]
 	call PlayCry
 	call Func_41181
@@ -341,7 +341,7 @@ Func_41376: ; 41376 (10:5376)
 	ld b, $6
 	call Func_414c5
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	call Func_4149f
 	ld b, $4
 	call Func_414c5
@@ -349,7 +349,7 @@ Func_41376: ; 41376 (10:5376)
 	ld b, $6
 	call Func_414c5
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	call Func_41525
 	jp ClearSprites
 
@@ -373,7 +373,7 @@ Func_413c6: ; 413c6 (10:53c6)
 	ld b, $6
 	call Func_414c5
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	call Func_4149f
 	ld b, $4
 	call Func_414c5
@@ -381,15 +381,15 @@ Func_413c6: ; 413c6 (10:53c6)
 	ld b, $6
 	call Func_414c5
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	jp ClearSprites
 
 Func_41411: ; 41411 (10:5411)
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	call ClearScreen
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	call Func_4120b
 	call DelayFrame
 	ld a, $ab
@@ -406,7 +406,7 @@ Func_4142d: ; 4142d (10:542d)
 	ld a, $5d
 	ld [hli], a
 	ld a, $5e
-	ld c, $8
+	ld c, 8
 .asm_4143a
 	ld [hli], a
 	dec c
@@ -415,8 +415,8 @@ Func_4142d: ; 4142d (10:542d)
 	ld b, $6
 	call Func_41842
 	hlCoord 4, 12
-	ld b, $2
-	ld c, $7
+	ld b, 2
+	ld c, 7
 	call TextBoxBorder
 	hlCoord 5, 14
 	ld de, wPlayerName ; wd158
@@ -453,8 +453,8 @@ Func_4145c: ; 4145c (10:545c)
 	ld b, $6
 	call Func_41842
 	hlCoord 6, 0
-	ld b, $2
-	ld c, $7
+	ld b, 2
+	ld c, 7
 	call TextBoxBorder
 	hlCoord 7, 2
 	ld de, W_GRASSRATE ; W_GRASSRATE
@@ -573,7 +573,7 @@ Func_41525: ; 41525 (10:5525)
 .asm_41549
 	call Func_41510
 	call Func_414e8
-	ld c, $8
+	ld c, 8
 	call DelayFrames
 	dec d
 	jr nz, .asm_41549
@@ -635,20 +635,20 @@ Func_415a4: ; 415a4 (10:55a4)
 	ld [wd0b5], a
 	ld [wcf1d], a
 	ld b, $b
-	ld c, $0
+	ld c, 0
 	call GoPAL_SET
-	ldh a, [H_AUTOBGTRANSFERENABLED] ; $ffba
+	ldh a, [hAutoBGTransferEnabled] ; $ffba
 	xor $1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	call GetMonHeader
 	hlCoord 7, 2
 	call LoadFlippedFrontSpriteByMonIndex
-	ld c, $a
+	ld c, 10
 	jp DelayFrames
 
 Func_415c8: ; 415c8 (10:55c8)
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	call ClearScreen
 	ld a, $e3
 	ldh [rLCDC], a ; $ff40
@@ -661,7 +661,7 @@ Func_415c8: ; 415c8 (10:55c8)
 	ret
 
 Func_415df: ; 415df (10:55df)
-	ld c, $32
+	ld c, 50
 	call DelayFrames
 .asm_415e4
 	call DelayFrame
@@ -672,7 +672,7 @@ Func_415df: ; 415df (10:55df)
 	cp $a1
 	jr nz, .asm_415e4
 	call Func_41196
-	ld c, $a
+	ld c, 10
 	call DelayFrames
 	ld a, $7
 	ldh [rWX], a ; $ff4b
@@ -681,7 +681,7 @@ Func_415df: ; 415df (10:55df)
 PrintTradeWentToText: ; 415fe (10:55fe)
 	ld hl, TradeWentToText
 	call PrintText
-	ld c, $c8
+	ld c, 200
 	call DelayFrames
 	jp Func_415df
 

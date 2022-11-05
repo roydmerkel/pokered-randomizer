@@ -24,7 +24,7 @@ AnimateHallOfFame: ; 701a0 (1c:41a0)
 	ld [wd358], a
 	ld [wTrainerScreenY], a
 	inc a
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	ld hl, wd5a2
 	ld a, [hl]
 	inc a

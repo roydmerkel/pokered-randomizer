@@ -7,7 +7,7 @@ Func_708ca: ; 708ca (1c:48ca)
 	call ClearScreenArea
 	call Delay3
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	ld a, $91
 	ld [wHPBarMaxHP], a
 	ld a, $1
@@ -39,7 +39,7 @@ Func_708ca: ; 708ca (1c:48ca)
 	and a
 	jr nz, .asm_7090d
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	call Delay3
 	jp ClearSprites
 
@@ -84,7 +84,7 @@ Func_7092a: ; 7092a (1c:492a)
 
 BattleTransition: ; 7096d (1c:496d)
 	ld a, 1
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call Delay3
 	xor a
 	ldh [hWY], a
@@ -454,7 +454,7 @@ BattleTransition_Shrink: ; 70b7f (1c:4b7f)
 .loop
 	push bc
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	hlCoord 0, 7
 	deCoord 0, 8
 	ld bc, $ffd8
@@ -472,7 +472,7 @@ BattleTransition_Shrink: ; 70b7f (1c:4b7f)
 	ld bc, 2
 	call BattleTransition_CopyTiles2
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ld c, 6
 	call DelayFrames
 	pop bc
@@ -486,7 +486,7 @@ BattleTransition_Shrink: ; 70b7f (1c:4b7f)
 BattleTransition_Split: ; 70bca (1c:4bca)
 	ld c, $9
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 .loop
 	push bc
 	hlCoord 0, 16
@@ -601,7 +601,7 @@ BattleTransition_VerticalStripes: ; 70c7e (1c:4c7e)
 	ld hl, wTileMap
 	deCoord 1, 17
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 .loop
 	push bc
 	push hl
@@ -640,7 +640,7 @@ BattleTransition_HorizontalStripes: ; 70cb4 (1c:4cb4)
 	ld hl, wTileMap
 	deCoord 19, 1
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 .loop
 	push bc
 	push hl
@@ -687,7 +687,7 @@ BattleTransition_FlashScreen: ; 70cfd (1c:4cfd)
 	ld b, $3
 	call BattleTransition_FlashScreen_
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ret
 
 BattleTransition_Circle_Sub1: ; 70d06 (1c:4d06)
@@ -706,10 +706,10 @@ BattleTransition_Circle_Sub1: ; 70d06 (1c:4d06)
 
 BattleTransition_TransferDelay3: ; 70d19 (1c:4d19)
 	ld a, 1
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call Delay3
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ret
 
 ; used for low level wild non-dungeon battles

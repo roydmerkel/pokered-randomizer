@@ -13,12 +13,12 @@ Func_7bde9: ; 7bde9 (1e:7de9)
 	ld [wNewSoundID], a
 	call PlaySound
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	ld a, RBSFX_02_3c
 	call PlaySound
 	call Delay3
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	ldh [hTilesetType], a
 	ld a, [wHPBarMaxHP]
 	ld [wcf1d], a
@@ -37,7 +37,7 @@ Func_7bde9: ; 7bde9 (1e:7de9)
 	ld [wd0b5], a
 	call Func_7beb9
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	ld a, [wHPBarMaxHP]
 	call PlayCry
 	call WaitForSoundToFinish
@@ -115,7 +115,7 @@ asm_7bec2: ; 7bec2 (1e:7ec2)
 Func_7bed6: ; 7bed6 (1e:7ed6)
 	push bc
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	hlCoord 7, 2
 	ld bc, $707
 	ld de, $d
@@ -132,7 +132,7 @@ Func_7bed6: ; 7bed6 (1e:7ed6)
 	dec b
 	jr nz, .asm_7bee3
 	ld a, 1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	call Delay3
 	pop bc
 	ret

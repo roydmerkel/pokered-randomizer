@@ -58,10 +58,10 @@ VermilionDock_1db9b: ; 1db9b (7:5b9b)
 	ld a, $14
 	call FillMemory
 	ld a, 1
-	ldh [$ffba], a
+	ldh [hAutoBGTransferEnabled], a
 	call Delay3
 	xor a
-	ldh [$ffba], a
+	ldh [hAutoBGTransferEnabled], a
 	ld [wWhichTrade], a
 	ldh [rOBP1], a
 	ld a, 88

@@ -1986,7 +1986,7 @@ AnimationWavyScreen: ; 79666 (1e:5666)
 	call Func_79e0d
 	call Delay3
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ld a, $90
 	ldh [hWY], a
 	ld d, $80
@@ -2014,7 +2014,7 @@ AnimationWavyScreen: ; 79666 (1e:5666)
 	call SaveScreenTilesToBuffer2
 	call ClearScreen
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call Delay3
 	call LoadScreenTilesFromBuffer2
 	ld hl, vBGMap1
@@ -2168,11 +2168,11 @@ Func_79793: ; 79793 (1e:5793)
 AnimationHideEnemyMonPic: ; 797d8 (1e:57d8)
 ; Hides the enemy mon's sprite
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	ld hl, AnimationHideMonPic ; $5801
 	call CallWithTurnFlipped
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	jp Delay3
 
 Func_797e8: ; 797e8 (1e:57e8)
@@ -2540,7 +2540,7 @@ Func_79aba: ; 79aba (1e:5aba)
 	ld de, Unknown_79b1b ; $5b1b
 asm_79acb: ; 79acb (1e:5acb)
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 
 Func_79ace: ; 79ace (1e:5ace)
 	push hl
@@ -2563,7 +2563,7 @@ Func_79ace: ; 79ace (1e:5ace)
 	dec b
 	jr nz, .asm_79acf
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	pop hl
 	ret
 

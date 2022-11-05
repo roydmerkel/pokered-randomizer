@@ -339,7 +339,7 @@ ED_Tile: ; 6767 (1:6767)
 
 PrintAlphabet: ; 676f (1:676f)
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	ld a, [wHPBarOldHP]
 	and a
 	ld de, LowerCaseAlphabet ; $679e
@@ -364,7 +364,7 @@ PrintAlphabet: ; 676f (1:676f)
 	jr nz, .asm_6784
 	call PlaceString
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	jp Delay3
 
 LowerCaseAlphabet: ; 679e (1:679e)

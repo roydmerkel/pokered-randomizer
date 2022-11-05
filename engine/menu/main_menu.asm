@@ -344,7 +344,7 @@ TradeCenterText: ; 5d97 (1:5d97)
 
 ContinueGame: ; 5db5 (1:5db5)
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	hlCoord 4, 7
 	ld b, $8
 	ld c, $e
@@ -362,13 +362,13 @@ ContinueGame: ; 5db5 (1:5db5)
 	hlCoord 13, 15
 	call Func_5e55
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	ld c, $1e
 	jp DelayFrames
 
 PrintSaveScreenText: ; 5def (1:5def)
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ld hl, wTileMap + $4
 	ld b, $8
 	ld c, $e
@@ -388,7 +388,7 @@ PrintSaveScreenText: ; 5def (1:5def)
 	ld hl, wTileMap + $ad
 	call Func_5e55
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ld c, $1e
 	jp DelayFrames
 
@@ -466,7 +466,7 @@ DisplayOptionMenu: ; 5e8a (1:5e8a)
 	ld a, [wWhichTrade] ; text speed cursor X coordinate
 	ld [wTopMenuItemX], a
 	ld a, $01
-	ldh [H_AUTOBGTRANSFERENABLED], a ; enable auto background transfer
+	ldh [hAutoBGTransferEnabled], a ; enable auto background transfer
 	call Delay3
 .loop
 	call PlaceMenuCursor

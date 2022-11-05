@@ -61,7 +61,7 @@ DisplayMonFrontSpriteInBox: ; 5dbd9 (17:5bd9)
 ; Displays a pokemon's front sprite in a pop-up window.
 ; [wcf91] = pokemon interal id number
 	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	call Delay3
 	xor a
 	ldh [hWY], a

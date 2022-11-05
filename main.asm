@@ -578,7 +578,7 @@ TestBattle:
 	; do it all again.
 	ld a, 1
 	ld [wUpdateSpritesEnabled], a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	jr .loop
 
 INCLUDE "engine/overworld/item.asm"
@@ -1065,7 +1065,7 @@ DisplayTextIDInit: ; 7096 (1:7096)
 	ldh [hWY], a ; put the window on the screen
 	call LoadFontTilePatterns
 	ld a, $01
-	ldh [H_AUTOBGTRANSFERENABLED], a ; enable continuous WRAM to VRAM transfer each V-blank
+	ldh [hAutoBGTransferEnabled], a ; enable continuous WRAM to VRAM transfer each V-blank
 	ret
 
 ; function that displays the start menu
@@ -2028,7 +2028,7 @@ ClearVariablesAfterLoadingMapData: ; c335 (3:4335)
 	ldh [hWY], a
 	ldh [rWY], a
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ld [wStepCounter], a
 	ld [W_LONEATTACKNO], a ; W_GYMLEADERNO
 	ldh [hJoyPressed], a
@@ -3192,12 +3192,12 @@ RedrawMapView: ; eedc (3:6edc)
 	ld a, [W_ISINBATTLE] ; W_ISINBATTLE
 	inc a
 	ret z
-	ldh a, [H_AUTOBGTRANSFERENABLED]
+	ldh a, [hAutoBGTransferEnabled]
 	push af
 	ldh a, [hTilesetType]
 	push af
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ldh [hTilesetType], a ; no flower/water BG tile animations
 	call LoadCurrentMapView
 	call GoPAL_SET_CF1C
@@ -3256,7 +3256,7 @@ RedrawMapView: ; eedc (3:6edc)
 	pop af
 	ldh [hTilesetType], a
 	pop af
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ret
 
 CompareHLWithBC: ; ef4e (3:6f4e)

@@ -1172,7 +1172,7 @@ CloseTextDisplay:: ; 29e8 (0:29e8)
 	call DelayFrame
 	call LoadGBPal
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a ; disable continuous WRAM to VRAM transfer each V-blank
+	ldh [hAutoBGTransferEnabled], a ; disable continuous WRAM to VRAM transfer each V-blank
 ; loop to make sprites face the directions they originally faced before the dialogue
 	ld hl, wSpriteStateData2 + $19
 	ld c, $0f
@@ -1372,7 +1372,7 @@ AddItemToInventory:: ; 2bcf (0:2bcf)
 ; [wcf8b] = address of the list (2 bytes)
 DisplayListMenuID:: ; 2be6 (0:2be6)
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a ; disable auto-transfer
+	ldh [hAutoBGTransferEnabled], a ; disable auto-transfer
 	ld a, 1
 	ldh [hJoy7], a ; joypad state update flag
 	ld a, [W_BATTLETYPE]
@@ -1426,10 +1426,10 @@ DisplayListMenuID:: ; 2be6 (0:2be6)
 
 DisplayListMenuIDLoop:: ; 2c53 (0:2c53)
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a ; disable transfer
+	ldh [hAutoBGTransferEnabled], a ; disable transfer
 	call PrintListMenuEntries
 	ld a, 1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; enable transfer
+	ldh [hAutoBGTransferEnabled], a ; enable transfer
 	call Delay3
 	ld a, [W_BATTLETYPE]
 	and a ; is it the Old Man battle?
@@ -3202,14 +3202,14 @@ SaveScreenTilesToBuffer2:: ; 36f4 (0:36f4)
 
 LoadScreenTilesFromBuffer2:: ; 3701 (0:3701)
 	call LoadScreenTilesFromBuffer2DisableBGTransfer
-	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ld a, 1
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	ret
 
-; loads screen tiles stored in wTileMapBackup2 but leaves H_AUTOBGTRANSFERENABLED disabled
+; loads screen tiles stored in wTileMapBackup2 but leaves hAutoBGTransferEnabled disabled
 LoadScreenTilesFromBuffer2DisableBGTransfer:: ; 3709 (0:3709)
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	ld hl, wTileMapBackup2
 	ld de, wTileMap
 	ld bc, $168
@@ -3224,13 +3224,13 @@ SaveScreenTilesToBuffer1:: ; 3719 (0:3719)
 
 LoadScreenTilesFromBuffer1:: ; 3725 (0:3725)
 	xor a
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	ld hl, wTileMapBackup
 	ld de, wTileMap
 	ld bc, $168
 	call CopyData
-	ld a, $1
-	ldh [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ld a, 1
+	ldh [hAutoBGTransferEnabled], a ; $ffba
 	ret
 
 DelayFrames:: ; 3739 (0:3739)

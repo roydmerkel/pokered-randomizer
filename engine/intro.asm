@@ -2,13 +2,13 @@ PlayIntro: ; 41682 (10:5682)
 	xor a
 	ldh [hJoyHeld], a
 	inc a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call PlayShootingStar
 	call PlayIntroScene
 	call GBFadeOutToWhite
 	xor a
 	ldh [hSCX], a
-	ldh [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call ClearSprites
 	call DelayFrame
 	ret

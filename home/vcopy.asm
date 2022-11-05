@@ -10,102 +10,102 @@ GetRowColAddressBgMap:: ; 1cdd (0:1cdd)
 	srl h
 	rr a
 	or l
-	ld l,a
-	ld a,b
+	ld l, a
+	ld a, b
 	or h
-	ld h,a
+	ld h, a
 	ret
 
 ; clears a VRAM background map with blank space tiles
 ; INPUT: h - high byte of background tile map address in VRAM
 ClearBgMap:: ; 1cf0 (0:1cf0)
-	ld a," "
+	ld a, " "
 	jr .next
-	ld a,l
+	ld a, l
 .next
-	ld de,$400 ; size of VRAM background map
-	ld l,e
+	ld de, $400 ; size of VRAM background map
+	ld l, e
 .loop
-	ld [hli],a
+	ld [hli], a
 	dec e
-	jr nz,.loop
+	jr nz, .loop
 	dec d
-	jr nz,.loop
+	jr nz, .loop
 	ret
 
 ; When the player takes a step, a row or column of 2x2 tile blocks at the edge
 ; of the screen toward which they moved is exposed and has to be redrawn.
 ; This function does the redrawing.
 RedrawExposedScreenEdge:: ; 1d01 (0:1d01)
-	ldh a,[H_SCREENEDGEREDRAW]
+	ldh a, [H_SCREENEDGEREDRAW]
 	and a
 	ret z
-	ld b,a
+	ld b, a
 	xor a
-	ldh [H_SCREENEDGEREDRAW],a
+	ldh [H_SCREENEDGEREDRAW], a
 	dec b
-	jr nz,.redrawRow
+	jr nz, .redrawRow
 .redrawColumn
-	ld hl,wScreenEdgeTiles
-	ldh a,[H_SCREENEDGEREDRAWADDR]
-	ld e,a
-	ldh a,[H_SCREENEDGEREDRAWADDR + 1]
-	ld d,a
-	ld c,18 ; screen height
+	ld hl, wScreenEdgeTiles
+	ldh a, [H_SCREENEDGEREDRAWADDR]
+	ld e, a
+	ldh a, [H_SCREENEDGEREDRAWADDR + 1]
+	ld d, a
+	ld c, 18 ; screen height
 .loop1
-	ld a,[hli]
-	ld [de],a
+	ld a, [hli]
+	ld [de], a
 	inc de
-	ld a,[hli]
-	ld [de],a
-	ld a,31
+	ld a, [hli]
+	ld [de], a
+	ld a, 31
 	add e
-	ld e,a
-	jr nc,.noCarry
+	ld e, a
+	jr nc, .noCarry
 	inc d
 .noCarry
 ; the following 4 lines wrap us from bottom to top if necessary
-	ld a,d
-	and a,$03
-	or a,$98
-	ld d,a
+	ld a, d
+	and a, $3
+	or a, $98
+	ld d, a
 	dec c
-	jr nz,.loop1
+	jr nz, .loop1
 	xor a
-	ldh [H_SCREENEDGEREDRAW],a
+	ldh [H_SCREENEDGEREDRAW], a
 	ret
 .redrawRow
-	ld hl,wScreenEdgeTiles
-	ldh a,[H_SCREENEDGEREDRAWADDR]
-	ld e,a
-	ldh a,[H_SCREENEDGEREDRAWADDR + 1]
-	ld d,a
+	ld hl, wScreenEdgeTiles
+	ldh a, [H_SCREENEDGEREDRAWADDR]
+	ld e, a
+	ldh a, [H_SCREENEDGEREDRAWADDR + 1]
+	ld d, a
 	push de
 	call .drawHalf ; draw upper half
 	pop de
-	ld a,32 ; width of VRAM background map
+	ld a, 32 ; width of VRAM background map
 	add e
-	ld e,a
+	ld e, a
 			 ; draw lower half
 .drawHalf
-	ld c,10
+	ld c, 10
 .loop2
-	ld a,[hli]
-	ld [de],a
+	ld a, [hli]
+	ld [de], a
 	inc de
-	ld a,[hli]
-	ld [de],a
-	ld a,e
+	ld a, [hli]
+	ld [de], a
+	ld a, e
 	inc a
 ; the following 6 lines wrap us from the right edge to the left edge if necessary
-	and a,$1f
-	ld b,a
-	ld a,e
-	and a,$e0
+	and a, $1f
+	ld b, a
+	ld a, e
+	and a, $e0
 	or b
-	ld e,a
+	ld e, a
 	dec c
-	jr nz,.loop2
+	jr nz, .loop2
 	ret
 
 ; This function automatically transfers tile number data from the tile map at
@@ -116,52 +116,52 @@ RedrawExposedScreenEdge:: ; 1d01 (0:1d01)
 ; the above function, RedrawExposedScreenEdge, is used when walking to
 ; improve efficiency.
 AutoBgMapTransfer:: ; 1d57 (0:1d57)
-	ldh a,[H_AUTOBGTRANSFERENABLED]
+	ldh a, [hAutoBGTransferEnabled]
 	and a
 	ret z
-	ld hl,[sp + 0]
-	ld a,h
-	ldh [H_SPTEMP],a
-	ld a,l
-	ldh [H_SPTEMP + 1],a ; save stack pinter
-	ldh a,[H_AUTOBGTRANSFERPORTION]
+	ld hl, [sp + 0]
+	ld a, h
+	ldh [H_SPTEMP], a
+	ld a, l
+	ldh [H_SPTEMP + 1], a ; save stack pinter
+	ldh a, [H_AUTOBGTRANSFERPORTION]
 	and a
-	jr z,.transferTopThird
+	jr z, .transferTopThird
 	dec a
-	jr z,.transferMiddleThird
+	jr z, .transferMiddleThird
 .transferBottomThird
 	hlCoord 0, 12
-	ld sp,hl
-	ldh a,[H_AUTOBGTRANSFERDEST + 1]
-	ld h,a
-	ldh a,[H_AUTOBGTRANSFERDEST]
-	ld l,a
-	ld de,(12 * 32)
-	add hl,de
+	ld sp, hl
+	ldh a, [H_AUTOBGTRANSFERDEST + 1]
+	ld h, a
+	ldh a, [H_AUTOBGTRANSFERDEST]
+	ld l, a
+	ld de, (12 * 32)
+	add hl, de
 	xor a ; TRANSFERTOP
 	jr .doTransfer
 .transferTopThird
 	hlCoord 0, 0
-	ld sp,hl
-	ldh a,[H_AUTOBGTRANSFERDEST + 1]
-	ld h,a
-	ldh a,[H_AUTOBGTRANSFERDEST]
-	ld l,a
-	ld a,TRANSFERMIDDLE
+	ld sp, hl
+	ldh a, [H_AUTOBGTRANSFERDEST + 1]
+	ld h, a
+	ldh a, [H_AUTOBGTRANSFERDEST]
+	ld l, a
+	ld a, TRANSFERMIDDLE
 	jr .doTransfer
 .transferMiddleThird
 	hlCoord 0, 6
-	ld sp,hl
-	ldh a,[H_AUTOBGTRANSFERDEST + 1]
-	ld h,a
-	ldh a,[H_AUTOBGTRANSFERDEST]
-	ld l,a
-	ld de,(6 * 32)
-	add hl,de
-	ld a,TRANSFERBOTTOM
+	ld sp, hl
+	ldh a, [H_AUTOBGTRANSFERDEST + 1]
+	ld h, a
+	ldh a, [H_AUTOBGTRANSFERDEST]
+	ld l, a
+	ld de, (6 * 32)
+	add hl, de
+	ld a, TRANSFERBOTTOM
 .doTransfer
-	ldh [H_AUTOBGTRANSFERPORTION],a ; store next portion
-	ld b,6
+	ldh [H_AUTOBGTRANSFERPORTION], a ; store next portion
+	ld b, 6
 
 TransferBgRows:: ; 1d9e (0:1d9e)
 ; unrolled loop and using pop for speed
@@ -198,27 +198,27 @@ TransferBgRows:: ; 1d9e (0:1d9e)
 ; Copies [H_VBCOPYBGNUMROWS] rows from H_VBCOPYBGSRC to H_VBCOPYBGDEST.
 ; If H_VBCOPYBGSRC is XX00, the transfer is disabled.
 VBlankCopyBgMap:: ; 1de1 (0:1de1)
-	ldh a,[H_VBCOPYBGSRC] ; doubles as enabling byte
+	ldh a, [H_VBCOPYBGSRC] ; doubles as enabling byte
 	and a
 	ret z
-	ld hl,[sp + 0]
-	ld a,h
-	ldh [H_SPTEMP],a
-	ld a,l
-	ldh [H_SPTEMP + 1],a ; save stack pointer
-	ldh a,[H_VBCOPYBGSRC]
-	ld l,a
-	ldh a,[H_VBCOPYBGSRC + 1]
-	ld h,a
-	ld sp,hl
-	ldh a,[H_VBCOPYBGDEST]
-	ld l,a
-	ldh a,[H_VBCOPYBGDEST + 1]
-	ld h,a
-	ldh a,[H_VBCOPYBGNUMROWS]
-	ld b,a
+	ld hl, [sp + 0]
+	ld a, h
+	ldh [H_SPTEMP], a
+	ld a, l
+	ldh [H_SPTEMP + 1], a ; save stack pointer
+	ldh a, [H_VBCOPYBGSRC]
+	ld l, a
+	ldh a, [H_VBCOPYBGSRC + 1]
+	ld h, a
+	ld sp, hl
+	ldh a, [H_VBCOPYBGDEST]
+	ld l, a
+	ldh a, [H_VBCOPYBGDEST + 1]
+	ld h, a
+	ldh a, [H_VBCOPYBGNUMROWS]
+	ld b, a
 	xor a
-	ldh [H_VBCOPYBGSRC],a ; disable transfer so it doesn't continue next V-blank
+	ldh [H_VBCOPYBGSRC], a ; disable transfer so it doesn't continue next V-blank
 	jr TransferBgRows
 
 
@@ -383,9 +383,9 @@ UpdateMovingBgTiles::
 	ldh a, [$ffd8]
 	inc a
 	ldh [$ffd8], a
-	cp $14
+	cp 20
 	ret c
-	cp $15
+	cp 21
 	jr z, .flower
 
 	ld hl, vTileset + $14 * $10
