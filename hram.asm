@@ -267,12 +267,12 @@ hVBlankCopyDoubleDest EQU $FFCE
 ; 00 = no redraw
 ; 01 = redraw column
 ; 02 = redraw row
-H_SCREENEDGEREDRAW EQU $FFD0
+hRedrawRowOrColumnMode EQU $FFD0
 
 REDRAWCOL EQU 1
 REDRAWROW EQU 2
 
-H_SCREENEDGEREDRAWADDR EQU $FFD1
+hRedrawRowOrColumnDest EQU $FFD1
 
 hRandomAdd EQU $FFD3
 hRandomSub EQU $FFD4

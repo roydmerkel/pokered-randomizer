@@ -1712,11 +1712,11 @@ ScheduleNorthRowRedraw:: ; 0e91 (0:0e91)
 	hlCoord 0, 0
 	call CopyToScreenEdgeTiles
 	ld a, [wMapViewVRAMPointer]
-	ldh [H_SCREENEDGEREDRAWADDR], a
+	ldh [hRedrawRowOrColumnDest], a
 	ld a, [wMapViewVRAMPointer + 1]
-	ldh [H_SCREENEDGEREDRAWADDR + 1], a
+	ldh [hRedrawRowOrColumnDest + 1], a
 	ld a, REDRAWROW
-	ldh [H_SCREENEDGEREDRAW], a
+	ldh [hRedrawRowOrColumnMode], a
 	ret
 
 CopyToScreenEdgeTiles:: ; 0ea6 (0:0ea6)
@@ -1742,11 +1742,11 @@ ScheduleSouthRowRedraw:: ; 0eb2 (0:0eb2)
 	ld a, h
 	and a, $03
 	or a, $98
-	ldh [H_SCREENEDGEREDRAWADDR + 1], a
+	ldh [hRedrawRowOrColumnDest + 1], a
 	ld a, l
-	ldh [H_SCREENEDGEREDRAWADDR], a
+	ldh [hRedrawRowOrColumnDest], a
 	ld a, REDRAWROW
-	ldh [H_SCREENEDGEREDRAW], a
+	ldh [hRedrawRowOrColumnMode], a
 	ret
 
 ScheduleEastColumnRedraw:: ; 0ed3 (0:0ed3)
@@ -1760,11 +1760,11 @@ ScheduleEastColumnRedraw:: ; 0ed3 (0:0ed3)
 	add a, 18
 	and a, $1f
 	or b
-	ldh [H_SCREENEDGEREDRAWADDR], a
+	ldh [hRedrawRowOrColumnDest], a
 	ld a, [wMapViewVRAMPointer + 1]
-	ldh [H_SCREENEDGEREDRAWADDR + 1], a
+	ldh [hRedrawRowOrColumnDest + 1], a
 	ld a, REDRAWCOL
-	ldh [H_SCREENEDGEREDRAW], a
+	ldh [hRedrawRowOrColumnMode], a
 	ret
 
 ScheduleColumnRedrawHelper:: ; 0ef2 (0:0ef2)
@@ -1791,11 +1791,11 @@ ScheduleWestColumnRedraw:: ; 0f08 (0:0f08)
 	hlCoord 0, 0
 	call ScheduleColumnRedrawHelper
 	ld a, [wMapViewVRAMPointer]
-	ldh [H_SCREENEDGEREDRAWADDR], a
+	ldh [hRedrawRowOrColumnDest], a
 	ld a, [wMapViewVRAMPointer + 1]
-	ldh [H_SCREENEDGEREDRAWADDR + 1], a
+	ldh [hRedrawRowOrColumnDest + 1], a
 	ld a, REDRAWCOL
-	ldh [H_SCREENEDGEREDRAW], a
+	ldh [hRedrawRowOrColumnMode], a
 	ret
 
 ; function to write the tiles that make up a tile block to memory

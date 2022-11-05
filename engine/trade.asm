@@ -478,12 +478,12 @@ Func_414ae: ; 414ae (10:54ae)
 	call CopyToScreenEdgeTiles
 	pop hl
 	ld a, h
-	ldh [H_SCREENEDGEREDRAWADDR + 1], a
+	ldh [hRedrawRowOrColumnDest + 1], a
 	ld a, l
-	ldh [H_SCREENEDGEREDRAWADDR], a ; $ffd1
+	ldh [hRedrawRowOrColumnDest], a ; $ffd1
 	ld a, $2
-	ldh [H_SCREENEDGEREDRAW], a ; $ffd0
-	ld c, $a
+	ldh [hRedrawRowOrColumnMode], a ; $ffd0
+	ld c, 10
 	jp DelayFrames
 
 Func_414c5: ; 414c5 (10:54c5)

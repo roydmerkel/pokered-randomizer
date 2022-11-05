@@ -37,19 +37,19 @@ ClearBgMap:: ; 1cf0 (0:1cf0)
 ; of the screen toward which they moved is exposed and has to be redrawn.
 ; This function does the redrawing.
 RedrawExposedScreenEdge:: ; 1d01 (0:1d01)
-	ldh a, [H_SCREENEDGEREDRAW]
+	ldh a, [hRedrawRowOrColumnMode]
 	and a
 	ret z
 	ld b, a
 	xor a
-	ldh [H_SCREENEDGEREDRAW], a
+	ldh [hRedrawRowOrColumnMode], a
 	dec b
 	jr nz, .redrawRow
 .redrawColumn
 	ld hl, wScreenEdgeTiles
-	ldh a, [H_SCREENEDGEREDRAWADDR]
+	ldh a, [hRedrawRowOrColumnDest]
 	ld e, a
-	ldh a, [H_SCREENEDGEREDRAWADDR + 1]
+	ldh a, [hRedrawRowOrColumnDest + 1]
 	ld d, a
 	ld c, 18 ; screen height
 .loop1
@@ -72,13 +72,13 @@ RedrawExposedScreenEdge:: ; 1d01 (0:1d01)
 	dec c
 	jr nz, .loop1
 	xor a
-	ldh [H_SCREENEDGEREDRAW], a
+	ldh [hRedrawRowOrColumnMode], a
 	ret
 .redrawRow
 	ld hl, wScreenEdgeTiles
-	ldh a, [H_SCREENEDGEREDRAWADDR]
+	ldh a, [hRedrawRowOrColumnDest]
 	ld e, a
-	ldh a, [H_SCREENEDGEREDRAWADDR + 1]
+	ldh a, [hRedrawRowOrColumnDest + 1]
 	ld d, a
 	push de
 	call .drawHalf ; draw upper half

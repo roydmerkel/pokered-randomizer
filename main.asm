@@ -3240,11 +3240,11 @@ RedrawMapView: ; eedc (3:6edc)
 	or $98
 	dec c
 	jr nz, .asm_ef28
-	ldh [H_SCREENEDGEREDRAWADDR + 1], a
+	ldh [hRedrawRowOrColumnDest + 1], a
 	ld a, l
-	ldh [H_SCREENEDGEREDRAWADDR], a
+	ldh [hRedrawRowOrColumnDest], a
 	ld a, REDRAWROW
-	ldh [H_SCREENEDGEREDRAW], a
+	ldh [hRedrawRowOrColumnMode], a
 	call DelayFrame
 	ld hl, hRedrawMapViewRowOffset
 	inc [hl]
