@@ -62,14 +62,14 @@ CopyVideoData::
 	ld [MBC1RomBank], a
 
 	ld a, e
-	ldh [H_VBCOPYSRC], a
+	ldh [hVBlankCopySource], a
 	ld a, d
-	ldh [H_VBCOPYSRC + 1], a
+	ldh [hVBlankCopySource + 1], a
 
 	ld a, l
-	ldh [H_VBCOPYDEST], a
+	ldh [hVBlankCopyDest], a
 	ld a, h
-	ldh [H_VBCOPYDEST + 1], a
+	ldh [hVBlankCopyDest + 1], a
 
 .loop
 	ld a, c
@@ -77,7 +77,7 @@ CopyVideoData::
 	jr nc, .keepgoing
 
 .done
-	ldh [H_VBCOPYSIZE], a
+	ldh [hVBlankCopySize], a
 	call DelayFrame
 	ldh a, [hROMBankTemp]
 	ldh [hLoadedROMBank], a
@@ -88,7 +88,7 @@ CopyVideoData::
 
 .keepgoing
 	ld a, 8
-	ldh [H_VBCOPYSIZE], a
+	ldh [hVBlankCopySize], a
 	call DelayFrame
 	ld a, c
 	sub 8
@@ -111,14 +111,14 @@ CopyVideoDataDouble::
 	ld [MBC1RomBank], a
 
 	ld a, e
-	ldh [H_VBCOPYDOUBLESRC], a
+	ldh [hVBlankCopyDoubleSource], a
 	ld a, d
-	ldh [H_VBCOPYDOUBLESRC + 1], a
+	ldh [hVBlankCopyDoubleSource + 1], a
 
 	ld a, l
-	ldh [H_VBCOPYDOUBLEDEST], a
+	ldh [hVBlankCopyDoubleDest], a
 	ld a, h
-	ldh [H_VBCOPYDOUBLEDEST + 1], a
+	ldh [hVBlankCopyDoubleDest + 1], a
 
 .loop
 	ld a, c
@@ -126,7 +126,7 @@ CopyVideoDataDouble::
 	jr nc, .keepgoing
 
 .done
-	ldh [H_VBCOPYDOUBLESIZE], a
+	ldh [hVBlankCopyDoubleSize], a
 	call DelayFrame
 	ldh a, [hROMBankTemp]
 	ldh [hLoadedROMBank], a
@@ -137,7 +137,7 @@ CopyVideoDataDouble::
 
 .keepgoing
 	ld a, 8
-	ldh [H_VBCOPYDOUBLESIZE], a
+	ldh [hVBlankCopyDoubleSize], a
 	call DelayFrame
 	ld a, c
 	sub 8
@@ -185,16 +185,16 @@ CopyScreenTileBufferToVRAM::
 
 .setup
 	ld a, d
-	ldh [H_VBCOPYBGSRC+1], a
+	ldh [hVBlankCopyBGSource+1], a
 	call GetRowColAddressBgMap
 	ld a, l
-	ldh [H_VBCOPYBGDEST], a
+	ldh [hVBlankCopyBGDest], a
 	ld a, h
-	ldh [H_VBCOPYBGDEST+1], a
+	ldh [hVBlankCopyBGDest+1], a
 	ld a, c
-	ldh [H_VBCOPYBGNUMROWS], a
+	ldh [hVBlankCopyBGNumRows], a
 	ld a, e
-	ldh [H_VBCOPYBGSRC], a
+	ldh [hVBlankCopyBGSource], a
 	ret
 
 ClearScreen::

@@ -121,9 +121,9 @@ AutoBgMapTransfer:: ; 1d57 (0:1d57)
 	ret z
 	ld hl, [sp + 0]
 	ld a, h
-	ldh [H_SPTEMP], a
+	ldh [hSPTemp], a
 	ld a, l
-	ldh [H_SPTEMP + 1], a ; save stack pinter
+	ldh [hSPTemp + 1], a ; save stack pinter
 	ldh a, [hAutoBGTransferPortion]
 	and a
 	jr z, .transferTopThird
@@ -188,73 +188,73 @@ TransferBgRows:: ; 1d9e (0:1d9e)
 	dec b
 	jr nz, TransferBgRows
 
-	ldh a, [H_SPTEMP]
+	ldh a, [hSPTemp]
 	ld h, a
-	ldh a, [H_SPTEMP + 1]
+	ldh a, [hSPTemp + 1]
 	ld l, a
 	ld sp, hl
 	ret
 
-; Copies [H_VBCOPYBGNUMROWS] rows from H_VBCOPYBGSRC to H_VBCOPYBGDEST.
-; If H_VBCOPYBGSRC is XX00, the transfer is disabled.
+; Copies [hVBlankCopyBGNumRows] rows from hVBlankCopyBGSource to hVBlankCopyBGDest.
+; If hVBlankCopyBGSource is XX00, the transfer is disabled.
 VBlankCopyBgMap:: ; 1de1 (0:1de1)
-	ldh a, [H_VBCOPYBGSRC] ; doubles as enabling byte
+	ldh a, [hVBlankCopyBGSource] ; doubles as enabling byte
 	and a
 	ret z
 	ld hl, [sp + 0]
 	ld a, h
-	ldh [H_SPTEMP], a
+	ldh [hSPTemp], a
 	ld a, l
-	ldh [H_SPTEMP + 1], a ; save stack pointer
-	ldh a, [H_VBCOPYBGSRC]
+	ldh [hSPTemp + 1], a ; save stack pointer
+	ldh a, [hVBlankCopyBGSource]
 	ld l, a
-	ldh a, [H_VBCOPYBGSRC + 1]
+	ldh a, [hVBlankCopyBGSource + 1]
 	ld h, a
 	ld sp, hl
-	ldh a, [H_VBCOPYBGDEST]
+	ldh a, [hVBlankCopyBGDest]
 	ld l, a
-	ldh a, [H_VBCOPYBGDEST + 1]
+	ldh a, [hVBlankCopyBGDest + 1]
 	ld h, a
-	ldh a, [H_VBCOPYBGNUMROWS]
+	ldh a, [hVBlankCopyBGNumRows]
 	ld b, a
 	xor a
-	ldh [H_VBCOPYBGSRC], a ; disable transfer so it doesn't continue next V-blank
+	ldh [hVBlankCopyBGSource], a ; disable transfer so it doesn't continue next V-blank
 	jr TransferBgRows
 
 
 VBlankCopyDouble::
-; Copy [H_VBCOPYDOUBLESIZE] 1bpp tiles
-; from H_VBCOPYDOUBLESRC to H_VBCOPYDOUBLEDEST.
+; Copy [hVBlankCopyDoubleSize] 1bpp tiles
+; from hVBlankCopyDoubleSource to hVBlankCopyDoubleDest.
 
 ; While we're here, convert to 2bpp.
 ; The process is straightforward:
 ; copy each byte twice.
 
-	ldh a, [H_VBCOPYDOUBLESIZE]
+	ldh a, [hVBlankCopyDoubleSize]
 	and a
 	ret z
 
 	ld hl, [sp + 0]
 	ld a, h
-	ldh [H_SPTEMP], a
+	ldh [hSPTemp], a
 	ld a, l
-	ldh [H_SPTEMP + 1], a
+	ldh [hSPTemp + 1], a
 
-	ldh a, [H_VBCOPYDOUBLESRC]
+	ldh a, [hVBlankCopyDoubleSource]
 	ld l, a
-	ldh a, [H_VBCOPYDOUBLESRC + 1]
+	ldh a, [hVBlankCopyDoubleSource + 1]
 	ld h, a
 	ld sp, hl
 
-	ldh a, [H_VBCOPYDOUBLEDEST]
+	ldh a, [hVBlankCopyDoubleDest]
 	ld l, a
-	ldh a, [H_VBCOPYDOUBLEDEST + 1]
+	ldh a, [hVBlankCopyDoubleDest + 1]
 	ld h, a
 
-	ldh a, [H_VBCOPYDOUBLESIZE]
+	ldh a, [hVBlankCopyDoubleSize]
 	ld b, a
 	xor a ; transferred
-	ldh [H_VBCOPYDOUBLESIZE], a
+	ldh [hVBlankCopyDoubleSize], a
 
 .loop
 	rept 3
@@ -282,19 +282,19 @@ VBlankCopyDouble::
 	jr nz, .loop
 
 	ld a, l
-	ldh [H_VBCOPYDOUBLEDEST], a
+	ldh [hVBlankCopyDoubleDest], a
 	ld a, h
-	ldh [H_VBCOPYDOUBLEDEST + 1], a
+	ldh [hVBlankCopyDoubleDest + 1], a
 
 	ld hl, [sp + 0]
 	ld a, l
-	ldh [H_VBCOPYDOUBLESRC], a
+	ldh [hVBlankCopyDoubleSource], a
 	ld a, h
-	ldh [H_VBCOPYDOUBLESRC + 1], a
+	ldh [hVBlankCopyDoubleSource + 1], a
 
-	ldh a, [H_SPTEMP]
+	ldh a, [hSPTemp]
 	ld h, a
-	ldh a, [H_SPTEMP + 1]
+	ldh a, [hSPTemp + 1]
 	ld l, a
 	ld sp, hl
 
@@ -302,38 +302,38 @@ VBlankCopyDouble::
 
 
 VBlankCopy::
-; Copy [H_VBCOPYSIZE] 2bpp tiles
-; from H_VBCOPYSRC to H_VBCOPYDEST.
+; Copy [hVBlankCopySize] 2bpp tiles
+; from hVBlankCopySource to hVBlankCopyDest.
 
 ; Source and destination addresses
 ; are updated, so transfer can
 ; continue in subsequent calls.
 
-	ldh a, [H_VBCOPYSIZE]
+	ldh a, [hVBlankCopySize]
 	and a
 	ret z
 
 	ld hl, [sp + 0]
 	ld a, h
-	ldh [H_SPTEMP], a
+	ldh [hSPTemp], a
 	ld a, l
-	ldh [H_SPTEMP + 1], a
+	ldh [hSPTemp + 1], a
 
-	ldh a, [H_VBCOPYSRC]
+	ldh a, [hVBlankCopySource]
 	ld l, a
-	ldh a, [H_VBCOPYSRC + 1]
+	ldh a, [hVBlankCopySource + 1]
 	ld h, a
 	ld sp, hl
 
-	ldh a, [H_VBCOPYDEST]
+	ldh a, [hVBlankCopyDest]
 	ld l, a
-	ldh a, [H_VBCOPYDEST + 1]
+	ldh a, [hVBlankCopyDest + 1]
 	ld h, a
 
-	ldh a, [H_VBCOPYSIZE]
+	ldh a, [hVBlankCopySize]
 	ld b, a
 	xor a ; transferred
-	ldh [H_VBCOPYSIZE], a
+	ldh [hVBlankCopySize], a
 
 .loop
 	rept 7
@@ -353,19 +353,19 @@ VBlankCopy::
 	jr nz, .loop
 
 	ld a, l
-	ldh [H_VBCOPYDEST], a
+	ldh [hVBlankCopyDest], a
 	ld a, h
-	ldh [H_VBCOPYDEST + 1], a
+	ldh [hVBlankCopyDest + 1], a
 
 	ld hl, [sp + 0]
 	ld a, l
-	ldh [H_VBCOPYSRC], a
+	ldh [hVBlankCopySource], a
 	ld a, h
-	ldh [H_VBCOPYSRC + 1], a
+	ldh [hVBlankCopySource + 1], a
 
-	ldh a, [H_SPTEMP]
+	ldh a, [hSPTemp]
 	ld h, a
-	ldh a, [H_SPTEMP + 1]
+	ldh a, [hSPTemp + 1]
 	ld l, a
 	ld sp, hl
 
