@@ -3215,7 +3215,7 @@ RedrawMapView: ; eedc (3:6edc)
 	ld a, h
 	ld [wHPBarMaxHP + 1], a
 	ld a, 2
-	ldh [$ffbe], a
+	ldh [hRedrawMapViewRowOffset], a
 	ld c, 9 ; number of rows of 2x2 tiles (this covers the whole screen)
 .redrawRowLoop
 	push bc
@@ -3223,7 +3223,7 @@ RedrawMapView: ; eedc (3:6edc)
 	push hl
 	ld hl, wTileMap - 2 * 20
 	ld de, 20
-	ldh a, [$ffbe]
+	ldh a, [hRedrawMapViewRowOffset]
 .asm_ef1a
 	add hl, de
 	dec a
@@ -3231,7 +3231,7 @@ RedrawMapView: ; eedc (3:6edc)
 	call CopyToScreenEdgeTiles
 	pop hl
 	ld de, $20
-	ldh a, [$ffbe]
+	ldh a, [hRedrawMapViewRowOffset]
 	ld c, a
 .asm_ef28
 	add hl, de
@@ -3246,7 +3246,7 @@ RedrawMapView: ; eedc (3:6edc)
 	ld a, REDRAWROW
 	ldh [H_SCREENEDGEREDRAW], a
 	call DelayFrame
-	ld hl, $ffbe
+	ld hl, hRedrawMapViewRowOffset
 	inc [hl]
 	inc [hl]
 	pop hl

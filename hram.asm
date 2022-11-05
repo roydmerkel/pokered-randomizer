@@ -221,10 +221,12 @@ TRANSFERBOTTOM EQU 2
 ; 00 = top third of background
 ; 01 = middle third of background
 ; 02 = bottom third of background
-H_AUTOBGTRANSFERPORTION EQU $FFBB
+hAutoBGTransferPortion EQU $FFBB
 
 ; the destination address of the automatic background transfer
-H_AUTOBGTRANSFERDEST EQU $FFBC ; 2 bytes
+hAutoBGTransferDest EQU $FFBC ; 2 bytes
+
+hRedrawMapViewRowOffset EQU $FFBE
 
 ; temporary storage for stack pointer during memory transfers that use pop
 ; to increase speed

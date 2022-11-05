@@ -3656,7 +3656,7 @@ PrintLetterDelay:: ; 38d3 (0:38d3)
 	jr nz, .checkButtons
 .done
 	ld a, TRANSFERBOTTOM
-	ldh [H_AUTOBGTRANSFERPORTION], a
+	ldh [hAutoBGTransferPortion], a
 	
 	pop bc
 	pop de

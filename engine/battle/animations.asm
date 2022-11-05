@@ -2842,9 +2842,9 @@ Func_79de9: ; 79de9 (1e:5de9)
 
 Func_79e0d: ; 79e0d (1e:5e0d)
 	ld a, h
-	ldh [$ffbd], a
+	ldh [hAutoBGTransferDest + 1], a
 	ld a, l
-	ldh [H_AUTOBGTRANSFERDEST], a
+	ldh [hAutoBGTransferDest], a
 	jp Delay3
 
 TossBallAnimation: ; 79e16 (1e:5e16)

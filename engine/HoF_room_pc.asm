@@ -128,9 +128,9 @@ DataTable_74160: ; 74160 (1d:4160)
 
 Func_74164: ; 74164 (1d:4164)
 	ld a, l
-	ldh [H_AUTOBGTRANSFERDEST], a ; $ffbc
+	ldh [hAutoBGTransferDest], a ; $ffbc
 	ld a, h
-	ldh [$ffbd], a
+	ldh [hAutoBGTransferDest + 1], a
 	ld a, 1
 	ldh [hAutoBGTransferEnabled], a ; $ffba
 	jp Delay3

@@ -124,7 +124,7 @@ AutoBgMapTransfer:: ; 1d57 (0:1d57)
 	ldh [H_SPTEMP], a
 	ld a, l
 	ldh [H_SPTEMP + 1], a ; save stack pinter
-	ldh a, [H_AUTOBGTRANSFERPORTION]
+	ldh a, [hAutoBGTransferPortion]
 	and a
 	jr z, .transferTopThird
 	dec a
@@ -132,9 +132,9 @@ AutoBgMapTransfer:: ; 1d57 (0:1d57)
 .transferBottomThird
 	hlCoord 0, 12
 	ld sp, hl
-	ldh a, [H_AUTOBGTRANSFERDEST + 1]
+	ldh a, [hAutoBGTransferDest + 1]
 	ld h, a
-	ldh a, [H_AUTOBGTRANSFERDEST]
+	ldh a, [hAutoBGTransferDest]
 	ld l, a
 	ld de, (12 * 32)
 	add hl, de
@@ -143,24 +143,24 @@ AutoBgMapTransfer:: ; 1d57 (0:1d57)
 .transferTopThird
 	hlCoord 0, 0
 	ld sp, hl
-	ldh a, [H_AUTOBGTRANSFERDEST + 1]
+	ldh a, [hAutoBGTransferDest + 1]
 	ld h, a
-	ldh a, [H_AUTOBGTRANSFERDEST]
+	ldh a, [hAutoBGTransferDest]
 	ld l, a
 	ld a, TRANSFERMIDDLE
 	jr .doTransfer
 .transferMiddleThird
 	hlCoord 0, 6
 	ld sp, hl
-	ldh a, [H_AUTOBGTRANSFERDEST + 1]
+	ldh a, [hAutoBGTransferDest + 1]
 	ld h, a
-	ldh a, [H_AUTOBGTRANSFERDEST]
+	ldh a, [hAutoBGTransferDest]
 	ld l, a
 	ld de, (6 * 32)
 	add hl, de
 	ld a, TRANSFERBOTTOM
 .doTransfer
-	ldh [H_AUTOBGTRANSFERPORTION], a ; store next portion
+	ldh [hAutoBGTransferPortion], a ; store next portion
 	ld b, 6
 
 TransferBgRows:: ; 1d9e (0:1d9e)

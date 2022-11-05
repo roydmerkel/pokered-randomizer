@@ -346,7 +346,7 @@ Func_4524: ; 4524 (1:4524)
 	jp LoadFrontSpriteByMonIndex
 
 Func_4533: ; 4533 (1:4533)
-	ldh [$ffbd], a
+	ldh [hAutoBGTransferDest + 1], a
 	jp Delay3
 
 LoadCopyrightAndTextBoxTiles: ; 4538 (1:4538)

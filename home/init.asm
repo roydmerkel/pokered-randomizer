@@ -102,9 +102,9 @@ rLCDC_DEFAULT EQU %11100011
 	ld [wAudioROMBank], a
 	ld [wAudioSavedROMBank], a
 	ld a, $9c
-	ldh [$ffbd], a
+	ldh [hAutoBGTransferDest + 1], a
 	xor a
-	ldh [$ffbc], a
+	ldh [hAutoBGTransferDest], a
 	dec a
 	ld [wUpdateSpritesEnabled], a
 	predef PlayIntro
