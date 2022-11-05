@@ -351,7 +351,7 @@ CeruleanCityText6: ; 19707 (6:5707)
 
 CeruleanCityText7: ; 1970c (6:570c)
 	db $08 ; asm
-	ldh a, [$d3]
+	ldh a, [hRandomAdd]
 	cp 180
 	jr c, .asm_e9fc9 ; 0x19711
 	ld hl, CeruleanCityText_19730
@@ -383,7 +383,7 @@ CeruleanCityText_1973a: ; 1973a (6:573a)
 
 CeruleanCityText8: ; 1973f (6:573f)
 	db $08 ; asm
-	ldh a, [$d3]
+	ldh a, [hRandomAdd]
 	cp 180
 	jr c, .asm_e28da ; 0x19744
 	ld hl, CeruleanCityText_1976f

@@ -12,7 +12,7 @@ CeladonGameCornerScript_48bcf: ; 48bcf (12:4bcf)
 	res 6, [hl]
 	ret z
 	call Random
-	ldh a, [$ffd3]
+	ldh a, [hRandomAdd]
 	cp $7
 	jr nc, .asm_48be2
 	ld a, $8

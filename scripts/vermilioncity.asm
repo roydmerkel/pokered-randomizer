@@ -15,7 +15,7 @@ VermilionCityScript: ; 197a1 (6:57a1)
 
 VermilionCityScript_197c0: ; 197c0 (6:57c0)
 	call Random
-	ldh a, [$ffd4]
+	ldh a, [hRandomSub]
 	and $e
 	ld [wd743], a
 	ret

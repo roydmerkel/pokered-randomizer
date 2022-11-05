@@ -1,138 +1,138 @@
 Predef54: ; 71ad9 (1c:5ad9)
 ; trigger the trade offer/action specified by wWhichTrade
 	call SaveScreenTilesToBuffer2
-	ld hl,TradeMons
-	ld a,[wWhichTrade]
-	ld b,a
+	ld hl, TradeMons
+	ld a, [wWhichTrade]
+	ld b, a
 	swap a
 	sub b
 	sub b
-	ld c,a
-	ld b,$0
-	add hl,bc
-	ld a,[hli]
-	ld [wcd0f],a
-	ld a,[hli]
-	ld [wcd34],a
-	ld a,[hli]
+	ld c, a
+	ld b, 0
+	add hl, bc
+	ld a, [hli]
+	ld [wcd0f], a
+	ld a, [hli]
+	ld [wcd34], a
+	ld a, [hli]
 	push af
-	ld de,wcd29
-	ld bc,$000b
+	ld de, wcd29
+	ld bc, $000b
 	call CopyData
 	pop af
-	ld l,a
-	ld h,$0
-	ld de,InGameTradeTextPointers ; $5d64
-	add hl,hl
-	add hl,de
-	ld a,[hli]
-	ld [wcd10],a
-	ld a,[hl]
-	ld [wcd11],a
-	ld a,[wcd0f]
-	ld de,wcd13
+	ld l, a
+	ld h, 0
+	ld de, InGameTradeTextPointers ; $5d64
+	add hl, hl
+	add hl, de
+	ld a, [hli]
+	ld [wcd10], a
+	ld a, [hl]
+	ld [wcd11], a
+	ld a, [wcd0f]
+	ld de, wcd13
 	call Func_71b6a
-	ld a,[wcd34]
-	ld de,wPlayerMonAccuracyMod
+	ld a, [wcd34]
+	ld de, wPlayerMonAccuracyMod
 	call Func_71b6a
-	ld hl,wd737
-	ld a,[wWhichTrade]
-	ld c,a
-	ld b,$2
+	ld hl, wd737
+	ld a, [wWhichTrade]
+	ld c, a
+	ld b, $2
 	predef FlagActionPredef
-	ld a,c
+	ld a, c
 	and a
-	ld a,$4
-	ld [wcd12],a
-	jr nz,.asm_99bca ; 0x71b36 $20
+	ld a, $4
+	ld [wcd12], a
+	jr nz, .asm_99bca ; 0x71b36 $20
 	xor a
-	ld [wcd12],a
+	ld [wcd12], a
 	call .asm_99bca
-	ld a,$1
-	ld [wcd12],a
+	ld a, $1
+	ld [wcd12], a
 	call YesNoChoice
-	ld a,[wCurrentMenuItem]
+	ld a, [wCurrentMenuItem]
 	and a
-	jr nz,.asm_99bca ; 0x71b4b $b
+	jr nz, .asm_99bca ; 0x71b4b $b
 	call Func_71c07
-	jr c,.asm_99bca ; 0x71b50 $6
+	jr c, .asm_99bca ; 0x71b50 $6
 	ld hl, TradedForText
 	call PrintText
 .asm_99bca ; 0x71b58
-	ld hl,wcd12
-	ld a,[hld]
-	ld e,a
-	ld d,$0
-	ld a,[hld]
-	ld l,[hl]
-	ld h,a
-	add hl,de
-	add hl,de
-	ld a,[hli]
-	ld h,[hl]
-	ld l,a
+	ld hl, wcd12
+	ld a, [hld]
+	ld e, a
+	ld d, 0
+	ld a, [hld]
+	ld l, [hl]
+	ld h, a
+	add hl, de
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
 	jp PrintText
 
 Func_71b6a: ; 71b6a (1c:5b6a)
 	push de
-	ld [wd11e],a
+	ld [wd11e], a
 	call GetMonName
-	ld hl,wcd6d
+	ld hl, wcd6d
 	pop de
-	ld bc,$b
+	ld bc, $b
 	jp CopyData
 
 INCLUDE "data/trades.asm"
 
 Func_71c07: ; 71c07 (1c:5c07)
 	xor a
-	ld [wd07d],a
+	ld [wd07d], a
 	dec a
-	ld [wUpdateSpritesEnabled],a
+	ld [wUpdateSpritesEnabled], a
 	call DisplayPartyMenu
 	push af
 	call Func_71ca2
 	pop af
-	ld a,$1
-	jp c,.asm_c4bc2
-	ld a,[wcd0f]
-	ld b,a
-	ld a,[wcf91]
+	ld a, $1
+	jp c, .asm_c4bc2
+	ld a, [wcd0f]
+	ld b, a
+	ld a, [wcf91]
 	cp b
-	ld a,$2
-	jr nz,.asm_c4bc2 ; 0x71c26 $75
-	ld a,[wWhichPokemon]
-	ld hl,wPartyMon1Level
-	ld bc,$002c
+	ld a, $2
+	jr nz, .asm_c4bc2 ; 0x71c26 $75
+	ld a, [wWhichPokemon]
+	ld hl, wPartyMon1Level
+	ld bc, $002c
 	call AddNTimes
-	ld a,[hl]
-	ld [W_CURENEMYLVL],a
-	ld hl,wd737
-	ld a,[wWhichTrade]
-	ld c,a
-	ld b,$1
+	ld a, [hl]
+	ld [W_CURENEMYLVL], a
+	ld hl, wd737
+	ld a, [wWhichTrade]
+	ld c, a
+	ld b, $1
 	predef FlagActionPredef
 	ld hl, ConnectCableText
 	call PrintText
-	ld a,[wWhichPokemon]
+	ld a, [wWhichPokemon]
 	push af
-	ld a,[W_CURENEMYLVL]
+	ld a, [W_CURENEMYLVL]
 	push af
 	call LoadHpBarAndStatusTilePatterns
 	call Func_71cc1
 	predef Func_410e2
 	pop af
-	ld [W_CURENEMYLVL],a
+	ld [W_CURENEMYLVL], a
 	pop af
-	ld [wWhichPokemon],a
-	ld a,[wcd34]
-	ld [wcf91],a
+	ld [wWhichPokemon], a
+	ld a, [wcd34]
+	ld [wcf91], a
 	xor a
-	ld [wcc49],a
-	ld [wcf95],a
+	ld [wcc49], a
+	ld [wcf95], a
 	call RemovePokemon
-	ld a,$80
-	ld [wcc49],a
+	ld a, $80
+	ld [wcc49], a
 	call AddPartyMon
 	call Func_71d19
 	callab EvolveTradeMon
@@ -140,12 +140,12 @@ Func_71c07: ; 71c07 (1c:5c07)
 	call Func_71ca2
 	callba RedrawMapView
 	and a
-	ld a,$3
+	ld a, $3
 	jr .asm_ee803 ; 0x71c9b $1
 .asm_c4bc2 ; 0x71c9d
 	scf
 .asm_ee803 ; 0x71c9e
-	ld [wcd12],a
+	ld [wcd12], a
 	ret
 
 Func_71ca2: ; 71ca2 (1c:5ca2)
@@ -155,7 +155,7 @@ Func_71ca2: ; 71ca2 (1c:5ca2)
 	call LoadScreenTilesFromBuffer2
 	call Delay3
 	call LoadGBPal
-	ld c, $a
+	ld c, 10
 	call DelayFrames
 	ld b, BANK(LoadWildData)
 	ld hl, LoadWildData
