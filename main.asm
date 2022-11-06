@@ -186,7 +186,7 @@ _UpdateSprites: ; 4c34 (1:4c34)
 	ld l, a
 	sub $e
 	ld c, a
-	ldh [H_CURRENTSPRITEOFFSET], a
+	ldh [hCurrentSpriteOffset], a
 	ld a, [hl]
 	and a
 	jr z, .skipSprite   ; tests $c2Xe
@@ -214,14 +214,14 @@ UpdateNonPlayerSprite:
 	ldh [hTilePlayerStandingOn], a  ; $10 * sprite#
 	ld a, [wNPCMovementScriptSpriteOffset] ; some sprite offset?
 	ld b, a
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	cp b
 	jr nz, .unequal
 	jp Func_5236
 .unequal
 	jp Func_4ed1
 
-; This detects if the current sprite (whose offset is at H_CURRENTSPRITEOFFSET)
+; This detects if the current sprite (whose offset is at hCurrentSpriteOffset)
 ; is going to collide with another sprite by looping over the other sprites.
 ; The current sprite's offset will be labelled with i (e.g. $c1i0).
 ; The loop sprite's offset will labelled with j (e.g. $c1j0).
@@ -234,7 +234,7 @@ DetectCollisionBetweenSprites:
 	nop
 
 	ld h, wSpriteStateData1 / $100
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add wSpriteStateData1 % $100
 	ld l, a
 
@@ -293,7 +293,7 @@ DetectCollisionBetweenSprites:
 	ldh [hFF8F], a ; store loop counter
 	swap a
 	ld e, a
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	cp e ; does the loop sprite match the current sprite?
 	jp z, .next ; go to the next sprite if they match
 
@@ -308,7 +308,7 @@ DetectCollisionBetweenSprites:
 	inc a
 	jp z, .next ; go the next sprite if offscreen
 
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add 10
 	ld l, a
 
@@ -3370,7 +3370,7 @@ InitializeMissableObjectsFlags: ; f175 (3:7175)
 
 ; tests if current sprite is a missable object that is hidden/has been removed
 IsObjectHidden: ; f1a6 (3:71a6)
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	swap a
 	ld b, a
 	ld hl, W_MISSABLEOBJECTLIST

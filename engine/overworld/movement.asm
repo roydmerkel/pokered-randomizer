@@ -59,7 +59,7 @@ UpdatePlayerSprite: ; 4e31 (1:4e31)
 	ld a, [wd736]
 	bit 7, a
 	jr nz, .asm_4eb6
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $7
 	ld l, a
 	ld a, [hl]
@@ -95,7 +95,7 @@ UpdatePlayerSprite: ; 4e31 (1:4e31)
 Func_4ec7: ; 4ec7 (1:4ec7)
 	push bc
 	push af
-	ldh a, [$ffda]
+	ldh a, [hCurrentSpriteOffset]
 	ld c, a
 	pop af
 	add c
@@ -104,7 +104,7 @@ Func_4ec7: ; 4ec7 (1:4ec7)
 	ret
 
 Func_4ed1: ; 4ed1 (1:4ed1)
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	swap a
 	dec a
 	add a
@@ -117,7 +117,7 @@ Func_4ed1: ; 4ed1 (1:4ed1)
 	ld a, [hl]        ; read movement byte 2
 	ld [wCurSpriteMovement2], a
 	ld h, $c1
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	ld l, a
 	inc l
 	ld a, [hl]        ; c1x1
@@ -126,7 +126,7 @@ Func_4ed1: ; 4ed1 (1:4ed1)
 	call CheckSpriteAvailability
 	ret c             ; if sprite is invisible, on tile >=$60, in grass or player is currently walking
 	ld h, $c1
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	ld l, a
 	inc l
 	ld a, [hl]        ; c1x1
@@ -146,7 +146,7 @@ Func_4ed1: ; 4ed1 (1:4ed1)
 	ret nz           ; don't do anything yet if player is currently moving (redundant, already tested in CheckSpriteAvailability)
 	call InitializeSpriteScreenPosition
 	ld h, $c2
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $6
 	ld l, a
 	ld a, [hl]       ; c2x6: movement byte 1
@@ -257,11 +257,11 @@ ChangeFacingDirection: ; 4fc8 (1:4fc8)
 TryWalking: ; 4fcb (1:4fcb)
 	push hl
 	ld h, $c1
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $9
 	ld l, a
 	ld [hl], c          ; c1x9 (update facing direction)
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $3
 	ld l, a
 	ld [hl], d          ; c1x3 (update Y movement delta)
@@ -275,7 +275,7 @@ TryWalking: ; 4fcb (1:4fcb)
 	pop de
 	ret c               ; cannot walk there (reinitialization of delay values already done)
 	ld h, $c2
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $4
 	ld l, a
 	ld a, [hl]          ; c2x4: Y position
@@ -284,7 +284,7 @@ TryWalking: ; 4fcb (1:4fcb)
 	ld a, [hl]          ; c2x5: X position
 	add e
 	ld [hl], a          ; update X position
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	ld l, a
 	ld [hl], $10        ; c2x0=16: walk animation counter
 	dec h
@@ -294,7 +294,7 @@ TryWalking: ; 4fcb (1:4fcb)
 
 ; update the walking animation parameters for a sprite that is currently walking
 UpdateSpriteInWalkingAnimation: ; 4ffe (1:4ffe)
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $7
 	ld l, a
 	ld a, [hl]                       ; c1x7 (counter until next walk animation frame)
@@ -310,7 +310,7 @@ UpdateSpriteInWalkingAnimation: ; 4ffe (1:4ffe)
 	and $3
 	ld [hl], a                       ; advance to next animation frame every 4 ticks (16 ticks total for one step)
 .noNextAnimationFrame
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $3
 	ld l, a
 	ld a, [hli]                      ; c1x3 (movement Y delta)
@@ -323,7 +323,7 @@ UpdateSpriteInWalkingAnimation: ; 4ffe (1:4ffe)
 	ld a, [hl]                       ; c1x6 (screen X position)
 	add b
 	ld [hl], a                       ; update screen X position
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	ld l, a
 	inc h
 	ld a, [hl]                       ; c2x0 (walk animantion counter)
@@ -336,7 +336,7 @@ UpdateSpriteInWalkingAnimation: ; 4ffe (1:4ffe)
 	ld a, [hl]                       ; c2x6 (movement byte 1)
 	cp $fe
 	jr nc, .initNextMovementCounter  ; values $fe and $ff
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	inc a
 	ld l, a
 	dec h
@@ -344,14 +344,14 @@ UpdateSpriteInWalkingAnimation: ; 4ffe (1:4ffe)
 	ret
 .initNextMovementCounter
 	call Random
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $8
 	ld l, a
 	ldh a, [hRandomAdd]
 	and $7f
 	ld [hl], a                       ; c2x8: set next movement delay to a random value in [0,$7f]
 	dec h                            ;       note that value 0 actually makes the delay $100 (bug?)
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	inc a
 	ld l, a
 	ld [hl], $2                      ; c1x1 = 2 (movement status)
@@ -368,7 +368,7 @@ UpdateSpriteInWalkingAnimation: ; 4ffe (1:4ffe)
 ; update delay value (c2x8) for sprites in the delayed state (c1x1)
 UpdateSpriteMovementDelay: ; 5057 (1:5057)
 	ld h, $c2
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $6
 	ld l, a
 	ld a, [hl]              ; c2x6: movement byte 1
@@ -383,13 +383,13 @@ UpdateSpriteMovementDelay: ; 5057 (1:5057)
 	jr nz, notYetMoving
 .moving
 	dec h
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	inc a
 	ld l, a
 	ld [hl], $1             ; c1x1 = 1 (mark as ready to move)
 notYetMoving: ; 5073 (1:5073)
 	ld h, $c1
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $8
 	ld l, a
 	ld [hl], $0             ; c1x8 = 0 (walk animation frame)
@@ -418,7 +418,7 @@ InitializeSpriteFacingDirection: ; 507f (1:507f)
 .notFacingRight
 	ld c, $8                ; make sprite face left
 .facingDirectionDetermined
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $9
 	ld l, a
 	ld [hl], c              ; c1x9: set facing direction
@@ -429,7 +429,7 @@ InitializeSpriteStatus: ; 50ad (1:50ad)
 	inc l
 	ld [hl], $ff  ; $c1x2: set sprite image to $ff (invisible/off screen)
 	inc h
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $2
 	ld l, a
 	ld a, $8
@@ -440,7 +440,7 @@ InitializeSpriteStatus: ; 50ad (1:50ad)
 ; calculates the spprite's scrren position form its map position and the player position
 InitializeSpriteScreenPosition: ; 50bd (1:50bd)
 	ld h, $c2
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $4
 	ld l, a
 	ld a, [W_YCOORD] ; wd361
@@ -468,13 +468,13 @@ CheckSpriteAvailability: ; 50dc (1:50dc)
 	and a
 	jp nz, .spriteInvisible
 	ld h, $c2
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $6
 	ld l, a
 	ld a, [hl]      ; c2x6: movement byte 1
 	cp $fe
 	jr c, .skipXVisibilityTest ; movement byte 1 < $fe
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $4
 	ld l, a
 	ld b, [hl]      ; c2x4: Y pos (+4)
@@ -516,7 +516,7 @@ CheckSpriteAvailability: ; 50dc (1:50dc)
 	jr c, .spriteVisible    ; standing on tile with ID >=$60 (top right tile)
 .spriteInvisible
 	ld h, $c1
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $2
 	ld l, a
 	ld [hl], $ff       ; c1x2
@@ -529,7 +529,7 @@ CheckSpriteAvailability: ; 50dc (1:50dc)
 	jr nz, .done           ; if player is currently walking, we're done
 	call UpdateSpriteImage
 	inc h
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $7
 	ld l, a
 	ld a, [W_GRASSTILE]
@@ -545,7 +545,7 @@ CheckSpriteAvailability: ; 50dc (1:50dc)
 
 UpdateSpriteImage: ; 5157 (1:5157)
 	ld h, $c1
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $8
 	ld l, a
 	ld a, [hli]        ; c1x8: walk animation frame
@@ -556,7 +556,7 @@ UpdateSpriteImage: ; 5157 (1:5157)
 	ldh a, [hTilePlayerStandingOn]  ; current sprite offset
 	add b
 	ld b, a
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $2
 	ld l, a
 	ld [hl], b         ; c1x2: sprite to display
@@ -570,7 +570,7 @@ UpdateSpriteImage: ; 5157 (1:5157)
 ; set carry on failure, clears carry on success
 CanWalkOntoTile: ; 516e (1:516e)
 	ld h, $c2
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $6
 	ld l, a
 	ld a, [hl]         ; c2x6 (movement byte 1)
@@ -590,14 +590,14 @@ CanWalkOntoTile: ; 516e (1:516e)
 	cp c
 	jr nz, .tilePassableLoop
 	ld h, $c2
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $6
 	ld l, a
 	ld a, [hl]         ; $c2x6 (movement byte 1)
 	inc a
 	jr z, .impassable  ; if $ff, no movement allowed (however, changing direction is)
 	ld h, $c1
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $4
 	ld l, a
 	ld a, [hli]        ; c1x4 (screen Y pos)
@@ -616,14 +616,14 @@ CanWalkOntoTile: ; 516e (1:516e)
 	pop bc
 	pop de
 	ld h, $c1
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $c
 	ld l, a
 	ld a, [hl]         ; c1xc (directions in which sprite collision would occur)
 	and b              ; check against chosen direction (1,2,4 or 8)
 	jr nz, .impassable ; collision between sprites, don't go there
 	ld h, $c2
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $2
 	ld l, a
 	ld a, [hli]        ; c2x2 (sprite Y displacement, initialized at $8, keep track of where a sprite did go)
@@ -654,7 +654,7 @@ CanWalkOntoTile: ; 516e (1:516e)
 	ret
 .impassable
 	ld h, $c1
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	inc a
 	ld l, a
 	ld [hl], $2        ; c1x1 = 2 (set movement status to delayed)
@@ -665,7 +665,7 @@ CanWalkOntoTile: ; 516e (1:516e)
 	inc l
 	ld [hl], a         ; c1x5 = 0 (clear X movement delta)
 	inc h
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $8
 	ld l, a
 	call Random
@@ -680,7 +680,7 @@ CanWalkOntoTile: ; 516e (1:516e)
 ; hl: output pointer
 getTileSpriteStandsOn: ; 5207 (1:5207)
 	ld h, $c1
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $4
 	ld l, a
 	ld a, [hli]     ; c1x4: screen Y position
@@ -767,7 +767,7 @@ Func_5236: ; 5236 (1:5236)
 	ld a, [hl]
 	add b
 	ld [hl], a
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $9
 	ld l, a
 	ld a, c
@@ -799,7 +799,7 @@ Func_52b7: ; 52b7 (1:52b7)
 	ld b, a
 asm_52ba: ; 52ba (1:52ba)
 	ld hl, wSpriteStateData1
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add l
 	add b
 	ld l, a
@@ -807,7 +807,7 @@ asm_52ba: ; 52ba (1:52ba)
 
 Func_52c3: ; 52c3 (1:52c3)
 	ld hl, wSpriteStateData2
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $e
 	ld l, a
 	ld a, [hl]
@@ -815,7 +815,7 @@ Func_52c3: ; 52c3 (1:52c3)
 	swap a
 	ld b, a
 	ld hl, wSpriteStateData1
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $9
 	ld l, a
 	ld a, [hl]
@@ -834,7 +834,7 @@ Func_52c3: ; 52c3 (1:52c3)
 	ldh [$ffe9], a
 	call Func_5301
 	ld hl, wSpriteStateData1
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $2
 	ld l, a
 	ldh a, [$ffe9]
@@ -845,7 +845,7 @@ Func_52c3: ; 52c3 (1:52c3)
 	ret
 
 Func_5301: ; 5301 (1:5301)
-	ldh a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add $7
 	ld l, a
 	ld a, [hl]

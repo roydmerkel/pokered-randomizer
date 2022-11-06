@@ -294,7 +294,7 @@ hMovingBGTilesCounter1 EQU $FFD8
 
 ; $FFD9 unused
 
-H_CURRENTSPRITEOFFSET EQU $FFDA ; multiple of $10
+hCurrentSpriteOffset EQU $FFDA ; multiple of $10
 
 H_WHOSETURN EQU $FFF3 ; 0 on player’s turn, 1 on enemy’s turn
 
