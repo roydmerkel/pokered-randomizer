@@ -19,7 +19,7 @@ Func_7bde9: ; 7bde9 (1e:7de9)
 	call Delay3
 	xor a
 	ldh [hAutoBGTransferEnabled], a ; $ffba
-	ldh [hTilesetType], a
+	ldh [hTileAnimations], a
 	ld a, [wHPBarMaxHP]
 	ld [wcf1d], a
 	ld c, 0

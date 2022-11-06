@@ -369,10 +369,10 @@ GetCryData:: ; 13d9 (0:13d9)
 
 
 DisplayPartyMenu:: ; 13fc (0:13fc)
-	ldh a, [hTilesetType]
+	ldh a, [hTileAnimations]
 	push af
 	xor a
-	ldh [hTilesetType], a
+	ldh [hTileAnimations], a
 	call GBPalWhiteOutWithDelay3
 	call ClearSprites
 	call PartyMenuInit
@@ -380,10 +380,10 @@ DisplayPartyMenu:: ; 13fc (0:13fc)
 	jp HandlePartyMenuInput
 
 GoBackToPartyMenu:: ; 1411 (0:1411)
-	ldh a, [hTilesetType]
+	ldh a, [hTileAnimations]
 	push af
 	xor a
-	ldh [hTilesetType], a
+	ldh [hTileAnimations], a
 	call PartyMenuInit
 	call RedrawPartyMenu
 	jp HandlePartyMenuInput
@@ -445,7 +445,7 @@ HandlePartyMenuInput:: ; 145a (0:145a)
 	and a
 	jp nz, .swappingPokemon
 	pop af
-	ldh [hTilesetType], a
+	ldh [hTileAnimations], a
 	bit 1, b
 	jr nz, .noPokemonChosen
 	ld a, [wPartyCount]

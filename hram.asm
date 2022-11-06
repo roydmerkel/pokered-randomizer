@@ -288,7 +288,7 @@ hVBlankOccurred EQU $FFD6
 ; 01 = cave
 ; 02 = outdoor
 ; this is often set to 00 in order to turn off water and flower BG tile animations
-hTilesetType EQU $FFD7
+hTileAnimations EQU $FFD7
 
 H_CURRENTSPRITEOFFSET EQU $FFDA ; multiple of $10
 

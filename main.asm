@@ -2697,7 +2697,7 @@ LoadTilesetHeader: ; c754 (3:4754)
 	dec c
 	jr nz, .copyTilesetHeaderLoop
 	ld a, [hl]
-	ldh [hTilesetType], a
+	ldh [hTileAnimations], a
 	xor a
 	ldh [$ffd8], a
 	pop hl
@@ -3194,11 +3194,11 @@ RedrawMapView: ; eedc (3:6edc)
 	ret z
 	ldh a, [hAutoBGTransferEnabled]
 	push af
-	ldh a, [hTilesetType]
+	ldh a, [hTileAnimations]
 	push af
 	xor a
 	ldh [hAutoBGTransferEnabled], a
-	ldh [hTilesetType], a ; no flower/water BG tile animations
+	ldh [hTileAnimations], a ; no flower/water BG tile animations
 	call LoadCurrentMapView
 	call GoPAL_SET_CF1C
 	ld hl, wMapViewVRAMPointer
@@ -3254,7 +3254,7 @@ RedrawMapView: ; eedc (3:6edc)
 	dec c
 	jr nz, .redrawRowLoop
 	pop af
-	ldh [hTilesetType], a
+	ldh [hTileAnimations], a
 	pop af
 	ldh [hAutoBGTransferEnabled], a
 	ret

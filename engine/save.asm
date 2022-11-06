@@ -61,7 +61,7 @@ LoadSAVCheckSum: ; 73623 (1c:7623)
 	ld bc, $200
 	call CopyData
 	ld a, [$b522+$30]
-	ldh [hTilesetType], a
+	ldh [hTileAnimations], a
 	ld hl, $b0c0+$30
 	ld de, W_NUMINBOX
 	ld bc, wBoxMonNicksEnd - W_NUMINBOX
@@ -206,7 +206,7 @@ SaveSAVtoSRAM0: ; 7378c (1c:778c)
 	ld de, $b0c0+$30
 	ld bc, wBoxMonNicksEnd - W_NUMINBOX
 	call CopyData
-	ldh a, [hTilesetType]
+	ldh a, [hTileAnimations]
 	ld [$b522+$30], a
 	ld hl, $a598
 	ld bc, $f8b

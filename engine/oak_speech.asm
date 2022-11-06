@@ -57,7 +57,7 @@ OakSpeech: ; 6115 (1:6115)
 	ld [wDestinationMap], a
 	call SpecialWarpIn
 	xor a
-	ldh [hTilesetType], a
+	ldh [hTileAnimations], a
 	ld a, [wd732]
 	bit 1, a ; XXX when is bit 1 set?
 	jp nz, Func_61bc ; easter egg: skip the intro

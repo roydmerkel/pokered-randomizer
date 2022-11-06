@@ -500,10 +500,10 @@ StartMenu_TrainerInfo: ; 13460 (4:7460)
 	call GBPalWhiteOut
 	call ClearScreen
 	call UpdateSprites ; move sprites
-	ldh a, [hTilesetType]
+	ldh a, [hTileAnimations]
 	push af
 	xor a
-	ldh [hTilesetType], a
+	ldh [hTileAnimations], a
 	call DrawTrainerInfo
 	predef DrawBadges ; draw badges
 	ld b, $0d
@@ -517,7 +517,7 @@ StartMenu_TrainerInfo: ; 13460 (4:7460)
 	call ReloadMapData
 	call LoadGBPal
 	pop af
-	ldh [hTilesetType], a
+	ldh [hTileAnimations], a
 	jp RedisplayStartMenu
 
 ; loads tile patterns and draws everything except for gym leader faces / badges

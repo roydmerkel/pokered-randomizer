@@ -6,10 +6,10 @@ PKMNLeaguePC: ; 0x7657e
 	push hl
 	ld a, [wUpdateSpritesEnabled]
 	push af
-	ldh a, [hTilesetType]
+	ldh a, [hTileAnimations]
 	push af
 	xor a
-	ldh [hTilesetType], a
+	ldh [hTileAnimations], a
 	ld [W_SPRITEFLIPPED], a
 	ld [wUpdateSpritesEnabled], a
 	ld [wTrainerScreenX], a
@@ -38,7 +38,7 @@ PKMNLeaguePC: ; 0x7657e
 	jr nz, .first
 .second
 	pop af
-	ldh [hTilesetType], a
+	ldh [hTileAnimations], a
 	pop af
 	ld [wUpdateSpritesEnabled], a
 	pop hl
