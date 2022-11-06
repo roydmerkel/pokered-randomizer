@@ -2699,7 +2699,7 @@ LoadTilesetHeader: ; c754 (3:4754)
 	ld a, [hl]
 	ldh [hTileAnimations], a
 	xor a
-	ldh [$ffd8], a
+	ldh [hMovingBGTilesCounter1], a
 	pop hl
 	ld a, [W_CURMAPTILESET]
 	push hl

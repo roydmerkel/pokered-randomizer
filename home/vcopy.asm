@@ -380,9 +380,9 @@ UpdateMovingBgTiles::
 	and a
 	ret z ; no animations if indoors (or if a menu set this to 0)
 
-	ldh a, [$ffd8]
+	ldh a, [hMovingBGTilesCounter1]
 	inc a
-	ldh [$ffd8], a
+	ldh [hMovingBGTilesCounter1], a
 	cp 20
 	ret c
 	cp 21
@@ -417,12 +417,12 @@ UpdateMovingBgTiles::
 	ret nc
 ; if in a cave, no flower animations
 	xor a
-	ldh [$ffd8], a
+	ldh [hMovingBGTilesCounter1], a
 	ret
 
 .flower
 	xor a
-	ldh [$ffd8], a
+	ldh [hMovingBGTilesCounter1], a
 
 	ld a, [wd085]
 	and 3

@@ -290,6 +290,10 @@ hVBlankOccurred EQU $FFD6
 ; this is often set to 00 in order to turn off water and flower BG tile animations
 hTileAnimations EQU $FFD7
 
+hMovingBGTilesCounter1 EQU $FFD8
+
+; $FFD9 unused
+
 H_CURRENTSPRITEOFFSET EQU $FFDA ; multiple of $10
 
 H_WHOSETURN EQU $FFF3 ; 0 on player’s turn, 1 on enemy’s turn
