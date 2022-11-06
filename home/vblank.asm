@@ -36,18 +36,18 @@ VBlank::
 
 	call Random
 
-	ldh a, [H_VBLANKOCCURRED]
+	ldh a, [hVBlankOccurred]
 	and a
 	jr z, .vblanked
 	xor a
-	ldh [H_VBLANKOCCURRED], a
+	ldh [hVBlankOccurred], a
 .vblanked
 
-	ldh a, [H_FRAMECOUNTER]
+	ldh a, [hFrameCounter]
 	and a
 	jr z, .decced
 	dec a
-	ldh [H_FRAMECOUNTER], a
+	ldh [hFrameCounter], a
 .decced
 
 	;call Func_28cb
@@ -98,10 +98,10 @@ DelayFrame::
 NOT_VBLANKED EQU 1
 
 	ld a, NOT_VBLANKED
-	ldh [H_VBLANKOCCURRED], a
+	ldh [hVBlankOccurred], a
 .halt
 	halt
-	ldh a, [H_VBLANKOCCURRED]
+	ldh a, [hVBlankOccurred]
 	and a
 	jr nz, .halt
 	ret

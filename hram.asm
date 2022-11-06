@@ -277,12 +277,12 @@ hRedrawRowOrColumnDest EQU $FFD1
 hRandomAdd EQU $FFD3
 hRandomSub EQU $FFD4
 
-H_FRAMECOUNTER EQU $FFD5 ; decremented every V-blank (used for delays)
+hFrameCounter EQU $FFD5 ; decremented every V-blank (used for delays)
 
 ; V-blank sets this to 0 each time it runs.
 ; So, by setting it to a nonzero value and waiting for it to become 0 again,
 ; you can detect that the V-blank handler has run since then.
-H_VBLANKOCCURRED EQU $FFD6
+hVBlankOccurred EQU $FFD6
 
 ; 00 = indoor
 ; 01 = cave

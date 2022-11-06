@@ -1069,7 +1069,7 @@ DisplayTextID:: ; 2920 (0:2920)
 	call SwitchToMapRomBank
 .skipSwitchToMapBank
 	ld a, 30 ; half a second
-	ldh [H_FRAMECOUNTER], a ; used as joypad poll timer
+	ldh [hFrameCounter], a ; used as joypad poll timer
 	ld hl, W_MAPTEXTPTR
 	ld a, [hli]
 	ld h, [hl]
@@ -3500,10 +3500,10 @@ JoypadLowSensitivity:: ; 3831 (0:3831)
 	jr z, .noNewlyPressedButtons
 .newlyPressedButtons
 	ld a, 30 ; half a second delay
-	ldh [H_FRAMECOUNTER], a
+	ldh [hFrameCounter], a
 	ret
 .noNewlyPressedButtons
-	ldh a, [H_FRAMECOUNTER]
+	ldh a, [hFrameCounter]
 	and a ; is the delay over?
 	jr z, .delayOver
 .delayNotOver
@@ -3522,7 +3522,7 @@ JoypadLowSensitivity:: ; 3831 (0:3831)
 	ldh [hJoy5], a
 .setShortDelay
 	ld a, 5 ; 1/12 of a second delay
-	ldh [H_FRAMECOUNTER], a
+	ldh [hFrameCounter], a
 	ret
 
 WaitForTextScrollButtonPress:: ; 3865 (0:3865)
@@ -3632,11 +3632,11 @@ PrintLetterDelay:: ; 38d3 (0:38d3)
 	jr z, .waitOneFrame
 	ld a, [W_OPTIONS]
 	and $f
-	ldh [H_FRAMECOUNTER], a
+	ldh [hFrameCounter], a
 	jr .checkButtons
 .waitOneFrame
 	ld a, 1
-	ldh [H_FRAMECOUNTER], a
+	ldh [hFrameCounter], a
 .checkButtons
 	call Joypad
 	ldh a, [hJoyHeld]
@@ -3651,7 +3651,7 @@ PrintLetterDelay:: ; 38d3 (0:38d3)
 	call DelayFrame
 	jr .done
 .buttonsNotPressed ; if neither A nor B is pressed
-	ldh a, [H_FRAMECOUNTER]
+	ldh a, [hFrameCounter]
 	and a
 	jr nz, .checkButtons
 .done
