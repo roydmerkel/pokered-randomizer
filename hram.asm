@@ -296,6 +296,18 @@ hMovingBGTilesCounter1 EQU $FFD8
 
 hCurrentSpriteOffset EQU $FFDA ; multiple of $10
 
+
+hPlayerFacing EQU $FFDB
+hPlayerYCoord EQU $FFDC
+hPlayerXCoord EQU $FFDD
+
+
+
+; $00 = bag full
+; $01 = got item
+; $80 = didn't meet required number of owned mons
+; $FF = player cancelled
+
 H_WHOSETURN EQU $FFF3 ; 0 on player’s turn, 1 on enemy’s turn
 
 hJoyInput EQU $FFF8

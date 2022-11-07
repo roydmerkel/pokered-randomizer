@@ -2359,7 +2359,7 @@ _GetTileAndCoordsInFrontOfPlayer: ; c589 (3:4589)
 
 GetTileTwoStepsInFrontOfPlayer: ; c5be (3:45be)
 	xor a
-	ldh [$ffdb], a
+	ldh [hPlayerFacing], a
 	ld hl, W_YCOORD
 	ld a, [hli]
 	ld d, a
@@ -2368,7 +2368,7 @@ GetTileTwoStepsInFrontOfPlayer: ; c5be (3:45be)
 	and a
 	jr nz, .notFacingDown
 ; facing down
-	ld hl, $ffdb
+	ld hl, hPlayerFacing
 	set 0, [hl]
 	aCoord 8, 13
 	inc d
@@ -2377,7 +2377,7 @@ GetTileTwoStepsInFrontOfPlayer: ; c5be (3:45be)
 	cp SPRITE_FACING_UP
 	jr nz, .notFacingUp
 ; facing up
-	ld hl, $ffdb
+	ld hl, hPlayerFacing
 	set 1, [hl]
 	aCoord 8, 5
 	dec d
@@ -2386,7 +2386,7 @@ GetTileTwoStepsInFrontOfPlayer: ; c5be (3:45be)
 	cp SPRITE_FACING_LEFT
 	jr nz, .notFacingLeft
 ; facing left
-	ld hl, $ffdb
+	ld hl, hPlayerFacing
 	set 2, [hl]
 	aCoord 4, 9
 	dec e
@@ -2395,7 +2395,7 @@ GetTileTwoStepsInFrontOfPlayer: ; c5be (3:45be)
 	cp SPRITE_FACING_RIGHT
 	jr nz, .storeTile
 ; facing right
-	ld hl, $ffdb
+	ld hl, hPlayerFacing
 	set 3, [hl]
 	aCoord 12, 9
 	inc e
@@ -2440,33 +2440,33 @@ CheckForBoulderCollisionWithSprites: ; c636 (3:4636)
 	ld hl, wSpriteStateData2 + $14
 	add hl, de
 	ld a, [hli] ; map Y position
-	ldh [$ffdc], a
+	ldh [hPlayerYCoord], a
 	ld a, [hl] ; map X position
-	ldh [$ffdd], a
+	ldh [hPlayerXCoord], a
 	ld a, [W_NUMSPRITES]
 	ld c, a
 	ld de, $f
 	ld hl, wSpriteStateData2 + $14
-	ldh a, [$ffdb]
+	ldh a, [hPlayerFacing]
 	and $3 ; facing up or down?
 	jr z, .pushingHorizontallyLoop
 .pushingVerticallyLoop
 	inc hl
-	ldh a, [$ffdd]
+	ldh a, [hPlayerXCoord]
 	cp [hl]
 	jr nz, .nextSprite1 ; if X coordinates don't match
 	dec hl
 	ld a, [hli]
 	ld b, a
-	ldh a, [$ffdb]
+	ldh a, [hPlayerFacing]
 	rrca
 	jr c, .pushingDown
 ; pushing up
-	ldh a, [$ffdc]
+	ldh a, [hPlayerYCoord]
 	dec a
 	jr .compareYCoords
 .pushingDown
-	ldh a, [$ffdc]
+	ldh a, [hPlayerYCoord]
 	inc a
 .compareYCoords
 	cp b
@@ -2479,19 +2479,19 @@ CheckForBoulderCollisionWithSprites: ; c636 (3:4636)
 .pushingHorizontallyLoop
 	ld a, [hli]
 	ld b, a
-	ldh a, [$ffdc]
+	ldh a, [hPlayerYCoord]
 	cp b
 	jr nz, .nextSprite2
 	ld b, [hl]
-	ldh a, [$ffdb]
+	ldh a, [hPlayerFacing]
 	bit 2, a
 	jr nz, .pushingLeft
 ; pushing right
-	ldh a, [$ffdd]
+	ldh a, [hPlayerXCoord]
 	inc a
 	jr .compareXCoords
 .pushingLeft
-	ldh a, [$ffdd]
+	ldh a, [hPlayerXCoord]
 	dec a
 .compareXCoords
 	cp b
