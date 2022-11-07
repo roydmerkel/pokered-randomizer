@@ -9,16 +9,16 @@ OaksAideScript ; 0x59035
 	ld b, wPokedexOwnedEnd - wPokedexOwned
 	call CountSetBits
 	ld a, [wd11e]
-	ldh [$ffdd], a
+	ldh [hOaksAideNumMonsOwned], a
 	ld b, a
-	ldh a, [$ffdb]
+	ldh a, [hOaksAideRequirement]
 	cp b
 	jr z, .asm_59059 ; 0x59055 $2
 	jr nc, .asm_5907c ; 0x59057 $23
 .asm_59059
 	ld hl, OaksAideHereYouGoText
 	call PrintText
-	ldh a, [$ffdc]
+	ldh a, [hOaksAideRewardItem]
 	ld b, a
 	ld c, 1
 	call GiveItem
@@ -42,7 +42,7 @@ OaksAideScript ; 0x59035
 	call PrintText
 	ld a, $ff
 .asm_5908e
-	ldh [$ffdb], a
+	ldh [hOaksAideResult], a
 	ret
 
 OaksAideHiText: ; 59091 (16:5091)

@@ -307,6 +307,11 @@ hPlayerXCoord EQU $FFDD
 ; $01 = got item
 ; $80 = didn't meet required number of owned mons
 ; $FF = player cancelled
+hOaksAideResult EQU $FFDB
+hOaksAideRequirement EQU $FFDB
+
+hOaksAideRewardItem EQU $FFDC
+hOaksAideNumMonsOwned EQU $FFDD
 
 H_WHOSETURN EQU $FFF3 ; 0 on player’s turn, 1 on enemy’s turn
 
