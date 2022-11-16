@@ -94,7 +94,7 @@ CinnabarGymScript2: ; 757f6 (1d:57f6)
 	cp $ff
 	jp z, CinnabarGymScript_75792
 	ld a, [wTrainerHeaderFlagBit]
-	ldh [$ffdb], a
+	ldh [hGymGateIndex], a
 	ld c, a
 	ld b, $2
 	ld hl, wd79a
@@ -108,7 +108,7 @@ CinnabarGymScript2: ; 757f6 (1d:57f6)
 	call WaitForSoundToFinish
 .asm_7581b
 	ld a, [wTrainerHeaderFlagBit]
-	ldh [$ffdb], a
+	ldh [hGymGateIndex], a
 	ld c, a
 	ld b, $1
 	ld hl, wd79a

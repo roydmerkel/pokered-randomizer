@@ -47,7 +47,7 @@ VendingMachineMenu: ; 74ee0 (1d:4ee0)
 	jp PrintText
 .enoughMoney
 	call Func_74fe7
-	ldh a, [$ffdb]
+	ldh a, [hVendingMachineItem]
 	ld b, a
 	ld c, 1
 	call GiveItem
@@ -65,7 +65,7 @@ VendingMachineMenu: ; 74ee0 (1d:4ee0)
 .asm_74f72
 	ld hl, VendingMachineText5
 	call PrintText
-	ld hl, $ffde
+	ld hl, hVendingMachinePrice + 2
 	ld de, wPlayerMoney + 2 ; wd349
 	ld c, $3
 	predef SubBCDPredef
@@ -119,13 +119,13 @@ Func_74fe7: ; 74fe7 (1d:4fe7)
 	ld e, a
 	add hl, de
 	ld a, [hli]
-	ldh [$ffdb], a
+	ldh [hVendingMachineItem], a
 	ld a, [hli]
-	ldh [$ffdc], a
+	ldh [hVendingMachinePrice], a
 	ld a, [hli]
-	ldh [$ffdd], a
+	ldh [hVendingMachinePrice + 1], a
 	ld a, [hl]
-	ldh [$ffde], a
+	ldh [hVendingMachinePrice + 2], a
 	ret
 
 VendingPrices: ; 75000 (1d:5000)

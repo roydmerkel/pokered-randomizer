@@ -372,7 +372,7 @@ Music_Cities1AlternateTempo:: ; 0x9b81
 
 SECTION "Pokedex Rating SFX Routines", ROMX
 Func_7d13b:: ; 7d13b (1f:513b)
-	ldh a, [$ffdc]
+	ldh a, [hDexRatingNumMonsOwned]
 	ld c, $0
 	ld hl, OwnedMonValues
 .getSfxPointer

@@ -132,14 +132,14 @@ CinnabarGymQuiz: ; 1ea25 (7:6a25)
 	ld a, [wWhichTrade] ; wWhichTrade
 	push af
 	and $f
-	ldh [$ffdb], a
+	ldh [hGymGateIndex], a
 	pop af
 	and $f0
 	swap a
-	ldh [$ffdc], a
+	ldh [hGymGateAnswer], a
 	ld hl, CinnabarGymQuizIntroText
 	call PrintText
-	ldh a, [$ffdb]
+	ldh a, [hGymGateIndex]
 	dec a
 	add a
 	ld d, $0
@@ -197,14 +197,14 @@ CinnabarGymQuiz_1ea8a: ; 1ea8a (7:6a8a)
 
 CinnabarGymQuiz_1ea92: ; 1ea92 (7:6a92)
 	call YesNoChoice
-	ldh a, [$ffdc]
+	ldh a, [hGymGateAnswer]
 	ld c, a
 	ld a, [wCurrentMenuItem] ; wCurrentMenuItem
 	cp c
 	jr nz, .asm_1eab8
 	ld hl, wd126
 	set 5, [hl]
-	ldh a, [$ffdb]
+	ldh a, [hGymGateIndex]
 	ldh [$ffe0], a
 	ld hl, CinnabarGymQuizCorrectText
 	call PrintText
@@ -220,7 +220,7 @@ CinnabarGymQuiz_1ea92: ; 1ea92 (7:6a92)
 	call WaitForSoundToFinish
 	ld hl, CinnabarGymQuizIncorrectText
 	call PrintText
-	ldh a, [$ffdb]
+	ldh a, [hGymGateIndex]
 	add $2
 	ld c, a
 	ld b, $2
@@ -229,7 +229,7 @@ CinnabarGymQuiz_1ea92: ; 1ea92 (7:6a92)
 	ld a, c
 	and a
 	ret nz
-	ldh a, [$ffdb]
+	ldh a, [hGymGateIndex]
 	add $2
 	ld [wda38], a
 	ret
@@ -258,9 +258,9 @@ CinnabarGymQuizIncorrectText: ; 1eb05 (7:6b05)
 
 CinnabarGymQuiz_1eb0a: ; 1eb0a (7:6b0a)
 	ld a, $6
-	ldh [$ffdb], a
+	ldh [hGymGateIndex], a
 .asm_1eb0e
-	ldh a, [$ffdb]
+	ldh a, [hGymGateIndex]
 	dec a
 	add a
 	add a
@@ -275,7 +275,7 @@ CinnabarGymQuiz_1eb0a: ; 1eb0a (7:6b0a)
 	ld a, [hl]
 	ld [wd12f], a
 	push bc
-	ldh a, [$ffdb]
+	ldh a, [hGymGateIndex]
 	ldh [$ffe0], a
 	ld c, a
 	ld b, $2
@@ -291,7 +291,7 @@ CinnabarGymQuiz_1eb0a: ; 1eb0a (7:6b0a)
 	pop bc
 	ld [wd09f], a
 	predef ReplaceTileBlock
-	ld hl, $ffdb
+	ld hl, hGymGateIndex
 	dec [hl]
 	jr nz, .asm_1eb0e
 	ret

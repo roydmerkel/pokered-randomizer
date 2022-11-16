@@ -313,6 +313,18 @@ hOaksAideRequirement EQU $FFDB
 hOaksAideRewardItem EQU $FFDC
 hOaksAideNumMonsOwned EQU $FFDD
 
+
+hVendingMachineItem EQU $FFDB
+hVendingMachinePrice EQU $FFDC ; 3 bytes dd de
+
+
+hGymGateIndex EQU $FFDB
+hGymGateAnswer EQU $FFDC
+
+
+hDexRatingNumMonsSeen EQU $FFDB
+hDexRatingNumMonsOwned EQU $FFDC
+
 H_WHOSETURN EQU $FFF3 ; 0 on player’s turn, 1 on enemy’s turn
 
 hJoyInput EQU $FFF8

@@ -3,17 +3,17 @@ DisplayDexRating: ; 44169 (11:4169)
 	ld b, wPokedexSeenEnd - wPokedexSeen
 	call CountSetBits
 	ld a, [wd11e] ; result of CountSetBits (seen count)
-	ldh [$FFDB], a
+	ldh [hDexRatingNumMonsSeen], a
 	ld hl, wPokedexOwned
 	ld b, wPokedexOwnedEnd - wPokedexOwned
 	call CountSetBits
 	ld a, [wd11e] ; result of CountSetBits (own count)
-	ldh [$FFDC], a
+	ldh [hDexRatingNumMonsOwned], a
 	ld hl, DexRatingsTable
 .findRating
 	ld a, [hli]
 	ld b, a
-	ldh a, [$FFDC] ; number of pokemon owned
+	ldh a, [hDexRatingNumMonsOwned] ; number of pokemon owned
 	cp b
 	jr c, .foundRating
 	inc hl
@@ -37,10 +37,10 @@ DisplayDexRating: ; 44169 (11:4169)
 	jp WaitForTextScrollButtonPress ; wait for button press
 .label3
 	ld de, wcc5b
-	ldh a, [$FFDB]
+	ldh a, [hDexRatingNumMonsSeen]
 	ld [de], a
 	inc de
-	ldh a, [$FFDC]
+	ldh a, [hDexRatingNumMonsOwned]
 	ld [de], a
 	inc de
 .label4
