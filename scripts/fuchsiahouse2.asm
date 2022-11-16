@@ -36,7 +36,7 @@ FuchsiaHouse2Text1: ; 750c2 (1d:50c2)
 	ld hl, WardenTeethText1
 	call PrintText
 	ld a, GOLD_TEETH
-	ldh [$db], a
+	ldh [hItemToRemoveID], a
 	callba RemoveItemByID
 	ld hl, wd78e
 	set 1, [hl]

@@ -32,7 +32,7 @@ Route8GateScript0: ; 1e1ee (7:61ee)
 	xor a
 	ldh [hJoyHeld], a
 	callba RemoveGuardDrink
-	ldh a, [$ffdb]
+	ldh a, [hItemToRemoveID]
 	and a
 	jr nz, .asm_1e220 ; 0x1e20e $10
 	ld a, $2

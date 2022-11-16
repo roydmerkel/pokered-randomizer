@@ -24,7 +24,7 @@ PrintBookshelfText: ; fb50 (3:7b50)
 	pop af
 	call PrintPredefTextID
 	xor a
-	ldh [$ffdb], a
+	ldh [hFFDB], a
 	ret
 .nextBookshelfEntry1
 	inc hl
@@ -33,7 +33,7 @@ PrintBookshelfText: ; fb50 (3:7b50)
 	jr .loop
 .noMatch
 	ld a, $ff
-	ldh [$ffdb], a
+	ldh [hFFDB], a
 	ld b, BANK(PrintCardKeyText)
 	ld hl, PrintCardKeyText
 	jp Bankswitch

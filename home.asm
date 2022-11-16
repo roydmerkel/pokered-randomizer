@@ -4721,7 +4721,7 @@ CheckForHiddenObjectOrBookshelfOrCardKeyDoor:: ; 3eb5 (0:3eb5)
 	jr .done
 .hiddenObjectNotFound
 	callba PrintBookshelfText
-	ldh a, [$ffdb]
+	ldh a, [hFFDB]
 	and a
 	jr z, .done
 .nothingFound

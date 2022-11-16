@@ -27,7 +27,7 @@ Route5GateScript0: ; 1df50 (7:5f50)
 	xor a
 	ldh [hJoyHeld], a
 	callba RemoveGuardDrink
-	ldh a, [$ffdb]
+	ldh a, [hItemToRemoveID]
 	and a
 	jr nz, .asm_1df82 ; 0x1df70 $10
 	ld a, $2
@@ -74,7 +74,7 @@ Route5GateText1: ; 1dfaa (7:5faa)
 	bit 6, a
 	jr nz, .asm_88856 ; 0x1dfb0 $2c
 	callba RemoveGuardDrink
-	ldh a, [$ffdb]
+	ldh a, [hItemToRemoveID]
 	and a
 	jr nz, .asm_768a2 ; 0x1dfbd $11
 	ld hl, Route5GateText2

@@ -325,6 +325,22 @@ hGymGateAnswer EQU $FFDC
 hDexRatingNumMonsSeen EQU $FFDB
 hDexRatingNumMonsOwned EQU $FFDC
 
+
+hItemToRemoveID EQU $FFDB
+hItemToRemoveIndex EQU $FFDC
+
+
+hItemCounter EQU $FFDB
+hSavedCoordIndex EQU $FFDB
+hMissableObjectIndex EQU $FFDB
+hGymTrashCanRandNumMask EQU $FFDB
+
+
+
+hFFDB EQU $FFDB
+hFFDC EQU $FFDC
+
+
 H_WHOSETURN EQU $FFF3 ; 0 on player’s turn, 1 on enemy’s turn
 
 hJoyInput EQU $FFF8

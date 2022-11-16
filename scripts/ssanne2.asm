@@ -31,7 +31,7 @@ SSAnne2Script0: ; 613be (18:53be)
 	ld a, MUSIC_MEET_RIVAL
 	call PlayMusic
 	ld a, [wWhichTrade]
-	ldh [$ffdb], a
+	ldh [hSavedCoordIndex], a
 	ld a, HS_SS_ANNE_2_RIVAL
 	ld [wcc4d], a
 	predef ShowObject
@@ -43,7 +43,7 @@ SSAnne2Script0: ; 613be (18:53be)
 	ldh [hJoyHeld], a
 	ld a, $f0
 	ld [wJoyIgnore], a
-	ldh a, [$ffdb]
+	ldh a, [hSavedCoordIndex]
 	cp $2
 	jr nz, .asm_61400 ; 0x613f9 $5
 	ld de, MovementData_6140c

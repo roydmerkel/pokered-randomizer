@@ -358,12 +358,12 @@ GymTrashScript: ; 5ddfc (17:5dfc)
 	add hl, de
 	ld a, [hli]
 
-	ldh [$ffdb], a
+	ldh [hGymTrashCanRandNumMask], a
 	push hl
 	call Random
 	swap a
 	ld b, a
-	ldh a, [$ffdb]
+	ldh a, [hGymTrashCanRandNumMask]
 	and b
 	dec a
 	pop hl

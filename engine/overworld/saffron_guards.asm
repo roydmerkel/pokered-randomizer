@@ -2,7 +2,7 @@ RemoveGuardDrink: ; 5a59f (16:659f)
 	ld hl, GuardDrinksList
 .drinkLoop
 	ld a, [hli]
-	ldh [$ffdb], a
+	ldh [hItemToRemoveID], a
 	and a
 	ret z
 	push hl
