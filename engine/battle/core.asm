@@ -174,7 +174,7 @@ SlidePlayerAndEnemySilhouettesOnScreen: ; 3c04c (f:404c)
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
 	ld a, $31
-	ldh [$ffe1], a
+	ldh [hStartTileID], a
 	hlCoord 1, 5
 	predef Func_3f0c6
 	xor a
@@ -1589,7 +1589,7 @@ EnemySendOutFirstMon: ; 3c92a (f:492a)
 	ld de, vFrontPic
 	call LoadMonFrontSprite
 	ld a, $CF
-	ldh [$FFE1], a
+	ldh [hStartTileID], a
 	hlCoord 15, 6
 	predef Func_3f073
 	ld a, [wEnemyMonSpecies2]
@@ -1900,7 +1900,7 @@ SendOutMon: ; 3cc91 (f:4c91)
 	call DrawPlayerHUDAndHPBar
 	predef LoadMonBackPic
 	xor a
-	ldh [$ffe1], a
+	ldh [hStartTileID], a
 	ld hl, wcc2d
 	ld [hli], a
 	ld [hl], a
@@ -6493,7 +6493,7 @@ LoadPlayerBackPic: ; 3ec92 (f:6c92)
 	xor a
 	ld [$0], a
 	ld a, $31
-	ldh [$ffe1], a
+	ldh [hStartTileID], a
 	hlCoord 1, 5
 	predef_jump Func_3f0c6
 
@@ -6906,7 +6906,7 @@ asm_3ef3d: ; 3ef3d (f:6f3d)
 	call _LoadTrainerPic
 	xor a
 	ld [wEnemyMonSpecies2], a
-	ldh [$ffe1], a
+	ldh [hStartTileID], a
 	dec a
 	ld [wAICount], a
 	hlCoord 12, 0
@@ -6962,7 +6962,7 @@ InitWildBattle: ; 3ef8b (f:6f8b)
 .spriteLoaded
 	xor a
 	ld [W_TRAINERCLASS], a
-	ldh [$ffe1], a
+	ldh [hStartTileID], a
 	hlCoord 12, 0
 	predef Func_3f0c6
 
@@ -7037,7 +7037,7 @@ Func_3f073: ; 3f073 (f:7073)
 	ld h, a
 	ld a, [wPredefRegisters + 1]
 	ld l, a
-	ldh a, [$ffe1]
+	ldh a, [hStartTileID]
 	ldh [hBaseTileID], a
 	ld b, $4c
 	ld a, [W_ISINBATTLE]
@@ -7077,7 +7077,7 @@ Func_3f0c6: ; 3f0c6 (f:70c6)
 	ld h, a
 	ld a, [wPredefRegisters + 1]
 	ld l, a
-	ldh a, [$ffe1]
+	ldh a, [hStartTileID]
 asm_3f0d0: ; 3f0d0 (f:70d0)
 	ld bc, $707
 	ld de, $14

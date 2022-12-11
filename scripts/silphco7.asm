@@ -53,14 +53,14 @@ SilphCo7Text_51bc8: ; 51bc8 (14:5bc8)
 	ld a, [hl]
 	ld c, a
 	xor a
-	ldh [$ffe0], a
+	ldh [hUnlockedSilphCoDoors], a
 	pop hl
 .asm_51bd4
 	ld a, [hli]
 	cp $ff
 	jr z, .asm_51bf0
 	push hl
-	ld hl, $ffe0
+	ld hl, hUnlockedSilphCoDoors
 	inc [hl]
 	pop hl
 	cp b
@@ -78,12 +78,12 @@ SilphCo7Text_51bc8: ; 51bc8 (14:5bc8)
 	ret
 .asm_51bf0
 	xor a
-	ldh [$ffe0], a
+	ldh [hUnlockedSilphCoDoors], a
 	ret
 
 SilphCo7Text_51bf4: ; 51bf4 (14:5bf4)
 	ld hl, wd830
-	ldh a, [$ffe0]
+	ldh a, [hUnlockedSilphCoDoors]
 	and a
 	ret z
 	cp $1

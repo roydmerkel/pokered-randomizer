@@ -243,5 +243,5 @@ IntroPredef3B: ; 62a4 (1:62a4)
 	hlCoord 6, 4
 .next
 	xor a
-	ldh [$FFE1], a
+	ldh [hStartTileID], a
 	predef_jump Func_3f0c6

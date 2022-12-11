@@ -182,7 +182,7 @@ hDivideBCDQuotient EQU $FFA2 ; 3 bytes
 hDivideBCDBuffer EQU $FFA5 ; 3 bytes
 
 
-
+; FFA8 unused
 
 hSerialReceivedNewData EQU $FFA9
 ; $01 = using external clock
@@ -340,6 +340,19 @@ hGymTrashCanRandNumMask EQU $FFDB
 hFFDB EQU $FFDB
 hFFDC EQU $FFDC
 
+
+; FFDF unused
+
+hBackupGymGateIndex EQU $FFE0
+hUnlockedSilphCoDoors EQU $FFE0
+
+
+
+hStartTileID EQU $FFE1
+
+; FFE2 unused, FFE3 unused
+
+hNewPartyLength EQU $FFE4
 
 H_WHOSETURN EQU $FFF3 ; 0 on player’s turn, 1 on enemy’s turn
 

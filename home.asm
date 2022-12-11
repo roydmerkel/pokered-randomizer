@@ -326,7 +326,7 @@ LoadFrontSpriteByMonIndex:: ; 1389 (0:1389)
 	ldh [hLoadedROMBank], a
 	ld [$2000], a
 	xor a
-	ldh [$ffe1], a
+	ldh [hStartTileID], a
 	call asm_3f0d0
 	xor a
 	ld [W_SPRITEFLIPPED], a

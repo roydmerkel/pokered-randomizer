@@ -44,14 +44,14 @@ SilphCo4Script_19d5d: ; 19d5d (6:5d5d)
 	ld a, [hl]
 	ld c, a
 	xor a
-	ldh [$ffe0], a
+	ldh [hUnlockedSilphCoDoors], a
 	pop hl
 .asm_19d69
 	ld a, [hli]
 	cp $ff
 	jr z, .asm_19d85 ; 0x19d6c $17
 	push hl
-	ld hl, $ffe0
+	ld hl, hUnlockedSilphCoDoors
 	inc [hl]
 	pop hl
 	cp b
@@ -69,12 +69,12 @@ SilphCo4Script_19d5d: ; 19d5d (6:5d5d)
 	ret
 .asm_19d85
 	xor a
-	ldh [$ffe0], a
+	ldh [hUnlockedSilphCoDoors], a
 	ret
 
 SilphCo4Script_19d89: ; 19d89 (6:5d89)
 	ld hl, wd82a
-	ldh a, [$ffe0]
+	ldh a, [hUnlockedSilphCoDoors]
 	and a
 	ret z
 	cp $1

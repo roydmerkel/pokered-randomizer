@@ -28,7 +28,7 @@ DataTable_5a173: ; 5a173 (16:6173)
 	db $04,$05,$FF
 
 SilphCo10Text_5a176: ; 5a176 (16:6176)
-	ldh a, [$ffe0]
+	ldh a, [hUnlockedSilphCoDoors]
 	and a
 	ret z
 	ld hl, wd836

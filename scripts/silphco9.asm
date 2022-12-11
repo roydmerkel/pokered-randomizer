@@ -62,14 +62,14 @@ SilphCo9Script_5d837: ; 5d837 (17:5837)
 	ld a, [hl]
 	ld c, a
 	xor a
-	ldh [$ffe0], a
+	ldh [hUnlockedSilphCoDoors], a
 	pop hl
 .asm_5d843
 	ld a, [hli]
 	cp $ff
 	jr z, .asm_5d85f
 	push hl
-	ld hl, $ffe0
+	ld hl, hUnlockedSilphCoDoors
 	inc [hl]
 	pop hl
 	cp b
@@ -87,12 +87,12 @@ SilphCo9Script_5d837: ; 5d837 (17:5837)
 	ret
 .asm_5d85f
 	xor a
-	ldh [$ffe0], a
+	ldh [hUnlockedSilphCoDoors], a
 	ret
 
 SilphCo9Script_5d863: ; 5d863 (17:5863)
 	ld hl, wd834
-	ldh a, [$ffe0]
+	ldh a, [hUnlockedSilphCoDoors]
 	and a
 	ret z
 	cp $1

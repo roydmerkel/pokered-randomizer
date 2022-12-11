@@ -44,14 +44,14 @@ SilphCo2Script_59d43: ; 59d43 (16:5d43)
 	ld a, [hl]
 	ld c, a
 	xor a
-	ldh [$ffe0], a
+	ldh [hUnlockedSilphCoDoors], a
 	pop hl
 .asm_59d4f
 	ld a, [hli]
 	cp $ff
 	jr z, .asm_59d6b
 	push hl
-	ld hl, $ffe0
+	ld hl, hUnlockedSilphCoDoors
 	inc [hl]
 	pop hl
 	cp b
@@ -69,12 +69,12 @@ SilphCo2Script_59d43: ; 59d43 (16:5d43)
 	ret
 .asm_59d6b
 	xor a
-	ldh [$ffe0], a
+	ldh [hUnlockedSilphCoDoors], a
 	ret
 
 SilphCo2Script_59d6f: ; 59d6f (16:5d6f)
 	ld hl, wd826
-	ldh a, [$ffe0]
+	ldh a, [hUnlockedSilphCoDoors]
 	and a
 	ret z
 	cp $1

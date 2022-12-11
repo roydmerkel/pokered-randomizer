@@ -35,14 +35,14 @@ SilphCo11Script_62137: ; 62137 (18:6137)
 	ld a, [hl]
 	ld c, a
 	xor a
-	ldh [$ffe0], a
+	ldh [hUnlockedSilphCoDoors], a
 	pop hl
 .asm_62143
 	ld a, [hli]
 	cp $ff
 	jr z, .asm_6215f
 	push hl
-	ld hl, $ffe0
+	ld hl, hUnlockedSilphCoDoors
 	inc [hl]
 	pop hl
 	cp b
@@ -60,11 +60,11 @@ SilphCo11Script_62137: ; 62137 (18:6137)
 	ret
 .asm_6215f
 	xor a
-	ldh [$ffe0], a
+	ldh [hUnlockedSilphCoDoors], a
 	ret
 
 SilphCo11Script_62163: ; 62163 (18:6163)
-	ldh a, [$ffe0]
+	ldh a, [hUnlockedSilphCoDoors]
 	and a
 	ret z
 	ld hl, wd838

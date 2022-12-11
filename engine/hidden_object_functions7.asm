@@ -205,10 +205,10 @@ CinnabarGymQuiz_1ea92: ; 1ea92 (7:6a92)
 	ld hl, wd126
 	set 5, [hl]
 	ldh a, [hGymGateIndex]
-	ldh [$ffe0], a
+	ldh [hBackupGymGateIndex], a
 	ld hl, CinnabarGymQuizCorrectText
 	call PrintText
-	ldh a, [$ffe0]
+	ldh a, [hBackupGymGateIndex]
 	ld c, a
 	ld b, $1
 	call CinnabarGymQuiz_1ea8a
@@ -239,7 +239,7 @@ CinnabarGymQuizCorrectText: ; 1eae3 (7:6ae3)
 	TX_FAR _CinnabarGymQuizCorrectText
 	db $06,$08
 
-	ldh a, [$ffe0]
+	ldh a, [hBackupGymGateIndex]
 	ld c, a
 	ld b, $2
 	call CinnabarGymQuiz_1ea8a
@@ -276,7 +276,7 @@ CinnabarGymQuiz_1eb0a: ; 1eb0a (7:6b0a)
 	ld [wd12f], a
 	push bc
 	ldh a, [hGymGateIndex]
-	ldh [$ffe0], a
+	ldh [hBackupGymGateIndex], a
 	ld c, a
 	ld b, $2
 	call CinnabarGymQuiz_1ea8a

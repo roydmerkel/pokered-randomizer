@@ -3604,7 +3604,7 @@ _AddPartyMon: ; f2e5 (3:72e5)
 	ret nc
 	ld [de], a
 	ld a, [de]
-	ldh [$ffe4], a
+	ldh [hNewPartyLength], a
 	add e
 	ld e, a
 	jr nc, .asm_f300
@@ -3621,7 +3621,7 @@ _AddPartyMon: ; f2e5 (3:72e5)
 	jr z, .asm_f315
 	ld hl, wEnemyMonOT
 .asm_f315
-	ldh a, [$ffe4]
+	ldh a, [hNewPartyLength]
 	dec a
 	call SkipFixedLengthTextEntries
 	ld d, h
@@ -3633,7 +3633,7 @@ _AddPartyMon: ; f2e5 (3:72e5)
 	and a
 	jr nz, .asm_f33f
 	ld hl, wPartyMonNicks ; wPartyMonNicks
-	ldh a, [$ffe4]
+	ldh a, [hNewPartyLength]
 	dec a
 	call SkipFixedLengthTextEntries
 	ld a, $2
@@ -3646,7 +3646,7 @@ _AddPartyMon: ; f2e5 (3:72e5)
 	jr z, .asm_f34c
 	ld hl, wEnemyMons
 .asm_f34c
-	ldh a, [$ffe4]
+	ldh a, [hNewPartyLength]
 	dec a
 	ld bc, wPartyMon2 - wPartyMon1
 	call AddNTimes

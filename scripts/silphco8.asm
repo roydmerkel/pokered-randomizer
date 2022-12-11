@@ -35,14 +35,14 @@ SilphCo8Script_56541: ; 56541 (15:6541)
 	ld a, [hl]
 	ld c, a
 	xor a
-	ldh [$ffe0], a
+	ldh [hUnlockedSilphCoDoors], a
 	pop hl
 .asm_5654d
 	ld a, [hli]
 	cp $ff
 	jr z, .asm_56569
 	push hl
-	ld hl, $ffe0
+	ld hl, hUnlockedSilphCoDoors
 	inc [hl]
 	pop hl
 	cp b
@@ -60,11 +60,11 @@ SilphCo8Script_56541: ; 56541 (15:6541)
 	ret
 .asm_56569
 	xor a
-	ldh [$ffe0], a
+	ldh [hUnlockedSilphCoDoors], a
 	ret
 
 SilphCo8Script_5656d: ; 5656d (15:656d)
-	ldh a, [$ffe0]
+	ldh a, [hUnlockedSilphCoDoors]
 	and a
 	ret z
 	ld hl, wd832
