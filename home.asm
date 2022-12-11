@@ -3098,10 +3098,10 @@ MoveSprite_:: ; 363d (0:363d)
 	ld [wWastedByteCD3A], a
 	ret
 
-; divides [$ffe5] by [$ffe6] and stores the quotient in [$ffe7]
+; divides [hDividend2] by [hDivisor2] and stores the quotient in [hQuotient2]
 DivideBytes:: ; 366b (0:366b)
 	push hl
-	ld hl, $ffe7
+	ld hl, hQuotient2
 	xor a
 	ld [hld], a
 	ld a, [hld]

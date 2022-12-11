@@ -3391,7 +3391,7 @@ IsObjectHidden: ; f1a6 (3:71a6)
 .notHidden
 	xor a
 .hidden
-	ldh [$ffe5], a
+	ldh [hIsHiddenMissableObject], a
 	ret
 
 ; adds missable object (items, leg. pokemon, etc.) to the map
@@ -4669,7 +4669,7 @@ CalcPositionOfPlayerRelativeToNPC: ; f929 (3:7929)
 	pop hl
 .divideYDistance
 	push hl
-	ld hl, $ffe5
+	ld hl, hDividend2
 	ld [hli], a
 	ld a, 16
 	ld [hli], a
@@ -4696,11 +4696,11 @@ CalcPositionOfPlayerRelativeToNPC: ; f929 (3:7929)
 	res 1, [hl]
 	pop hl
 .divideXDistance
-	ldh [$ffe5], a
+	ldh [hDividend2], a
 	ld a, 16
-	ldh [$ffe6], a
+	ldh [hDivisor2], a
 	call DivideBytes ; divide X absolute distance by 16
-	ldh a, [$ffe7] ; quotient
+	ldh a, [hQuotient2] ; quotient
 	ldh [hNPCPlayerXDistance], a
 	ldh a, [hNPCPlayerRelativePosPerspective]
 	and a

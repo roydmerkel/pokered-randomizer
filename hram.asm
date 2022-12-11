@@ -354,6 +354,17 @@ hStartTileID EQU $FFE1
 
 hNewPartyLength EQU $FFE4
 
+
+hDividend2 EQU $FFE5
+hDivisor2 EQU $FFE6
+hQuotient2 EQU $FFE7
+
+
+hIsHiddenMissableObject EQU $FFE5
+
+
+hMapROMBank EQU $FFE8
+
 H_WHOSETURN EQU $FFF3 ; 0 on player’s turn, 1 on enemy’s turn
 
 hJoyInput EQU $FFF8

@@ -464,7 +464,7 @@ InitializeSpriteScreenPosition: ; 50bd (1:50bd)
 ; tests if sprite is off screen or otherwise unable to do anything
 CheckSpriteAvailability: ; 50dc (1:50dc)
 	predef IsObjectHidden
-	ldh a, [$ffe5]
+	ldh a, [hIsHiddenMissableObject]
 	and a
 	jp nz, .spriteInvisible
 	ld h, $c2
