@@ -831,15 +831,15 @@ Func_52c3: ; 52c3 (1:52c3)
 .asm_52ea
 	add b
 	ld b, a
-	ldh [$ffe9], a
+	ldh [hSpriteVRAMSlotAndFacing], a
 	call Func_5301
 	ld hl, wSpriteStateData1
 	ldh a, [hCurrentSpriteOffset]
 	add $2
 	ld l, a
-	ldh a, [$ffe9]
+	ldh a, [hSpriteVRAMSlotAndFacing]
 	ld b, a
-	ldh a, [$ffea]
+	ldh a, [hSpriteAnimFrameCounter]
 	add b
 	ld [hl], a
 	ret
@@ -860,5 +860,5 @@ Func_5301: ; 5301 (1:5301)
 	inc a
 	and $3
 	ld [hl], a
-	ldh [$ffea], a
+	ldh [hSpriteAnimFrameCounter], a
 	ret

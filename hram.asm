@@ -114,6 +114,8 @@ hDivideBuffer EQU $FF9A ; 5 bytes
 hQuotient     EQU $FF95 ; 4 bytes
 hRemainder    EQU $FF99 ; 1 byte
 
+
+
 ; PrintNumber (big endian).
 hPastLeadingZeros EQU $FF95 ; last char printed
 hNumToPrint        EQU $FF96 ; 3 bytes
@@ -151,6 +153,7 @@ hNPCPlayerRelativePosFlags EQU $FF9D
 
 hSwapItemID EQU $FF95
 hSwapItemQuantity EQU $FF96
+
 
 hSignCoordPointer EQU $FF95
 
@@ -364,6 +367,12 @@ hIsHiddenMissableObject EQU $FFE5
 
 
 hMapROMBank EQU $FFE8
+
+hSpriteVRAMSlotAndFacing EQU $FFE9
+
+hCoordsInFrontOfPlayerMatch EQU $FFEA
+hSpriteAnimFrameCounter EQU $FFEA
+
 
 H_WHOSETURN EQU $FFF3 ; 0 on player’s turn, 1 on enemy’s turn
 
