@@ -374,6 +374,13 @@ hCoordsInFrontOfPlayerMatch EQU $FFEA
 hSpriteAnimFrameCounter EQU $FFEA
 
 
+
+hSpriteScreenYCoord EQU $FFEB
+hSpriteScreenXCoord EQU $FFEC
+hSpriteMapYCoord EQU $FFED
+hSpriteMapXCoord EQU $FFEE
+
+
 H_WHOSETURN EQU $FFF3 ; 0 on player’s turn, 1 on enemy’s turn
 
 hJoyInput EQU $FFF8

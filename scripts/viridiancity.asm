@@ -68,11 +68,11 @@ ViridianCityScript_1903d: ; 1903d (6:503d)
 
 ViridianCityScript1: ; 19062 (6:5062)
 	ld a, [wSpriteStateData1 + $34]
-	ldh [$ffeb], a
+	ldh [hSpriteScreenYCoord], a
 	ld a, [wSpriteStateData1 + $36]
-	ldh [$ffec], a
+	ldh [hSpriteScreenXCoord], a
 	ld a, [wSpriteStateData2 + $34]
-	ldh [$ffed], a
+	ldh [hSpriteMapYCoord], a
 	ld a, [wSpriteStateData2 + $35]
 	ldh [$ffee], a
 	xor a
@@ -90,11 +90,11 @@ ViridianCityScript1: ; 19062 (6:5062)
 	ret
 
 ViridianCityScript2: ; 1908f (6:508f)
-	ldh a, [$ffeb]
+	ldh a, [hSpriteScreenYCoord]
 	ld [wSpriteStateData1 + $34], a
-	ldh a, [$ffec]
+	ldh a, [hSpriteScreenXCoord]
 	ld [wSpriteStateData1 + $36], a
-	ldh a, [$ffed]
+	ldh a, [hSpriteMapYCoord]
 	ld [wSpriteStateData2 + $34], a
 	ldh a, [$ffee]
 	ld [wSpriteStateData2 + $35], a

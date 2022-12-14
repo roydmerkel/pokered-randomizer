@@ -652,9 +652,9 @@ OaksLabScript_1d00a: ; 1d00a (7:500a)
 
 OaksLabScript_1d02b: ; 1d02b (7:502b)
 	ld a, $7c
-	ldh [$ffeb], a
+	ldh [hSpriteScreenYCoord], a
 	ld a, 8
-	ldh [$ffee], a
+	ldh [hSpriteMapXCoord], a
 	ld a, [W_YCOORD]
 	cp 3
 	jr nz, .asm_1d045 ; 0x1d038 $b
@@ -683,9 +683,9 @@ OaksLabScript_1d02b: ; 1d02b (7:502b)
 .asm_1d066
 	ld a, $20
 .asm_1d068
-	ldh [$ffec], a
+	ldh [hSpriteScreenXCoord], a
 	ld a, b
-	ldh [$ffed], a
+	ldh [hSpriteMapYCoord], a
 	ld a, $1
 	ld [wSpriteIndex], a
 	call SetSpritePosition1

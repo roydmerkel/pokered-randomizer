@@ -5,16 +5,16 @@ _GetSpritePosition1: ; 567f9 (15:67f9)
 	ldh [hSpriteIndex], a
 	call GetSpriteDataPointer
 	ld a, [hli]
-	ldh [$ffeb], a
+	ldh [hSpriteScreenYCoord], a
 	inc hl
 	ld a, [hl]
-	ldh [$ffec], a
+	ldh [hSpriteScreenXCoord], a
 	ld de, $fe
 	add hl, de
 	ld a, [hli]
-	ldh [$ffed], a
+	ldh [hSpriteMapYCoord], a
 	ld a, [hl]
-	ldh [$ffee], a
+	ldh [hSpriteMapXCoord], a
 	ret
 
 _GetSpritePosition2: ; 56819 (15:6819)
@@ -42,16 +42,16 @@ _SetSpritePosition1: ; 5683d (15:683d)
 	ld a, [wSpriteIndex]
 	ldh [hSpriteIndex], a
 	call GetSpriteDataPointer
-	ldh a, [$ffeb] ; c1x4 (screen Y pos)
+	ldh a, [hSpriteScreenYCoord] ; c1x4 (screen Y pos)
 	ld [hli], a
 	inc hl
-	ldh a, [$ffec] ; c1x6 (screen X pos)
+	ldh a, [hSpriteScreenXCoord] ; c1x6 (screen X pos)
 	ld [hl], a
 	ld de, $104 - $6
 	add hl, de
-	ldh a, [$ffed] ; c2x4 (map Y pos)
+	ldh a, [hSpriteMapYCoord] ; c2x4 (map Y pos)
 	ld [hli], a
-	ldh a, [$ffee] ; c2x5 (map X pos)
+	ldh a, [hSpriteMapXCoord] ; c2x5 (map X pos)
 	ld [hl], a
 	ret
 

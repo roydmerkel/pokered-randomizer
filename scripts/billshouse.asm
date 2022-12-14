@@ -59,13 +59,13 @@ BillsHouseScript3: ; 1e7c5 (7:67c5)
 	ld a, $2
 	ld [wSpriteIndex], a
 	ld a, $c
-	ldh [$ffeb], a
+	ldh [hSpriteScreenYCoord], a
 	ld a, $40
-	ldh [$ffec], a
+	ldh [hSpriteScreenXCoord], a
 	ld a, 6
-	ldh [$ffed], a
+	ldh [hSpriteMapYCoord], a
 	ld a, 5
-	ldh [$ffee], a
+	ldh [hSpriteMapXCoord], a
 	call SetSpritePosition1
 	ld a, HS_BILL_1
 	ld [wcc4d], a
