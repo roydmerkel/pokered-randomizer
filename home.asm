@@ -4707,7 +4707,7 @@ CheckForHiddenObjectOrBookshelfOrCardKeyDoor:: ; 3eb5 (0:3eb5)
 	ld [MBC1RomBank], a
 	ldh [hLoadedROMBank], a
 	call CheckForHiddenObject
-	ldh a, [$ffee]
+	ldh a, [hDidntFindAnyHiddenObject]
 	and a
 	jr nz, .hiddenObjectNotFound
 	ld a, [wHiddenObjectFunctionRomBank]
@@ -4727,7 +4727,7 @@ CheckForHiddenObjectOrBookshelfOrCardKeyDoor:: ; 3eb5 (0:3eb5)
 .nothingFound
 	ld a, $ff
 .done
-	ldh [$ffeb], a
+	ldh [hItemAlreadyFound], a
 	pop af
 	ld [MBC1RomBank], a
 	ldh [hLoadedROMBank], a
@@ -4743,17 +4743,17 @@ PrintPredefTextID:: ; 3ef5 (0:3ef5)
 
 RestoreMapTextPointer:: ; 3f05 (0:3f05)
 	ld hl, W_MAPTEXTPTR
-	ldh a, [$ffec]
+	ldh a, [hSavedMapTextPtr]
 	ld [hli], a
-	ldh a, [$ffec + 1]
+	ldh a, [hSavedMapTextPtr + 1]
 	ld [hl], a
 	ret
 
 SetMapTextPointer:: ; 3f0f (0:3f0f)
 	ld a, [W_MAPTEXTPTR]
-	ldh [$ffec], a
+	ldh [hSavedMapTextPtr], a
 	ld a, [W_MAPTEXTPTR + 1]
-	ldh [$ffec + 1], a
+	ldh [hSavedMapTextPtr + 1], a
 	ld a, l
 	ld [W_MAPTEXTPTR], a
 	ld a, h

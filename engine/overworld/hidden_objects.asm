@@ -14,9 +14,9 @@ Func_46981: ; 46981 (11:6981)
 	set 4, [hl]
 	ret
 
-; if a hidden object was found, stores $00 in [$ffee], else stores $ff
+; if a hidden object was found, stores $00 in [hDidntFindAnyHiddenObject], else stores $ff
 CheckForHiddenObject: ; 469a0 (11:69a0)
-	ld hl, $ffeb
+	ld hl, hItemAlreadyFound
 	xor a
 	ld [hli], a
 	ld [hli], a
@@ -81,7 +81,7 @@ CheckForHiddenObject: ; 469a0 (11:69a0)
 	ret
 .noMatch
 	ld a, $ff
-	ldh [$ffee], a
+	ldh [hDidntFindAnyHiddenObject], a
 	ret
 
 ; checks if the coordinates in front of the player's sprite match Y in b and X in c

@@ -381,6 +381,18 @@ hSpriteMapYCoord EQU $FFED
 hSpriteMapXCoord EQU $FFEE
 
 
+hItemAlreadyFound EQU $FFEB
+; FFEC, FFED unused
+hDidntFindAnyHiddenObject EQU $FFEE
+
+
+; FFEB unused
+hSavedMapTextPtr EQU $FFEC ; 2 bytes
+; FFEE unused
+
+
+; FFEF, FFF0, FFF1, FFF2 unused
+
 H_WHOSETURN EQU $FFF3 ; 0 on player’s turn, 1 on enemy’s turn
 
 hJoyInput EQU $FFF8
