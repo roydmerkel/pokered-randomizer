@@ -11,12 +11,12 @@ Func_708ca: ; 708ca (1c:48ca)
 	ld a, $91
 	ld [wHPBarMaxHP], a
 	ld a, $1
-	ldh [H_WHOSETURN], a ; $fff3
+	ldh [hWhoseTurn], a ; $fff3
 	callab Func_79793
 	ld d, $80
 	call Func_704f3
 .asm_708f6
-	ld c, $a
+	ld c, 10
 	call DelayFrames
 	ldh a, [rOBP1] ; $ff49
 	sla a
@@ -27,7 +27,7 @@ Func_708ca: ; 708ca (1c:48ca)
 	call Func_7092a
 	ld b, $e4
 .asm_7090d
-	ld c, $a
+	ld c, 10
 	call DelayFrames
 	ldh a, [rOBP1] ; $ff49
 	srl b

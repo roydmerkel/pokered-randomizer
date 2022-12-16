@@ -350,7 +350,7 @@ ItemUseBall: ; d687 (3:5687)
 	ld a, TOSS_ANIM
 	ld [W_ANIMATIONID], a
 	xor a
-	ldh [$fff3], a
+	ldh [hWhoseTurn], a
 	ld [wcc5b], a
 	ld [wd05b], a
 	ld a, [wWhichPokemon]
@@ -1365,7 +1365,7 @@ BaitRockCommon: ; df7f (3:5f7f)
 	ld [W_ANIMATIONID], a
 	xor a
 	ld [wcc5b], a
-	ldh [H_WHOSETURN], a
+	ldh [hWhoseTurn], a
 	ld [de],a ; zero escape factor (for bait), zero bait factor (for rock)
 .randomLoop ; loop until a random number less than 5 is generated
 	call Random
@@ -1605,7 +1605,7 @@ ItemUseXStat: ; e104 (3:6104)
 	call LoadScreenTilesFromBuffer1 ; restore saved screen
 	call Delay3
 	xor a
-	ldh [H_WHOSETURN], a ; set turn to player's turn
+	ldh [hWhoseTurn], a ; set turn to player's turn
 	callba StatModifierUpEffect ; do stat increase move
 	pop hl
 	pop af

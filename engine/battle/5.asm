@@ -4,7 +4,7 @@ SubstituteEffectHandler: ; 17dad (5:7dad)
 	ld hl, wBattleMonMaxHP
 	ld de, wPlayerSubstituteHP
 	ld bc, W_PLAYERBATTSTATUS2
-	ldh a, [$fff3]  ;whose turn?
+	ldh a, [hWhoseTurn]  ;whose turn?
 	and a
 	jr z, .notEnemy
 	ld hl, wEnemyMonMaxHP

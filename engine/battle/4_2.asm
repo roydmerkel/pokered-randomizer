@@ -203,7 +203,7 @@ WildMonEncounterSlotChances: ; 13918 (4:7918)
 	db $FF, $12 ;  3/256 =  1.2% chance of slot 9
 
 RecoilEffect_: ; 1392c (4:792c)
-	ldh a, [H_WHOSETURN] ; $fff3
+	ldh a, [hWhoseTurn] ; $fff3
 	and a
 	ld a, [W_PLAYERMOVEEFFECT] ; wcfd2
 	ld hl, wBattleMonMaxHP ; wd023
@@ -256,7 +256,7 @@ RecoilEffect_: ; 1392c (4:792c)
 	ld [hl], a
 .asm_13982
 	hlCoord 10, 9
-	ldh a, [H_WHOSETURN] ; $fff3
+	ldh a, [hWhoseTurn] ; $fff3
 	and a
 	ld a, $1
 	jr z, .asm_13990
@@ -274,7 +274,7 @@ HitWithRecoilText: ; 1399e (4:799e)
 ConversionEffect_: ; 139a3 (4:79a3)
 	ld hl, wEnemyMonType1
 	ld de, wBattleMonType1
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	ld a, [W_ENEMYBATTSTATUS1]
 	jr z, .asm_139b8
@@ -320,7 +320,7 @@ HazeEffect_: ; 139da (4:79da)
 	call Func_13a4a
 	ld hl, wEnemyMonStatus
 	ld de, wEnemySelectedMove
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .asm_13a09
 	ld hl, wBattleMonStatus

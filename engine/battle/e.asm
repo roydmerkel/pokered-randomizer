@@ -1,5 +1,5 @@
 Func_39680: ; 39680 (e:5680)
-	ldh a, [H_WHOSETURN] ; $fff3
+	ldh a, [hWhoseTurn] ; $fff3
 	and a
 	ld a, [wd060]
 	ld hl, wBattleMonAttack + 1
@@ -28,7 +28,7 @@ Func_3969f: ; 3969f (e:569f)
 	ret
 
 Func_396a7: ; 396a7 (e:56a7)
-	ldh a, [H_WHOSETURN] ; $fff3
+	ldh a, [hWhoseTurn] ; $fff3
 	and a
 	ld a, [wd061]
 	ld hl, wBattleMonAttack

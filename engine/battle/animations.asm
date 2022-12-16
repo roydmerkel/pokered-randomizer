@@ -316,7 +316,7 @@ LoadSubanimation: ; 7817c (1e:417c)
 ; sets the transform to the subanimation type if it's the enemy's turn
 GetSubanimationTransform1: ; 781c2 (1e:41c2)
 	ld b, a
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	ld a, b
 	ret nz
@@ -327,7 +327,7 @@ GetSubanimationTransform1: ; 781c2 (1e:41c2)
 ; sets the transform to 2 (i.e. horizontal and vertical flip) if it's the player's turn
 ; sets the transform to 0 (i.e. no transform) if it's the enemy's turn
 GetSubanimationTransform2: ; 781ca (1e:41ca)
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	ld a, 2 << 5
 	ret z
@@ -432,7 +432,7 @@ MoveAnimation: ; 78d5e (1e:4d5e)
 
 ShareMoveAnimations: ; 78da6 (1e:4da6)
 ; some moves just reuse animations from status conditions
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	ret z
 
@@ -478,12 +478,12 @@ PointerTable_78dcf: ; 78dcf (1e:4dcf)
 
 Func_78ddb: ; 78ddb (1e:4ddb)
 	call Func_79e6a
-	ld b, $8
+	ld b, 8
 	jp Func_79209
 
 Func_78de3: ; 78de3 (1e:4de3)
 	call Func_79e6a
-	ld b, $8
+	ld b, 8
 	jp Func_79210
 
 Func_78deb: ; 78deb (1e:4deb)
@@ -496,7 +496,7 @@ Func_78df0: ; 78df0 (1e:4df0)
 
 Func_78df6: ; 78df6 (1e:4df6)
 	call Func_79e6a
-	ld b, $2
+	ld b, 2
 	jp Func_79210
 
 Func_78dfe: ; 78dfe (1e:4dfe)
@@ -509,7 +509,7 @@ Func_78e01: ; 78e01 (1e:4e01)
 	ldh a, [rWX] ; $ff4b
 	inc a
 	ldh [rWX], a ; $ff4b
-	ld c, $2
+	ld c, 2
 	call DelayFrames
 	dec b
 	jr nz, .asm_78e03
@@ -518,7 +518,7 @@ Func_78e01: ; 78e01 (1e:4e01)
 	ldh a, [rWX] ; $ff4b
 	dec a
 	ldh [rWX], a ; $ff4b
-	ld c, $2
+	ld c, 2
 	call DelayFrames
 	dec b
 	jr nz, .asm_78e11
@@ -766,7 +766,7 @@ DoBallTossSpecialEffects: ; 78f3e (1e:4f3e)
 	call PlaySound ; play sound
 .skipPlayingSound
 	ld a, [W_ISINBATTLE]
-	cp a, 02 ; is it a trainer battle?
+	cp a, 2 ; is it a trainer battle?
 	jr z, .isTrainerBattle
 	ld a, [wd11e]
 	cp a, $10 ; is the enemy pokemon the Ghost Marowak?
@@ -1101,16 +1101,16 @@ AnimationDelay10: ; 79150 (1e:5150)
 ; calls a function with the turn flipped from player to enemy or vice versa
 ; input - hl - address of function to call
 CallWithTurnFlipped: ; 79155 (1e:5155)
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	push af
 	xor a, 1
-	ldh [H_WHOSETURN], a
+	ldh [hWhoseTurn], a
 	ld de, .returnAddress
 	push de
 	jp [hl]
 .returnAddress
 	pop af
-	ldh [H_WHOSETURN], a
+	ldh [hWhoseTurn], a
 	ret
 
 ; flashes the screen for an extended period (48 frames)
@@ -1265,20 +1265,20 @@ AnimationWaterDropletsEverywhere: ; 79215 (1e:5215)
 	xor a
 	ld [wd09f], a
 	call LoadAnimationTileset
-	ld d, $20
+	ld d, 32
 	ld a, $f0
 	ld [W_BASECOORDX], a ; wd081
 	ld a, $71
 	ld [wd09f], a
 .asm_79228
-	ld a, $10
+	ld a, 16
 	ld [W_BASECOORDY], a ; wd082
-	ld a, $0
+	ld a, 0
 	ld [wd08a], a
 	call Func_79246
-	ld a, $18
+	ld a, 24
 	ld [W_BASECOORDY], a ; wd082
-	ld a, $20
+	ld a, 32
 	ld [wd08a], a
 	call Func_79246
 	dec d
@@ -1291,7 +1291,7 @@ Func_79246: ; 79246 (1e:5246)
 	ld a, [W_BASECOORDY] ; wd082
 	ld [hli], a
 	ld a, [W_BASECOORDX] ; wd081
-	add $1b
+	add 27
 	ld [W_BASECOORDX], a ; wd081
 	ld [hli], a
 	ld a, [wd09f]
@@ -1299,22 +1299,22 @@ Func_79246: ; 79246 (1e:5246)
 	xor a
 	ld [hli], a
 	ld a, [W_BASECOORDX] ; wd081
-	cp $90
+	cp 144
 	jr c, .asm_79249
-	sub $a8
+	sub 168
 	ld [W_BASECOORDX], a ; wd081
 	ld a, [W_BASECOORDY] ; wd082
-	add $10
+	add 16
 	ld [W_BASECOORDY], a ; wd082
-	cp $70
+	cp 112
 	jr c, .asm_79249
 	call AnimationCleanOAM
 	jp DelayFrame
 
 AnimationSlideMonUp: ; 7927a (1e:527a)
 ; Slides the mon's sprite upwards.
-	ld c, $7
-	ldh a, [H_WHOSETURN]
+	ld c, 7
+	ldh a, [hWhoseTurn]
 	and a
 	ld hl, wTileMap + $79
 	ld de, wTileMap + $65
@@ -1346,8 +1346,8 @@ AnimationSlideMonDown: ; 79297 (1e:5297)
 
 AnimationSlideMonOut: ; 792af (1e:52af)
 ; Slides the mon's sprite out of the screen horizontally.
-	ld e, $8
-	ld a, $3
+	ld e, 8
+	ld a, 3
 	ld [W_SUBANIMTRANSFORM], a ; W_SUBANIMTRANSFORM
 	jp Func_795f8
 
@@ -1360,12 +1360,12 @@ Func_792bf: ; 792bf (1e:52bf)
 	push de
 	push hl
 	push bc
-	ld b, $6
+	ld b, 6
 .asm_792c4
 	push bc
 	push de
 	push hl
-	ld bc, $0007
+	ld bc, 7
 	call CopyData
 	pop de
 	pop hl
@@ -1374,7 +1374,7 @@ Func_792bf: ; 792bf (1e:52bf)
 	pop bc
 	dec b
 	jr nz, .asm_792c4
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	ld hl, wTileMap + $dd
 	jr z, .asm_792e2
@@ -1383,13 +1383,13 @@ Func_792bf: ; 792bf (1e:52bf)
 	ld a, [wd09f]
 	inc a
 	ld [wd09f], a
-	ld c, $7
+	ld c, 7
 .asm_792eb
 	ld [hli], a
-	add $7
+	add 7
 	dec c
 	jr nz, .asm_792eb
-	ld c, $2
+	ld c, 2
 	call DelayFrames
 	pop bc
 	pop hl
@@ -1404,12 +1404,12 @@ Func_792fd: ; 792fd (1e:52fd)
 	ld a, $30
 	ld [W_BASECOORDY], a
 	ld hl, wOAMBuffer
-	ld d, $0
-	ld c, $7
+	ld d, 0
+	ld c, 7
 .asm_7930e
 	ld a, [W_BASECOORDY]
 	ld e, a
-	ld b, $5
+	ld b, 5
 .asm_79314
 	call Func_79329
 	inc d
@@ -1420,13 +1420,13 @@ Func_792fd: ; 792fd (1e:52fd)
 	inc d
 	inc d
 	ld a, [W_BASECOORDX]
-	add $8
+	add 8
 	ld [W_BASECOORDX], a
 	jr .asm_7930e
 
 Func_79329: ; 79329 (1e:5329)
 	ld a, e
-	add $8
+	add 8
 	ld e, a
 	ld [hli], a
 	ld a, [W_BASECOORDX] ; wd081
@@ -1442,16 +1442,16 @@ AdjustOAMBlockXPos: ; 79337 (1e:5337)
 	ld h, d
 
 AdjustOAMBlockXPos2: ; 79339 (1e:5339)
-	ld de, $4
+	ld de, 4
 .loop
 	ld a, [wd08a]
 	ld b, a
 	ld a, [hl]
 	add b
-	cp $a8
+	cp 168
 	jr c, .skipPuttingEntryOffScreen
 	dec hl
-	ld a, $a0
+	ld a, 160
 	ld [hli], a
 .skipPuttingEntryOffScreen
 	ld [hl], a
@@ -1465,16 +1465,16 @@ AdjustOAMBlockYPos: ; 79350 (1e:5350)
 	ld h, d
 
 AdjustOAMBlockYPos2: ; 79352 (1e:5352)
-	ld de, $4
+	ld de, 4
 .loop
 	ld a, [wd08a]
 	ld b, a
 	ld a, [hl]
 	add b
-	cp $70
+	cp 112
 	jr c, .skipSettingPreviousEntrysAttribute
 	dec hl
-	ld a, $a0 ; bug, sets previous OAM entry's attribute
+	ld a, 160 ; bug, sets previous OAM entry's attribute
 	ld [hli], a
 .skipSettingPreviousEntrysAttribute
 	ld [hl], a
@@ -1491,14 +1491,14 @@ AnimationBlinkEnemyMon: ; 79369 (1e:5369)
 AnimationBlinkMon: ; 7936f (1e:536f)
 ; Make the mon's sprite blink on and off for a second or two.
 	push af
-	ld c, $6
+	ld c, 6
 .asm_79372
 	push bc
 	call AnimationHideMonPic
-	ld c, $5
+	ld c, 5
 	call DelayFrames
 	call AnimationShowMonPic
-	ld c, $5
+	ld c, 5
 	call DelayFrames
 	pop bc
 	dec c
@@ -1535,7 +1535,7 @@ AnimationShowEnemyMonPic: ; 793ab (1e:53ab)
 AnimationShakeBackAndForth: ; 793b1 (1e:53b1)
 ; Shakes the mon's sprite back and forth rapidly. This is used in Double Team.
 ; The mon's sprite disappears after this animation.
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	ld hl, wTileMap + $64
 	ld de, wTileMap + $66
@@ -1583,7 +1583,7 @@ AnimationMoveMonHorizontally: ; 793f9 (1e:53f9)
 ; Shifts the mon's sprite horizontally to a fixed location. Used by lots of
 ; animations like Tackle/Body Slam.
 	call AnimationHideMonPic
-	ldh a, [H_WHOSETURN] ; $fff3
+	ldh a, [hWhoseTurn] ; $fff3
 	and a
 	hlCoord 2, 5
 	jr z, .asm_79407
@@ -1594,16 +1594,16 @@ AnimationMoveMonHorizontally: ; 793f9 (1e:53f9)
 	call Func_79842
 	pop hl
 	call Func_79aae
-	ld c, $3
+	ld c, 3
 	jp DelayFrames
 
 AnimationResetMonPosition: ; 79415 (1e:5415)
 ; Resets the mon's sprites to be located at the normal coordinates.
-	ldh a, [H_WHOSETURN] ; $fff3
+	ldh a, [hWhoseTurn] ; $fff3
 	and a
 	ld a, $66
 	jr z, .asm_7941e
-	ld a, $b
+	ld a, 11
 .asm_7941e
 	call Func_7980c
 	jp AnimationShowMonPic
@@ -1611,12 +1611,12 @@ AnimationResetMonPosition: ; 79415 (1e:5415)
 AnimationSpiralBallsInward: ; 79424 (1e:5424)
 ; Creates an effect that looks like energy balls sprialing into the
 ; player mon's sprite.  Used in Focus Energy, for example.
-	ldh a, [H_WHOSETURN] ; $fff3
+	ldh a, [hWhoseTurn] ; $fff3
 	and a
 	jr z, .asm_79435
 	ld a, $d8
 	ld [wd08a], a
-	ld a, $50
+	ld a, 80
 	ld [W_SUBANIMTRANSFORM], a ; W_SUBANIMTRANSFORM
 	jr .asm_7943c
 .asm_79435
@@ -1625,13 +1625,13 @@ AnimationSpiralBallsInward: ; 79424 (1e:5424)
 	ld [W_SUBANIMTRANSFORM], a ; W_SUBANIMTRANSFORM
 .asm_7943c
 	ld d, $7a
-	ld c, $3
+	ld c, 3
 	xor a
 	call Func_797e8
 	ld hl, SpiralBallAnimationCoordinates ; $5476
 .asm_79447
 	push hl
-	ld c, $3
+	ld c, 3
 	ld de, wOAMBuffer
 .asm_7944d
 	ld a, [hl]
@@ -1651,7 +1651,7 @@ AnimationSpiralBallsInward: ; 79424 (1e:5424)
 	inc de
 	dec c
 	jr nz, .asm_7944d
-	ld c, $5
+	ld c, 5
 	call DelayFrames
 	pop hl
 	inc hl
@@ -1692,10 +1692,10 @@ SpiralBallAnimationCoordinates: ; 79476 (1e:5476)
 AnimationSquishMonPic: ; 794a1 (1e:54a1)
 ; Squishes the mon's sprite horizontally making it
 ; disappear. Used by Teleport/Sky Attack animations.
-	ld c, $4
+	ld c, 4
 .asm_794a3
 	push bc
-	ldh a, [H_WHOSETURN] ; $fff3
+	ldh a, [hWhoseTurn] ; $fff3
 	and a
 	jr z, .asm_794b1
 	hlCoord 16, 0
@@ -1710,24 +1710,24 @@ AnimationSquishMonPic: ; 794a1 (1e:54a1)
 	ld [wd09f], a
 	call Func_794d4
 	pop hl
-	ld a, $1
+	ld a, 1
 	ld [wd09f], a
 	call Func_794d4
 	pop bc
 	dec c
 	jr nz, .asm_794a3
 	call AnimationHideMonPic
-	ld c, $2
+	ld c, 2
 	jp DelayFrame
 
 Func_794d4: ; 794d4 (1e:54d4)
-	ld c, $7
+	ld c, 7
 .asm_794d6
 	push bc
 	push hl
-	ld c, $3
+	ld c, 3
 	ld a, [wd09f]
-	cp $0
+	cp 0
 	jr nz, .asm_794e7
 	call Func_7985b
 	dec hl
@@ -1748,7 +1748,7 @@ Func_794d4: ; 794d4 (1e:54d4)
 AnimationShootBallsUpward: ; 794f9 (1e:54f9)
 ; Shoots one pillar of "energy" balls upwards. Used in Teleport/Sky Attack
 ; animations.
-	ldh a, [H_WHOSETURN] ; $fff3
+	ldh a, [hWhoseTurn] ; $fff3
 	and a
 	jr z, .asm_79503
 	ld bc, $80
@@ -1788,7 +1788,7 @@ Func_79517: ; 79517 (1e:5517)
 	ld hl, wOAMBuffer
 .asm_7953c
 	ld a, [W_BASECOORDY] ; wd082
-	add $8
+	add 8
 	ld e, a
 	ld a, [hl]
 	cp e
@@ -1797,12 +1797,12 @@ Func_79517: ; 79517 (1e:5517)
 	ld [hl], a
 	jr .asm_79554
 .asm_7954b
-	ld [hl], $0
+	ld [hl], 0
 	ld a, [wd08a]
 	dec a
 	ld [wd08a], a
 .asm_79554
-	ld de, $4
+	ld de, 4
 	add hl, de
 	dec b
 	jr nz, .asm_7953c
@@ -1815,7 +1815,7 @@ Func_79517: ; 79517 (1e:5517)
 
 AnimationShootManyBallsUpward: ; 79566 (1e:5566)
 ; Shoots several pillars of "energy" balls upward.
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	ld hl, UpwardBallsAnimXCoordinatesPlayerTurn
 	ld a, $50 ; y coordinate for "energy" ball pillar
@@ -1879,7 +1879,7 @@ MinimizedMonSprite: ; 795c4 (1e:55c4)
 AnimationSlideMonDownAndHide: ; 795c9 (1e:55c9)
 ; Slides the mon's sprite down and disappears. Used in Acid Armor.
 	ld a, $1
-	ld c, $2
+	ld c, 2
 .asm_795cd
 	push bc
 	push af
@@ -1889,7 +1889,7 @@ AnimationSlideMonDownAndHide: ; 795c9 (1e:55c9)
 	call Func_79842
 	call Func_79820
 	call Func_79aae
-	ld c, $8
+	ld c, 8
 	call DelayFrames
 	pop af
 	inc a
@@ -1904,7 +1904,7 @@ AnimationSlideMonDownAndHide: ; 795c9 (1e:55c9)
 	jp Func_79652
 
 Func_795f8: ; 795f8 (1e:55f8)
-	ldh a, [H_WHOSETURN] ; $fff3
+	ldh a, [hWhoseTurn] ; $fff3
 	and a
 	jr z, .asm_79602
 	hlCoord 12, 0
@@ -1912,14 +1912,14 @@ Func_795f8: ; 795f8 (1e:55f8)
 .asm_79602
 	hlCoord 0, 5
 .asm_79605
-	ld d, $8
+	ld d, 8
 .asm_79607
 	push hl
-	ld b, $7
+	ld b, 7
 .asm_7960a
-	ld c, $8
+	ld c, 8
 .asm_7960c
-	ldh a, [H_WHOSETURN] ; $fff3
+	ldh a, [hWhoseTurn] ; $fff3
 	and a
 	jr z, .asm_79616
 	call Func_7963c
@@ -1947,7 +1947,7 @@ Func_795f8: ; 795f8 (1e:55f8)
 
 Func_79633: ; 79633 (1e:5633)
 	ld a, [hl]
-	add $7
+	add 7
 	cp $61
 	ret c
 	ld a, $7f
@@ -1955,7 +1955,7 @@ Func_79633: ; 79633 (1e:5633)
 
 Func_7963c: ; 7963c (1e:563c)
 	ld a, [hl]
-	sub $7
+	sub 7
 	cp $30
 	ret c
 	ld a, $7f
@@ -1963,14 +1963,14 @@ Func_7963c: ; 7963c (1e:563c)
 
 AnimationSlideMonHalfLeft: ; 79645 (1e:5645)
 ; Slides the mon's sprite halfway out of the screen. It's used in Softboiled.
-	ld e, $4
-	ld a, $4
+	ld e, 4
+	ld a, 4
 	ld [W_SUBANIMTRANSFORM], a
 	call Func_795f8
 	jp Delay3
 
 Func_79652: ; 79652 (1e:5652)
-	ldh a, [H_WHOSETURN] ; $fff3
+	ldh a, [hWhoseTurn] ; $fff3
 	and a
 	ld hl, vBackPic
 	jr z, .asm_7965d
@@ -2013,7 +2013,7 @@ AnimationWavyScreen: ; 79666 (1e:5666)
 	ldh [hWY], a
 	call SaveScreenTilesToBuffer2
 	call ClearScreen
-	ld a, $1
+	ld a, 1
 	ldh [hAutoBGTransferEnabled], a
 	call Delay3
 	call LoadScreenTilesFromBuffer2
@@ -2045,9 +2045,9 @@ AnimationSubstitute: ; 796e0 (1e:56e0)
 ; Changes the pokemon's sprite to the mini sprite
 	ld hl, wTempPic
 	xor a
-	ld bc, $0310
+	ld bc, $310
 	call FillMemory
-	ldh a, [$fff3]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .asm_79715 ; 0x796ed $26
 	ld hl, SlowbroSprite ; facing down sprite
@@ -2086,7 +2086,7 @@ CopySlowbroSpriteData: ; 7973f (1e:573f)
 	jp FarCopyData2
 
 Func_79747: ; 79747 (1e:5747)
-	ldh a, [H_WHOSETURN] ; $fff3
+	ldh a, [hWhoseTurn] ; $fff3
 	and a
 	ld hl, wccf7
 	ld a, [W_PLAYERBATTSTATUS2] ; W_PLAYERBATTSTATUS2
@@ -2117,7 +2117,7 @@ Func_79771: ; 79771 (1e:5771)
 AnimationBoundUpAndDown: ; 7977a (1e:577a)
 ; Bounces the mon's sprite up and down several times. It is used
 ; by Splash's animation.
-	ld c, $5
+	ld c, 5
 .asm_7977c
 	push bc
 	call AnimationSlideMonDown
@@ -2135,7 +2135,7 @@ AnimationTransformMon: ; 79787 (1e:5787)
 	ld [wHPBarMaxHP], a
 
 Func_79793: ; 79793 (1e:5793)
-	ldh a, [H_WHOSETURN] ; $fff3
+	ldh a, [hWhoseTurn] ; $fff3
 	and a
 	jr z, .asm_797b0
 	ld a, [wHPBarMaxHP]
@@ -2194,10 +2194,10 @@ Func_797e8: ; 797e8 (1e:57e8)
 
 AnimationHideMonPic: ; 79801 (1e:5801)
 ; Hides the mon's sprite.
-	ldh a, [H_WHOSETURN] ; $fff3
+	ldh a, [hWhoseTurn] ; $fff3
 	and a
 	jr z, .asm_7980a
-	ld a, $c
+	ld a, 12
 	jr Func_7980c
 .asm_7980a
 	ld a, $65
@@ -2207,7 +2207,7 @@ Func_7980c: ; 7980c (1e:580c)
 	push de
 	push bc
 	ld e, a
-	ld d, $0
+	ld d, 0
 	ld hl, wTileMap
 	add hl, de
 	ld bc, $707
@@ -2219,7 +2219,7 @@ Func_7980c: ; 7980c (1e:580c)
 
 Func_79820: ; 79820 (1e:5820)
 	push de
-	ldh a, [H_WHOSETURN] ; $fff3
+	ldh a, [hWhoseTurn] ; $fff3
 	and a
 	jr nz, .asm_7982a
 	ld a, $65
@@ -2229,13 +2229,13 @@ Func_79820: ; 79820 (1e:5820)
 .asm_7982c
 	ld hl, wTileMap
 	ld e, a
-	ld d, $0
+	ld d, 0
 	add hl, de
-	ld a, $7
+	ld a, 7
 	sub b
 	and a
 	jr z, .asm_79840
-	ld de, $14
+	ld de, 20
 .asm_7983c
 	add hl, de
 	dec a
@@ -2247,7 +2247,7 @@ Func_79820: ; 79820 (1e:5820)
 Func_79842: ; 79842 (1e:5842)
 	ld hl, PointerTable_79aea ; $5aea
 	ld e, a
-	ld d, $0
+	ld d, 0
 	add hl, de
 	add hl, de
 	add hl, de
@@ -2298,7 +2298,7 @@ Func_7986f: ; 7986f (1e:586f)
 	ld b, a
 	call IsCryMove
 	jr nc, .NotCryMove
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr nz, .next
 	ld a, [wBattleMonSpecies] ; get number of current monster
@@ -2520,7 +2520,7 @@ MoveSoundTable: ; 798bc (1e:58bc)
 	db RBSFX_08_4b, $00, $80
 
 Func_79aae: ; 79aae (1e:5aae)
-	ldh a, [H_WHOSETURN] ; $fff3
+	ldh a, [hWhoseTurn] ; $fff3
 	and a
 	ld a, $31
 	jr z, .asm_79ab6
@@ -2557,7 +2557,7 @@ Func_79ace: ; 79ace (1e:5ace)
 	dec c
 	jr nz, .asm_79ad4
 	pop hl
-	ld bc, $14
+	ld bc, 20
 	add hl, bc
 	pop bc
 	dec b
@@ -2634,22 +2634,22 @@ AnimationPetalsFalling: ; 79c8a (1e:5c8a)
 ; Makes lots of petals fall down from the top of the screen. It's used in
 ; the animation for Petal Dance.
 	ld d, $71
-	ld a, $14
+	ld a, 20
 	ld [W_SUBANIMTRANSFORM], a
 	call Func_79c97
 	jp ClearSprites
 
 Func_79c97: ; 79c97 (1e:5c97)
 	ld c, a
-	ld a, $1
+	ld a, 1
 	call Func_797e8
 	call Func_79d2a
 	call Func_79d52
 	ld hl, wOAMBuffer
-	ld [hl], $0
+	ld [hl], 0
 .asm_79ca8
 	ld hl, wTrainerSpriteOffset
-	ld de, $0000
+	ld de, 0
 	ld a, [W_SUBANIMTRANSFORM]
 	ld c, a
 .asm_79cb2
@@ -2661,7 +2661,7 @@ Func_79c97: ; 79c97 (1e:5c97)
 	call Func_79d16
 	call Func_79cdb
 	pop de
-	ld hl, $0004
+	ld hl, 4
 	add hl, de
 	ld e, l
 	ld d, h
@@ -2674,7 +2674,7 @@ Func_79c97: ; 79c97 (1e:5c97)
 	call Delay3
 	ld hl, wOAMBuffer
 	ld a, [hl]
-	cp $68
+	cp 104
 	jr nz, .asm_79ca8
 	ret
 
@@ -2684,9 +2684,9 @@ Func_79cdb: ; 79cdb (1e:5cdb)
 	ld a, [hl]
 	inc a
 	inc a
-	cp $70
+	cp 112
 	jr c, .asm_79ce8
-	ld a, $a0
+	ld a, 160
 .asm_79ce8
 	ld [hli], a
 	ld a, [wd08a]
@@ -2727,7 +2727,7 @@ Func_79d16: ; 79d16 (1e:5d16)
 	inc a
 	ld b, a
 	and $7f
-	cp $9
+	cp 9
 	ld a, b
 	jr nz, .asm_79d26
 	and $80
@@ -2909,7 +2909,7 @@ Func_79e6a: ; 79e6a (1e:5e6a)
 	ld a, [wd05b] ; effectiveness
 	and $7f
 	ret z
-	cp $a
+	cp 10
 	ld a, $20
 	ld b, $30
 	ld c, GSSFX_DAMAGE ;RBSFX_08_50

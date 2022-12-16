@@ -357,7 +357,7 @@ EnemyRan: ; 3c202 (f:4202)
 	ld a, RBSFX_08_44
 	call PlaySoundWaitForCurrent
 	xor a
-	ldh [H_WHOSETURN], a
+	ldh [hWhoseTurn], a
 	
 	ld b, BANK(SetHadEncounterInHere)
 	ld hl, SetHadEncounterInHere
@@ -533,7 +533,7 @@ MainInBattleLoop: ; 3c233 (f:4233)
 	jr .playerMovesFirst
 .enemyMovesFirst
 	ld a, $1
-	ldh [H_WHOSETURN], a
+	ldh [hWhoseTurn], a
 	callab TrainerAI
 	jr c, .AIActionUsedEnemyFirst
 	call ExecuteEnemyMove
@@ -571,7 +571,7 @@ MainInBattleLoop: ; 3c233 (f:4233)
 	jp z, HandlePlayerMonFainted
 	call DrawHUDsAndHPBars
 	ld a, $1
-	ldh [H_WHOSETURN], a
+	ldh [hWhoseTurn], a
 	callab TrainerAI
 	jr c, .AIActionUsedPlayerFirst
 	call ExecuteEnemyMove
@@ -591,7 +591,7 @@ MainInBattleLoop: ; 3c233 (f:4233)
 HandlePoisonBurnLeechSeed: ; 3c3bd (f:43bd)
 	ld hl, wBattleMonHP
 	ld de, wBattleMonStatus
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .playersTurn
 	ld hl, wEnemyMonHP
@@ -616,7 +616,7 @@ HandlePoisonBurnLeechSeed: ; 3c3bd (f:43bd)
 	call HandlePoisonBurnLeechSeed_DecreaseOwnHP
 .notBurnedOrPoisoned
 	ld de, W_PLAYERBATTSTATUS2
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .playersTurn2
 	ld de, W_ENEMYBATTSTATUS2
@@ -625,16 +625,16 @@ HandlePoisonBurnLeechSeed: ; 3c3bd (f:43bd)
 	add a
 	jr nc, .notLeechSeeded
 	push hl
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	push af
 	xor $1
-	ldh [H_WHOSETURN], a
+	ldh [hWhoseTurn], a
 	xor a
 	ld [wcc5b], a
 	ld a, ABSORB
 	call PlayMoveAnimation ; play leech seed animation (from opposing mon)
 	pop af
-	ldh [H_WHOSETURN], a
+	ldh [hWhoseTurn], a
 	pop hl
 	call HandlePoisonBurnLeechSeed_DecreaseOwnHP
 	call HandlePoisonBurnLeechSeed_IncreaseEnemyHP
@@ -692,7 +692,7 @@ HandlePoisonBurnLeechSeed_DecreaseOwnHP: ; 3c43d (f:443d)
 .nonZeroDamage
 	ld hl, W_PLAYERBATTSTATUS3
 	ld de, W_PLAYERTOXICCOUNTER
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .playersTurn
 	ld hl, W_ENEMYBATTSTATUS3
@@ -738,7 +738,7 @@ HandlePoisonBurnLeechSeed_DecreaseOwnHP: ; 3c43d (f:443d)
 HandlePoisonBurnLeechSeed_IncreaseEnemyHP: ; 3c4a3 (f:44a3)
 	push hl
 	ld hl, wEnemyMonMaxHP
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .playersTurn
 	ld hl, wBattleMonMaxHP
@@ -775,19 +775,19 @@ HandlePoisonBurnLeechSeed_IncreaseEnemyHP: ; 3c4a3 (f:44a3)
 	ld [hl], a
 	ld [wHPBarNewHP], a
 .noOverfullHeal
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	xor $1
-	ldh [H_WHOSETURN], a
+	ldh [hWhoseTurn], a
 	call UpdateCurMonHPBar
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	xor $1
-	ldh [H_WHOSETURN], a
+	ldh [hWhoseTurn], a
 	pop hl
 	ret
 
 UpdateCurMonHPBar: ; 3c4f6 (f:44f6)
 	hlCoord 10, 9    ; tile pointer to player HP bar
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	ld a, $1
 	jr z, .playersTurn
@@ -1924,7 +1924,7 @@ SendOutMon: ; 3cc91 (f:4c91)
 	ld hl, W_ENEMYBATTSTATUS1
 	res 5, [hl]
 	ld a, $1
-	ldh [H_WHOSETURN], a
+	ldh [hWhoseTurn], a
 	ld a, POOF_ANIM
 	call PlayMoveAnimation
 	hlCoord 4, 11
@@ -1945,7 +1945,7 @@ AnimateRetreatingPlayerMon: ; 3ccfa (f:4cfa)
 	ld [wcd6c], a
 	ldh [hBaseTileID], a
 	predef Func_79aba
-	ld c, $4
+	ld c, 4
 	call DelayFrames
 	call .clearScreenArea
 	hlCoord 4, 9
@@ -3011,7 +3011,7 @@ Func_3d4b6: ; 3d4b6 (f:54b6)
 	ld hl, wCurrentMenuItem
 	dec [hl]
 	xor a
-	ldh [H_WHOSETURN], a
+	ldh [hWhoseTurn], a
 	ld hl, wBattleMonMoves
 	ld a, [wCurrentMenuItem]
 	ld c, a
@@ -3211,7 +3211,7 @@ LinkBattleExchangeData: ; 3d605 (f:5605)
 
 ExecutePlayerMove: ; 3d65e (f:565e)
 	xor a
-	ldh [H_WHOSETURN], a
+	ldh [hWhoseTurn], a
 	ld a, [wPlayerSelectedMove]
 	inc a
 	jp z, Func_3d80a
@@ -3413,7 +3413,7 @@ PrintGhostText: ; 3d811 (f:5811)
 ; print the ghost battle messages
 	call IsGhostBattle
 	ret nz
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr nz, .Ghost
 	ld a, [wBattleMonStatus] ; player’s turn
@@ -3778,7 +3778,7 @@ CantMoveText: ; 3da83 (f:5a83)
 PrintMoveIsDisabledText: ; 3da88 (f:5a88)
 	ld hl, wPlayerSelectedMove
 	ld de, W_PLAYERBATTSTATUS1
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .asm_3da97
 	inc hl
@@ -3833,11 +3833,11 @@ PrintHurtItselfText: ; 3daad (f:5aad)
 	xor a
 	ld [wcc5b], a
 	inc a
-	ldh [H_WHOSETURN], a
+	ldh [hWhoseTurn], a
 	call PlayMoveAnimation
 	call DrawPlayerHUDAndHPBar
 	xor a
-	ldh [H_WHOSETURN], a
+	ldh [hWhoseTurn], a
 	jp ApplyDamageToPlayerPokemon
 
 PrintMonName1Text: ; 3daf5 (f:5af5)
@@ -3847,7 +3847,7 @@ PrintMonName1Text: ; 3daf5 (f:5af5)
 MonName1Text: ; 3dafb (f:5afb)
 	TX_FAR _MonName1Text
 	db $08 ; asm
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	ld a, [W_PLAYERMOVENUM]
 	ld hl, wccf1
@@ -3975,7 +3975,7 @@ UnknownMovesList_3dba3: ; 3dba3 (f:5ba3)
 
 PrintMoveFailureText: ; 3dbe2 (f:5be2)
 	ld de, W_PLAYERMOVEEFFECT
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .playersTurn
 	ld de, W_ENEMYMOVEEFFECT
@@ -4021,7 +4021,7 @@ PrintMoveFailureText: ; 3dbe2 (f:5be2)
 	call PrintText
 	ld b, $4
 	predef Func_48125
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr nz, .asm_3dc3f
 	jp ApplyDamageToPlayerPokemon
@@ -4551,7 +4551,7 @@ CalculateDamage: ; 3df65 (f:5f65)
 ;	d: base power
 ;	e: level
 
-	ldh a, [$fff3] ; whose turn?
+	ldh a, [hWhoseTurn] ; whose turn?
 	and a
 	ld a, [W_PLAYERMOVEEFFECT]
 	jr z, .effect
@@ -4724,7 +4724,7 @@ UnusedHighCriticalMoves: ; 3e01e (f:601e)
 CriticalHitTest: ; 3e023 (f:6023)
 	xor a
 	ld [wCriticalHitOrOHKO], a
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	ld a, [wEnemyMonSpecies]
 	jr nz, .asm_3e032
@@ -4735,7 +4735,7 @@ CriticalHitTest: ; 3e023 (f:6023)
 	ld a, [W_MONHBASESPEED]
 	ld b, a
 	srl b                        ; (effective (base speed/2))
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	ld hl, W_PLAYERMOVEPOWER
 	ld de, W_PLAYERBATTSTATUS2
@@ -4800,7 +4800,7 @@ HighCriticalMoves: ; 3e08e (f:608e)
 
 ; function to determine if Counter hits and if so, how much damage it does
 HandleCounterMove: ; 3e093 (f:6093)
-	ldh a, [H_WHOSETURN] ; whose turn
+	ldh a, [hWhoseTurn] ; whose turn
 	and a
 ; player's turn
 	ld hl, wEnemySelectedMove
@@ -5099,7 +5099,7 @@ AttackSubstitute: ; 3e25e (f:625e)
 ; values for player turn
 	ld de, wEnemySubstituteHP
 	ld bc, W_ENEMYBATTSTATUS2
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .applyDamageToSubstitute
 ; values for enemy turn
@@ -5122,14 +5122,14 @@ AttackSubstitute: ; 3e25e (f:625e)
 	ld hl, SubstituteBrokeText
 	call PrintText
 ; flip whose turn it is for the next function call
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	xor a, $01
-	ldh [H_WHOSETURN], a
+	ldh [hWhoseTurn], a
 	callab Func_79747 ; animate the substitute breaking
 ; flip the turn back to the way it was
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	xor a, $01
-	ldh [H_WHOSETURN], a
+	ldh [hWhoseTurn], a
 	ld hl, W_PLAYERMOVEEFFECT ; value for player's turn
 	and a
 	jr z, .nullifyEffect
@@ -5153,7 +5153,7 @@ HandleBuildingRage: ; 3e2b6 (f:62b6)
 	ld hl, W_ENEMYBATTSTATUS2
 	ld de, wEnemyMonStatMods
 	ld bc, W_ENEMYMOVENUM
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .next
 ; values for the enemy turn
@@ -5166,9 +5166,9 @@ HandleBuildingRage: ; 3e2b6 (f:62b6)
 	ld a, [de]
 	cp a, $0d ; maximum stat modifier value
 	ret z ; return if attack modifier is already maxed
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	xor a, $01 ; flip turn for the stat modifier raising function
-	ldh [H_WHOSETURN], a
+	ldh [hWhoseTurn], a
 ; change the target pokemon's move to $00 and the effect to the one
 ; that causes the attack modifier to go up one stage
 	ld h, b
@@ -5185,9 +5185,9 @@ HandleBuildingRage: ; 3e2b6 (f:62b6)
 	ldd [hl], a ; null move effect
 	ld a, RAGE
 	ld [hl], a ; restore the target pokemon's move number to Rage
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	xor a, $01 ; flip turn back to the way it was
-	ldh [H_WHOSETURN], a
+	ldh [hWhoseTurn], a
 	ret
 
 BuildingRageText: ; 3e2f8 (f:62f8)
@@ -5197,7 +5197,7 @@ BuildingRageText: ; 3e2f8 (f:62f8)
 ; copy last move for Mirror Move
 ; sets zero flag on failure and unsets zero flag on success
 MirrorMoveCopyMove: ; 3e2fd (f:62fd)
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 ; values for player turn
 	ld a, [wccf2]
@@ -5251,7 +5251,7 @@ MetronomePickMove: ; 3e348 (f:6348)
 ; values for player turn
 	ld de, W_PLAYERMOVENUM
 	ld hl, wPlayerSelectedMove
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .pickMoveLoop
 ; values for enemy turn
@@ -5290,7 +5290,7 @@ MetronomePickMove: ; 3e348 (f:6348)
 ; it's used to prevent moves that run another move within the same turn
 ; (like Mirror Move and Metronome) from losing 2 PP
 IncrementMovePP: ; 3e373 (f:6373)
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 ; values for player turn
 	ld hl, wBattleMonPP
@@ -5309,7 +5309,7 @@ IncrementMovePP: ; 3e373 (f:6373)
 	ld h, d
 	ld l, e
 	add hl, bc
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	ld a, [wPlayerMonNumber] ; value for player turn
 	jr z, .next2
@@ -5333,7 +5333,7 @@ AdjustDamageForMoveType: ; 3e3a5 (f:63a5)
 	ld e, [hl] ; e = type 2 of defender
 	ld a, [W_PLAYERMOVETYPE]
 	ld [wd11e], a
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .next
 ; values for enemy turn
@@ -5477,7 +5477,7 @@ MoveHitTest: ; 3e56b (f:656b)
 	ld hl, W_ENEMYBATTSTATUS1
 	ld de, W_PLAYERMOVEEFFECT
 	ld bc, wEnemyMonStatus
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .dreamEaterCheck
 ; enemy's turn
@@ -5506,7 +5506,7 @@ MoveHitTest: ; 3e56b (f:656b)
 .checkForDigOrFlyStatus
 	bit 6, [hl]
 	jp nz, .moveMissed
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr nz, .enemyTurn
 .playerTurn
@@ -5561,7 +5561,7 @@ MoveHitTest: ; 3e56b (f:656b)
 	call CalcHitChance ; scale the move accuracy according to attacker's accuracy and target's evasion
 	ld a, [W_PLAYERMOVEACCURACY]
 	ld b, a
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .doAccuracyCheck
 	ld a, [W_ENEMYMOVEACCURACY]
@@ -5580,7 +5580,7 @@ MoveHitTest: ; 3e56b (f:656b)
 	ld [hl], a
 	inc a
 	ld [W_MOVEMISSED], a
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .playerTurn2
 .enemyTurn2
@@ -5595,7 +5595,7 @@ MoveHitTest: ; 3e56b (f:656b)
 ; values for player turn
 CalcHitChance: ; 3e624 (f:6624)
 	ld hl, W_PLAYERMOVEACCURACY
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	ld a, [wPlayerMonAccuracyMod]
 	ld b, a
@@ -6049,11 +6049,11 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	ld [hl], a
 	xor a
 	ld [wcc5b], a
-	ldh [H_WHOSETURN], a
+	ldh [hWhoseTurn], a
 	ld a, POUND
 	call PlayMoveAnimation
 	ld a, $1
-	ldh [H_WHOSETURN], a
+	ldh [hWhoseTurn], a
 	call ApplyDamageToEnemyPokemon
 	jr .monHurtItselfOrFullyParalysed
 .checkIfTriedToUseDisabledMove
@@ -6197,7 +6197,7 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	ret
 
 GetCurrentMove: ; 3eabe (f:6abe)
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jp z, .player
 	ld de, W_ENEMYMOVENUM
@@ -6516,12 +6516,12 @@ ApplyBurnAndParalysisPenaltiesToEnemy: ; 3ed1e (f:6d1e)
 	xor a
 
 ApplyBurnAndParalysisPenalties: ; 3ed1f (f:6d1f)
-	ldh [H_WHOSETURN], a
+	ldh [hWhoseTurn], a
 	call QuarterSpeedDueToParalysis
 	jp HalveAttackDueToBurn
 
 QuarterSpeedDueToParalysis: ; 3ed27 (f:6d27)
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .playerTurn
 .enemyTurn ; quarter the player's speed
@@ -6564,7 +6564,7 @@ QuarterSpeedDueToParalysis: ; 3ed27 (f:6d27)
 	ret
 
 HalveAttackDueToBurn: ; 3ed64 (f:6d64)
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .playerTurn
 .enemyTurn ; halve the player's attack
@@ -6828,7 +6828,7 @@ BattleRandom:
 
 
 Func_3eed3: ; 3eed3 (f:6ed3)
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	ld hl, wEnemyMonType1 ; wcfea (aliases: wEnemyMonType)
 	ld de, W_ENEMYBATTSTATUS1
@@ -7048,11 +7048,11 @@ Func_3f073: ; 3f073 (f:7073)
 	call Delay3
 	ld bc, -41
 	add hl, bc
-	ld a, $1
+	ld a, 1
 	ld [wcd6c], a
 	ld bc, $303
 	predef Func_79aba
-	ld c, $4
+	ld c, 4
 	call DelayFrames
 	ld bc, -41
 	add hl, bc
@@ -7060,7 +7060,7 @@ Func_3f073: ; 3f073 (f:7073)
 	ld [wcd6c], a
 	ld bc, $505
 	predef Func_79aba
-	ld c, $5
+	ld c, 5
 	call DelayFrames
 	ld bc, -41
 	jr .asm_3f0bf
@@ -7151,7 +7151,7 @@ JumpMoveEffect: ; 3f132 (f:7132)
 	ret
 
 _JumpMoveEffect: ; 3f138 (f:7138)
-	ldh a, [$fff3]  ;whose turn?
+	ldh a, [hWhoseTurn]  ;whose turn?
 	and a
 	ld a, [W_PLAYERMOVEEFFECT]
 	jr z, .next1
@@ -7268,7 +7268,7 @@ MoveEffectPointerTable: ; 3f150 (f:7150)
 SleepEffect: ; 3f1fc (f:71fc)
 	ld de, wEnemyMonStatus
 	ld bc, W_ENEMYBATTSTATUS2
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jp z, .asm_3f20e
 	ld de, wBattleMonStatus
@@ -7318,7 +7318,7 @@ AlreadyAsleepText: ; 3f24a (f:724a)
 PoisonEffect: ; 3f24f (f:724f)
 	ld hl, wEnemyMonStatus
 	ld de, W_PLAYERMOVEEFFECT
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .asm_3f260
 	ld hl, wBattleMonStatus
@@ -7364,7 +7364,7 @@ PoisonEffect: ; 3f24f (f:724f)
 	set 3, [hl]
 	push de
 	dec de
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	ld b, ANIM_C7
 	ld hl, W_PLAYERBATTSTATUS3
@@ -7420,7 +7420,7 @@ DrainHPEffect: ; 3f2e9 (f:72e9)
 ExplodeEffect: ; 3f2f1 (f:72f1)
 	ld hl, wBattleMonHP
 	ld de, W_PLAYERBATTSTATUS2
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .asm_3f302
 	ld hl, wEnemyMonHP
@@ -7441,7 +7441,7 @@ FreezeBurnParalyzeEffect: ; 3f30c (f:730c)
 	ld [wcc5b], a
 	call CheckTargetSubstitute         ;test bit 4 of d063/d068 flags [target has substitute flag]
 	ret nz             ;return if they have a substitute, can't effect them
-	ldh a, [$fff3]  ;whose turn?
+	ldh a, [hWhoseTurn]  ;whose turn?
 	and a
 	jp nz, opponentAttacker
 	ld a, [wEnemyMonStatus]
@@ -7556,7 +7556,7 @@ CheckDefrost: ; 3f3e2 (f:73e2)
 	and a, 1 << FRZ			;are they frozen?
 	ret z				;return if so
 						;not frozen
-	ldh a, [$fff3]	;whose turn?
+	ldh a, [hWhoseTurn]	;whose turn?
 	and a
 	jr nz, .opponent
 	;player [attacker]
@@ -7595,7 +7595,7 @@ FireDefrostedText: ; 3f423 (f:7423)
 StatModifierUpEffect: ; 3f428 (f:7428)
 	ld hl, wPlayerMonStatMods
 	ld de, W_PLAYERMOVEEFFECT
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .asm_3f439
 	ld hl, wEnemyMonStatMods
@@ -7631,7 +7631,7 @@ StatModifierUpEffect: ; 3f428 (f:7428)
 	push hl
 	ld hl, wBattleMonAttack + 1
 	ld de, wcd12
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .asm_3f472
 	ld hl, wEnemyMonAttack + 1
@@ -7702,7 +7702,7 @@ asm_3f4ca: ; 3f4ca (f:74ca)
 	ld hl, W_PLAYERBATTSTATUS2
 	ld de, W_PLAYERMOVENUM
 	ld bc, wccf7
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .asm_3f4e6
 	ld hl, W_ENEMYBATTSTATUS2
@@ -7733,7 +7733,7 @@ asm_3f4ca: ; 3f4ca (f:74ca)
 	pop af
 	call nz, Bankswitch
 .asm_3f50e
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	call z, ApplyBadgeStatBoosts
 	ld hl, MonsStatsRoseText
@@ -7753,7 +7753,7 @@ MonsStatsRoseText: ; 3f528 (f:7528)
 	TX_FAR _MonsStatsRoseText
 	db $08 ; asm
 	ld hl, GreatlyRoseText
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	ld a, [W_PLAYERMOVEEFFECT]
 	jr z, .asm_3f53b
@@ -7776,7 +7776,7 @@ StatModifierDownEffect100:
 	ld hl, wEnemyMonStatMods
 	ld de, W_PLAYERMOVEEFFECT
 	ld bc, W_ENEMYBATTSTATUS1
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .got
 	ld hl, wPlayerMonStatMods
@@ -7791,7 +7791,7 @@ StatModifierDownEffect: ; 3f54c (f:754c)
 	ld hl, wEnemyMonStatMods
 	ld de, W_PLAYERMOVEEFFECT
 	ld bc, W_ENEMYBATTSTATUS1
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .asm_3f572
 	ld hl, wPlayerMonStatMods
@@ -7859,7 +7859,7 @@ StatModifierDownEffectApply:
 	push de
 	ld hl, wEnemyMonAttack + 1
 	ld de, wEnemyMonUnmodifiedAttack
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .asm_3f5d8
 	ld hl, wBattleMonAttack + 1
@@ -7934,7 +7934,7 @@ asm_3f62c: ; 3f62c (f:762c)
 	jr nc, .asm_3f63b
 	call Func_3fb89
 .asm_3f63b
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	call nz, ApplyBadgeStatBoosts
 	ld hl, MonsStatsFellText
@@ -7964,7 +7964,7 @@ MonsStatsFellText: ; 3f661 (f:7661)
 	TX_FAR _MonsStatsFellText
 	db $08 ; asm
 	ld hl, FellText
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	ld a, [W_PLAYERMOVEEFFECT]
 	jr z, .asm_3f674
@@ -8029,7 +8029,7 @@ BideEffect: ; 3f6e5 (f:76e5)
 	ld hl, W_PLAYERBATTSTATUS1
 	ld de, W_NUMHITS
 	ld bc, wPlayerNumAttacksLeft
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .asm_3f6fc
 	ld hl, W_ENEMYBATTSTATUS1
@@ -8048,14 +8048,14 @@ BideEffect: ; 3f6e5 (f:76e5)
 	inc a
 	inc a
 	ld [bc], a
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	add XSTATITEM_ANIM
 	jp Func_3fb96
 
 ThrashPetalDanceEffect: ; 3f717 (f:7717)
 	ld hl, W_PLAYERBATTSTATUS1
 	ld de, wPlayerNumAttacksLeft
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .asm_3f728
 	ld hl, W_ENEMYBATTSTATUS1
@@ -8067,12 +8067,12 @@ ThrashPetalDanceEffect: ; 3f717 (f:7717)
 	inc a
 	inc a
 	ld [de], a
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	add ANIM_B0
 	jp Func_3fb96
 
 SwitchAndTeleportEffect: ; 3f739 (f:7739)
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr nz, .asm_3f791
 	ld a, [W_ISINBATTLE]
@@ -8190,7 +8190,7 @@ TwoToFiveAttacksEffect: ; 3f811 (f:7811)
 	ld hl, W_PLAYERBATTSTATUS1
 	ld de, wPlayerNumAttacksLeft
 	ld bc, W_NUMHITS
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .asm_3f828
 	ld hl, W_ENEMYBATTSTATUS1
@@ -8201,7 +8201,7 @@ TwoToFiveAttacksEffect: ; 3f811 (f:7811)
 	ret nz
 	set 2, [hl] ; mon is now attacking multiple times
 	ld hl, W_PLAYERMOVEEFFECT
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .asm_3f838
 	ld hl, W_ENEMYMOVEEFFECT
@@ -8235,7 +8235,7 @@ FlichSideEffect: ; 3f85b (f:785b)
 	ret nz
 	ld hl, W_ENEMYBATTSTATUS1
 	ld de, W_PLAYERMOVEEFFECT
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .asm_3f870
 	ld hl, W_PLAYERBATTSTATUS1
@@ -8265,7 +8265,7 @@ OneHitKOEffect: ; 3f884 (f:7884)
 ChargeEffect: ; 3f88c (f:788c)
 	ld hl, W_PLAYERBATTSTATUS1
 	ld de, W_PLAYERMOVEEFFECT
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	ld b, XSTATITEM_ANIM
 	jr z, .asm_3f8a1
@@ -8347,7 +8347,7 @@ DugAHoleText: ; 3f912 (f:7912)
 TrappingEffect: ; 3f917 (f:7917)
 	ld hl, W_PLAYERBATTSTATUS1
 	ld de, wPlayerNumAttacksLeft
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .asm_3f928
 	ld hl, W_ENEMYBATTSTATUS1
@@ -8398,7 +8398,7 @@ ConfusionEffect: ; 3f961 (f:7961)
 	jr nz, Func_3f9a6
 
 Func_3f96f: ; 3f96f (f:796f)
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	ld hl, W_ENEMYBATTSTATUS1
 	ld bc, wd070
@@ -8446,7 +8446,7 @@ SubstituteEffect: ; 3f9b9 (f:79b9)
 
 HyperBeamEffect: ; 3f9c1 (f:79c1)
 	ld hl, W_PLAYERBATTSTATUS2
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .asm_3f9cc
 	ld hl, W_ENEMYBATTSTATUS2
@@ -8457,7 +8457,7 @@ HyperBeamEffect: ; 3f9c1 (f:79c1)
 Func_3f9cf: ; 3f9cf (f:79cf)
 	push hl
 	ld hl, W_ENEMYBATTSTATUS2
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .asm_3f9db
 	ld hl, W_PLAYERBATTSTATUS2
@@ -8468,7 +8468,7 @@ Func_3f9cf: ; 3f9cf (f:79cf)
 
 RageEffect: ; 3f9df (f:79df)
 	ld hl, W_PLAYERBATTSTATUS2
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .player
 	ld hl, W_ENEMYBATTSTATUS2
@@ -8483,7 +8483,7 @@ MimicEffect: ; 3f9ed (f:79ed)
 	ld a, [W_MOVEMISSED]
 	and a
 	jr nz, .asm_3fa74
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	ld hl, wBattleMonMoves
 	ld a, [W_PLAYERBATTSTATUS1]
@@ -8508,7 +8508,7 @@ MimicEffect: ; 3f9ed (f:79ed)
 	and a
 	jr z, .asm_3fa17
 	ld d, a
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	ld hl, wBattleMonMoves
 	ld a, [wPlayerMoveListIndex]
@@ -8568,7 +8568,7 @@ DisableEffect: ; 3fa8a (f:7a8a)
 	jr nz, .asm_3fb06
 	ld de, W_ENEMYDISABLEDMOVE
 	ld hl, wEnemyMonMoves
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .asm_3faa4
 	ld de, W_PLAYERDISABLEDMOVE
@@ -8590,7 +8590,7 @@ DisableEffect: ; 3fa8a (f:7a8a)
 	jr z, .asm_3faa8
 	ld [wd11e], a
 	push hl
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	ld hl, wBattleMonPP
 	jr nz, .asm_3facf
@@ -8626,7 +8626,7 @@ DisableEffect: ; 3fa8a (f:7a8a)
 	ld [de], a
 	call Func_3fb89
 	ld hl, wccee
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	jr nz, .asm_3faf8
 	inc hl
@@ -8723,7 +8723,7 @@ ParalyzedMayNotAttackText: ; 3fb74 (f:7b74)
 CheckTargetSubstitute: ; 3fb79 (f:7b79)
 	push hl
 	ld hl, W_ENEMYBATTSTATUS2
-	ldh a, [$fff3]   ;whose turn?
+	ldh a, [hWhoseTurn]   ;whose turn?
 	and a
 	jr z, .next1
 	ld hl, W_PLAYERBATTSTATUS2
@@ -8733,7 +8733,7 @@ CheckTargetSubstitute: ; 3fb79 (f:7b79)
 	ret
 
 Func_3fb89: ; 3fb89 (f:7b89)
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	ld a, [W_PLAYERMOVENUM]
 	jr z, .asm_3fb94
@@ -8744,7 +8744,7 @@ Func_3fb89: ; 3fb89 (f:7b89)
 
 Func_3fb96: ; 3fb96 (f:7b96)
 	ld [W_ANIMATIONID], a
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	ld a, $6
 	jr z, .asm_3fba2
@@ -8756,7 +8756,7 @@ Func_3fb96: ; 3fb96 (f:7b96)
 Func_3fba8: ; 3fba8 (f:7ba8)
 	xor a
 	ld [wcc5b], a
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	and a
 	ld a, [W_PLAYERMOVENUM]
 	jr z, .asm_3fbb7

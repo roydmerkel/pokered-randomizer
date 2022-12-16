@@ -393,7 +393,7 @@ hSavedMapTextPtr EQU $FFEC ; 2 bytes
 
 ; FFEF, FFF0, FFF1, FFF2 unused
 
-H_WHOSETURN EQU $FFF3 ; 0 on player’s turn, 1 on enemy’s turn
+hWhoseTurn EQU $FFF3 ; 0 on player’s turn, 1 on enemy’s turn
 
 hJoyInput EQU $FFF8
 

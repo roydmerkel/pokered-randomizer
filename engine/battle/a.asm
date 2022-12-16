@@ -5,7 +5,7 @@ LeechSeedEffect_: ; 2bea9 (a:7ea9)
 	jr nz, .asm_2bee7
 	ld hl, W_ENEMYBATTSTATUS2 ; W_ENEMYBATTSTATUS2
 	ld de, wEnemyMonType1 ; wcfea (aliases: wEnemyMonType)
-	ldh a, [H_WHOSETURN] ; $fff3
+	ldh a, [hWhoseTurn] ; $fff3
 	and a
 	jr z, .asm_2bec8
 	ld hl, W_PLAYERBATTSTATUS2 ; W_PLAYERBATTSTATUS2
@@ -25,7 +25,7 @@ LeechSeedEffect_: ; 2bea9 (a:7ea9)
 	ld hl, WasSeededText ; $7ef2
 	jp PrintText
 .asm_2bee7
-	ld c, $32
+	ld c, 50
 	call DelayFrames
 	ld hl, EvadedAttackText ; $7ef7
 	jp PrintText

@@ -42,7 +42,7 @@ Func_525af: ; 525af (14:65af)
 ParalyzeEffect_: ; 52601 (14:6601)
 	ld hl, wEnemyMonStatus ; wcfe9
 	ld de, W_PLAYERMOVETYPE ; wcfd5
-	ldh a, [H_WHOSETURN] ; $fff3
+	ldh a, [hWhoseTurn] ; $fff3
 	and a
 	jp z, .asm_52613
 	ld hl, wBattleMonStatus ; wBattleMonStatus
@@ -74,20 +74,20 @@ ParalyzeEffect_: ; 52601 (14:6601)
 	jr nz, .asm_52659
 	set 6, [hl]
 	callab QuarterSpeedDueToParalysis
-	ld c, $1e
+	ld c, 30
 	call DelayFrames
 	callab Func_3fba8
 	ld hl, PrintMayNotAttackText
 	ld b, BANK(PrintMayNotAttackText)
 	jp Bankswitch
 .asm_52659
-	ld c, $32
+	ld c, 50
 	call DelayFrames
 	ld hl, PrintDidntAffectText
 	ld b, BANK(PrintDidntAffectText)
 	jp Bankswitch
 .asm_52666
-	ld c, $32
+	ld c, 50
 	call DelayFrames
 	ld hl, PrintDoesntAffectText
 	ld b, BANK(PrintDoesntAffectText)

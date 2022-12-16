@@ -156,7 +156,7 @@ CooltrainerFName: ; 27f79 (9:7f79)
 
 FocusEnergyEffect_: ; 27f86 (9:7f86)
 	ld hl, W_PLAYERBATTSTATUS2 ; W_PLAYERBATTSTATUS2
-	ldh a, [H_WHOSETURN] ; $fff3
+	ldh a, [hWhoseTurn] ; $fff3
 	and a
 	jr z, .asm_27f91
 	ld hl, W_ENEMYBATTSTATUS2 ; W_ENEMYBATTSTATUS2
@@ -168,7 +168,7 @@ FocusEnergyEffect_: ; 27f86 (9:7f86)
 	ld hl, GettingPumpedText ; $7fb2
 	jp PrintText
 .asm_27fa5
-	ld c, $32
+	ld c, 50
 	call DelayFrames
 	ld hl, PrintButItFailedText_
 	ld b, BANK(PrintButItFailedText_)

@@ -190,7 +190,7 @@ Char59:: ; 1a2f (0:1a2f)
 ; or
 ; player active monster’s name
 ; (like Char5A but flipped)
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 	xor 1
 	jr MonsterNameCharsCommon
 
@@ -199,7 +199,7 @@ Char5A:: ; 1a35 (0:1a35)
 ; player active monster’s name
 ; or
 ; enemy active monster’s name, prefixed with “Enemy ”
-	ldh a, [H_WHOSETURN]
+	ldh a, [hWhoseTurn]
 MonsterNameCharsCommon:: ; 1a37 (0:1a37)
 	push de
 	and a
