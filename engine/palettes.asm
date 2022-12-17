@@ -8,7 +8,7 @@ Func_71ddf: ; 71ddf (1c:5ddf)
 	cp $fc
 	jp z, Func_71fc2
 	ld l, a
-	ld h, $0
+	ld h, 0
 	add hl, hl
 	ld de, PointerTable_71f73
 	add hl, de
@@ -273,8 +273,8 @@ DeterminePaletteIDOutOfBattle: ; 71f9d (1c:5f9d)
 	ld a, [wd11e]
 .idZero
 	ld e, a
-	ld d, $00
-	ld hl, MonsterPalettes   ; not just for Pokemon, Trainers use it too
+	ld d, 0
+	ld hl, MonsterPalettes ; not just for Pokemon, Trainers use it too
 	add hl, de
 	ld a, [hl]
 	ret
@@ -289,7 +289,7 @@ Func_71fc2: ; 71fc2 (1c:5fc2)
 	ld hl, wcf1f
 	ld a, [wcf2d]
 	ld e, a
-	ld d, $0
+	ld d, 0
 	add hl, de
 	ld e, l
 	ld d, h
@@ -304,7 +304,7 @@ Func_71fc2: ; 71fc2 (1c:5fc2)
 .asm_71fdb
 	push de
 	ld hl, wcf37
-	ld bc, $6
+	ld bc, 6
 	ld a, [wcf2d]
 	call AddNTimes
 	pop de
@@ -313,61 +313,61 @@ Func_71fc2: ; 71fc2 (1c:5fc2)
 
 SendSGBPacket: ; 71feb (1c:5feb)
 ;check number of packets
-	ld a,[hl]
-	and a,$07
+	ld a, [hl]
+	and a, $07
 	ret z
 ; store number of packets in B
-	ld b,a
+	ld b, a
 .loop2
 ; save B for later use
 	push bc
 ; load a non-zero value in $fff9 to disable the routine that checks actual
 ; joypad input (said routine, located at $15f, does nothing if $fff9 is not
 ; zero)
-	ld a,$01
-	ldh [$fff9],a
+	ld a, 1
+	ldh [hDisableJoypadPolling], a
 ; send RESET signal (P14=LOW, P15=LOW)
 	xor a
-	ldh [rJOYP],a
+	ldh [rJOYP], a
 ; set P14=HIGH, P15=HIGH
-	ld a,$30
-	ldh [rJOYP],a
+	ld a, $30
+	ldh [rJOYP], a
 ;load length of packets (16 bytes)
-	ld b,$10
+	ld b, $10
 .nextByte
 ;set bit counter (8 bits per byte)
-	ld e,$08
+	ld e, $08
 ; get next byte in the packet
-	ld a,[hli]
-	ld d,a
+	ld a, [hli]
+	ld d, a
 .nextBit0
-	bit 0,d
-; if 0th bit is not zero set P14=HIGH,P15=LOW (send bit 1)
-	ld a,$10
-	jr nz,.next0
-; else (if 0th bit is zero) set P14=LOW,P15=HIGH (send bit 0)
-	ld a,$20
+	bit 0, d
+; if 0th bit is not zero set P14=HIGH, P15=LOW (send bit 1)
+	ld a, $10
+	jr nz, .next0
+; else (if 0th bit is zero) set P14=LOW, P15=HIGH (send bit 0)
+	ld a, $20
 .next0
-	ldh [rJOYP],a
+	ldh [rJOYP], a
 ; must set P14=HIGH,P15=HIGH between each "pulse"
-	ld a,$30
-	ldh [rJOYP],a
+	ld a, $30
+	ldh [rJOYP], a
 ; rotation will put next bit in 0th position (so  we can always use command
-; "bit 0,d" to fetch the bit that has to be sent)
+; "bit 0, d" to fetch the bit that has to be sent)
 	rr d
 ; decrease bit counter so we know when we have sent all 8 bits of current byte
 	dec e
-	jr nz,.nextBit0
+	jr nz, .nextBit0
 	dec b
-	jr nz,.nextByte
+	jr nz, .nextByte
 ; send bit 1 as a "stop bit" (end of parameter data)
-	ld a,$20
-	ldh [rJOYP],a
+	ld a, $20
+	ldh [rJOYP], a
 ; set P14=HIGH,P15=HIGH
-	ld a,$30
-	ldh [rJOYP],a
+	ld a, $30
+	ldh [rJOYP], a
 	xor a
-	ldh [$fff9],a
+	ldh [hDisableJoypadPolling], a
 ; wait for about 70000 cycles
 	call Wait7000
 ; restore (previously pushed) number of packets
@@ -383,7 +383,7 @@ LoadSGB: ; 7202b (1c:602b)
 	ld [wOnSGB], a
 	call Func_7209b
 	ret nc
-	ld a, $1
+	ld a, 1
 	ld [wOnSGB], a
 	ld a, [wGBC]
 	and a
@@ -393,7 +393,7 @@ LoadSGB: ; 7202b (1c:602b)
 	di
 	call Func_72075
 	ei
-	ld a, $1
+	ld a, 1
 	ld [wcf2d], a
 	ld de, ChrTrnPacket
 	ld hl, SGBBorderGraphics
@@ -414,7 +414,7 @@ LoadSGB: ; 7202b (1c:602b)
 
 Func_72075: ; 72075 (1c:6075)
 	ld hl, PointerTable_72089
-	ld c, $9
+	ld c, 9
 .asm_7207a
 	push bc
 	ld a, [hli]
@@ -444,8 +444,8 @@ Func_7209b: ; 7209b (1c:609b)
 	ld hl, MltReq2Packet
 	di
 	call SendSGBPacket
-	ld a, $1
-	ldh [$fff9], a
+	ld a, 1
+	ldh [hDisableJoypadPolling], a
 	ei
 	call Wait7000
 	ldh a, [rJOYP] ; $ff0
@@ -590,16 +590,16 @@ Func_72187: ; 72187 (1c:6187)
 	ret
 
 Func_72188: ; 72188 (1c:6188)
-	ld b, $80
+	ld b, 128
 .asm_7218a
-	ld c, $10
+	ld c, 16
 .asm_7218c
 	ld a, [hli]
 	ld [de], a
 	inc de
 	dec c
 	jr nz, .asm_7218c
-	ld c, $10
+	ld c, 16
 	xor a
 .asm_72195
 	ld [de], a

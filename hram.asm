@@ -408,3 +408,6 @@ hFieldMoveMonMenuTopMenuItemX EQU $FFF7
 
 hJoyInput EQU $FFF8
 
+hDisableJoypadPolling EQU $FFF9
+
+; FFFA, FFFB, FFFC, FFFD, FFFE

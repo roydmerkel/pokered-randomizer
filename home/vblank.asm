@@ -76,7 +76,7 @@ VBlank::
 
 	callba TrackPlayTime ; keep track of time played
 
-	ldh a, [$fff9]
+	ldh a, [hDisableJoypadPolling]
 	and a
 	call z, ReadJoypad
 
