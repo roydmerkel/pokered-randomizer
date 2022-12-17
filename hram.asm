@@ -404,5 +404,7 @@ hClearLetterPrintingDelayFlags EQU $FFF4
 
 hUILayoutFlags EQU $FFF6
 
+hFieldMoveMonMenuTopMenuItemX EQU $FFF7
+
 hJoyInput EQU $FFF8
 

@@ -1070,65 +1070,65 @@ DisplayTextIDInit: ; 7096 (1:7096)
 
 ; function that displays the start menu
 DrawStartMenu: ; 710b (1:710b)
-	ld a,[wd74b]
-	bit 5,a ; does the player have the pokedex?
+	ld a, [wd74b]
+	bit 5, a ; does the player have the pokedex?
 ; menu with pokedex
 	hlCoord 10, 0
-	ld b,$0e
-	ld c,$08
-	jr nz,.drawTextBoxBorder
+	ld b, $0e
+	ld c, $08
+	jr nz, .drawTextBoxBorder
 ; shorter menu if the player doesn't have the pokedex
 	hlCoord 10, 0
-	ld b,$0c
-	ld c,$08
+	ld b, $0c
+	ld c, $08
 .drawTextBoxBorder
 	call TextBoxBorder
-	ld a,%11001111 ; bit mask for down, up, start, B, and A buttons
-	ld [wMenuWatchedKeys],a
-	ld a,$02
-	ld [wTopMenuItemY],a ; Y position of first menu choice
-	ld a,$0b
-	ld [wTopMenuItemX],a ; X position of first menu choice
-	ld a,[wcc2d] ; remembered menu selection from last time
-	ld [wCurrentMenuItem],a
-	ld [wLastMenuItem],a
+	ld a, %11001111 ; bit mask for down, up, start, B, and A buttons
+	ld [wMenuWatchedKeys], a
+	ld a, $02
+	ld [wTopMenuItemY], a ; Y position of first menu choice
+	ld a, $0b
+	ld [wTopMenuItemX], a ; X position of first menu choice
+	ld a, [wcc2d] ; remembered menu selection from last time
+	ld [wCurrentMenuItem], a
+	ld [wLastMenuItem], a
 	xor a
-	ld [wcc37],a
-	ld hl,wd730
-	set 6,[hl] ; no pauses between printing each letter
+	ld [wcc37], a
+	ld hl, wd730
+	set 6, [hl] ; no pauses between printing each letter
 	hlCoord 12, 2
-	ld a,[wd74b]
-	bit 5,a ; does the player have the pokedex?
+	ld a, [wd74b]
+	bit 5, a ; does the player have the pokedex?
 ; case for not having pokdex
-	ld a,$06
-	jr z,.storeMenuItemCount
+	ld a, $06
+	jr z, .storeMenuItemCount
 ; case for having pokedex
-	ld de,StartMenuPokedexText
+	ld de, StartMenuPokedexText
 	call PrintStartMenuItem
-	ld a,$07
+	ld a, $07
 .storeMenuItemCount
-	ld [wMaxMenuItem],a ; number of menu items
-	ld de,StartMenuPokemonText
+	ld [wMaxMenuItem], a ; number of menu items
+	ld de, StartMenuPokemonText
 	call PrintStartMenuItem
-	ld de,StartMenuItemText
+	ld de, StartMenuItemText
 	call PrintStartMenuItem
-	ld de,wPlayerName ; player's name
+	ld de, wPlayerName ; player's name
 	call PrintStartMenuItem
-	ld a,[wd72e]
-	bit 6,a ; is the player using the link feature?
+	ld a, [wd72e]
+	bit 6, a ; is the player using the link feature?
 ; case for not using link feature
-	ld de,StartMenuSaveText
-	jr z,.printSaveOrResetText
+	ld de, StartMenuSaveText
+	jr z, .printSaveOrResetText
 ; case for using link feature
-	ld de,StartMenuResetText
+	ld de, StartMenuResetText
 .printSaveOrResetText
 	call PrintStartMenuItem
-	ld de,StartMenuOptionText
+	ld de, StartMenuOptionText
 	call PrintStartMenuItem
-	ld de,StartMenuExitText
+	ld de, StartMenuExitText
 	call PlaceString
-	ld hl,wd730
-	res 6,[hl] ; turn pauses between printing letters back on
+	ld hl, wd730
+	res 6, [hl] ; turn pauses between printing letters back on
 	ret
 
 StartMenuPokedexText: ; 718f (1:718f)
@@ -1156,8 +1156,8 @@ PrintStartMenuItem: ; 71bb (1:71bb)
 	push hl
 	call PlaceString
 	pop hl
-	ld de,$28
-	add hl,de
+	ld de, $28
+	add hl, de
 	ret
 
 INCLUDE "engine/overworld/cable_club_npc.asm"
@@ -1166,29 +1166,29 @@ INCLUDE "engine/overworld/cable_club_npc.asm"
 ; INPUT:
 ; [wd125] = text box ID
 DisplayTextBoxID_: ; 72ea (1:72ea)
-	ld a,[wd125] ; a = text box ID
-	cp a,$14
-	jp z,DisplayYesNoTextBox
-	ld c,a
-	ld hl,TextBoxFunctionTable
-	ld de,3
+	ld a, [wd125] ; a = text box ID
+	cp a, $14
+	jp z, DisplayYesNoTextBox
+	ld c, a
+	ld hl, TextBoxFunctionTable
+	ld de, 3
 	call SearchTextBoxTable
-	jr c,.functionTableMatch
-	ld hl,TextBoxCoordTable
-	ld de,5
+	jr c, .functionTableMatch
+	ld hl, TextBoxCoordTable
+	ld de, 5
 	call SearchTextBoxTable
-	jr c,.coordTableMatch
-	ld hl,TextBoxTextAndCoordTable
-	ld de,9
+	jr c, .coordTableMatch
+	ld hl, TextBoxTextAndCoordTable
+	ld de, 9
 	call SearchTextBoxTable
-	jr c,.textAndCoordTableMatch
+	jr c, .textAndCoordTableMatch
 .done
 	ret
 .functionTableMatch
-	ld a,[hli]
-	ld h,[hl]
-	ld l,a ; hl = address of function
-	ld de,.done
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a ; hl = address of function
+	ld de, .done
 	push de
 	jp [hl] ; jump to the function
 .coordTableMatch
@@ -1203,14 +1203,14 @@ DisplayTextBoxID_: ; 72ea (1:72ea)
 	call TextBoxBorder
 	pop hl
 	call GetTextBoxIDText
-	ld a,[wd730]
+	ld a, [wd730]
 	push af
-	ld a,[wd730]
-	set 6,a ; no pauses between printing each letter
-	ld [wd730],a
+	ld a, [wd730]
+	set 6, a ; no pauses between printing each letter
+	ld [wd730], a
 	call PlaceString
 	pop af
-	ld [wd730],a
+	ld [wd730], a
 	call UpdateSprites ; move sprites
 	ret
 
@@ -1219,12 +1219,12 @@ DisplayTextBoxID_: ; 72ea (1:72ea)
 SearchTextBoxTable: ; 734c (1:734c)
 	dec de
 .loop
-	ld a,[hli]
-	cp a,$ff
-	jr z,.notFound
+	ld a, [hli]
+	cp a, $ff
+	jr z, .notFound
 	cp c
-	jr z,.found
-	add hl,de
+	jr z, .found
+	add hl, de
 	jr .loop
 .found
 	scf
@@ -1240,31 +1240,31 @@ SearchTextBoxTable: ; 734c (1:734c)
 ; d = row of upper left corner
 ; e = column of upper left corner
 GetTextBoxIDCoords: ; 735a (1:735a)
-	ld a,[hli] ; column of upper left corner
-	ld e,a
-	ld a,[hli] ; row of upper left corner
-	ld d,a
-	ld a,[hli] ; column of lower right corner
+	ld a, [hli] ; column of upper left corner
+	ld e, a
+	ld a, [hli] ; row of upper left corner
+	ld d, a
+	ld a, [hli] ; column of lower right corner
 	sub e
 	dec a
-	ld c,a     ; c = width
-	ld a,[hli] ; row of lower right corner
+	ld c, a     ; c = width
+	ld a, [hli] ; row of lower right corner
 	sub d
 	dec a
-	ld b,a     ; b = height
+	ld b, a     ; b = height
 	ret
 
 ; function to load a text address and text coordinates from the TextBoxTextAndCoordTable
 GetTextBoxIDText: ; 7367 (1:7367)
-	ld a,[hli]
-	ld e,a
-	ld a,[hli]
-	ld d,a ; de = address of text
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a ; de = address of text
 	push de ; save text address
-	ld a,[hli]
-	ld e,a ; column of upper left corner of text
-	ld a,[hl]
-	ld d,a ; row of upper left corner of text
+	ld a, [hli]
+	ld e, a ; column of upper left corner of text
+	ld a, [hl]
+	ld d, a ; row of upper left corner of text
 	call GetAddressOfScreenCoords
 	pop de ; restore text address
 	ret
@@ -1277,18 +1277,18 @@ GetTextBoxIDText: ; 7367 (1:7367)
 ; hl = address of upper left corner of text box
 GetAddressOfScreenCoords: ; 7375 (1:7375)
 	push bc
-	ld hl,wTileMap
-	ld bc,20
+	ld hl, wTileMap
+	ld bc, 20
 .loop ; loop to add d rows to the base address
-	ld a,d
+	ld a, d
 	and a
-	jr z,.addedRows
-	add hl,bc
+	jr z, .addedRows
+	add hl, bc
 	dec d
 	jr .loop
 .addedRows
 	pop bc
-	add hl,de
+	add hl, de
 	ret
 
 ; Format:
@@ -1439,8 +1439,8 @@ Func_74ba: ; 74ba (1:74ba)
 	ld [wd125], a
 	call DisplayTextBoxID
 	hlCoord 13, 1
-	ld b, $1
-	ld c, $6
+	ld b, 1
+	ld c, 6
 	call ClearScreenArea
 	hlCoord 12, 1
 	ld de, wPlayerMoney ; wPlayerMoney
@@ -1613,18 +1613,18 @@ DisplayYesNoTextBox: ; 7559 (1:7559)
 	jr nz, .asm_7627
 	ld a, $1
 	ld [wd12e], a
-	ld c, $f
+	ld c, 15
 	call DelayFrames
 	call Func_7656
 	and a
 	ret
 .asm_7627
-	ld a, $1
+	ld a, 1
 	ld [wCurrentMenuItem], a ; wCurrentMenuItem
 	ld [wd12d], a
 	ld a, $2
 	ld [wd12e], a
-	ld c, $f
+	ld c, 15
 	call DelayFrames
 	call Func_7656
 	scf
@@ -1708,18 +1708,18 @@ Func_76e1: ; 76e1 (1:36e1)
 	ld [hli], a
 	ld [hli], a
 	ld [hli], a
-	ld [hl], $c
+	ld [hl], 12
 	call GetMonFieldMoves
 	ld a, [wTrainerScreenX]
 	and a
 	jr nz, .asm_770f
 	hlCoord 11, 11
-	ld b, $5
-	ld c, $7
+	ld b, 5
+	ld c, 7
 	call TextBoxBorder
 	call UpdateSprites
-	ld a, $c
-	ldh [$fff7], a
+	ld a, 12
+	ldh [hFieldMoveMonMenuTopMenuItemX], a
 	hlCoord 13, 12
 	ld de, PokemonMenuEntries ; $77c2
 	jp PlaceString
@@ -1729,10 +1729,10 @@ Func_76e1: ; 76e1 (1:36e1)
 	ld a, [wcd42]
 	dec a
 	ld e, a
-	ld d, $0
+	ld d, 0
 	add hl, de
-	ld b, $5
-	ld a, $12
+	ld b, 5
+	ld a, 18
 	sub e
 	ld c, a
 	pop af
@@ -1752,7 +1752,7 @@ Func_76e1: ; 76e1 (1:36e1)
 	ld a, [wcd42]
 	inc a
 	ld e, a
-	ld d, $0
+	ld d, 0
 	add hl, de
 	ld de, $ffd8
 	ld a, [wTrainerScreenX]
@@ -1794,12 +1794,12 @@ Func_76e1: ; 76e1 (1:36e1)
 .asm_7776
 	pop hl
 	ld a, [wcd42]
-	ldh [$fff7], a
+	ldh [hFieldMoveMonMenuTopMenuItemX], a
 	hlCoord 0, 12
 	ld a, [wcd42]
 	inc a
 	ld e, a
-	ld d, $0
+	ld d, 0
 	add hl, de
 	ld de, PokemonMenuEntries ; $77c2
 	jp PlaceString
@@ -2818,81 +2818,81 @@ CyclingIsFunText: ; cdff (3:4dff)
 ; [wcf96] = item quantity
 ; sets carry flag if successful, unsets carry flag if unsuccessful
 AddItemToInventory_: ; ce04 (3:4e04)
-	ld a,[wcf96] ; a = item quantity
+	ld a, [wcf96] ; a = item quantity
 	push af
 	push bc
 	push de
 	push hl
 	push hl
-	ld d,50 ; PC box can hold 50 items
-	ld a,wNumBagItems & $FF
+	ld d, 50 ; PC box can hold 50 items
+	ld a, wNumBagItems & $FF
 	cp l
-	jr nz,.checkIfInventoryFull
-	ld a,wNumBagItems >> 8
+	jr nz, .checkIfInventoryFull
+	ld a, wNumBagItems >> 8
 	cp h
-	jr nz,.checkIfInventoryFull
+	jr nz, .checkIfInventoryFull
 ; if the destination is the bag
-	ld d,20 ; bag can hold 20 items
+	ld d, 20 ; bag can hold 20 items
 .checkIfInventoryFull
-	ld a,[hl]
+	ld a, [hl]
 	sub d
-	ld d,a
-	ld a,[hli]
+	ld d, a
+	ld a, [hli]
 	and a
-	jr z,.addNewItem
+	jr z, .addNewItem
 .loop
-	ld a,[hli]
-	ld b,a ; b = ID of current item in table
-	ld a,[wcf91] ; a = ID of item being added
+	ld a, [hli]
+	ld b, a ; b = ID of current item in table
+	ld a, [wcf91] ; a = ID of item being added
 	cp b ; does the current item in the table match the item being added?
-	jp z,.increaseItemQuantity ; if so, increase the item's quantity
+	jp z, .increaseItemQuantity ; if so, increase the item's quantity
 	inc hl
-	ld a,[hl]
-	cp a,$ff ; is it the end of the table?
-	jr nz,.loop
+	ld a, [hl]
+	cp a, $ff ; is it the end of the table?
+	jr nz, .loop
 .addNewItem ; add an item not yet in the inventory
 	pop hl
-	ld a,d
+	ld a, d
 	and a ; is there room for a new item slot?
-	jr z,.done
+	jr z, .done
 ; if there is room
 	inc [hl] ; increment the number of items in the inventory
-	ld a,[hl] ; the number of items will be the index of the new item
+	ld a, [hl] ; the number of items will be the index of the new item
 	add a
 	dec a
-	ld c,a
-	ld b,0
-	add hl,bc ; hl = address to store the item
-	ld a,[wcf91]
-	ld [hli],a ; store item ID
-	ld a,[wcf96]
-	ld [hli],a ; store item quantity
-	ld [hl],$ff ; store terminator
+	ld c, a
+	ld b, 0
+	add hl, bc ; hl = address to store the item
+	ld a, [wcf91]
+	ld [hli], a ; store item ID
+	ld a, [wcf96]
+	ld [hli], a ; store item quantity
+	ld [hl], $ff ; store terminator
 	jp .success
 .increaseItemQuantity ; increase the quantity of an item already in the inventory
-	ld a,[wcf96]
-	ld b,a ; b = quantity to add
-	ld a,[hl] ; a = existing item quantity
+	ld a, [wcf96]
+	ld b, a ; b = quantity to add
+	ld a, [hl] ; a = existing item quantity
 	add b ; a = new item quantity
-	cp a,100
-	jp c,.storeNewQuantity ; if the new quantity is less than 100, store it
+	cp a, 100
+	jp c, .storeNewQuantity ; if the new quantity is less than 100, store it
 ; if the new quantity is greater than or equal to 100,
 ; try to max out the current slot and add the rest in a new slot
-	sub a,99
-	ld [wcf96],a ; a = amount left over (to put in the new slot)
-	ld a,d
+	sub a, 99
+	ld [wcf96], a ; a = amount left over (to put in the new slot)
+	ld a, d
 	and a ; is there room for a new item slot?
-	jr z,.increaseItemQuantityFailed
+	jr z, .increaseItemQuantityFailed
 ; if so, store 99 in the current slot and store the rest in a new slot
-	ld a,99
-	ld [hli],a
+	ld a, 99
+	ld [hli], a
 	jp .loop
 .increaseItemQuantityFailed
 	pop hl
 	and a
 	jr .done
 .storeNewQuantity
-	ld [hl],a
+	ld [hl], a
 	pop hl
 .success
     call SetBallFlagIfGivenBall
@@ -2902,12 +2902,12 @@ AddItemToInventory_: ; ce04 (3:4e04)
 	pop de
 	pop bc
 	pop bc
-	ld a,b
-	ld [wcf96],a ; restore the initial value from when the function was called
+	ld a, b
+	ld [wcf96], a ; restore the initial value from when the function was called
 	ret
 
 SetBallFlagIfGivenBall:
-	ld a,[wcf91]
+	ld a, [wcf91]
     cp POKE_BALL
     jr z, .ball
     cp GREAT_BALL
@@ -2932,49 +2932,49 @@ SetBallFlagIfGivenBall:
 RemoveItemFromInventory_: ; ce74 (3:4e74)
 	push hl
 	inc hl
-	ld a,[wWhichPokemon] ; index (within the inventory) of the item being removed
+	ld a, [wWhichPokemon] ; index (within the inventory) of the item being removed
 	sla a
 	add l
-	ld l,a
-	jr nc,.noCarry
+	ld l, a
+	jr nc, .noCarry
 	inc h
 .noCarry
 	inc hl
-	ld a,[wcf96] ; quantity being removed
-	ld e,a
-	ld a,[hl] ; a = current quantity
+	ld a, [wcf96] ; quantity being removed
+	ld e, a
+	ld a, [hl] ; a = current quantity
 	sub e
-	ld [hld],a ; store new quantity
-	ld [wcf97],a
+	ld [hld], a ; store new quantity
+	ld [wcf97], a
 	and a
-	jr nz,.skipMovingUpSlots
+	jr nz, .skipMovingUpSlots
 ; if the remaining quantity is 0,
 ; remove the emptied item slot and move up all the following item slots
 .moveSlotsUp
-	ld e,l
-	ld d,h
+	ld e, l
+	ld d, h
 	inc de
 	inc de ; de = address of the slot following the emptied one
 .loop ; loop to move up the following slots
-	ld a,[de]
+	ld a, [de]
 	inc de
-	ld [hli],a
-	cp a,$ff
-	jr nz,.loop
+	ld [hli], a
+	cp a, $ff
+	jr nz, .loop
 ; update menu info
 	xor a
-	ld [wListScrollOffset],a
-	ld [wCurrentMenuItem],a
-	ld [wcc2c],a
-	ld [wd07e],a
+	ld [wListScrollOffset], a
+	ld [wCurrentMenuItem], a
+	ld [wcc2c], a
+	ld [wd07e], a
 	pop hl
-	ld a,[hl] ; a = number of items in inventory
+	ld a, [hl] ; a = number of items in inventory
 	dec a ; decrement the number of items
-	ld [hl],a ; store new number of items
-	ld [wd12a],a
-	cp a,2
-	jr c,.done
-	ld [wMaxMenuItem],a
+	ld [hl], a ; store new number of items
+	ld [wd12a], a
+	cp a, 2
+	jr c, .done
+	ld [wMaxMenuItem], a
 	jr .done
 .skipMovingUpSlots
 	pop hl
@@ -2984,35 +2984,35 @@ RemoveItemFromInventory_: ; ce74 (3:4e74)
 ; wild pokemon data: from 4EB8 to 55C7
 
 LoadWildData: ; ceb8 (3:4eb8)
-	ld hl,WildDataPointers
-	ld a,[W_CURMAP]
+	ld hl, WildDataPointers
+	ld a, [W_CURMAP]
 
 	; get wild data for current map
-	ld c,a
-	ld b,0
-	add hl,bc
-	add hl,bc
-	ld a,[hli]
-	ld h,[hl]
-	ld l,a       ; hl now points to wild data for current map
-	ld a,[hli]
-	ld [W_GRASSRATE],a
+	ld c, a
+	ld b, 0
+	add hl, bc
+	add hl, bc
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a       ; hl now points to wild data for current map
+	ld a, [hli]
+	ld [W_GRASSRATE], a
 	and a
-	jr z,.NoGrassData ; if no grass data, skip to surfing data
+	jr z, .NoGrassData ; if no grass data, skip to surfing data
 	push hl
-	ld de,W_GRASSMONS ; otherwise, load grass data
-	ld bc,$0014
+	ld de, W_GRASSMONS ; otherwise, load grass data
+	ld bc, $0014
 	call CopyData
 	pop hl
-	ld bc,$0014
-	add hl,bc
+	ld bc, $0014
+	add hl, bc
 .NoGrassData
-	ld a,[hli]
-	ld [W_WATERRATE],a
+	ld a, [hli]
+	ld [W_WATERRATE], a
 	and a
 	ret z        ; if no water data, we're done
-	ld de,W_WATERMONS  ; otherwise, load surfing data
-	ld bc,$0014
+	ld de, W_WATERMONS  ; otherwise, load surfing data
+	ld bc, $0014
 	jp CopyData
 
 INCLUDE "data/wild_mons.asm"
@@ -6764,15 +6764,15 @@ DisplayPlayerBlackedOutText_::
 	jr z, .gameover
     
 .notnuzlocke
-	ld hl,PlayerBlackedOutText
+	ld hl, PlayerBlackedOutText
 	call PrintText
-	ld a,[wd732]
-	res 5,a ; reset forced to use bike bit
-	ld [wd732],a
+	ld a, [wd732]
+	res 5, a ; reset forced to use bike bit
+	ld [wd732], a
 	ret
 
 .gameover
-	ld hl,PlayerBlackedOutTextGameOverOW
+	ld hl, PlayerBlackedOutTextGameOverOW
 	call PrintText
 	jr @
 	
