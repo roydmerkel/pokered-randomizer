@@ -88,14 +88,14 @@ RedrawPartyMenu_: ; 12ce3 (4:6ce3)
 	pop hl
 	push hl
 	ld bc, 20 + 1 ; down 1 row and right 1 column
-	ldh a, [$FFF6]
+	ldh a, [hUILayoutFlags]
 	set 0, a
-	ldh [$FFF6], a
+	ldh [hUILayoutFlags], a
 	add hl, bc
 	predef Func_128f6 ; draw HP bar and prints current / max HP
-	ldh a, [$FFF6]
+	ldh a, [hUILayoutFlags]
 	res 0, a
-	ldh [$FFF6], a
+	ldh [hUILayoutFlags], a
 	call SetPartyMenuHealthBarColor ; color the HP bar (on SGB)
 	pop hl
 	jr .printLevel

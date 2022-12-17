@@ -2636,13 +2636,13 @@ MoveSelectionMenu: ; 3d219 (f:5219)
 
 .writemoves
 	ld de, wd0e1
-	ldh a, [$fff6]
+	ldh a, [hUILayoutFlags]
 	set 2, a
-	ldh [$fff6], a
+	ldh [hUILayoutFlags], a
 	call PlaceString
-	ldh a, [$fff6]
+	ldh a, [hUILayoutFlags]
 	res 2, a
-	ldh [$fff6], a
+	ldh [hUILayoutFlags], a
 	ret
 
 .regularmenu
@@ -2760,10 +2760,10 @@ Func_3d2fe: ; 3d2fe (f:52fe)
 	call AddNTimes
 	ld [hl], $ec
 .select
-	ld hl, $fff6
+	ld hl, hUILayoutFlags
 	set 1, [hl]
 	call HandleMenuInput
-	ld hl, $fff6
+	ld hl, hUILayoutFlags
 	res 1, [hl]
 	bit 6, a
 	jp nz, Func_3d3c9 ; up

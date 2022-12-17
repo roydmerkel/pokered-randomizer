@@ -395,5 +395,14 @@ hSavedMapTextPtr EQU $FFEC ; 2 bytes
 
 hWhoseTurn EQU $FFF3 ; 0 on player’s turn, 1 on enemy’s turn
 
+hClearLetterPrintingDelayFlags EQU $FFF4
+
+; FFF5 unused
+
+
+
+
+hUILayoutFlags EQU $FFF6
+
 hJoyInput EQU $FFF8
 

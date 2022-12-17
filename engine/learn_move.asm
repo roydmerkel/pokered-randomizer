@@ -86,13 +86,13 @@ AbandonLearning: ; 6eda (1:6eda)
 	jp nz, DontAbandonLearning
 	ld hl, DidNotLearnText
 	call PrintText
-	ld b, $0
+	ld b, 0
 	ret
 
 PrintLearnedMove: ; 6efe (1:6efe)
 	ld hl, LearnedMove1Text
 	call PrintText
-	ld b, $1
+	ld b, 1
 	ret
 
 TryingToLearn: ; 6f07 (1:6f07)
@@ -121,22 +121,22 @@ TryingToLearn: ; 6f07 (1:6f07)
 	ld hl, WhichMoveToForgetText
 	call PrintText
 	hlCoord 4, 7
-	ld b, $4
-	ld c, $e
+	ld b, 4
+	ld c, 14
 	call TextBoxBorder
 	hlCoord 6, 8
 	ld de, wd0e1
-	ldh a, [$fff6]
+	ldh a, [hUILayoutFlags]
 	set 2, a
-	ldh [$fff6], a
+	ldh [hUILayoutFlags], a
 	call PlaceString
-	ldh a, [$fff6]
+	ldh a, [hUILayoutFlags]
 	res 2, a
-	ldh [$fff6], a
+	ldh [hUILayoutFlags], a
 	ld hl, wTopMenuItemY ; wTopMenuItemY
-	ld a, $8
+	ld a, 8
 	ld [hli], a
-	ld a, $5
+	ld a, 5
 	ld [hli], a
 	xor a
 	ld [hli], a
@@ -145,11 +145,11 @@ TryingToLearn: ; 6f07 (1:6f07)
 	ld [hli], a
 	ld a, $3
 	ld [hli], a
-	ld [hl], $0
-	ld hl, $fff6
+	ld [hl], 0
+	ld hl, hUILayoutFlags
 	set 1, [hl]
 	call HandleMenuInput
-	ld hl, $fff6
+	ld hl, hUILayoutFlags
 	res 1, [hl]
 	push af
 	call LoadScreenTilesFromBuffer1
@@ -160,7 +160,7 @@ TryingToLearn: ; 6f07 (1:6f07)
 	push hl
 	ld a, [wCurrentMenuItem] ; wCurrentMenuItem
 	ld c, a
-	ld b, $0
+	ld b, 0
 	add hl, bc
 	ld a, [hl]
 	push af

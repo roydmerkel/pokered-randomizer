@@ -23,7 +23,7 @@ LoadSAV: ; 735e8 (1c:75e8)
 	set 6, [hl]
 	ld hl, FileDataDestroyedText
 	call PrintText
-	ld c, $64
+	ld c, 100
 	call DelayFrames
 	pop hl
 	res 6, [hl]
@@ -128,35 +128,35 @@ Func_73701: ; 0x73701
 
 SaveSAV: ;$770a
 	callba PrintSaveScreenText
-	ld hl,WouldYouLikeToSaveText
+	ld hl, WouldYouLikeToSaveText
 	call SaveSAVConfirm
 	and a   ;|0 = Yes|1 = No|
 	ret nz
-	ld a,[wd088]
+	ld a, [wd088]
 	dec a
-	jr z,.save
+	jr z, .save
 	call SAVCheckRandomID
-	jr z,.save
-	ld hl,OlderFileWillBeErasedText
+	jr z, .save
+	ld hl, OlderFileWillBeErasedText
 	call SaveSAVConfirm
 	and a
 	ret nz
 .save        ;$772d
 	call SaveSAVtoSRAM      ;$7848
 	hlCoord 1, 13
-	ld bc,$0412
+	ld bc, $0412
 	call ClearScreenArea ; clear area 4x12 starting at 13,1
 	hlCoord 1, 14
-	ld de,NowSavingString
+	ld de, NowSavingString
 	call PlaceString
-	ld c,$78
+	ld c, 120
 	call DelayFrames
-	ld hl,GameSavedText
+	ld hl, GameSavedText
 	call PrintText
 	ld a, RBSFX_02_5d ;sound for saved game
 	call PlaySoundWaitForCurrent
 	call WaitForSoundToFinish
-	ld c,$1e
+	ld c, 30
 	jp DelayFrames
 
 NowSavingString:
@@ -165,11 +165,11 @@ NowSavingString:
 SaveSAVConfirm: ; 73768 (1c:7768)
 	call PrintText
 	hlCoord 0, 7
-	ld bc,$0801     ;arrow's coordinates |b = Y|c = X|
-	ld a,$14        ;one line shifting ($28 = 2 lines)
-	ld [wd125],a
+	ld bc, $0801     ;arrow's coordinates |b = Y|c = X|
+	ld a, $14        ;one line shifting ($28 = 2 lines)
+	ld [wd125], a
 	call DisplayTextBoxID      ;handle Yes/No KeyPress
-	ld a,[wCurrentMenuItem]
+	ld a, [wCurrentMenuItem]
 	ret
 
 WouldYouLikeToSaveText: ; 0x7377d
@@ -296,7 +296,7 @@ SaveSAVtoSRAM: ; 73848 (1c:7848)
 
 SAVCheckSum: ; 73856 (1c:7856)
 ;Check Sum (result[1 byte] is complemented)
-	ld d, $0
+	ld d, 0
 .loop
 	ld a, [hli]
 	add d
@@ -331,13 +331,13 @@ Func_7387b: ; 7387b (1c:787b)
 	ld a, [wd5a0]
 	and $7f
 	cp $6
-	ld b, $2
+	ld b, 2
 	jr c, .asm_7388c
 	inc b
 	sub $6
 .asm_7388c
 	ld e, a
-	ld d, $0
+	ld d, 0
 	add hl, de
 	add hl, de
 	ld a, [hli]
@@ -365,10 +365,10 @@ ChangeBox:: ; 738a1 (1c:78a1)
 	call z, Func_73a29
 	call Func_7393f
 	call UpdateSprites
-	ld hl, $fff6
+	ld hl, hUILayoutFlags
 	set 1, [hl]
 	call HandleMenuInput
-	ld hl, $fff6
+	ld hl, hUILayoutFlags
 	res 1, [hl]
 	bit 1, a
 	ret nz
@@ -439,11 +439,11 @@ Func_7393f: ; 7393f (1c:793f)
 	ldh [hAutoBGTransferEnabled], a ; $ffba
 	ld a, $3
 	ld [wMenuWatchedKeys], a ; wMenuWatchedKeys
-	ld a, $b
+	ld a, 11
 	ld [wMaxMenuItem], a ; wMaxMenuItem
-	ld a, $1
+	ld a, 1
 	ld [wTopMenuItemY], a ; wTopMenuItemY
-	ld a, $c
+	ld a, 12
 	ld [wTopMenuItemX], a ; wTopMenuItemX
 	xor a
 	ld [wcc37], a
@@ -452,21 +452,21 @@ Func_7393f: ; 7393f (1c:793f)
 	ld [wCurrentMenuItem], a ; wCurrentMenuItem
 	ld [wLastMenuItem], a ; wLastMenuItem
 	ld hl, wTileMap
-	ld b, $2
-	ld c, $9
+	ld b, 2
+	ld c, 9
 	call TextBoxBorder
 	ld hl, ChooseABoxText
 	call PrintText
 	hlCoord 11, 0
-	ld b, $c
-	ld c, $7
+	ld b, 12
+	ld c, 7
 	call TextBoxBorder
-	ld hl, $fff6
+	ld hl, hUILayoutFlags
 	set 2, [hl]
 	ld de, BoxNames ; $79d9
 	hlCoord 13, 1
 	call PlaceString
-	ld hl, $fff6
+	ld hl, hUILayoutFlags
 	res 2, [hl]
 	ld a, [wd5a0]
 	and $7f
@@ -501,7 +501,7 @@ Func_7393f: ; 7393f (1c:793f)
 	pop af
 	dec a
 	jr nz, .asm_739c2
-	ld a, $1
+	ld a, 1
 	ldh [hAutoBGTransferEnabled], a ; $ffba
 	ret
 
@@ -534,10 +534,10 @@ Func_73a29: ; 73a29 (1c:7a29)
 	ld [MBC1SRamEnable], a
 	ld a, $1
 	ld [MBC1SRamBankingMode], a
-	ld a, $2
+	ld a, 2
 	ld [MBC1SRamBank], a
 	call Func_73a4b
-	ld a, $3
+	ld a, 3
 	ld [MBC1SRamBank], a
 	call Func_73a4b
 	xor a
@@ -598,7 +598,7 @@ Func_73a84: ; 73a84 (1c:7a84)
 	ld a, [wd5a0]
 	and $7f
 	ld c, a
-	ld b, $0
+	ld b, 0
 	add hl, bc
 	ld a, [W_NUMINBOX] ; wda80
 	ld [hl], a
@@ -629,34 +629,34 @@ SAVCheckRandomID: ;$7ad1
 	ld a, 1
 	ld [wHaltAudio], a
 	
-	ld a,$0a
-	ld [$0000],a
-	ld a,$01
-	ld [MBC1SRamBankingMode],a
-	ld [MBC1SRamBank],a
-	ld a,[$a598]
+	ld a, $0a
+	ld [$0000], a
+	ld a, $01
+	ld [MBC1SRamBankingMode], a
+	ld [MBC1SRamBank], a
+	ld a, [$a598]
 	and a
-	jr z,.next
-	ld hl,$a598
-	ld bc,$0f8b
+	jr z, .next
+	ld hl, $a598
+	ld bc, $0f8b
 	call SAVCheckSum
-	ld c,a
-	ld a,[$b523]
+	ld c, a
+	ld a, [$b523]
 	cp c
-	jr nz,.next
-	ld hl,$a605
-	ld a,[hli]
-	ld h,[hl]
-	ld l,a
-	ld a,[wPlayerID]
+	jr nz, .next
+	ld hl, $a605
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, [wPlayerID]
 	cp l
-	jr nz,.next
-	ld a,[wPlayerID + 1]
+	jr nz, .next
+	ld a, [wPlayerID + 1]
 	cp h
 .next
-	ld a,$00
-	ld [MBC1SRamBankingMode],a
-	ld [$0000],a
+	ld a, $00
+	ld [MBC1SRamBankingMode], a
+	ld [$0000], a
 	
 	xor a
 	ld [wHaltAudio], a

@@ -4132,7 +4132,7 @@ PlaceMenuCursor:: ; 3b7c (0:3b7c)
 	and a ; was the previous menu id 0?
 	jr z, .checkForArrow1
 	push af
-	ldh a, [$fff6]
+	ldh a, [hUILayoutFlags]
 	bit 1, a ; is the menu double spaced?
 	jr z, .doubleSpaced1
 	ld bc, 20
@@ -4158,7 +4158,7 @@ PlaceMenuCursor:: ; 3b7c (0:3b7c)
 	and a
 	jr z, .checkForArrow2
 	push af
-	ldh a, [$fff6]
+	ldh a, [hUILayoutFlags]
 	bit 1, a ; is the menu double spaced?
 	jr z, .doubleSpaced2
 	ld bc, 20

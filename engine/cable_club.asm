@@ -329,10 +329,10 @@ TradeCenter_SelectMon:
 	ld a, 1
 	ld [wTopMenuItemX], a
 .asm_5574
-	ld hl, $fff6
+	ld hl, hUILayoutFlags
 	set 1, [hl]
 	call HandleMenuInput
-	ld hl, $fff6
+	ld hl, hUILayoutFlags
 	res 1, [hl]
 	and a
 	jp z, .asm_565b
@@ -392,10 +392,10 @@ TradeCenter_SelectMon:
 	ld bc, $0601
 	call ClearScreenArea
 .asm_5601
-	ld hl, $fff6
+	ld hl, hUILayoutFlags
 	set 1, [hl]
 	call HandleMenuInput
-	ld hl, $fff6
+	ld hl, hUILayoutFlags
 	res 1, [hl]
 	and a
 	jr nz, .asm_5614 ; 0x560f $3

@@ -62,7 +62,7 @@ PlaceNextChar:: ; 1956 (0:1956)
 	cp $4E
 	jr nz, .next
 	ld bc, $0028
-	ldh a, [$FFF6]
+	ldh a, [hUILayoutFlags]
 	bit 2, a
 	jr z, .next2
 	ld bc, $14
@@ -308,7 +308,7 @@ Char49:: ; 1ad5 (0:1ad5)
 	hlCoord 1, 10
 	ld bc, $0712
 	call ClearScreenArea
-	ld c, $14
+	ld c, 20
 	call DelayFrames
 	pop de
 	pop hl
