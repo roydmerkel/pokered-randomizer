@@ -372,7 +372,7 @@ TextCommandProcessor:: ; 1b40 (0:1b40)
 	push af
 	set 1, a
 	ld e, a
-	ldh a, [$fff4]
+	ldh a, [hClearLetterPrintingDelayFlags]
 	xor e
 	ld [wd358], a
 	ld a, c

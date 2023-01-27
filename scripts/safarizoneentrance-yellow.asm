@@ -142,12 +142,12 @@ SafariZoneEntranceAutoWalk:
 	ld bc, 3
 	call $b1 ; yellow $00b1
 	xor a
-	ldh [$ffa2], a
-	ldh [$ffa3], a
+	ldh [hDivideBCDQuotient], a
+	ldh [hDivideBCDQuotient + 1], a
 	ld a, $17 ; ¥17 per safari ball
-	ldh [$ffa4], a
+	ldh [hDivideBCDQuotient + 2], a
 	predef DivideBCDPredef3
-	ldh a, [$ffa4]
+	ldh a, [hDivideBCDQuotient + 2]
 	call .xf211e
 	pop af
 	ld hl, $d346

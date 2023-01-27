@@ -74,7 +74,7 @@ ViridianCityScript1: ; 19062 (6:5062)
 	ld a, [wSpriteStateData2 + $34]
 	ldh [hSpriteMapYCoord], a
 	ld a, [wSpriteStateData2 + $35]
-	ldh [$ffee], a
+	ldh [hSpriteMapXCoord], a
 	xor a
 	ld [wListScrollOffset], a
 
@@ -96,7 +96,7 @@ ViridianCityScript2: ; 1908f (6:508f)
 	ld [wSpriteStateData1 + $36], a
 	ldh a, [hSpriteMapYCoord]
 	ld [wSpriteStateData2 + $34], a
-	ldh a, [$ffee]
+	ldh a, [hSpriteMapXCoord]
 	ld [wSpriteStateData2 + $35], a
 	call UpdateSprites
 	call Delay3

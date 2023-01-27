@@ -549,10 +549,10 @@ ShowPokedexDataInternal: ; 402e2 (10:42e2)
 	inc hl ; hl = address of pokedex description text
 	bcCoord 1, 11
 	ld a, 2
-	ldh [$fff4], a
+	ldh [hClearLetterPrintingDelayFlags], a
 	call TextCommandProcessor ; print pokedex description text
 	xor a
-	ldh [$fff4], a
+	ldh [hClearLetterPrintingDelayFlags], a
 .waitForButtonPress
 	call JoypadLowSensitivity
 	ldh a, [hJoy5]

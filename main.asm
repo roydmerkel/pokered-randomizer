@@ -632,7 +632,7 @@ LoadSpecialWarpData: ; 62ff (1:62ff)
 	cp BATTLE_CENTER
 	jr nz, .notBattleCenter
 	ld hl, BattleCenterSpec1
-	ldh a, [$ffaa]
+	ldh a, [hSerialConnectionStatus]
 	cp $2
 	jr z, .copyWarpData
 	ld hl, BattleCenterSpec2
