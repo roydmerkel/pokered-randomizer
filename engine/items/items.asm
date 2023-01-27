@@ -896,7 +896,7 @@ ItemUseMedicine: ; dabb (3:5abb)
 .notFullHP ; if the pokemon's current HP doesn't equal its max HP
 	xor a
 	ld [wDanger], a
-	ld [wc02a], a
+	ld [wChannelSoundIDs + CHAN5], a
 	push hl
 	push de
 	ld bc, 32
@@ -1688,7 +1688,7 @@ ItemUsePokeflute: ; e140 (3:6140)
 	call WaitForSoundToFinish ; wait for sound to end
 	;callba Music_PokeFluteInBattle ; play in-battle pokeflute music ; XXX
 .musicWaitLoop ; wait for music to finish playing
-	ld a, [wc02c]
+	ld a, [wChannelSoundIDs + CHAN7]
 	and a ; music off?
 	jr nz, .musicWaitLoop
 .skipMusic

@@ -46,7 +46,7 @@ EndOfBattle: ; 137aa (4:77aa)
 .resetVariables
 	xor a
 	ld [wDanger], a
-	ld [wc02a], a
+	ld [wChannelSoundIDs + CHAN5], a
 	ld [W_ISINBATTLE], a
 	ld [W_BATTLETYPE], a
 	ld [W_MOVEMISSED], a

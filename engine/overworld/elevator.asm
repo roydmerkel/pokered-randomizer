@@ -34,7 +34,7 @@ ShakeElevator: ; 7bf15 (1e:7f15)
 	ld a, RBSFX_02_5f
 	call PlaySound
 .asm_7bf57
-	ld a, [wc02a]
+	ld a, [wChannelSoundIDs + CHAN5]
 	cp $b9
 	jr z, .asm_7bf57
 	call UpdateSprites

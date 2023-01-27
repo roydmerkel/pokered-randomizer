@@ -893,7 +893,7 @@ FaintEnemyPokemon ; 0x3c567
 	ld a, RBSFX_08_48 ; SFX_FALL?
 	call PlaySoundWaitForCurrent
 .sfxwait
-	ld a, [wc02a]
+	ld a, [wChannelSoundIDs + CHAN5]
 	cp RBSFX_08_48
 	jr z, .sfxwait
 	ld a, RBSFX_08_43 ; SFX_DROP
@@ -979,7 +979,7 @@ EnemyMonFaintedText: ; 0x3c63e
 Func_3c643: ; 3c643 (f:4643)
 	xor a
 	ld [wDanger], a
-	ld [wc02a], a
+	ld [wChannelSoundIDs + CHAN5], a
 	inc a
 	ld [wccf6], a
 	ret
@@ -2034,7 +2034,7 @@ DrawPlayerHUDAndHPBar: ; 3cd60 (f:4d60)
 	ld [hl], $0
 	ret z
 	xor a
-	ld [wc02a], a
+	ld [wChannelSoundIDs + CHAN5], a
 	ret
 .asm_3cde6
 	ld hl, wDanger

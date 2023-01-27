@@ -62,65 +62,65 @@ ENDM
 SECTION "WRAM Bank 0", WRAM0
 
 wUnusedC000:: ds 1
+
 wSoundID:: ds 1
+
 wMuteAudioAndPauseMusic:: ds 1
+
 wDisableChannelOutputWhenSfxEnds:: ds 1
+
 wStereoPanning:: ds 1
+
 wSavedVolume:: ds 1
-wChannelCommandPointers:: ds 8
-wc00e:: ds 4
-wc012:: ds 4
-wChannelReturnAddresses:: ds 16
-wChannelSoundIDs:: ds 1
-wc027:: ds 1
-wc028:: ds 2
-wc02a:: ds 1
-wc02b:: ds 1
-wc02c:: ds 1
-wc02d:: ds 1
-wChannelFlags1:: ds 8
-wChannelFlags2:: ds 8
-wChannelDutyCycles:: ds 8
-wChannelDutyCyclePatterns:: ds 8
-wChannelVibratoDelayCounters:: ds 8
-wChannelVibratoExtents:: ds 8
-wChannelVibratoRates:: ds 8
-wChannelFrequencyLowBytes:: ds 8
-wChannelVibratoDelayCounterReloadValues:: ds 8
-wChannelPitchSlideLengthModifiers:: ds 8
-wChannelPitchSlideFrequencySteps:: ds 8
-wChannelPitchSlideFrequencyStepsFractionalPart:: ds 8
-wChannelPitchSlideCurrentFrequencyFractionalPart:: ds 8
-wChannelPitchSlideCurrentFrequencyHighBytes:: ds 8
-wChannelPitchSlideCurrentFrequencyLowBytes:: ds 8
-wChannelPitchSlideTargetFrequencyHighBytes:: ds 8
-wChannelPitchSlideTargetFrequencyLowBytes:: ds 8
-wChannelNoteDelayCounters:: ds 8
-wChannelLoopCounters:: ds 8
-wChannelNoteSpeeds:: ds 8
-wChannelNoteDelayCountersFractionalPart:: ds 1
-wc0cf:: ds 1
-wc0d0:: ds 1
-wc0d1:: ds 1
-wc0d2:: ds 1
-wc0d3:: ds 1
-wc0d4:: ds 1
-wc0d5:: ds 1
-wChannelOctaves:: ds 8
-wChannelVolumes:: ds 8
+
+wChannelCommandPointers:: ds NUM_CHANNELS * 2
+wChannelReturnAddresses:: ds NUM_CHANNELS * 2
+
+wChannelSoundIDs:: ds NUM_CHANNELS
+
+wChannelFlags1:: ds NUM_CHANNELS
+wChannelFlags2:: ds NUM_CHANNELS
+
+wChannelDutyCycles:: ds NUM_CHANNELS
+wChannelDutyCyclePatterns:: ds NUM_CHANNELS
+
+wChannelVibratoDelayCounters:: ds NUM_CHANNELS
+wChannelVibratoExtents:: ds NUM_CHANNELS
+wChannelVibratoRates:: ds NUM_CHANNELS
+wChannelFrequencyLowBytes:: ds NUM_CHANNELS
+wChannelVibratoDelayCounterReloadValues:: ds NUM_CHANNELS
+
+wChannelPitchSlideLengthModifiers:: ds NUM_CHANNELS
+wChannelPitchSlideFrequencySteps:: ds NUM_CHANNELS
+wChannelPitchSlideFrequencyStepsFractionalPart:: ds NUM_CHANNELS
+wChannelPitchSlideCurrentFrequencyFractionalPart:: ds NUM_CHANNELS
+wChannelPitchSlideCurrentFrequencyHighBytes:: ds NUM_CHANNELS
+wChannelPitchSlideCurrentFrequencyLowBytes:: ds NUM_CHANNELS
+wChannelPitchSlideTargetFrequencyHighBytes:: ds NUM_CHANNELS
+wChannelPitchSlideTargetFrequencyLowBytes:: ds NUM_CHANNELS
+
+wChannelNoteDelayCounters:: ds NUM_CHANNELS
+wChannelLoopCounters:: ds NUM_CHANNELS
+wChannelNoteSpeeds:: ds NUM_CHANNELS
+wChannelNoteDelayCountersFractionalPart:: ds NUM_CHANNELS
+
+wChannelOctaves:: ds NUM_CHANNELS
+wChannelVolumes:: ds NUM_CHANNELS
+
 wMusicWaveInstrument:: ds 1
 wSfxWaveInstrument:: ds 1
-wMusicTempo:: ds 1
-wc0e9:: ds 1
-wSfxTempo:: ds 1
-wc0eb:: ds 1
-wSfxHeaderPointer:: ds 1
-wc0ed:: ds 1
+wMusicTempo:: ds 2
+wSfxTempo:: ds 2
+wSfxHeaderPointer:: ds 2
+
 wNewSoundID:: ds 1
+
 wAudioROMBank:: ds 1
 wAudioSavedROMBank:: ds 1
 wFrequencyModifier:: ds 1
-wTempoModifier:: ds 10 ;14
+wTempoModifier:: ds 1
+
+	ds 9 ;14
 
 wHaltAudio:: ds 1
 wSFXDontWait:: ds 1

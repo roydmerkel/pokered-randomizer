@@ -1945,7 +1945,7 @@ CollisionCheckOnWater:: ; 0fb7 (0:0fb7)
 	jr z, .stopSurfing ; stop surfing if the tile is passable
 	jr .loop
 .collision
-	ld a, [wc02a]
+	ld a, [wChannelSoundIDs + CHAN5]
 	cp a, RBSFX_02_5b ; check if collision sound is already playing
 	jr z, .setCarry
 	ld a, RBSFX_02_5b

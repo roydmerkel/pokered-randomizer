@@ -8,7 +8,7 @@ Func_7bde9: ; 7bde9 (1e:7de9)
 	push af
 	xor a
 	ld [wDanger], a
-	ld [wc02a], a
+	ld [wChannelSoundIDs + CHAN5], a
 	dec a
 	ld [wNewSoundID], a
 	call PlaySound

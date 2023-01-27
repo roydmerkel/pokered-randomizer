@@ -54,7 +54,7 @@ Music2_ApplyMusicAffects: ; 0x9138
 	ld a, c
 	cp CHAN5
 	jr nc, .startChecks ; if a sfx channel
-	ld hl, wc02a
+	ld hl, wChannelSoundIDs + CHAN5
 	add hl, bc
 	ld a, [hl]
 	and a
@@ -224,12 +224,12 @@ Music2_endchannel: ; 0x91e6
 	and [hl]
 	ldh [rNR51], a
 .asm_9248
-	ld a, [wc02a]
+	ld a, [wChannelSoundIDs + CHAN5]
 	cp CRY_SFX_START
 	jr nc, .asm_9251
 	jr .asm_926e
 .asm_9251
-	ld a, [wc02a]
+	ld a, [wChannelSoundIDs + CHAN5]
 	cp CRY_SFX_END
 	jr z, .asm_926e
 	jr c, .asm_925c
@@ -469,23 +469,23 @@ Music2_tempo: ; 0x93ba
 	call Music2_GetNextMusicByte
 	ld [wMusicTempo], a ; store first param
 	call Music2_GetNextMusicByte
-	ld [wc0e9], a ; store second param
+	ld [wMusicTempo + 1], a ; store second param
 	xor a
 	ld [wChannelNoteDelayCountersFractionalPart], a ; clear RAM
-	ld [wc0cf], a
-	ld [wc0d0], a
-	ld [wc0d1], a
+	ld [wChannelNoteDelayCountersFractionalPart + 1], a
+	ld [wChannelNoteDelayCountersFractionalPart + 2], a
+	ld [wChannelNoteDelayCountersFractionalPart + 3], a
 	jr .musicChannelDone
 .sfxChannel
 	call Music2_GetNextMusicByte
 	ld [wSfxTempo], a ; store first param
 	call Music2_GetNextMusicByte
-	ld [wc0eb], a ; store second param
+	ld [wSfxTempo + 1], a ; store second param
 	xor a
-	ld [wc0d2], a ; clear RAM
-	ld [wc0d3], a
-	ld [wc0d4], a
-	ld [wc0d5], a
+	ld [wChannelNoteDelayCountersFractionalPart + 4], a ; clear RAM
+	ld [wChannelNoteDelayCountersFractionalPart + 5], a
+	ld [wChannelNoteDelayCountersFractionalPart + 6], a
+	ld [wChannelNoteDelayCountersFractionalPart + 7], a
 .musicChannelDone
 	jp Music2_endchannel
 
@@ -507,10 +507,10 @@ Music2_unknownmusic0xef ; 0x9407
 	ld a, [wDisableChannelOutputWhenSfxEnds]
 	and a
 	jr nz, .skip
-	ld a, [wc02d]
+	ld a, [wChannelSoundIDs + CHAN8]
 	ld [wDisableChannelOutputWhenSfxEnds], a
 	xor a
-	ld [wc02d], a
+	ld [wChannelSoundIDs + CHAN8], a
 .skip
 	jp Music2_endchannel
 
@@ -674,7 +674,7 @@ Music2_notelength: ; 0x950a
 	jr nc, .sfxChannel
 	ld a, [wMusicTempo]
 	ld d, a
-	ld a, [wc0e9]
+	ld a, [wMusicTempo + 1]
 	ld e, a
 	jr .skip
 .sfxChannel
@@ -685,7 +685,7 @@ Music2_notelength: ; 0x950a
 	call Func_9693
 	ld a, [wSfxTempo]
 	ld d, a
-	ld a, [wc0eb]
+	ld a, [wSfxTempo + 1]
 	ld e, a
 .skip
 	ld a, l
@@ -722,7 +722,7 @@ Music2_notepitch: ; 0x9568
 	ld a, c
 	cp CHAN5
 	jr nc, .sfxChannel
-	ld hl, wc02a
+	ld hl, wChannelSoundIDs + CHAN5
 	add hl, bc
 	ld a, [hl]
 	and a
@@ -770,7 +770,7 @@ Music2_notepitch: ; 0x9568
 	ld a, c
 	cp CHAN5
 	jr nc, .skip ; if sfx channel
-	ld hl, wc02a
+	ld hl, wChannelSoundIDs + CHAN5
 	ld d, 0
 	ld e, a
 	add hl, de
@@ -819,7 +819,7 @@ Func_95f8: ; 0x95f8
 	jr z, .sfxNoiseChannel
 	cp CHAN5
 	jr nc, .skip ; if sfx channel
-	ld hl, wc02a
+	ld hl, wChannelSoundIDs + CHAN5
 	add hl, bc
 	ld a, [hl]
 	and a
@@ -925,13 +925,13 @@ Func_9693: ; 0x9693
 	jr nc, .asm_96a2
 	inc d
 .asm_96a2
-	ld [wc0eb], a
+	ld [wSfxTempo + 1], a
 	ld a, d
 	ld [wSfxTempo], a
 	jr .asm_96b4
 .asm_96ab
 	xor a
-	ld [wc0eb], a
+	ld [wSfxTempo + 1], a
 	ld a, $1
 	ld [wSfxTempo], a
 .asm_96b4
@@ -977,7 +977,7 @@ Func_96c7: ; 0x96c7
 	ret
 
 Func_96e5: ; 0x96e5
-	ld a, [wc02a]
+	ld a, [wChannelSoundIDs + CHAN5]
 	cp CRY_SFX_START
 	jr nc, .asm_96ee
 	jr .asm_96f4
@@ -1288,7 +1288,7 @@ Func_9876:: ; 0x9876
 	xor a
 	ld [wUnusedC000], a
 	ld [wDisableChannelOutputWhenSfxEnds], a
-	ld [wc0e9], a
+	ld [wMusicTempo + 1], a
 	ld [wMusicWaveInstrument], a
 	ld [wSfxWaveInstrument], a
 	ld d, NUM_CHANNELS
@@ -1369,7 +1369,7 @@ Func_994e: ; 0x994e
 	ld a, h
 	ld [wSfxHeaderPointer], a
 	ld a, l
-	ld [wc0ed], a
+	ld [wSfxHeaderPointer + 1], a
 	ld a, [hl]
 	and $c0
 	rlca
@@ -1384,7 +1384,7 @@ Func_994e: ; 0x994e
 	ld b, 0
 	ld a, [wSfxHeaderPointer]
 	ld h, a
-	ld a, [wc0ed]
+	ld a, [wSfxHeaderPointer + 1]
 	ld l, a
 	add hl, bc
 	ld c, d
@@ -1530,8 +1530,8 @@ Func_9a34: ; 0x9a34
 	ld [wUnusedC000], a
 	ld [wDisableChannelOutputWhenSfxEnds], a
 	ld [wMuteAudioAndPauseMusic], a
-	ld [wc0e9], a
-	ld [wc0eb], a
+	ld [wMusicTempo + 1], a
+	ld [wSfxTempo + 1], a
 	ld [wMusicWaveInstrument], a
 	ld [wSfxWaveInstrument], a
 	ld d, $a0
@@ -1631,12 +1631,12 @@ Func_9a8f: ; 0x9a8f
 	jr c, .asm_9af6
 	jr .asm_9b15
 .asm_9af6
-	ld hl, wc02a
+	ld hl, wChannelSoundIDs + CHAN5
 	ld [hli], a
 	ld [hli], a
 	ld [hli], a
 	ld [hl], a
-	ld hl, wc012 ; sfx noise channel pointer
+	ld hl, wChannelCommandPointers + CHAN7 * 2 ; sfx noise channel pointer
 	ld de, Noise2_endchannel
 	ld [hl], e
 	inc hl
