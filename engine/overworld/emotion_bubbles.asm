@@ -1,7 +1,7 @@
 EmotionBubble: ; 17c47 (5:7c47)
 	ld a, [wcd50]
 	ld c, a
-	ld b, $0
+	ld b, 0
 	ld hl, EmotionBubblesPointerTable ; $7caf
 	add hl, bc
 	add hl, bc
@@ -33,11 +33,11 @@ EmotionBubble: ; 17c47 (5:7c47)
 	ld a, c
 	or b
 	jr nz, .asm_17c7d
-	ld hl, wSpriteStateData1 + 4
+	ld hl, wSpritePlayerStateData1YPixels
 	ld a, [wcd4f]
 	swap a
 	ld c, a
-	ld b, $0
+	ld b, 0
 	add hl, bc
 	ld a, [hli]
 	ld b, a
@@ -48,7 +48,7 @@ EmotionBubble: ; 17c47 (5:7c47)
 	ld de, EmotionBubblesOAM ; $7cb5
 	xor a
 	call WriteOAMBlock
-	ld c, $3c
+	ld c, 60
 	call DelayFrames
 	pop af
 	ld [wUpdateSpritesEnabled], a

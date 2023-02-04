@@ -1,7 +1,7 @@
 EnterMapAnim: ; 70510 (1c:4510)
 	call InitFacingDirectionBuffer
 	ld a, $ec
-	ld [wSpriteStateData1 + 4], a ; player's sprite Y screen position
+	ld [wSpritePlayerStateData1YPixels], a ; player's sprite Y screen position
 	call Delay3
 	push hl
 	call GBFadeInFromWhite
@@ -227,12 +227,12 @@ DoFlyAnimation: ; 706ae (1c:46ae)
 	ld a, [wFlyAnimBirdSpriteImageIndex]
 	xor $1 ; make the bird flap its wings
 	ld [wFlyAnimBirdSpriteImageIndex], a
-	ld [wSpriteStateData1 + 2], a
+	ld [wSpritePlayerStateData1ImageIndex], a
 	call Delay3
 	ld a, [wFlyAnimUsingCoordList]
 	cp $ff
 	jr z, .asm_706cd
-	ld hl, wSpriteStateData1 + 4
+	ld hl, wSpritePlayerStateData1YPixels
 	ld a, [de]
 	inc de
 	ld [hli], a
@@ -258,15 +258,15 @@ LoadBirdSpriteGraphics: ; 706d7 (1c:46d7)
 	jp CopyVideoData
 
 InitFacingDirectionBuffer: ; 706ef (1c:46ef)
-	ld a, [wSpriteStateData1 + 2] ; player's sprite facing direction (image index is locked to standing images)
+	ld a, [wSpritePlayerStateData1ImageIndex] ; player's sprite facing direction (image index is locked to standing images)
 	ld [wcd50], a
-	ld a, [wSpriteStateData1 + 4] ; player's sprite Y screen position
+	ld a, [wSpritePlayerStateData1YPixels] ; player's sprite Y screen position
 	ld [wcd4f], a
 	ld hl, PlayerSpinningFacingOrder
 	ld de, wcd48
-	ld bc, $4
+	ld bc, 4
 	call CopyData
-	ld a, [wSpriteStateData1 + 2] ; player's sprite facing direction (image index is locked to standing images)
+	ld a, [wSpritePlayerStateData1ImageIndex] ; player's sprite facing direction (image index is locked to standing images)
 	ld hl, wcd48
 .loop
 	cp [hl]
@@ -282,7 +282,7 @@ PlayerSpinningFacingOrder: ; 70713 (1c:4713)
 
 SpinPlayerSprite: ; 70717 (1c:4717)
 	ld a, [hl]
-	ld [wSpriteStateData1 + 2], a ; player's sprite facing direction (image index is locked to standing images)
+	ld [wSpritePlayerStateData1ImageIndex], a ; player's sprite facing direction (image index is locked to standing images)
 	push hl
 	ld hl, wcd48
 	ld de, wcd47
@@ -317,9 +317,9 @@ PlayerSpinWhileMovingUpOrDown: ; 70755 (1c:4755)
 	call SpinPlayerSprite
 	ld a, [wPlayerSpinWhileMovingUpOrDownAnimDeltaY]
 	ld c, a
-	ld a, [wSpriteStateData1 + 4] ; player's sprite Y screen position
+	ld a, [wSpritePlayerStateData1YPixels] ; player's sprite Y screen position
 	add c
-	ld [wSpriteStateData1 + 4], a
+	ld [wSpritePlayerStateData1YPixels], a
 	ld c, a
 	ld a, [wPlayerSpinWhileMovingUpOrDownAnimMaxY]
 	cp c
@@ -331,9 +331,9 @@ PlayerSpinWhileMovingUpOrDown: ; 70755 (1c:4755)
 
 RestoreFacingDirectionAndYScreenPos: ; 70772 (1c:4772)
 	ld a, [wcd4f]
-	ld [wSpriteStateData1 + 4], a
+	ld [wSpritePlayerStateData1YPixels], a
 	ld a, [wcd50]
-	ld [wSpriteStateData1 + 2], a
+	ld [wSpritePlayerStateData1ImageIndex], a
 	ret
 
 ; if SGB, 2 frames, else 3 frames
@@ -390,7 +390,7 @@ Func_707b6: ; 707b6 (1c:47b6)
 	ld a, $4
 	ld hl, RedFishingTiles ; $4866
 	call Func_71771
-	ld a, [wSpriteStateData1 + 2]
+	ld a, [wSpritePlayerStateData1ImageIndex]
 	ld c, a
 	ld b, $0
 	ld hl, FishingRodGfxProperties ; $4856
@@ -409,14 +409,14 @@ Func_707b6: ; 707b6 (1c:47b6)
 	jr z, .asm_70836
 	ld b, $a
 .asm_707fe
-	ld hl, wSpriteStateData1 + 4
+	ld hl, wSpritePlayerStateData1YPixels
 	call Func_70842
 	ld hl, wOAMBuffer + $9c
 	call Func_70842
 	call Delay3
 	dec b
 	jr nz, .asm_707fe
-	ld a, [wSpriteStateData1 + 2]
+	ld a, [wSpritePlayerStateData1ImageIndex]
 	cp $4
 	jr nz, .asm_7081c
 	ld a, $a0
@@ -427,7 +427,7 @@ Func_707b6: ; 707b6 (1c:47b6)
 	ld [hli], a
 	ld [hl], a
 	predef EmotionBubble
-	ld a, [wSpriteStateData1 + 2]
+	ld a, [wSpritePlayerStateData1ImageIndex]
 	cp $4
 	jr nz, .asm_70833
 	ld a, $44
@@ -498,7 +498,7 @@ _HandleMidJump: ; 7087e (1c:487e)
 	ld hl, PlayerJumpingYScreenCoords
 	add hl, bc
 	ld a, [hl]
-	ld [wSpriteStateData1 + 4], a ; player's sprite y coordinate
+	ld [wSpritePlayerStateData1YPixels], a ; player's sprite y coordinate
 	ret
 .finishedJump
 	ld a, [wWalkCounter]

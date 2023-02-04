@@ -45,7 +45,7 @@ Mansion4Script_523cf: ; 523cf (14:63cf)
 	ret
 
 Mansion4Script_Switches: ; 52420 (14:6420)
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp $4
 	ret nz
 	xor a

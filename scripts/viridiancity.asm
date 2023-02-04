@@ -67,13 +67,13 @@ ViridianCityScript_1903d: ; 1903d (6:503d)
     ret
 
 ViridianCityScript1: ; 19062 (6:5062)
-	ld a, [wSpriteStateData1 + $34]
+	ld a, [wSprite03StateData1YPixels]
 	ldh [hSpriteScreenYCoord], a
-	ld a, [wSpriteStateData1 + $36]
+	ld a, [wSprite03StateData1XPixels]
 	ldh [hSpriteScreenXCoord], a
-	ld a, [wSpriteStateData2 + $34]
+	ld a, [wSprite03StateData2MapY]
 	ldh [hSpriteMapYCoord], a
-	ld a, [wSpriteStateData2 + $35]
+	ld a, [wSprite03StateData2MapX]
 	ldh [hSpriteMapXCoord], a
 	xor a
 	ld [wListScrollOffset], a
@@ -91,13 +91,13 @@ ViridianCityScript1: ; 19062 (6:5062)
 
 ViridianCityScript2: ; 1908f (6:508f)
 	ldh a, [hSpriteScreenYCoord]
-	ld [wSpriteStateData1 + $34], a
+	ld [wSprite03StateData1YPixels], a
 	ldh a, [hSpriteScreenXCoord]
-	ld [wSpriteStateData1 + $36], a
+	ld [wSprite03StateData1XPixels], a
 	ldh a, [hSpriteMapYCoord]
-	ld [wSpriteStateData2 + $34], a
+	ld [wSprite03StateData2MapY], a
 	ldh a, [hSpriteMapXCoord]
-	ld [wSpriteStateData2 + $35], a
+	ld [wSprite03StateData2MapX], a
 	call UpdateSprites
 	call Delay3
 	xor a
@@ -128,7 +128,7 @@ ViridianCityScript_190cf: ; 190cf (6:50cf)
 	ld a, $80
 	ld [wSimulatedJoypadStatesEnd], a
 	xor a
-	ld [wSpriteStateData1 + 9], a
+	ld [wSpritePlayerStateData1FacingDirection], a
 	ld [wJoyIgnore], a
 	ret
 

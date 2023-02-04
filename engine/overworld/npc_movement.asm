@@ -12,7 +12,7 @@ PlayerStepOutFromDoor: ; 1a3e0 (6:63e0)
 	ld a, D_DOWN
 	ld [wSimulatedJoypadStatesEnd], a
 	xor a
-	ld [wSpriteStateData1 + 2], a
+	ld [wSpritePlayerStateData1ImageIndex], a
 	call StartSimulatingJoypadStates
 	ret
 .notStandingOnDoor
@@ -104,7 +104,7 @@ Func_1a4a6: ; 1a4a6 (6:64a6)
 	swap a
 	ld [wNPCMovementScriptSpriteOffset], a
 	xor a
-	ld [wSpriteStateData2 + $06], a
+	ld [wSpritePlayerStateData2MovementByte1], a
 	ld hl, wSimulatedJoypadStatesEnd
 	ld de, RLEList_PlayerWalkToLab
 	call DecodeRLEList
@@ -222,7 +222,7 @@ Func_1a581: ; 1a581 (6:6581)
 	swap a
 	ld [wNPCMovementScriptSpriteOffset], a
 	xor a
-	ld [wSpriteStateData2 + $06], a
+	ld [wSpritePlayerStateData2MovementByte1], a
 	ld hl, wSimulatedJoypadStatesEnd
 	ld de, RLEList_PewterGymPlayer
 	call DecodeRLEList

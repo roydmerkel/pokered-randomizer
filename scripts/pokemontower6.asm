@@ -77,7 +77,7 @@ PokemonTower6Script4: ; 60b48 (18:4b48)
 	ld a, $10
 	ld [wSimulatedJoypadStatesEnd], a
 	xor a
-	ld [wSpriteStateData2 + $06], a
+	ld [wSpritePlayerStateData2MovementByte1], a
 	ld [wOverrideSimulatedJoypadStatesMask], a
 	ld hl, wd730
 	set 7, [hl]

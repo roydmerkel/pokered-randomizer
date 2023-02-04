@@ -1,11 +1,11 @@
 UpdatePlayerSprite: ; 4e31 (1:4e31)
-	ld a, [wSpriteStateData2]
+	ld a, [wSpritePlayerStateData2WalkAnimationCounter]
 	and a
 	jr z, .checkIfTextBoxInFrontOfSprite
 	cp $ff
 	jr z, .disableSprite
 	dec a
-	ld [wSpriteStateData2], a
+	ld [wSpritePlayerStateData2WalkAnimationCounter], a
 	jr .disableSprite
 ; check if a text box is in front of the sprite by checking if the lower left
 ; background tile the sprite is standing on is greater than $5F, which is
@@ -17,11 +17,11 @@ UpdatePlayerSprite: ; 4e31 (1:4e31)
 	jr c, .lowerLeftTileIsMapTile
 .disableSprite
 	ld a, $ff
-	ld [wSpriteStateData1 + 2], a
+	ld [wSpritePlayerStateData1ImageIndex], a
 	ret
 .lowerLeftTileIsMapTile
 	call DetectCollisionBetweenSprites
-	ld h, $c1
+	ld h, wSpriteStateData1 / $100
 	ld a, [wWalkCounter] ; wcfc5
 	and a
 	jr nz, .asm_4e90
@@ -47,11 +47,11 @@ UpdatePlayerSprite: ; 4e31 (1:4e31)
 	jr .asm_4e86
 .asm_4e7d
 	xor a
-	ld [wSpriteStateData1 + 7], a
-	ld [wSpriteStateData1 + 8], a
+	ld [wSpritePlayerStateData1IntraAnimFrameCounter], a
+	ld [wSpritePlayerStateData1AnimFrameCounter], a
 	jr .asm_4eab
 .asm_4e86
-	ld [wSpriteStateData1 + 9], a
+	ld [wSpritePlayerStateData1FacingDirection], a
 	ld a, [wcfc4]
 	bit 0, a
 	jr nz, .asm_4e7d
@@ -75,11 +75,11 @@ UpdatePlayerSprite: ; 4e31 (1:4e31)
 	and $3
 	ld [hl], a
 .asm_4eab
-	ld a, [wSpriteStateData1 + 8]
+	ld a, [wSpritePlayerStateData1AnimFrameCounter]
 	ld b, a
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	add b
-	ld [wSpriteStateData1 + 2], a
+	ld [wSpritePlayerStateData1ImageIndex], a
 .asm_4eb6
 	ldh a, [hTilePlayerStandingOn]
 	ld c, a
@@ -89,7 +89,7 @@ UpdatePlayerSprite: ; 4e31 (1:4e31)
 	jr nz, .asm_4ec3
 	ld a, $80
 .asm_4ec3
-	ld [wSpriteStateData2 + $07], a
+	ld [wSpritePlayerStateData2GrassPriority], a
 	ret
 
 Func_4ec7: ; 4ec7 (1:4ec7)
@@ -116,7 +116,7 @@ Func_4ed1: ; 4ed1 (1:4ed1)
 .nc
 	ld a, [hl]        ; read movement byte 2
 	ld [wCurSpriteMovement2], a
-	ld h, $c1
+	ld h, wSpriteStateData1 / $100
 	ldh a, [hCurrentSpriteOffset]
 	ld l, a
 	inc l
@@ -125,7 +125,7 @@ Func_4ed1: ; 4ed1 (1:4ed1)
 	jp z, InitializeSpriteStatus
 	call CheckSpriteAvailability
 	ret c             ; if sprite is invisible, on tile >=$60, in grass or player is currently walking
-	ld h, $c1
+	ld h, wSpriteStateData1 / $100
 	ldh a, [hCurrentSpriteOffset]
 	ld l, a
 	inc l
@@ -145,7 +145,7 @@ Func_4ed1: ; 4ed1 (1:4ed1)
 	and a
 	ret nz           ; don't do anything yet if player is currently moving (redundant, already tested in CheckSpriteAvailability)
 	call InitializeSpriteScreenPosition
-	ld h, $c2
+	ld h, wSpriteStateData2 / $100
 	ldh a, [hCurrentSpriteOffset]
 	add $6
 	ld l, a
@@ -256,7 +256,7 @@ ChangeFacingDirection: ; 4fc8 (1:4fc8)
 ; set carry on failure, clears carry on success
 TryWalking: ; 4fcb (1:4fcb)
 	push hl
-	ld h, $c1
+	ld h, wSpriteStateData1 / $100
 	ldh a, [hCurrentSpriteOffset]
 	add $9
 	ld l, a
@@ -274,7 +274,7 @@ TryWalking: ; 4fcb (1:4fcb)
 	call CanWalkOntoTile
 	pop de
 	ret c               ; cannot walk there (reinitialization of delay values already done)
-	ld h, $c2
+	ld h, wSpriteStateData2 / $100
 	ldh a, [hCurrentSpriteOffset]
 	add $4
 	ld l, a
@@ -367,7 +367,7 @@ UpdateSpriteInWalkingAnimation: ; 4ffe (1:4ffe)
 
 ; update delay value (c2x8) for sprites in the delayed state (c1x1)
 UpdateSpriteMovementDelay: ; 5057 (1:5057)
-	ld h, $c2
+	ld h, wSpriteStateData2 / $100
 	ldh a, [hCurrentSpriteOffset]
 	add $6
 	ld l, a
@@ -388,7 +388,7 @@ UpdateSpriteMovementDelay: ; 5057 (1:5057)
 	ld l, a
 	ld [hl], $1             ; c1x1 = 1 (mark as ready to move)
 notYetMoving: ; 5073 (1:5073)
-	ld h, $c1
+	ld h, wSpriteStateData1 / $100
 	ldh a, [hCurrentSpriteOffset]
 	add $8
 	ld l, a
@@ -439,7 +439,7 @@ InitializeSpriteStatus: ; 50ad (1:50ad)
 
 ; calculates the spprite's scrren position form its map position and the player position
 InitializeSpriteScreenPosition: ; 50bd (1:50bd)
-	ld h, $c2
+	ld h, wSpriteStateData2 / $100
 	ldh a, [hCurrentSpriteOffset]
 	add $4
 	ld l, a
@@ -467,7 +467,7 @@ CheckSpriteAvailability: ; 50dc (1:50dc)
 	ldh a, [hIsHiddenMissableObject]
 	and a
 	jp nz, .spriteInvisible
-	ld h, $c2
+	ld h, wSpriteStateData2 / $100
 	ldh a, [hCurrentSpriteOffset]
 	add $6
 	ld l, a
@@ -515,7 +515,7 @@ CheckSpriteAvailability: ; 50dc (1:50dc)
 	cp d
 	jr c, .spriteVisible    ; standing on tile with ID >=$60 (top right tile)
 .spriteInvisible
-	ld h, $c1
+	ld h, wSpriteStateData1 / $100
 	ldh a, [hCurrentSpriteOffset]
 	add $2
 	ld l, a
@@ -544,7 +544,7 @@ CheckSpriteAvailability: ; 50dc (1:50dc)
 	ret
 
 UpdateSpriteImage: ; 5157 (1:5157)
-	ld h, $c1
+	ld h, wSpriteStateData1 / $100
 	ldh a, [hCurrentSpriteOffset]
 	add $8
 	ld l, a
@@ -569,7 +569,7 @@ UpdateSpriteImage: ; 5157 (1:5157)
 ; e: X movement delta (-1, 0 or 1)
 ; set carry on failure, clears carry on success
 CanWalkOntoTile: ; 516e (1:516e)
-	ld h, $c2
+	ld h, wSpriteStateData2 / $100
 	ldh a, [hCurrentSpriteOffset]
 	add $6
 	ld l, a
@@ -589,14 +589,14 @@ CanWalkOntoTile: ; 516e (1:516e)
 	jr z, .impassable
 	cp c
 	jr nz, .tilePassableLoop
-	ld h, $c2
+	ld h, wSpriteStateData2 / $100
 	ldh a, [hCurrentSpriteOffset]
 	add $6
 	ld l, a
 	ld a, [hl]         ; $c2x6 (movement byte 1)
 	inc a
 	jr z, .impassable  ; if $ff, no movement allowed (however, changing direction is)
-	ld h, $c1
+	ld h, wSpriteStateData1 / $100
 	ldh a, [hCurrentSpriteOffset]
 	add $4
 	ld l, a
@@ -615,14 +615,14 @@ CanWalkOntoTile: ; 516e (1:516e)
 	call DetectCollisionBetweenSprites
 	pop bc
 	pop de
-	ld h, $c1
+	ld h, wSpriteStateData1 / $100
 	ldh a, [hCurrentSpriteOffset]
 	add $c
 	ld l, a
 	ld a, [hl]         ; c1xc (directions in which sprite collision would occur)
 	and b              ; check against chosen direction (1,2,4 or 8)
 	jr nz, .impassable ; collision between sprites, don't go there
-	ld h, $c2
+	ld h, wSpriteStateData2 / $100
 	ldh a, [hCurrentSpriteOffset]
 	add $2
 	ld l, a
@@ -653,7 +653,7 @@ CanWalkOntoTile: ; 516e (1:516e)
 	and a              ; clear carry (marking success)
 	ret
 .impassable
-	ld h, $c1
+	ld h, wSpriteStateData1 / $100
 	ldh a, [hCurrentSpriteOffset]
 	inc a
 	ld l, a
@@ -679,7 +679,7 @@ CanWalkOntoTile: ; 516e (1:516e)
 ; this is always the lower left tile of the 2x2 tile blocks all sprites are snapped to
 ; hl: output pointer
 getTileSpriteStandsOn: ; 5207 (1:5207)
-	ld h, $c1
+	ld h, wSpriteStateData1 / $100
 	ldh a, [hCurrentSpriteOffset]
 	add $4
 	ld l, a

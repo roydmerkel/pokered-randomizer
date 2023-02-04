@@ -22,7 +22,7 @@ VermilionDockScript: ; 1db52 (7:5b52)
 	ld a, $3
 	ld [wSimulatedJoypadStatesIndex], a
 	xor a
-	ld [wSpriteStateData2 + $06], a
+	ld [wSpritePlayerStateData2MovementByte1], a
 	ld [wOverrideSimulatedJoypadStatesMask], a
 	dec a
 	ld [wJoyIgnore], a
@@ -48,7 +48,7 @@ VermilionDock_1db9b: ; 1db9b (7:5b9b)
 	call PlayMusic
 	callba LoadSmokeTileFourTimes
 	xor a
-	ld [wSpriteStateData1 + 2], a
+	ld [wSpritePlayerStateData1ImageIndex], a
 	ld c, 120
 	call DelayFrames
 	ld b, $9c

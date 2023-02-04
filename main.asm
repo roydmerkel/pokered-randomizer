@@ -1032,7 +1032,7 @@ DisplayTextIDInit: ; 7096 (1:7096)
 ; loop to copy C1X9 (direction the sprite is facing) to C2X9 for each sprite
 ; this is done because when you talk to an NPC, they turn to look your way
 ; the original direction they were facing must be restored after the dialogue is over
-	ld hl, wSpriteStateData1 + $19
+	ld hl, wSprite01StateData1FacingDirection
 	ld c, $0f
 	ld de, $10
 .spriteFacingDirectionCopyLoop
@@ -1045,7 +1045,7 @@ DisplayTextIDInit: ; 7096 (1:7096)
 	jr nz, .spriteFacingDirectionCopyLoop
 ; loop to force all the sprites in the middle of animation to stand still
 ; (so that they don't like they're frozen mid-step during the dialogue)
-	ld hl, wSpriteStateData1 + 2
+	ld hl, wSpritePlayerStateData1ImageIndex
 	ld de, $10
 	ld c, e
 .spriteStandStillLoop
@@ -2134,7 +2134,7 @@ IsPlayerFacingEdgeOfMap: ; c3ff (3:43ff)
 	push hl
 	push de
 	push bc
-	ld a, [wSpriteStateData1 + 9] ; player sprite's facing direction
+	ld a, [wSpritePlayerStateData1FacingDirection] ; player sprite's facing direction
 	srl a
 	ld c, a
 	ld b, $0
@@ -2204,7 +2204,7 @@ IsWarpTileInFrontOfPlayer: ; c44e (3:444e)
 	ld a, [W_CURMAP]
 	cp SS_ANNE_5
 	jr z, .ssAnne5
-	ld a, [wSpriteStateData1 + 9] ; player sprite's facing direction
+	ld a, [wSpritePlayerStateData1FacingDirection] ; player sprite's facing direction
 	srl a
 	ld c, a
 	ld b, 0
@@ -2325,7 +2325,7 @@ _GetTileAndCoordsInFrontOfPlayer: ; c589 (3:4589)
 	ld d, a
 	ld a, [W_XCOORD]
 	ld e, a
-	ld a, [wSpriteStateData1 + 9] ; player's sprite facing direction
+	ld a, [wSpritePlayerStateData1FacingDirection] ; player's sprite facing direction
 	and a
 	jr nz, .notFacingDown
 ; facing down
@@ -2364,7 +2364,7 @@ GetTileTwoStepsInFrontOfPlayer: ; c5be (3:45be)
 	ld a, [hli]
 	ld d, a
 	ld e, [hl]
-	ld a, [wSpriteStateData1 + 9] ; player's sprite facing direction
+	ld a, [wSpritePlayerStateData1FacingDirection] ; player's sprite facing direction
 	and a
 	jr nz, .notFacingDown
 ; facing down
@@ -2437,7 +2437,7 @@ CheckForBoulderCollisionWithSprites: ; c636 (3:4636)
 	swap a
 	ld d, 0
 	ld e, a
-	ld hl, wSpriteStateData2 + $14
+	ld hl, wSprite01StateData2MapY
 	add hl, de
 	ld a, [hli] ; map Y position
 	ldh [hPlayerYCoord], a
@@ -2446,7 +2446,7 @@ CheckForBoulderCollisionWithSprites: ; c636 (3:4636)
 	ld a, [W_NUMSPRITES]
 	ld c, a
 	ld de, $f
-	ld hl, wSpriteStateData2 + $14
+	ld hl, wSprite01StateData2MapY
 	ldh a, [hPlayerFacing]
 	and $3 ; facing up or down?
 	jr z, .pushingHorizontallyLoop
@@ -3499,7 +3499,7 @@ TryPushingBoulder: ; f225 (3:7225)
 	ld [wBoulderSpriteIndex], a
 	and a
 	jp z, ResetBoulderPushFlags
-	ld hl, wSpriteStateData1 + 1
+	ld hl, wSpritePlayerStateData1MovementStatus
 	ld d, $0
 	ldh a, [hSpriteIndexOrTextID]
 	swap a
@@ -3523,7 +3523,7 @@ TryPushingBoulder: ; f225 (3:7225)
 	jp nz, ResetBoulderPushFlags
 	ldh a, [hJoyHeld]
 	ld b, a
-	ld a, [wSpriteStateData1 + 9] ; player's sprite facing direction
+	ld a, [wSpritePlayerStateData1FacingDirection] ; player's sprite facing direction
 	cp SPRITE_FACING_UP
 	jr z, .pushBoulderUp
 	cp SPRITE_FACING_LEFT
@@ -4637,9 +4637,9 @@ FindPathToPlayer: ; f8ba (3:78ba)
 CalcPositionOfPlayerRelativeToNPC: ; f929 (3:7929)
 	xor a
 	ldh [hNPCPlayerRelativePosFlags], a
-	ld a, [wSpriteStateData1 + 4] ; player's sprite screen Y position in pixels
+	ld a, [wSpritePlayerStateData1YPixels] ; player's sprite screen Y position in pixels
 	ld d, a
-	ld a, [wSpriteStateData1 + 6] ; player's sprite screen X position in pixels
+	ld a, [wSpritePlayerStateData1XPixels] ; player's sprite screen X position in pixels
 	ld e, a
 	ld hl, wSpriteStateData1
 	ldh a, [hNPCSpriteOffset] ; sprite offset

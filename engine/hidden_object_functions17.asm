@@ -16,7 +16,7 @@ RedBedroomPC: ; 5db8e (17:5b8e)
 	db $fc ; FuncTX_ItemStoragePC
 
 Route15GateLeftBinoculars: ; 5db8f (17:5b8f)
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp $4 ; i
 	ret nz
 	call EnableAutoTextBoxDrawing

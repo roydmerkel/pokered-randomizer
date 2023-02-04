@@ -87,7 +87,7 @@ CopycatsHouse2FText6: ; 5ccfe (17:4cfe)
 
 CopycatsHouse2FText7: ; 5cd03 (17:4d03)
 	db $08 ; asm
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp $4
 	ld hl, CopycatsHouse2FText_5cd1c
 	jr nz, .asm_399a4 ; 0x5cd0c

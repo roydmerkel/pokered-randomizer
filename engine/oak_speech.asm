@@ -9,8 +9,8 @@ SetDefaultNames: ; 60ca (1:60ca)
 	ld bc, $d8a
 	xor a
 	call FillMemory
-	ld hl, wSpriteStateData1
-	ld bc, $200
+	ld hl, wSpriteDataStart
+	ld bc, wSpriteDataEnd - wSpriteDataStart
 	xor a
 	call FillMemory
 	pop af

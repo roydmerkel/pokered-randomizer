@@ -3,7 +3,7 @@ GymStatues: ; 62419 (18:6419)
 ; if in a gym and don’t have the corresponding badge, a = $C and jp PrintPredefTextID
 ; else ret
 	call EnableAutoTextBoxDrawing
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp $4
 	ret nz
 	ld hl, .BadgeFlags
@@ -64,7 +64,7 @@ PrintBenchGuyText: ; 6245d (18:645d)
 .asm_62472
 	ld a, [hli]
 	ld b, a
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp b
 	jr nz, .asm_62467
 	ld a, [hl]
@@ -176,7 +176,7 @@ BookcaseText: ; 62511 (18:6511)
 	db "@"
 
 OpenPokemonCenterPC: ; 62516 (18:6516)
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp $4 ; check to see if player is facing up
 	ret nz
 	call EnableAutoTextBoxDrawing

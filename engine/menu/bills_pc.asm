@@ -514,7 +514,7 @@ PrintJustAMomentText1:: ; 5824 (8:5825)
 	ldh a, [hSerialConnectionStatus]
 	cp $1
 	ret z
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp $c
 	ret nz
 	ld a, [W_CURMAP]
@@ -532,7 +532,7 @@ PrintJustAMomentText2:: ; 5845 (8:5845)
 	ldh a, [hSerialConnectionStatus]
 	cp $2
 	ret z
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp $8
 	ret nz
 	ld a, [W_CURMAP]
@@ -550,7 +550,7 @@ JustAMomentText:: ; 21865 (8:5865)
 	TX_FAR _JustAMomentText
 	db "@"
 
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp $4
 	ret nz
 	call EnableAutoTextBoxDrawing

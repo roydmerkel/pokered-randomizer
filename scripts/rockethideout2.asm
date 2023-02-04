@@ -318,7 +318,7 @@ RocketHideout2Script3: ; 44fc2 (11:4fc2)
 	ret
 
 LoadSpinnerArrowTiles: ; 44fd7 (11:4fd7)
-	ld a, [wSpriteStateData1 + 2]
+	ld a, [wSpritePlayerStateData1ImageIndex]
 	srl a
 	srl a
 	ld hl, SpinnerPlayerFacingDirections ; $5083
@@ -326,7 +326,7 @@ LoadSpinnerArrowTiles: ; 44fd7 (11:4fd7)
 	ld b, $0
 	add hl, bc
 	ld a, [hl]
-	ld [wSpriteStateData1 + 2], a
+	ld [wSpritePlayerStateData1ImageIndex], a
 	ld a, [W_CURMAPTILESET] ; W_CURMAPTILESET
 	cp FACILITY
 	ld hl, FacilitySpinnerArrows ; $5023

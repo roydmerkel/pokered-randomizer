@@ -15,7 +15,7 @@ AnimateBoulderDust: ; 79f54 (1e:5f54)
 	call GetMoveBoulderDustFunctionPointer
 	ld bc, .returnAddress
 	push bc
-	ld c, $4
+	ld c, 4
 	jp [hl]
 .returnAddress
 	ldh a, [rOBP1]
@@ -30,7 +30,7 @@ AnimateBoulderDust: ; 79f54 (1e:5f54)
 	jp LoadPlayerSpriteGraphics
 
 GetMoveBoulderDustFunctionPointer: ; 79f92 (1e:5f92)
-	ld a, [wSpriteStateData1 + 9] ; player's sprite facing direction
+	ld a, [wSpritePlayerStateData1FacingDirection] ; player's sprite facing direction
 	ld hl, MoveBoulderDustFunctionPointerTable
 	ld c, a
 	ld b, $0

@@ -14,20 +14,20 @@ BattleCenterMScript: ; 4fd10 (13:7d10)
 	bit 0, [hl]
 	set 0, [hl]
 	ret nz
-	ld hl, wSpriteStateData2 + $14
+	ld hl, wSprite01StateData2MapY
 	ld a, 8
 	ld [hli], a
 	ld a, 10
 	ld [hl], a
 	ld a, $8
-	ld [wSpriteStateData1 + $19], a
+	ld [wSprite01StateData1FacingDirection], a
 	ldh a, [hSerialConnectionStatus]
 	cp $2
 	ret z
 	ld a, 7
-	ld [wSpriteStateData2 + $15], a
+	ld [wSprite01StateData2MapX], a
 	ld a, $c
-	ld [wSpriteStateData1 + $19], a
+	ld [wSprite01StateData1FacingDirection], a
 	ret
 
 BattleCenterMTextPointers: ; 4fd4c (13:7d4c)

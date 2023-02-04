@@ -39,7 +39,7 @@ VermilionCityScriptPointers: ; 197dc (6:57dc)
 	dw VermilionCityScript4
 
 VermilionCityScript0: ; 197e6 (6:57e6)
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	and a
 	ret nz
 	ld hl, CoordsData_19823
@@ -161,7 +161,7 @@ VermilionCityText3: ; 198b1 (6:58b1)
 	ld a, [wd803]
 	bit 2, a
 	jr nz, .asm_3e0e9 ; 0x198b7
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp $c
 	jr z, .asm_07af3 ; 0x198be
 	ld hl, VermilionCityCoords1

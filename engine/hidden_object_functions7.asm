@@ -118,7 +118,7 @@ GameOverText: ; 1ea12 (7:6a12)
 	db "@"
 
 PrintCinnabarQuiz: ; 1ea17 (7:6a17)
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp $4
 	ret nz
 	call EnableAutoTextBoxDrawing
@@ -142,7 +142,7 @@ CinnabarGymQuiz: ; 1ea25 (7:6a25)
 	ldh a, [hGymGateIndex]
 	dec a
 	add a
-	ld d, $0
+	ld d, 0
 	ld e, a
 	ld hl, CinnabarQuizQuestions
 	add hl, de
@@ -150,7 +150,7 @@ CinnabarGymQuiz: ; 1ea25 (7:6a25)
 	ld h, [hl]
 	ld l, a
 	call PrintText
-	ld a, $1
+	ld a, 1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	call CinnabarGymQuiz_1ea92
 	jp TextScriptEnd
@@ -257,14 +257,14 @@ CinnabarGymQuizIncorrectText: ; 1eb05 (7:6b05)
 	db "@"
 
 CinnabarGymQuiz_1eb0a: ; 1eb0a (7:6b0a)
-	ld a, $6
+	ld a, 6
 	ldh [hGymGateIndex], a
 .asm_1eb0e
 	ldh a, [hGymGateIndex]
 	dec a
 	add a
 	add a
-	ld d, $0
+	ld d, 0
 	ld e, a
 	ld hl, CinnabarGymGateCoords ; $6b48
 	add hl, de
@@ -318,7 +318,7 @@ MagazinesText: ; 1eb69 (7:6b69)
 
 BillsHousePC: ; 1eb6e (7:6b6e)
 	call EnableAutoTextBoxDrawing
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp $4
 	ret nz
 	ld a, [wd7f2]
@@ -457,7 +457,7 @@ BillsHousePokemonListText2: ; 1ecaa (7:6caa)
 	db "@"
 
 DisplayOakLabEmailText: ; 1ecaf (7:6caf)
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp $4
 	ret nz
 	call EnableAutoTextBoxDrawing

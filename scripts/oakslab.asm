@@ -467,17 +467,17 @@ OaksLabScript14: ; 1ce6d (7:4e6d)
 	cp 4
 	jr nz, .asm_1cea1 ; 0x1ce98 $7
 	ld a, $c
-	ld [wSpriteStateData1 + 9], a
+	ld [wSpritePlayerStateData1FacingDirection], a
 	jr .done ; 0x1ce9f $e
 .asm_1cea1
 	ld a, $8
-	ld [wSpriteStateData1 + 9], a
+	ld [wSpritePlayerStateData1FacingDirection], a
 	jr .done ; 0x1cea6 $7
 .asm_1cea8
 	cp $4
 	ret nz
 	xor a
-	ld [wSpriteStateData1 + 9], a
+	ld [wSpritePlayerStateData1FacingDirection], a
 .done
 	ret
 

@@ -58,8 +58,43 @@ battle_struct: MACRO
 \1PP::         ds NUM_MOVES
 ENDM
 
+spritestatedata1: MACRO
+\1PictureID::             db
+\1MovementStatus::        db
+\1ImageIndex::            db
+\1YStepVector::           db
+\1YPixels::               db
+\1XStepVector::           db
+\1XPixels::               db
+\1IntraAnimFrameCounter:: db
+\1AnimFrameCounter::      db
+\1FacingDirection::       db
+\1YAdjusted::             db
+\1XAdjusted::             db
+\1CollisionData::         db
+	ds 3
+\1End::
+ENDM
 
-SECTION "WRAM Bank 0", WRAM0
+spritestatedata2: MACRO
+\1WalkAnimationCounter:: db
+	ds 1
+\1YDisplacement::        db
+\1XDisplacement::        db
+\1MapY::                 db
+\1MapX::                 db
+\1MovementByte1::        db
+\1GrassPriority::        db
+\1MovementDelay::        db
+\1OrigFacingDirection::  db
+	ds 3
+\1PictureID::            db
+\1ImageBaseOffset::      db
+	ds 1
+\1End::
+ENDM
+
+SECTION "Audio RAM", WRAM0
 
 wUnusedC000:: ds 1
 
@@ -129,7 +164,9 @@ wWasTrainerBattle:: ds 1
 
 SECTION "Sprite State Data", WRAM0[$c100]
 
+wSpriteDataStart::
 wSpriteStateData1:: ; c100
+
 ; data for all sprites on the current map
 ; holds info for 16 sprites with $10 bytes each
 ; player sprite is always sprite 0
@@ -149,10 +186,27 @@ wSpriteStateData1:: ; c100
 ; C1xD
 ; C1xE
 ; C1xF
-	ds $10 * $10
+wSpritePlayerStateData1::  spritestatedata1 wSpritePlayerStateData1 ; player is struct 0
+; wSprite02StateData1 - wSprite15StateData1
+wSprite01StateData1:: spritestatedata1 wSprite01StateData1
+wSprite02StateData1:: spritestatedata1 wSprite02StateData1
+wSprite03StateData1:: spritestatedata1 wSprite03StateData1
+wSprite04StateData1:: spritestatedata1 wSprite04StateData1
+wSprite05StateData1:: spritestatedata1 wSprite05StateData1
+wSprite06StateData1:: spritestatedata1 wSprite06StateData1
+wSprite07StateData1:: spritestatedata1 wSprite07StateData1
+wSprite08StateData1:: spritestatedata1 wSprite08StateData1
+wSprite09StateData1:: spritestatedata1 wSprite09StateData1
+wSprite10StateData1:: spritestatedata1 wSprite10StateData1
+wSprite11StateData1:: spritestatedata1 wSprite11StateData1
+wSprite12StateData1:: spritestatedata1 wSprite12StateData1
+wSprite13StateData1:: spritestatedata1 wSprite13StateData1
+wSprite14StateData1:: spritestatedata1 wSprite14StateData1
+wSprite15StateData1:: spritestatedata1 wSprite15StateData1
 
-
-SECTION "Sprite State Data 2", WRAM0[$c200]
+;FOR n, 1, NUM_SPRITESTATEDATA_STRUCTS
+;wSprite{02d:n}StateData1:: spritestatedata1 wSprite{02d:n}StateData1
+;ENDR
 
 wSpriteStateData2:: ; c200
 ; more data for all sprites on the current map
@@ -174,7 +228,28 @@ wSpriteStateData2:: ; c200
 ; C2xD
 ; C2xE: sprite image base offset (in video ram, player always has value 1, used to compute c1x2)
 ; C2xF
-	ds $10 * $10
+wSpritePlayerStateData2::  spritestatedata2 wSpritePlayerStateData2 ; player is struct 0
+; wSprite02StateData2 - wSprite15StateData2
+;FOR n, 1, NUM_SPRITESTATEDATA_STRUCTS
+;wSprite{02d:n}StateData2:: spritestatedata2 wSprite{02d:n}StateData2
+;ENDR
+wSprite01StateData2:: spritestatedata2 wSprite01StateData2
+wSprite02StateData2:: spritestatedata2 wSprite02StateData2
+wSprite03StateData2:: spritestatedata2 wSprite03StateData2
+wSprite04StateData2:: spritestatedata2 wSprite04StateData2
+wSprite05StateData2:: spritestatedata2 wSprite05StateData2
+wSprite06StateData2:: spritestatedata2 wSprite06StateData2
+wSprite07StateData2:: spritestatedata2 wSprite07StateData2
+wSprite08StateData2:: spritestatedata2 wSprite08StateData2
+wSprite09StateData2:: spritestatedata2 wSprite09StateData2
+wSprite10StateData2:: spritestatedata2 wSprite10StateData2
+wSprite11StateData2:: spritestatedata2 wSprite11StateData2
+wSprite12StateData2:: spritestatedata2 wSprite12StateData2
+wSprite13StateData2:: spritestatedata2 wSprite13StateData2
+wSprite14StateData2:: spritestatedata2 wSprite14StateData2
+wSprite15StateData2:: spritestatedata2 wSprite15StateData2
+
+wSpriteDataEnd::
 
 
 SECTION "OAM Buffer", WRAM0[$c300]
@@ -182,6 +257,8 @@ SECTION "OAM Buffer", WRAM0[$c300]
 wOAMBuffer:: ; c300
 ; buffer for OAM data. Copied to OAM by DMA
 	ds 4 * 40
+
+SECTION "Tilemap", WRAM0[$c3a0]
 
 wTileMap:: ; c3a0
 ; buffer for tiles that are visible on screen (20 columns by 18 rows)
@@ -194,9 +271,15 @@ wTileMapBackup:: ; c508
 
 	ds 120
 
+
+SECTION "Overworld Map", WRAM0[$c6e8]
+
 wTempPic::
 wOverworldMap:: ; c6e8
 	ds 1300
+
+
+SECTION "WRAM", WRAM0[$cbfc]
 
 wScreenEdgeTiles:: ; cbfc
 ; the tiles of the row or column to be redrawn by RedrawExposedScreenEdge

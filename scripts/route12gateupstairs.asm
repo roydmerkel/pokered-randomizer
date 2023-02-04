@@ -69,7 +69,7 @@ Route12GateUpstairsText_495c4: ; 495c4 (12:55c4)
 	db "@"
 
 Route12GateUpstairsScript_495c9: ; 495c9 (12:55c9)
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp $4
 	jr z, .asm_495d4 ; 0x495ce $4
 	ld a, $1

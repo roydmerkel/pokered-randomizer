@@ -57,8 +57,8 @@ LoadSAVCheckSum: ; 73623 (1c:7623)
 	ld hl, W_CURMAPTILESET
 	set 7, [hl]
 	ld hl, $ad2c+$30
-	ld de, wSpriteStateData1
-	ld bc, $200
+	ld de, wSpriteDataStart
+	ld bc, wSpriteDataEnd - wSpriteDataStart
 	call CopyData
 	ld a, [$b522+$30]
 	ldh [hTileAnimations], a
@@ -198,9 +198,9 @@ SaveSAVtoSRAM0: ; 7378c (1c:778c)
 	ld de, $a5a3
 	ld bc, W_NUMINBOX - wPokedexOwned
 	call CopyData
-	ld hl, wSpriteStateData1
+	ld hl, wSpriteDataStart
 	ld de, $ad2c+$30
-	ld bc, $200
+	ld bc, wSpriteDataEnd - wSpriteDataStart
 	call CopyData
 	ld hl, W_NUMINBOX
 	ld de, $b0c0+$30

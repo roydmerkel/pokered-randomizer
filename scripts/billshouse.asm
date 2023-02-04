@@ -16,7 +16,7 @@ BillsHouseScript0: ; 1e782 (7:6782)
 	ret
 
 BillsHouseScript1: ; 1e783 (7:6783)
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	and a
 	ld de, MovementData_1e79c
 	jr nz, .asm_1e78f ; 0x1e78a $3

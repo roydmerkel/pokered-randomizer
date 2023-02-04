@@ -52,7 +52,7 @@ CeruleanCityScript0: ; 194c8 (6:54c8)
 .asm_194e6
 	ld [wd528], a
 	ld a, b
-	ld [wSpriteStateData1 + $29], a
+	ld [wSprite02StateData1FacingDirection], a
 	call Delay3
 	ld a, $2
 	ldh [hSpriteIndexOrTextID], a

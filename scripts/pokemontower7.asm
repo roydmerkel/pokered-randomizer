@@ -70,7 +70,7 @@ PokemonTower7Script4: ; 60d86 (18:4d86)
 	ld [wcc4d], a
 	predef HideObject
 	ld a, $4
-	ld [wSpriteStateData1 + 9], a
+	ld [wSpritePlayerStateData1FacingDirection], a
 	ld a, $95
 	ldh [hWarpDestinationMap], a ; $ff8b
 	ld a, $1

@@ -9,7 +9,7 @@ _GetSpritePosition1: ; 567f9 (15:67f9)
 	inc hl
 	ld a, [hl]
 	ldh [hSpriteScreenXCoord], a
-	ld de, $fe
+	ld de, wSpritePlayerStateData2MapY - wSpritePlayerStateData1XPixels
 	add hl, de
 	ld a, [hli]
 	ldh [hSpriteMapYCoord], a
@@ -28,7 +28,7 @@ _GetSpritePosition2: ; 56819 (15:6819)
 	inc hl
 	ld a, [hl] ; c1x6 (screen X pos)
 	ld [wd131], a
-	ld de, $104 - $6
+	ld de, wSpritePlayerStateData2MapY - wSpritePlayerStateData1XPixels
 	add hl, de
 	ld a, [hli] ; c2x4 (map Y pos)
 	ld [wd132], a
@@ -47,7 +47,7 @@ _SetSpritePosition1: ; 5683d (15:683d)
 	inc hl
 	ldh a, [hSpriteScreenXCoord] ; c1x6 (screen X pos)
 	ld [hl], a
-	ld de, $104 - $6
+	ld de, wSpritePlayerStateData2MapY - wSpritePlayerStateData1XPixels
 	add hl, de
 	ldh a, [hSpriteMapYCoord] ; c2x4 (map Y pos)
 	ld [hli], a
@@ -66,7 +66,7 @@ _SetSpritePosition2: ; 5685d (15:685d)
 	inc hl
 	ld a, [wd131]
 	ld [hl], a
-	ld de, $00fe
+	ld de, wSpritePlayerStateData2MapY - wSpritePlayerStateData1XPixels
 	add hl, de
 	ld a, [wd132]
 	ld [hli], a

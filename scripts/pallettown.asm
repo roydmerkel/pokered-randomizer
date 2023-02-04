@@ -98,7 +98,7 @@ PalletTownScript3: ; 18f12 (6:4f12)
 	bit 0, a
 	ret nz
 	xor a
-	ld [wSpriteStateData1 + 9], a
+	ld [wSpritePlayerStateData1FacingDirection], a
 	ld a, 1
 	ld [wcf0d], a
 	ld a, $FC

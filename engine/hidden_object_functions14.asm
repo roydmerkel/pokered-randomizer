@@ -92,7 +92,7 @@ FightingDojoText: ; 52a2a (14:6a2a)
 	db "@"
 
 PrintIndigoPlateauHQText: ; 52a2f (14:6a2f)
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp $4
 	ret nz
 	call EnableAutoTextBoxDrawing

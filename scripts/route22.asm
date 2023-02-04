@@ -151,7 +151,7 @@ Route22Script2: ; 50fb5 (14:4fb5)
 	jp z, Route22Script_50ece
     xor a
     ld [wIsTrainerBattle], a
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	and a
 	jr nz, .asm_50fc7 ; 0x50fc1 $4
 	ld a, $4

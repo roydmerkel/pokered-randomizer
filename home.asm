@@ -991,9 +991,9 @@ ResetPlayerSpriteData:: ; 28a6 (0:28a6)
 	ld hl, wSpriteStateData2
 	call ResetPlayerSpriteData_ClearSpriteData
 	ld a, $1
-	ld [wSpriteStateData1], a
-	ld [wSpriteStateData2 + $0e], a
-	ld hl, wSpriteStateData1 + 4
+	ld [wSpritePlayerStateData1PictureID], a
+	ld [wSpritePlayerStateData2ImageBaseOffset], a
+	ld hl, wSpritePlayerStateData1YPixels
 	ld [hl], $3c     ; set Y screen pos
 	inc hl
 	inc hl
@@ -1174,7 +1174,7 @@ CloseTextDisplay:: ; 29e8 (0:29e8)
 	xor a
 	ldh [hAutoBGTransferEnabled], a ; disable continuous WRAM to VRAM transfer each V-blank
 ; loop to make sprites face the directions they originally faced before the dialogue
-	ld hl, wSpriteStateData2 + $19
+	ld hl, wSprite01StateData2OrigFacingDirection
 	ld c, $0f
 	ld de, $10
 .restoreSpriteFacingDirectionLoop
@@ -2727,7 +2727,7 @@ FuncTX_PokemonCenterPC:: ; 347f (0:347f)
 StartSimulatingJoypadStates:: ; 3486 (0:3486)
 	xor a
 	ld [wOverrideSimulatedJoypadStatesMask], a
-	ld [wSpriteStateData2 + $06], a ; player's sprite movement byte 1
+	ld [wSpritePlayerStateData2MovementByte1], a ; player's sprite movement byte 1
 	ld hl, wd730
 	set 7, [hl]
 	ret
@@ -2816,7 +2816,7 @@ CheckCoords:: ; 34c7 (0:34c7)
 ; sets carry if the coordinates are in the array, clears carry if not
 CheckBoulderCoords:: ; 34e4 (0:34e4)
 	push hl
-	ld hl, wSpriteStateData2 + $04
+	ld hl, wSpritePlayerStateData2MapY
 	ldh a, [hSpriteIndex]
 	swap a
 	ld d, $0
@@ -2832,11 +2832,11 @@ CheckBoulderCoords:: ; 34e4 (0:34e4)
 	jp CheckCoords
 
 GetPointerWithinSpriteStateData1:: ; 34fc (0:34fc)
-	ld h, $c1
+	ld h, wSpriteStateData1 / $100
 	jr _GetPointerWithinSpriteStateData
 
 GetPointerWithinSpriteStateData2:: ; 3500 (0:3500)
-	ld h, $c2
+	ld h, wSpriteStateData2 / $100
 
 _GetPointerWithinSpriteStateData:
 	ldh a, [hSpriteDataOffset]

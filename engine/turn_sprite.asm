@@ -1,5 +1,5 @@
 UpdateSpriteFacingOffsetAndDelayMovement: ; 13074 (4:7074)
-	ld h, $c2
+	ld h, wSpriteStateData2 / $100
 	ldh a, [hCurrentSpriteOffset]
 	add $8
 	ld l, a

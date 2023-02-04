@@ -37,7 +37,7 @@ Route22GateScript_1e6ba: ; 1e6ba (7:66ba)
 	ld [wSimulatedJoypadStatesIndex], a
 	ld a, $80
 	ld [wSimulatedJoypadStatesEnd], a
-	ld [wSpriteStateData1 + 9], a
+	ld [wSpritePlayerStateData1FacingDirection], a
 	ld [wJoyIgnore], a
 	jp StartSimulatingJoypadStates
 

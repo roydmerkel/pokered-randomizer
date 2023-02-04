@@ -29,7 +29,7 @@ PewterPokecenterText3: ; 5c59b (17:459b)
 	ld de, wTrainerFacingDirection
 	ld bc, $0004
 	call CopyData
-	ld a, [wSpriteStateData1 + $32]
+	ld a, [wSprite03StateData1ImageIndex]
 	ld hl, wTrainerFacingDirection
 .asm_5c5c3
 	cp [hl]
@@ -43,7 +43,7 @@ PewterPokecenterText3: ; 5c59b (17:459b)
 	pop hl
 .asm_5c5d1
 	ld a, [hl]
-	ld [wSpriteStateData1 + $32], a
+	ld [wSprite03StateData1ImageIndex], a
 	push hl
 	ld hl, wTrainerFacingDirection
 	ld de, wTrainerEngageDistance

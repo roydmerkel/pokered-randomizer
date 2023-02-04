@@ -47,7 +47,7 @@ asm_44310: ; 44310 (11:4310)
 	ret
 
 Mansion1Script_Switches: ; 44316 (11:4316)
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp $4
 	ret nz
 	xor a

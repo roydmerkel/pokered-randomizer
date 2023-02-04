@@ -27,7 +27,7 @@ NothingToCutText: ; ef7d (3:6f7d)
 
 asm_ef82: ; ef82 (3:6f82)
 	ld [wcd4d], a
-	ld a, $1
+	ld a, 1
 	ld [wcd6a], a
 	ld a, [wWhichPokemon] ; wWhichPokemon
 	ld hl, wPartyMonNicks ; wPartyMonNicks
@@ -99,7 +99,7 @@ AnimateCutTree: ; eff7 (3:6ff7)
 	call LoadCutTreeAnimationTilePattern
 	call WriteCutTreeBoulderDustAnimationOAMBlock
 	ld hl, wOAMBuffer + $93
-	ld de, $4
+	ld de, 4
 	ld a, $30
 	ld c, e
 .asm_f044
@@ -126,7 +126,7 @@ CutTreeBoulderDustAnimationTilesAndAttributes: ; f060 (3:7060)
 	db $FE,$10,$FF,$10
 
 GetCutTreeBoulderDustAnimationOffsets: ; f068 (3:7068)
-	ld hl, wSpriteStateData1 + 4
+	ld hl, wSpritePlayerStateData1YPixels
 	ld a, [hli] ; player's sprite screen Y position
 	ld b, a
 	inc hl
@@ -174,16 +174,16 @@ BoulderDustAnimationOffsets: ; f097 (3:7097)
 Func_f09f: ; f09f (3:709f)
 	push de
 	ld a, [W_CURMAPWIDTH] ; wd369
-	add $6
+	add 6
 	ld c, a
-	ld b, $0
-	ld d, $0
+	ld b, 0
+	ld d, 0
 	ld hl, wCurrentTileBlockMapViewPointer
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
 	add hl, bc
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	and a
 	jr z, .asm_f0c7
 	cp $4

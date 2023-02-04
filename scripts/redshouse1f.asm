@@ -48,11 +48,11 @@ MomHealText2: ; 481c1 (12:41c1)
 
 RedsHouse1FText2: ; 0x481c6 TV
 	db 8
-	ld a,[wSpriteStateData1 + 9]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp 4
-	ld hl,TVWrongSideText
-	jr nz,.done ; if player is not facing up
-	ld hl,StandByMeText
+	ld hl, TVWrongSideText
+	jr nz, .done ; if player is not facing up
+	ld hl, StandByMeText
 .done
 	call PrintText
 	jp TextScriptEnd

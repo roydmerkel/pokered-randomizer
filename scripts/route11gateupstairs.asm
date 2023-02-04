@@ -49,7 +49,7 @@ Route11GateUpstairsText_494a3: ; 494a3 (12:54a3)
 
 Route11GateUpstairsText3: ; 494a8 (12:54a8)
 	db $08 ; asm
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp $4
 	jp nz, Route12GateUpstairsScript_495c9
 	ld a, [wd7d8]
