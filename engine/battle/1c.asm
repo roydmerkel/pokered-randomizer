@@ -52,7 +52,7 @@ Func_7092a: ; 7092a (1c:492a)
 	ld [W_BASECOORDY], a ; wd082
 	ld a, $70
 	ld [W_BASECOORDX], a ; wd081
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	ld bc, $606
 	ld d, $8
 .asm_70948
@@ -105,7 +105,7 @@ BattleTransition: ; 7096d (1c:496d)
 	add hl, de
 	dec c
 	jr nz, .loop1
-	ld hl, wOAMBuffer + $10
+	ld hl, wShadowOAMSprite04
 	ld c, 9
 .loop2
 	ld a, b

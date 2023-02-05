@@ -723,7 +723,7 @@ SwitchPartyMon_OAM: ; 13625 (4:7625)
 	dec c
 	jr nz, .asm_13633
 	pop af
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	ld bc, $10
 	call AddNTimes
 	ld de, $4

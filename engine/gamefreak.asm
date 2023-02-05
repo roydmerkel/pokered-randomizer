@@ -16,11 +16,11 @@ LoadShootingStarGraphics: ; 70000 (1c:4000)
 	ld bc, (BANK(FallingStar) << 8) + $01
 	call CopyVideoData
 	ld hl, GameFreakLogoOAMData ; $4140
-	ld de, wOAMBuffer + $60
+	ld de, wShadowOAMSprite24
 	ld bc, $40
 	call CopyData
 	ld hl, GameFreakShootingStarOAMData ; $4180
-	ld de, wOAMBuffer
+	ld de, wShadowOAM
 	ld bc, $10
 	jp CopyData
 
@@ -28,14 +28,14 @@ AnimateShootingStar: ; 70044 (1c:4044)
 	call LoadShootingStarGraphics
 	ld a, RBSFX_1f_67
 	call PlaySound
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	ld bc, $a004
 .asm_70052
 	push hl
 	push bc
 .asm_70054
 	ld a, [hl]
-	add $4
+	add 4
 	ld [hli], a
 	ld a, [hl]
 	add $fc
@@ -44,38 +44,38 @@ AnimateShootingStar: ; 70044 (1c:4044)
 	inc hl
 	dec c
 	jr nz, .asm_70054
-	ld c, $1
+	ld c, 1
 	call CheckForUserInterruption
 	pop bc
 	pop hl
 	ret c
 	ld a, [hl]
-	cp $50
+	cp 80
 	jr nz, .asm_70070
 	jr .asm_70052
 .asm_70070
 	cp b
 	jr nz, .asm_70052
-	ld hl, wOAMBuffer
-	ld c, $4
-	ld de, $4
+	ld hl, wShadowOAM
+	ld c, 4
+	ld de, 4
 .asm_7007b
-	ld [hl], $a0
+	ld [hl], 160
 	add hl, de
 	dec c
 	jr nz, .asm_7007b
-	ld b, $3
+	ld b, 3
 .asm_70083
 	ld hl, rOBP0 ; $ff48
 	rrc [hl]
 	rrc [hl]
-	ld c, $a
+	ld c, 10
 	call CheckForUserInterruption
 	ret c
 	dec b
 	jr nz, .asm_70083
-	ld de, wOAMBuffer
-	ld a, $18
+	ld de, wShadowOAM
+	ld a, 24
 .asm_70098
 	push af
 	ld hl, OAMData_700ee ; $40ee
@@ -87,7 +87,7 @@ AnimateShootingStar: ; 70044 (1c:4044)
 	xor a
 	ld [wWhichTrade], a ; wWhichTrade
 	ld hl, PointerTable_700f2 ; $40f2
-	ld c, $6
+	ld c, 6
 .asm_700af
 	ld a, [hli]
 	ld e, a
@@ -95,8 +95,8 @@ AnimateShootingStar: ; 70044 (1c:4044)
 	ld d, a
 	push bc
 	push hl
-	ld hl, wOAMBuffer + $50
-	ld c, $4
+	ld hl, wShadowOAMSprite20
+	ld c, 4
 .asm_700ba
 	ld a, [de]
 	cp $ff
@@ -111,15 +111,15 @@ AnimateShootingStar: ; 70044 (1c:4044)
 	dec c
 	jr nz, .asm_700ba
 	ld a, [wWhichTrade] ; wWhichTrade
-	cp $18
+	cp 24
 	jr z, .asm_700d5
-	add $6
+	add 6
 	ld [wWhichTrade], a ; wWhichTrade
 .asm_700d5
 	call Func_7011f
 	push af
-	ld hl, wOAMBuffer + $10
-	ld de, wOAMBuffer
+	ld hl, wShadowOAMSprite04
+	ld de, wShadowOAM
 	ld bc, $50
 	call CopyData
 	pop af
@@ -171,9 +171,9 @@ OAMData_7011e: ; 7011e (1c:411e)
 	db $FF
 
 Func_7011f: ; 7011f (1c:411f)
-	ld b, $8
+	ld b, 8
 .asm_70121
-	ld hl, wOAMBuffer + $5c
+	ld hl, wShadowOAMSprite23
 	ld a, [wWhichTrade] ; wWhichTrade
 	ld de, $fffc
 	ld c, a
@@ -185,7 +185,7 @@ Func_7011f: ; 7011f (1c:411f)
 	ldh a, [rOBP1] ; $ff49
 	xor $a0
 	ldh [rOBP1], a ; $ff49
-	ld c, $3
+	ld c, 3
 	call CheckForUserInterruption
 	ret c
 	dec b

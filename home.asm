@@ -62,8 +62,8 @@ EnableLCD::
 
 ClearSprites::
 	xor a
-	ld hl, wOAMBuffer
-	ld b, 40 * 4
+	ld hl, wShadowOAM
+	ld b, wShadowOAMEnd - wShadowOAM
 .loop
 	ld [hli], a
 	dec b
@@ -72,7 +72,7 @@ ClearSprites::
 
 HideSprites::
 	ld a, 160
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	ld de, 4
 	ld b, 40
 .loop
@@ -3963,35 +3963,35 @@ StringCmp:: ; 3a8e (0:3a8e)
 ; c = X coordinate of upper left corner of sprite
 ; de = base address of 4 tile number and attribute pairs
 WriteOAMBlock:: ; 3a97 (0:3a97)
-	ld h,wOAMBuffer / $100
+	ld h, wShadowOAM / $100
 	swap a ; multiply by 16
-	ld l,a
+	ld l, a
 	call .writeOneEntry ; upper left
 	push bc
-	ld a,8
+	ld a, 8
 	add c
-	ld c,a
+	ld c, a
 	call .writeOneEntry ; upper right
 	pop bc
-	ld a,8
+	ld a, 8
 	add b
-	ld b,a
+	ld b, a
 	call .writeOneEntry ; lower left
-	ld a,8
+	ld a, 8
 	add c
-	ld c,a
+	ld c, a
 	                      ; lower right
 .writeOneEntry
-	ld [hl],b ; Y coordinate
+	ld [hl], b ; Y coordinate
 	inc hl
-	ld [hl],c ; X coordinate
+	ld [hl], c ; X coordinate
 	inc hl
-	ld a,[de] ; tile number
+	ld a, [de] ; tile number
 	inc de
-	ld [hli],a
-	ld a,[de] ; attribute
+	ld [hli], a
+	ld a, [de] ; attribute
 	inc de
-	ld [hli],a
+	ld [hli], a
 	ret
 
 HandleMenuInput:: ; 3abe (0:3abe)

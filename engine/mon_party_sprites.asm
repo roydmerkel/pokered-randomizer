@@ -43,7 +43,7 @@ GetAnimationSpeed: ; 7170a (1c:570a)
 .resetSprites
 	push bc
 	ld hl, wcc5b
-	ld de, wOAMBuffer
+	ld de, wShadowOAM
 	ld bc, $60
 	call CopyData
 	pop bc
@@ -51,7 +51,7 @@ GetAnimationSpeed: ; 7170a (1c:570a)
 	jr .incTimer
 .animateSprite
 	push bc
-	ld hl, wOAMBuffer + $02 ; OAM tile id
+	ld hl, wShadowOAMSprite00TileID ; OAM tile id
 	ld bc, $10
 	ld a, [wCurrentMenuItem]
 	call AddNTimes
@@ -356,7 +356,7 @@ Func_718ac: ; 718ac (1c:58ac)
 Func_718c3: ; 718c3 (1c:58c3)
 	push af
 	ld c, $10
-	ld h, wOAMBuffer / $100
+	ld h, wShadowOAM / $100
 	ldh a, [hPartyMonIndex] ; $ff8c
 	swap a
 	ld l, a
@@ -370,7 +370,7 @@ Func_718c3: ; 718c3 (1c:58c3)
 .asm_718da
 	call Func_71281
 .asm_718dd
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	ld de, wcc5b
 	ld bc, $60
 	jp CopyData

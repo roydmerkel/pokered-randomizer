@@ -71,7 +71,7 @@ ENDC
 	hlCoord 2, 1
 	ld a, $80
 	ld de, $14
-	ld c, $6
+	ld c, 6
 .asm_434d
 	ld b, $10
 	push hl
@@ -93,7 +93,7 @@ ENDC
 	dec b
 	jr nz, .asm_4361
 	call Func_44dd
-	ld hl, wOAMBuffer + $28
+	ld hl, wShadowOAMSprite10
 	ld a, $74
 	ld [hl], a
 	hlCoord 2, 17
@@ -174,23 +174,23 @@ ENDC
 	ldh [hSCY], a
     
 	call LoadScreenTilesFromBuffer1
-	ld c, $24
+	ld c, 36
 	call DelayFrames
 	ld a, RBSFX_1f_63
 	call PlaySound
 	call PrintGameVersionOnTitleScreen
 	ld a, $90
 	ldh [hWY], a
-	ld d, $90
+	ld d, 144
 .asm_440a
 	ld h, d
-	ld l, $40
+	ld l, 64
 	call Func_44cf
-	ld h, $0
-	ld l, $50
+	ld h, 0
+	ld l, 80
 	call Func_44cf
 	ld a, d
-	add $4
+	add 4
 	ld d, a
 	and a
 	jr nz, .asm_440a
@@ -206,11 +206,11 @@ ENDC
 	xor a
 	ld [wcc5b], a
 .asm_443b
-	ld c, $c8
+	ld c, 200
 	call CheckForUserInterruption
 	jr c, .asm_4459
 	call Func_44c1
-	ld c, $1
+	ld c, 1
 	call CheckForUserInterruption
 	jr c, .asm_4459
 	callba Func_372ac
@@ -304,18 +304,18 @@ Func_44dd: ; 44dd (1:44dd)
 	call ClearSprites
 	xor a
 	ld [wWhichTrade], a ; wWhichTrade
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	ld de, $605a
-	ld b, $7
+	ld b, 7
 .asm_44fa
 	push de
-	ld c, $5
+	ld c, 5
 .asm_44fd
 	ld a, d
 	ld [hli], a
 	ld a, e
 	ld [hli], a
-	add $8
+	add 8
 	ld e, a
 	ld a, [wWhichTrade] ; wWhichTrade
 	ld [hli], a
@@ -325,7 +325,7 @@ Func_44dd: ; 44dd (1:44dd)
 	dec c
 	jr nz, .asm_44fd
 	pop de
-	ld a, $8
+	ld a, 8
 	add d
 	ld d, a
 	dec b

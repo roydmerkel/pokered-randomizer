@@ -9,7 +9,7 @@ DisplayDiploma: ; 566e2 (15:66e2)
 	call DisableLCD
 	ld hl, CircleTile ; $7d88
 	ld de, vChars2 + $700
-	ld bc, $0010
+	ld bc, $10
 	ld a, BANK(CircleTile)
 	call FarCopyData2
 	ld hl, wTileMap
@@ -37,11 +37,11 @@ DisplayDiploma: ; 566e2 (15:66e2)
 	ld de, wPlayerName
 	call PlaceString
 	callba Func_44dd
-	ld hl, wOAMBuffer + $01
+	ld hl, wShadowOAMSprite00XCoord
 	ld bc, $8028
 .asm_5673e
 	ld a, [hl]
-	add $21
+	add 33
 	ld [hli], a
 	inc hl
 	ld a, b

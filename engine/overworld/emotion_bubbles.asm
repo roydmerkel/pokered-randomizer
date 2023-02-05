@@ -17,11 +17,11 @@ EmotionBubble: ; 17c47 (5:7c47)
 	ld [wUpdateSpritesEnabled], a
 	ld a, [wd736]
 	bit 6, a
-	ld hl, wOAMBuffer + $8f
-	ld de, wOAMBuffer + $9f
+	ld hl, wShadowOAMSprite35Attributes
+	ld de, wShadowOAMSprite39Attributes
 	jr z, .asm_17c7a
-	ld hl, wOAMBuffer + $7f
-	ld de, wOAMBuffer + $8f
+	ld hl, wShadowOAMSprite31Attributes
+	ld de, wShadowOAMSprite35Attributes
 .asm_17c7a
 	ld bc, $90
 .asm_17c7d

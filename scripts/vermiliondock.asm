@@ -125,7 +125,7 @@ VermilionDock_1db9b: ; 1db9b (7:5b9b)
 VermilionDock_1dc42: ; 1dc42 (7:5c42)
 	push bc
 	push de
-	ld hl, wOAMBuffer + $11
+	ld hl, wShadowOAMSprite04XCoord
 	ld a, [wWhichTrade]
 	swap a
 	ld c, a

@@ -91,7 +91,7 @@ Func_41186: ; 41186 (10:5186)
 	ret
 
 Delay50: ; 41191 (10:5191)
-	ld c, $50
+	ld c, 80
 	jp DelayFrames
 
 Func_41196: ; 41196 (10:5196)
@@ -260,7 +260,7 @@ Func_412d2: ; 412d2 (10:52d2)
 	xor $1
 	ld [wd09f], a
 	add $7e
-	ld hl, wOAMBuffer + $02
+	ld hl, wShadowOAMSprite00TileID
 	ld de, 4
 	ld c, e
 .asm_41300
@@ -517,7 +517,7 @@ Func_414e8: ; 414e8 (10:54e8)
 	ldh a, [rBGP] ; $ff47
 	xor $3c
 	ldh [rBGP], a ; $ff47
-	ld hl, wOAMBuffer + $02
+	ld hl, wShadowOAMSprite00TileID
 	ld de, $4
 	ld c, $14
 .asm_414f9
@@ -537,7 +537,7 @@ Func_41505: ; 41505 (10:5505)
 	call Func_41558
 
 Func_41510: ; 41510 (10:5510)
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	ld c, $14
 .asm_41515
 	ld a, [W_BASECOORDY] ; wd082

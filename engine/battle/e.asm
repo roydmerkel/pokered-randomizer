@@ -7,7 +7,7 @@ Func_39680: ; 39680 (e:5680)
 	ld a, [wd065]
 	ld hl, wEnemyMonAttack + 1
 .asm_39691
-	ld c, $4
+	ld c, 4
 	ld b, a
 .asm_39694
 	srl b
@@ -36,7 +36,7 @@ Func_396a7: ; 396a7 (e:56a7)
 	ld a, [wd066]
 	ld hl, wEnemyMonAttack
 .asm_396b8
-	ld c, $4
+	ld c, 4
 	ld b, a
 .asm_396bb
 	srl b
@@ -54,7 +54,7 @@ Func_396c6: ; 396c6 (e:56c6)
 	rr [hl]
 	or [hl]
 	jr nz, .asm_396d1
-	ld [hl], $1
+	ld [hl], 1
 .asm_396d1
 	dec hl
 	ret
@@ -72,7 +72,7 @@ _ScrollTrainerPicAfterBattle: ; 396d3 (e:56d3)
 .asm_396e9
 	inc c
 	ld a, c
-	cp $7
+	cp 7
 	ret z
 	ld d, $0
 	push bc
@@ -80,12 +80,12 @@ _ScrollTrainerPicAfterBattle: ; 396d3 (e:56d3)
 .asm_396f2
 	call Func_39707
 	inc hl
-	ld a, $7
+	ld a, 7
 	add d
 	ld d, a
 	dec c
 	jr nz, .asm_396f2
-	ld c, $4
+	ld c, 4
 	call DelayFrames
 	pop hl
 	pop bc
@@ -96,7 +96,7 @@ Func_39707: ; 39707 (e:5707)
 	push hl
 	push de
 	push bc
-	ld e, $7
+	ld e, 7
 .asm_3970c
 	ld [hl], d
 	ld bc, $14
@@ -1391,9 +1391,9 @@ SetupOwnPartyPokeballs: ; 3a869 (e:6869)
 	ld hl, W_BASECOORDX ; wd081
 	ld [hli], a
 	ld [hl], a
-	ld a, $8
+	ld a, 8
 	ld [wTrainerEngageDistance], a
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	jp Func_3a8e1
 
 SetupEnemyPartyPokeballs: ; 3a887 (e:6887)
@@ -1407,7 +1407,7 @@ SetupEnemyPartyPokeballs: ; 3a887 (e:6887)
 	ld [hl], $20
 	ld a, $f8
 	ld [wTrainerEngageDistance], a
-	ld hl, wOAMBuffer + PARTY_LENGTH * 4
+	ld hl, wShadowOAMSprite06
 	jp Func_3a8e1
 
 SetupPokeballs: ; 0x3a8a6
@@ -1518,7 +1518,7 @@ PlaceHUDTiles: ; 3a930 (e:6930)
 	add hl, bc
 	ld a, [wTrainerScreenY]
 	ld [hl], a
-	ld a, $8
+	ld a, 8
 .asm_3a93c
 	add hl, de
 	ld [hl], $76
@@ -1538,9 +1538,9 @@ SetupPlayerAndEnemyPokeballs: ; 3a948 (e:6948)
 	ld a, $50
 	ld [hli], a
 	ld [hl], $40
-	ld a, $8
+	ld a, 8
 	ld [wTrainerEngageDistance], a
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	call Func_3a8e1
 	ld hl, wEnemyMons ; wEnemyMon1Species
 	ld de, wEnemyPartyCount ; wEnemyPartyCount
@@ -1549,7 +1549,7 @@ SetupPlayerAndEnemyPokeballs: ; 3a948 (e:6948)
 	ld a, $50
 	ld [hli], a
 	ld [hl], $68
-	ld hl, wOAMBuffer + $18
+	ld hl, wShadowOAMSprite06
 	jp Func_3a8e1
 
 ; four tiles: pokeball, black pokeball (status ailment), crossed out pokeball (faited) and pokeball slot (no mon)

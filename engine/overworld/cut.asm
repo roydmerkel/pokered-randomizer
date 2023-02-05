@@ -98,7 +98,7 @@ AnimateCutTree: ; eff7 (3:6ff7)
 	ld hl, vChars1 + $7f0
 	call LoadCutTreeAnimationTilePattern
 	call WriteCutTreeBoulderDustAnimationOAMBlock
-	ld hl, wOAMBuffer + $93
+	ld hl, wShadowOAMSprite36Attributes
 	ld de, 4
 	ld a, $30
 	ld c, e

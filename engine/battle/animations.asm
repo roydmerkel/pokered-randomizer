@@ -147,7 +147,7 @@ DrawFrameBlock: ; 78000 (1e:4000)
 	jr z, .resetFrameBlockDestAddr
 	call AnimationCleanOAM
 .resetFrameBlockDestAddr
-	ld hl, wOAMBuffer ; OAM buffer
+	ld hl, wShadowOAM ; OAM buffer
 	ld a, l
 	ld [W_FBDESTADDR + 1], a
 	ld a, h
@@ -562,7 +562,7 @@ PlaySubanimation: ; 78e53 (1e:4e53)
 	call Func_7986f
 	call nc, AnimPlaySFX ; play sound effect
 .skipPlayingSound
-	ld hl, wOAMBuffer ; base address of OAM buffer
+	ld hl, wShadowOAM ; base address of OAM buffer
 	ld a, l
 	ld [W_FBDESTADDR + 1], a
 	ld a, h
@@ -925,7 +925,7 @@ Func_7904c: ; 7904c (1e:504c)
 ; if it's the end of the animation, make the ball jump up
 	ld de, BallMoveDistances1
 .loop
-	ld hl, wOAMBuffer ; OAM buffer
+	ld hl, wShadowOAM ; OAM buffer
 	ld bc, 4
 .innerLoop
 	ld a, [de]
@@ -956,7 +956,7 @@ BallMoveDistances1: ; 79078 (1e:5078)
 Func_7907c ; 507C
 	ld de, BallMoveDistances2
 .loop
-	ld hl, wOAMBuffer ; OAM buffer
+	ld hl, wShadowOAM ; OAM buffer
 	ld bc, 4
 .innerLoop
 	ld a, [de]
@@ -996,8 +996,8 @@ BallMoveDistances2: ; 790b3 (1e:50b3)
 ; this function copies the current musical note graphic
 ; so that there are two musical notes flying towards the defending pokemon
 DoGrowlSpecialEffects: ; 790bc (1e:50bc)
-	ld hl, wOAMBuffer ; OAM buffer
-	ld de, wOAMBuffer + $10
+	ld hl, wShadowOAM ; OAM buffer
+	ld de, wShadowOAMSprite04
 	ld bc, $10
 	call CopyData ; copy the musical note graphic
 	ld a, [W_SUBANIMCOUNTER]
@@ -1286,7 +1286,7 @@ AnimationWaterDropletsEverywhere: ; 79215 (1e:5215)
 	ret
 
 Func_79246: ; 79246 (1e:5246)
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 .asm_79249
 	ld a, [W_BASECOORDY] ; wd082
 	ld [hli], a
@@ -1403,7 +1403,7 @@ Func_792fd: ; 792fd (1e:52fd)
 	ld [W_BASECOORDX], a
 	ld a, $30
 	ld [W_BASECOORDY], a
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	ld d, 0
 	ld c, 7
 .asm_7930e
@@ -1632,7 +1632,7 @@ AnimationSpiralBallsInward: ; 79424 (1e:5424)
 .asm_79447
 	push hl
 	ld c, 3
-	ld de, wOAMBuffer
+	ld de, wShadowOAM
 .asm_7944d
 	ld a, [hl]
 	cp $ff
@@ -1771,7 +1771,7 @@ Func_79517: ; 79517 (1e:5517)
 	call LoadAnimationTileset
 	pop bc
 	ld d, $7a
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	push bc
 	ld a, [W_BASECOORDY] ; wd082
 	ld e, a
@@ -1785,7 +1785,7 @@ Func_79517: ; 79517 (1e:5517)
 	ld [wd08a], a
 .asm_79538
 	push bc
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 .asm_7953c
 	ld a, [W_BASECOORDY] ; wd082
 	add 8
@@ -2185,7 +2185,7 @@ Func_797e8: ; 797e8 (1e:57e8)
 	xor a
 	ld e, a
 	ld [W_BASECOORDX], a ; wd081
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 .asm_797fa
 	call Func_79329
 	dec c
@@ -2645,7 +2645,7 @@ Func_79c97: ; 79c97 (1e:5c97)
 	call Func_797e8
 	call Func_79d2a
 	call Func_79d52
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	ld [hl], 0
 .asm_79ca8
 	ld hl, wTrainerSpriteOffset
@@ -2672,14 +2672,14 @@ Func_79c97: ; 79c97 (1e:5c97)
 	dec c
 	jr nz, .asm_79cb2
 	call Delay3
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	ld a, [hl]
 	cp 104
 	jr nz, .asm_79ca8
 	ret
 
 Func_79cdb: ; 79cdb (1e:5cdb)
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	add hl, de
 	ld a, [hl]
 	inc a
@@ -2737,7 +2737,7 @@ Func_79d16: ; 79d16 (1e:5d16)
 	ret
 
 Func_79d2a: ; 79d2a (1e:5d2a)
-	ld hl, wOAMBuffer + $01
+	ld hl, wShadowOAMSprite00XCoord
 	ld de, Unknown_79d3e
 	ld a, [W_SUBANIMTRANSFORM]
 	ld c, a

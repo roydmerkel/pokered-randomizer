@@ -151,7 +151,7 @@ AnimateIntroNidorino: ; 41793 (10:5793)
 	jr AnimateIntroNidorino
 
 Func_417ae: ; 417ae (10:57ae)
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	ld a, [wd09f]
 	ld d, a
 .asm_417b5
@@ -170,7 +170,7 @@ Func_417ae: ; 417ae (10:57ae)
 	ret
 
 Func_417c7: ; 417c7 (10:57c7)
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	ld d, 0
 .asm_417cc
 	push bc

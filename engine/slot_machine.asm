@@ -69,19 +69,19 @@ MainSlotMachineLoop: ; 37395 (d:7395)
 .loop
 	ld a, $3
 	ld [wMenuWatchedKeys], a
-	ld a, $2
+	ld a, 2
 	ld [wMaxMenuItem], a
-	ld a, $c
+	ld a, 12
 	ld [wTopMenuItemY], a
-	ld a, $f
+	ld a, 15
 	ld [wTopMenuItemX], a
 	xor a
 	ld [wCurrentMenuItem], a
 	ld [wLastMenuItem], a
 	ld [wcc37], a
 	ld hl, wTileMap + $ea
-	ld b, $5
-	ld c, $4
+	ld b, 5
+	ld c, 4
 	call TextBoxBorder
 	ld hl, wTileMap + $100
 	ld de, CoinMultiplierSlotMachineText
@@ -91,7 +91,7 @@ MainSlotMachineLoop: ; 37395 (d:7395)
 	jp nz, LoadScreenTilesFromBuffer1
 	ld a, [wCurrentMenuItem]
 	ld b, a
-	ld a, $3
+	ld a, 3
 	sub b
 	ld [wcd50], a
 	ld hl, wPlayerCoins
@@ -110,7 +110,7 @@ MainSlotMachineLoop: ; 37395 (d:7395)
 	call SlotMachine_37741
 	call SlotMachine_377d5
 	call SlotMachine_37480
-	ld a, $4
+	ld a, 4
 	ld hl, wcd4d
 	ld [hli], a
 	ld [hli], a
@@ -128,7 +128,7 @@ MainSlotMachineLoop: ; 37395 (d:7395)
 	jr nz, .skip2
 	ld hl, OutOfCoinsSlotMachineText
 	call PrintText
-	ld c, $3c
+	ld c, 60
 	jp DelayFrames
 .skip2
 	ld hl, OneMoreGoSlotMachineText
@@ -185,16 +185,16 @@ SlotMachine_37480: ; 37480 (d:7480)
 	ld a, [wcc5b]
 	cp b
 	jr c, .skip3
-	ld a, $d2
+	ld a, 210
 	cp b
 	jr c, .skip1
-	ld [hl], $0
+	ld [hl], 0
 	ret
 .skip1
 	set 6, [hl]
 	ret
 .skip2
-	ld a, $3c
+	ld a, 60
 	ld [W_SUBANIMSUBENTRYADDR], a
 	ret
 .skip3
@@ -202,13 +202,13 @@ SlotMachine_37480: ; 37480 (d:7480)
 	ret
 
 SlotMachine_374ad: ; 374ad (d:74ad)
-	ld c, $14
+	ld c, 20
 .loop1
 	push bc
 	call SlotMachine_37813
 	call SlotMachine_37823
 	call SlotMachine_37833
-	ld c, $2
+	ld c, 2
 	call DelayFrames
 	pop bc
 	dec c
@@ -230,7 +230,7 @@ SlotMachine_374ad: ; 374ad (d:74ad)
 
 SlotMachine_374df: ; 374df (d:74df)
 	ld a, [wTrainerSpriteOffset]
-	cp $1
+	cp 1
 	jr c, .skip
 	ld de, wTrainerEngageDistance
 	ld a, [de]
@@ -248,7 +248,7 @@ SlotMachine_374df: ; 374df (d:74df)
 
 SlotMachine_374fb: ; 374fb (d:74fb)
 	ld a, [wTrainerSpriteOffset]
-	cp $2
+	cp 2
 	jr c, .skip
 	ld de, wTrainerFacingDirection
 	ld a, [de]
@@ -266,7 +266,7 @@ SlotMachine_374fb: ; 374fb (d:74fb)
 
 SlotMachine_37517: ; 37517 (d:7517)
 	ld a, [wTrainerSpriteOffset]
-	cp $3
+	cp 3
 	jr c, .skip
 	ld de, wTrainerScreenY
 	ld a, [de]
@@ -302,7 +302,7 @@ SlotMachine_3752c: ; 3752c (d:752c)
 .skip2
 	inc a
 	ld hl, wcd4d
-	ld [hl], $0
+	ld [hl], 0
 	ret
 
 SlotMachine_37552: ; 37552 (d:7552)
@@ -350,9 +350,9 @@ SlotMachine_3756e: ; 3756e (d:756e)
 SlotMachine_37588: ; 37588 (d:7588)
 	call SlotMachine_GetWheelThreeTile
 	ld a, [wcd50]
-	cp $2
+	cp 2
 	jr z, .skip1
-	cp $1
+	cp 1
 	jr z, .skip2
 	ld hl, wTrainerScreenX
 	ld de, wcd45
@@ -415,7 +415,7 @@ SlotMachine_37588: ; 37588 (d:7588)
 	ld [wTrainerScreenX], a
 	ld hl, SlotRewardPointers
 	ld c, a
-	ld b, $0
+	ld b, 0
 	add hl, bc
 	ld a, [hli]
 	ld e, a
@@ -426,7 +426,7 @@ SlotMachine_37588: ; 37588 (d:7588)
 	ld h, [hl]
 	ld l, a
 	ld de, wcf4b
-	ld bc, $0004
+	ld bc, 4
 	call CopyData
 	pop hl
 	ld de, .asm_37638
@@ -437,7 +437,7 @@ SlotMachine_37588: ; 37588 (d:7588)
 	ldh a, [rBGP]
 	xor $40
 	ldh [rBGP], a
-	ld c, $5
+	ld c, 5
 	call DelayFrames
 	dec b
 	jr nz, .asm_37638
@@ -529,9 +529,9 @@ SlotMachine_GetWheelOneTile: ; 376c0 (d:76c0)
 
 SlotMachine_GetWheelTile: ; 376c9 (d:76c9)
 	ld c, a
-	ld b, $0
+	ld b, 0
 	add hl, bc
-	ld c, $3
+	ld c, 3
 .loop
 	ld a, [hli]
 	ld [de], a
@@ -640,7 +640,7 @@ SlotMachine_3776b: ; 3776b (d:776b)
 	ld [hli], a
 	inc a
 	ld [hl], a
-	ld a, $5
+	ld a, 5
 	ld [W_SUBANIMTRANSFORM], a
 .loop
 	ld a, [wcd4b]
@@ -674,7 +674,7 @@ SlotMachine_3776b: ; 3776b (d:776b)
 	ld [W_SUBANIMTRANSFORM], a
 	ld a, [wTrainerScreenX]
 	cp $7
-	ld c, $8
+	ld c, 8
 	jr nc, .skip2
 	srl c
 .skip2
@@ -713,14 +713,14 @@ SlotMachine_377fb: ; 377fb (d:77fb)
 SlotMachine_377fe: ; 377fe (d:77fe)
 	ld a, [wd08a]
 	ld [hl], a
-	ld bc, $000d
+	ld bc, 13
 	add hl, bc
 	ld [hl], a
-	ld bc, $0007
+	ld bc, 7
 	add hl, bc
 	inc a
 	ld [hl], a
-	ld bc, $000d
+	ld bc, 13
 	add hl, bc
 	ld [hl], a
 	ret
@@ -728,7 +728,7 @@ SlotMachine_377fe: ; 377fe (d:77fe)
 SlotMachine_37813: ; 37813 (d:7813)
 	ld bc, SlotMachineWheel1
 	ld de, wTrainerEngageDistance
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAMSprite00
 	ld a, $30
 	ld [W_BASECOORDX], a
 	jr SlotMachine_37841
@@ -736,7 +736,7 @@ SlotMachine_37813: ; 37813 (d:7813)
 SlotMachine_37823: ; 37823 (d:7823)
 	ld bc, SlotMachineWheel2
 	ld de, wTrainerFacingDirection
-	ld hl, wOAMBuffer + $30
+	ld hl, wShadowOAMSprite12
 	ld a, $50
 	ld [W_BASECOORDX], a
 	jr SlotMachine_37841
@@ -744,7 +744,7 @@ SlotMachine_37823: ; 37823 (d:7823)
 SlotMachine_37833: ; 37833 (d:7833)
 	ld bc, SlotMachineWheel3
 	ld de, wTrainerScreenY
-	ld hl, wOAMBuffer + $60
+	ld hl, wShadowOAMSprite24
 	ld a, $70
 	ld [W_BASECOORDX], a
 
@@ -787,7 +787,7 @@ SlotMachine_3784e: ; 3784e (d:784e)
 	pop de
 	ld a, [de]
 	inc a
-	cp $1e
+	cp 30
 	jr nz, .skip
 	xor a
 .skip

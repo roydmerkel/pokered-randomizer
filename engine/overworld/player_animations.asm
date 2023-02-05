@@ -205,19 +205,19 @@ LeaveMapThroughHoleAnim: ; 7067d (1c:467d)
 	ld a, $ff
 	ld [wUpdateSpritesEnabled], a ; disable UpdateSprites
 	; shift upper half of player's sprite down 8 pixels and hide lower half
-	ld a, [wOAMBuffer + 0 * 4 + 2]
-	ld [wOAMBuffer + 2 * 4 + 2], a
-	ld a, [wOAMBuffer + 1 * 4 + 2]
-	ld [wOAMBuffer + 3 * 4 + 2], a
+	ld a, [wShadowOAMSprite00TileID]
+	ld [wShadowOAMSprite02TileID], a
+	ld a, [wShadowOAMSprite01TileID]
+	ld [wShadowOAMSprite03TileID], a
 	ld a, $a0
-	ld [wOAMBuffer + 0 * 4], a
-	ld [wOAMBuffer + 1 * 4], a
+	ld [wShadowOAMSprite00YCoord], a
+	ld [wShadowOAMSprite01YCoord], a
 	ld c, 2
 	call DelayFrames
 	; hide lower half of player's sprite
 	ld a, $a0
-	ld [wOAMBuffer + 2 * 4], a
-	ld [wOAMBuffer + 3 * 4], a
+	ld [wShadowOAMSprite02YCoord], a
+	ld [wShadowOAMSprite03YCoord], a
 	call GBFadeOutToWhite
 	ld a, $1
 	ld [wUpdateSpritesEnabled], a ; enable UpdateSprites
@@ -395,7 +395,7 @@ Func_707b6: ; 707b6 (1c:47b6)
 	ld b, $0
 	ld hl, FishingRodGfxProperties ; $4856
 	add hl, bc
-	ld de, wOAMBuffer + $9c
+	ld de, wShadowOAMSprite39
 	ld bc, $4
 	call CopyData
 	ld c, $64
@@ -411,7 +411,7 @@ Func_707b6: ; 707b6 (1c:47b6)
 .asm_707fe
 	ld hl, wSpritePlayerStateData1YPixels
 	call Func_70842
-	ld hl, wOAMBuffer + $9c
+	ld hl, wShadowOAMSprite39
 	call Func_70842
 	call Delay3
 	dec b
@@ -420,7 +420,7 @@ Func_707b6: ; 707b6 (1c:47b6)
 	cp $4
 	jr nz, .asm_7081c
 	ld a, $a0
-	ld [wOAMBuffer + $9c], a
+	ld [wShadowOAMSprite39YCoord], a
 .asm_7081c
 	ld hl, wcd4f
 	xor a
@@ -431,7 +431,7 @@ Func_707b6: ; 707b6 (1c:47b6)
 	cp $4
 	jr nz, .asm_70833
 	ld a, $44
-	ld [wOAMBuffer + $9c], a
+	ld [wShadowOAMSprite39YCoord], a
 .asm_70833
 	ld hl, ItsABiteText
 .asm_70836

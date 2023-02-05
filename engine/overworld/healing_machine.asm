@@ -15,7 +15,7 @@ AnimateHealingMachine: ; 70433 (1c:4433)
 	push af
 	ld a, $e0
 	ldh [rOBP1], a ; $ff49
-	ld hl, wOAMBuffer + $84
+	ld hl, wShadowOAMSprite33
 	ld de, PokeCenterOAMData ; $44d7
 	call Func_70503
 	

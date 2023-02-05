@@ -14,7 +14,7 @@ DisplayTownMap: ; 70e3e (1c:4e3e)
 	hlCoord 1, 0
 	ld de, wcd6d
 	call PlaceString
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	ld de, wTileMapBackup
 	ld bc, $10
 	call CopyData
@@ -34,7 +34,7 @@ Func_70e7e: ; 70e7e (1c:4e7e)
 	ld hl, TownMapOrder ; $4f11
 	ld a, [wWhichTrade] ; wWhichTrade
 	ld c, a
-	ld b, $0
+	ld b, 0
 	add hl, bc
 	ld a, [hl]
 
@@ -46,7 +46,7 @@ Func_70e92: ; 70e92 (1c:4e92)
 	call Func_71258
 	ld a, $4
 	ld [wcd5b], a
-	ld hl, wOAMBuffer + $10
+	ld hl, wShadowOAMSprite04
 	call Func_71279
 	pop hl
 	ld de, wcd6d
@@ -59,7 +59,7 @@ Func_70e92: ; 70e92 (1c:4e92)
 	hlCoord 1, 0
 	ld de, wcd6d
 	call PlaceString
-	ld hl, wOAMBuffer + $10
+	ld hl, wShadowOAMSprite04
 	ld de, wTileMapBackup + 16
 	ld bc, $10
 	call CopyData
@@ -177,7 +177,7 @@ LoadTownMap_Fly: ; 70f90 (1c:4f90)
 	hlCoord 3, 0
 	ld de, wcd6d
 	call PlaceString
-	ld c, $f
+	ld c, 15
 	call DelayFrames
 	hlCoord 18, 0
 	ld [hl], $ed
@@ -358,7 +358,7 @@ Func_711c4: ; 711c4 (1c:51c4)
 	inc de
 	cp $50
 	jr nz, .asm_711dc
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	ld de, wTileMapBackup
 	ld bc, $a0
 	jp CopyData
@@ -366,7 +366,7 @@ Func_711c4: ; 711c4 (1c:51c4)
 Func_711ef: ; 711ef (1c:51ef)
 	callba Func_e9cb
 	call Func_712d9
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	ld de, wHPBarMaxHP
 .asm_71200
 	ld a, [de]
@@ -393,8 +393,8 @@ Func_711ef: ; 711ef (1c:51ef)
 	and a
 	jr nz, .asm_71236
 	hlCoord 1, 7
-	ld b, $2
-	ld c, $f
+	ld b, 2
+	ld c, 15
 	call TextBoxBorder
 	hlCoord 2, 9
 	ld de, AreaUnknownText
@@ -405,7 +405,7 @@ Func_711ef: ; 711ef (1c:51ef)
 	ld b, $0
 	call Func_711c4
 .asm_7123e
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	ld de, wTileMapBackup
 	ld bc, $a0
 	jp CopyData
@@ -417,14 +417,14 @@ Func_71258: ; 71258 (1c:5258)
 	push af
 	and $f0
 	srl a
-	add $18
+	add 24
 	ld b, a
 	ld [hli], a
 	pop af
 	and $f
 	swap a
 	srl a
-	add $18
+	add 24
 	ld c, a
 	ld [hli], a
 	ret
@@ -432,9 +432,9 @@ Func_71258: ; 71258 (1c:5258)
 Func_7126d: ; 7126d (1c:526d)
 	ld a, [wcd5b]
 	and a
-	ld hl, wOAMBuffer + $90
+	ld hl, wShadowOAMSprite36
 	jr z, Func_71279
-	ld hl, wOAMBuffer + $80
+	ld hl, wShadowOAMSprite32
 
 Func_71279: ; 71279 (1c:5279)
 	push hl
@@ -461,14 +461,14 @@ Func_71281: ; 71281 (1c:5281)
 	xor a
 	ld [hli], a
 	inc d
-	ld a, $8
+	ld a, 8
 	add c
 	ld c, a
 	dec e
 	jr nz, .asm_71286
 	pop bc
 	pop de
-	ld a, $8
+	ld a, 8
 	add b
 	ld b, a
 	dec d
@@ -494,7 +494,7 @@ Func_712a6: ; 712a6 (1c:52a6)
 	xor $20
 	ld [wcd5c], a
 	inc d
-	ld a, $8
+	ld a, 8
 	add c
 	ld c, a
 	dec e
@@ -506,7 +506,7 @@ Func_712a6: ; 712a6 (1c:52a6)
 	inc [hl]
 	inc [hl]
 	pop hl
-	ld a, $8
+	ld a, 8
 	add b
 	ld b, a
 	dec d
@@ -538,7 +538,7 @@ Func_712d9: ; 712d9 (1c:52d9)
 Func_712f1: ; 712f1 (1c:52f1)
 	cp REDS_HOUSE_1F
 	jr c, .asm_71304
-	ld bc, $4
+	ld bc, 4
 	ld hl, InternalMapEntries ; $5382
 .asm_712fb
 	cp [hl]
@@ -551,7 +551,7 @@ Func_712f1: ; 712f1 (1c:52f1)
 .asm_71304
 	ld hl, ExternalMapEntries ; $5313
 	ld c, a
-	ld b, $0
+	ld b, 0
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -642,13 +642,13 @@ TownMapSpriteBlinkingAnimation: ; 716c6 (1c:56c6)
 	jr nz, .done
 ; show sprites when the counter reaches 50
 	ld hl, wTileMapBackup
-	ld de, wOAMBuffer
+	ld de, wShadowOAM
 	ld bc, $90
 	call CopyData
 	xor a
 	jr .done
 .hideSprites
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	ld b, $24
 	ld de, $4
 .hideSpritesLoop
