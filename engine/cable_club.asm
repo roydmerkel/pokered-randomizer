@@ -41,7 +41,7 @@ Func_5345: ; 5345
 	ld [hli], a
 	dec b
 	jr nz, .asm_535d
-	ld hl, wTileMapBackup
+	ld hl, wSerialPartyMonsPatchList
 	ld a, $fd
 	ld [hli], a
 	ld [hli], a
@@ -62,7 +62,7 @@ Func_5345: ; 5345
 	or c
 	jr nz, .asm_537d
 	ld hl, wPartyMons - 1
-	ld de, wTileMapBackup + 10
+	ld de, wSerialPartyMonsPatchList + 10
 	ld bc, 0
 .asm_538d
 	inc c
@@ -124,8 +124,8 @@ Func_5345: ; 5345
 	call Func_216f
 	ld a, $fe
 	ld [de], a
-	ld hl, wTileMapBackup
-	ld de, wTileMapBackup + 200
+	ld hl, wSerialPartyMonsPatchList
+	ld de, wSerialEnemyMonsPatchList
 	ld bc, 200
 	call Func_216f
 	ld a, $d
@@ -188,7 +188,7 @@ Func_5345: ; 5345
 	ld a, b
 	or c
 	jr nz, .asm_5456
-	ld de, wTileMapBackup
+	ld de, wSerialPartyMonsPatchList
 	ld hl, wPartyMons
 	ld c, 2
 .asm_546a
@@ -217,7 +217,7 @@ Func_5345: ; 5345
 	ld hl, wPartyMons + $fc ; wd267
 	dec c
 	jr nz, .asm_546a
-	ld de, wTileMapBackup + 200
+	ld de, wSerialEnemyMonsPatchList
 	ld hl, wEnemyMons
 	ld c, 2
 .asm_5497

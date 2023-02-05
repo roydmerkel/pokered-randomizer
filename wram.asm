@@ -316,12 +316,14 @@ wTileMap:: ; c3a0
 ; buffer for tiles that are visible on screen (20 columns by 18 rows)
 	ds 20 * 18
 
-wTileMapBackup:: ; c508
+
 ; buffer for temporarily saving and restoring current screen's tiles
 ; (e.g. if menus are drawn on top)
-	ds 20 * 18
+wTileMapBackup:: ; c508
+wSerialPartyMonsPatchList:: ds 200
+wSerialEnemyMonsPatchList:: ds 200
 
-	ds 120
+	ds 80
 
 
 SECTION "Overworld Map", WRAM0[$c6e8]
